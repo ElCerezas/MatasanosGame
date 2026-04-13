@@ -10,19 +10,16 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] InputActionReference interactReference;
     [SerializeField] InputActionReference pickReference;
     [SerializeField] InputActionReference jumpReference;
+    [SerializeField] InputActionReference lookReference;
 
-    [Header("Movement Variables")]
+    public Vector2 LookInput { get; private set; }
     public Vector2 MovementInput { get; private set; }
+
     private Vector2 rawInput;
     [SerializeField] float smoothTime = 0.1f;
 
-    //[Header("Jump Variables")]
     public event Action OnJumpPressed;
-
-    //[Header("Pick Variables")]
     public event Action OnPickUpPressed;
-
-    //[Header("Interact Variables")]
     public event Action OnInteractPressed;
 
     void OnEnable()
@@ -34,11 +31,11 @@ public class PlayerInput : NetworkBehaviour
         jumpReference.action.Enable();
 
         //Pick event
-        pickReference.action.performed += PickUp;
+        pickReference.action.performed += OnPickUp;
         pickReference.action.Enable();
 
         //Pick event
-        interactReference.action.performed += Interact;
+        interactReference.action.performed += OnInteract;
         interactReference.action.Enable();
     }
     void OnDisable()
@@ -50,11 +47,11 @@ public class PlayerInput : NetworkBehaviour
         jumpReference.action.Disable();
 
         //Pick event
-        pickReference.action.performed -= PickUp;
+        pickReference.action.performed -= OnPickUp;
         pickReference.action.Disable();
 
         //Pick event
-        interactReference.action.performed -= Interact;
+        interactReference.action.performed -= OnInteract;
         interactReference.action.Disable();
     }
 
@@ -64,13 +61,15 @@ public class PlayerInput : NetworkBehaviour
 
         rawInput = movementReference.action.ReadValue<Vector2>();
         MovementInput = Vector2.MoveTowards(MovementInput, rawInput, smoothTime); //Que el taclat acceleri suaument
+
+        LookInput = lookReference.action.ReadValue<Vector2>();
     }
     void OnJump(InputAction.CallbackContext ctx)
     {
         if (!IsOwner) return;
         OnJumpPressed?.Invoke();
     }
-    void OnPick(InputAction.CallbackContext ctx)
+    void OnPickUp(InputAction.CallbackContext ctx)
     {
         if (!IsOwner) return;
         OnPickUpPressed?.Invoke();
