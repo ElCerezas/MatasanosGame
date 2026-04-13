@@ -17,6 +17,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] float smoothTime = 0.1f;
 
     //[Header("Jump Variables")]
+    public event Action OnJumpPressed;
 
     //[Header("Pick Variables")]
     public event Action OnPickUpPressed;
@@ -24,7 +25,38 @@ public class PlayerInput : NetworkBehaviour
     //[Header("Interact Variables")]
     public event Action OnInteractPressed;
 
+    void OnEnable()
+    {
+        movementReference.action.Enable();
 
+        //Jump event
+        jumpReference.action.performed += OnJump;
+        jumpReference.action.Enable();
+
+        //Pick event
+        pickReference.action.performed += PickUp;
+        pickReference.action.Enable();
+
+        //Pick event
+        interactReference.action.performed += Interact;
+        interactReference.action.Enable();
+    }
+    void OnDisable()
+    {
+        movementReference.action.Disable();
+
+        //Jump event
+        jumpReference.action.performed -= OnJump;
+        jumpReference.action.Disable();
+
+        //Pick event
+        pickReference.action.performed -= PickUp;
+        pickReference.action.Disable();
+
+        //Pick event
+        interactReference.action.performed -= Interact;
+        interactReference.action.Disable();
+    }
 
     void Update()
     {
@@ -32,15 +64,20 @@ public class PlayerInput : NetworkBehaviour
 
         rawInput = movementReference.action.ReadValue<Vector2>();
         MovementInput = Vector2.MoveTowards(MovementInput, rawInput, smoothTime); //Que el taclat acceleri suaument
-
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            OnPickUpPressed?.Invoke();
-        }
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            OnInteractPressed?.Invoke();
-        }
     }
-
+    void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+        OnJumpPressed?.Invoke();
+    }
+    void OnPick(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+        OnPickUpPressed?.Invoke();
+    }
+    void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+        OnInteractPressed?.Invoke();
+    }
 }
