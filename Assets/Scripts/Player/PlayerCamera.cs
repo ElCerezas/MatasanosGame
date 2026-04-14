@@ -4,7 +4,7 @@ using Unity.Netcode;
 public class PlayerCamera : NetworkBehaviour
 {
     [SerializeField] PlayerInput playerInput;
-    [SerializeField] Transform cameraPivot;
+    [SerializeField] Transform camera;
 
     [Header("Settings")]
     [SerializeField] float sensitivity = 2f;
@@ -16,7 +16,7 @@ public class PlayerCamera : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            cameraPivot.GetComponentInChildren<Camera>().enabled = false;
+            camera.GetComponent<Camera>().enabled = false;
             return;
         }
         Cursor.lockState = CursorLockMode.Locked;
@@ -38,7 +38,7 @@ public class PlayerCamera : NetworkBehaviour
         //Vertical
         pitchRotation -= mouseY;
         pitchRotation = Mathf.Clamp(pitchRotation, -maxPitch, maxPitch);
-        cameraPivot.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
+        camera.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
 
         //Horitzontal
         gameObject.transform.Rotate(Vector3.up * mouseX);

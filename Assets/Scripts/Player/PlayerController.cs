@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
 using Unity.Netcode;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : NetworkBehaviour
 {
     [SerializeField] PlayerInput playerInput;
     [SerializeField] float speed = 5f;
-    [SerializeField] float gravity = -9.81f;
     [SerializeField] float jumpForce = 1.5f;
     [SerializeField] Transform cameraTransform;
+    [SerializeField] Transform playerFeet;
 
-    CharacterController controller;
+    Rigidbody rigidBody;
     Vector3 velocity;
     bool isGrounded;
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        rigidBody = GetComponent<Rigidbody>();
     }
     public override void OnNetworkSpawn()
     {
@@ -31,22 +31,31 @@ public class PlayerController : NetworkBehaviour
     }
     void Move()
     {
-        isGrounded = controller.isGrounded;
-        if (isGrounded && velocity.y < 0) velocity.y = -2f; 
+        isGrounded = IsGrounded();
+        if (isGrounded && velocity.y < 0) velocity.y = 0f; 
 
         Vector2 input = playerInput.MovementInput;
         Vector3 move = cameraTransform.right * input.x + cameraTransform.forward * input.y;
 
-        move.y = 0f;
-        controller.Move(move * speed * Time.deltaTime);
-
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+         move.y = 0f;
+        rigidBody.MovePosition(transform.position+move*speed*Time.deltaTime);
     }
     void Jump()
     {
         if (!isGrounded) return;
 
-        velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        rigidBody.AddForce(0,jumpForce,0);
     }
+
+    bool IsGrounded()
+    {
+        bool grounded;
+
+        if(Physics.Raycast(playerFeet.position,Vector3.down, 0.1f)) grounded = true;
+        else grounded = false;
+
+        return grounded;
+    }
+
+
 }
