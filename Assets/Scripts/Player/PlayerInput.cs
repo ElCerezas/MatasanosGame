@@ -11,7 +11,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] InputActionReference pickReference;
     [SerializeField] InputActionReference jumpReference;
     [SerializeField] InputActionReference lookReference;
-
+    //Chorrada per testear
     public Vector2 LookInput { get; private set; }
     public Vector2 MovementInput { get; private set; }
 
