@@ -2,9 +2,10 @@
 using Unity.Netcode;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : NetworkBehaviour
 {
-    [SerializeField] PlayerInput playerInput;
+    PlayerInput playerInput;
     [SerializeField] float speed = 5f;
     [SerializeField] float jumpForce = 1.5f;
     [SerializeField] Transform cameraTransform;
@@ -16,6 +17,7 @@ public class PlayerController : NetworkBehaviour
 
     private void Awake()
     {
+        playerInput = GetComponent<PlayerInput>();
         rigidBody = GetComponent<Rigidbody>();
     }
     public override void OnNetworkSpawn()
@@ -43,7 +45,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (!isGrounded) return;
 
-        rigidBody.AddForce(0,jumpForce,0);
+        rigidBody.AddForce(0,jumpForce,0, ForceMode.Impulse);
     }
 
     bool IsGrounded()

@@ -477,6 +477,7 @@ GameObject:
   - component: {fileID: 80966736933153627}
   - component: {fileID: 8982546415424473186}
   - component: {fileID: 3989753504083344194}
+  - component: {fileID: 4496925725958259524}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -565,7 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3184265775
+  GlobalObjectIdHash: 2402241250
   InScenePlacedSourceGlobalObjectIdHash: 2402241250
   DeferredDespawnTick: 0
   Ownership: 1
@@ -673,9 +674,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
-  playerInput: {fileID: 80966736933153627}
   speed: 15
-  jumpForce: 175
+  jumpForce: 5
   cameraTransform: {fileID: 5781543604421647710}
   playerFeet: {fileID: 6310138648623443877}
 --- !u!114 &3989753504083344194
@@ -691,7 +691,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
   ShowTopMostFoldoutHeaderGroup: 1
-  playerInput: {fileID: 80966736933153627}
-  camera: {fileID: 1687163605325812831}
+  playerCam: {fileID: 5781543604421647710}
   sensitivity: 0.2
   maxPitch: 85
+--- !u!114 &4496925725958259524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8285020329240790749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acbf924a375e1a84b9c3e104b7c4e69a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdPoint: {fileID: 4452952027163482679}
+  cameraTransform: {fileID: 5781543604421647710}
+  interactRange: 3
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  springForce: 15
+  damping: 5
+  throwForce: 3
