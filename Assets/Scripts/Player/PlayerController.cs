@@ -21,7 +21,6 @@ public class PlayerController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
-        //Subscripción a eventos de acciones
         playerInput.OnJumpPressed += Jump;
     }
     void Update()

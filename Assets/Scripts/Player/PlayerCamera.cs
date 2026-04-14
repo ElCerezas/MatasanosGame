@@ -17,6 +17,7 @@ public class PlayerCamera : NetworkBehaviour
         if (!IsOwner)
         {
             camera.GetComponent<Camera>().enabled = false;
+            camera.GetComponent<AudioListener>().enabled = false;
             return;
         }
         Cursor.lockState = CursorLockMode.Locked;
