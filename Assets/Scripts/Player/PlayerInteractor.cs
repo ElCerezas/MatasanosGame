@@ -4,23 +4,22 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInteractor : NetworkBehaviour
 {
-
     PlayerInput playerInput;
     [SerializeField] Transform holdPoint;
     [SerializeField] Transform cameraTransform;
 
     [Header("Interaction Settings")]
     [SerializeField] float interactRange = 3f;
+    public float breakDistance = 4f; //Se declara aqui
+    public float springForce = 50f; //Se declara aqui
+
+    public static float testVar = 10f;
+
     [SerializeField] LayerMask interactLayer;
 
-    [Header("Physics Grab Settings")]
-    [SerializeField] float springForce = 15f;
-    [SerializeField] float damping = 5f;
-    [SerializeField] float throwForce = 15f;
+    PhysicalItem currentlyGrabbedItem;
 
-    IGrabbable currentGrabbedItem;
-    Rigidbody grabbedRb;
-    private void Awake()
+    void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
     }
@@ -30,43 +29,58 @@ public class PlayerInteractor : NetworkBehaviour
         playerInput.OnInteractPressed += TryInteract;
         playerInput.OnPickUpPressed += TryGrabOrThrow;
     }
-    private void FixedUpdate()
+    public override void OnNetworkDespawn()
     {
-        if (!IsOwner || currentGrabbedItem == null || grabbedRb == null) return;
-
-        //Llei de hook tete => ForçaFinal = springForce * direction
-        Vector3 directionToTarget = holdPoint.position - grabbedRb.position;
-        float distance = directionToTarget.magnitude;
-
-        Vector3 springVelocity = directionToTarget * springForce;
-        grabbedRb.linearVelocity = Vector3.Lerp(grabbedRb.linearVelocity, springVelocity, Time.fixedDeltaTime * damping);
-        grabbedRb.rotation = Quaternion.Slerp(grabbedRb.rotation, holdPoint.rotation, Time.fixedDeltaTime * 10f);
+        if (!IsOwner) return;
+        playerInput.OnInteractPressed -= TryInteract;
+        playerInput.OnPickUpPressed -= TryGrabOrThrow;
     }
     void TryGrabOrThrow()
     {
-        if (currentGrabbedItem != null)
+        
+        if (currentlyGrabbedItem != null)
         {
-            //Tirar obj
-            currentGrabbedItem = null;
-            grabbedRb = null;
+            ReleaseObjectServerRpc(currentlyGrabbedItem.NetworkObjectId);
+            currentlyGrabbedItem = null;
         }
         else
         {
             Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
             {
-                if (hit.collider.TryGetComponent(out IGrabbable grabbable))
+                if (hit.collider.TryGetComponent(out PhysicalItem grabbable))
                 {
-                    if (hit.collider.TryGetComponent(out NetworkObject netObj))
-                    {
-                        //Agafar obj
-                    }
+                    currentlyGrabbedItem = grabbable;
+                    GrabObjectServerRpc(grabbable.NetworkObjectId);
                 }
             }
         }
     }
+
     void TryInteract()
     {
-
+        //TO DO - Metodo para que "apriete un boton"
     }
+    #region ServerCom
+    [ServerRpc] void GrabObjectServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
+    {
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
+        {
+            if (netObj.TryGetComponent(out PhysicalItem grabbable))
+            {
+                grabbable.AddGrabber(rpcParams.Receive.SenderClientId, holdPoint);
+            }
+        }
+    }
+    [ServerRpc] void ReleaseObjectServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
+    {
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
+        {
+            if (netObj.TryGetComponent(out PhysicalItem grabbable))
+            {
+                grabbable.RemoveGrabber(rpcParams.Receive.SenderClientId);
+            }
+        }
+    }
+    #endregion
 }
