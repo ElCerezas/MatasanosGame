@@ -9,20 +9,16 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     Rigidbody rb;
     public Transform holdPoint;
 
-    [SerializeField] float dampening = 5f;
-
-    public float springForce = 5f; //NO se declara aqui
-    public float breakDistance = 6f; //NO se declara aqui
+    float springForce = 50f;
+    float breakDistance = 5f;
+     
     Dictionary<ulong, Transform> grabbers = new Dictionary<ulong, Transform>();
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
-    private void Start()
-    {
-        springForce = PlayerInteractor.testVar;
-    }
+
     private void FixedUpdate()
     {
         if (!IsServer || grabbers.Count == 0) return;
@@ -60,8 +56,8 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
 
         if (grabbers.Count > 0)
         {
-            Vector3 dampingForce = -rb.linearVelocity * dampening;
-            netForce += dampingForce;
+            //Vector3 dampingForce = -rb.linearVelocity * dampening;
+            //netForce += dampingForce;
 
             rb.AddForce(netForce, ForceMode.Acceleration);
         }

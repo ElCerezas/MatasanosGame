@@ -10,11 +10,6 @@ public class PlayerInteractor : NetworkBehaviour
 
     [Header("Interaction Settings")]
     [SerializeField] float interactRange = 3f;
-    public float breakDistance = 4f; //Se declara aqui
-    public float springForce = 50f; //Se declara aqui
-
-    public static float testVar = 10f;
-
     [SerializeField] LayerMask interactLayer;
 
     PhysicalItem currentlyGrabbedItem;
