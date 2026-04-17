@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-using Unity.Netcode;
+﻿using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : NetworkBehaviour
 {
     PlayerInput playerInput;
+    Vector2 currentInput;
     [SerializeField] float speed = 5f;
     [SerializeField] float jumpForce = 1.5f;
     [SerializeField] Transform cameraTransform;
@@ -28,35 +30,45 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         if(!IsOwner) return;
+        isGrounded = IsGrounded();
+        currentInput = playerInput.MovementInput;
+    }
+    void FixedUpdate()
+    {
+        if (!IsOwner) return;
         Move();
     }
     void Move()
     {
-        isGrounded = IsGrounded();
-        if (isGrounded && velocity.y < 0) velocity.y = 0f; 
+        Vector3 foward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+        foward.y = 0f;
+        right.y = 0f;
+        foward.Normalize();
+        right.Normalize();
 
-        Vector2 input = playerInput.MovementInput;
-        Vector3 move = cameraTransform.right * input.x + cameraTransform.forward * input.y;
+        Vector3 moveDir = (foward * currentInput.y + right * currentInput.x).normalized;
 
-        move.Normalize();
-        move.y = 0f;
-        rigidBody.MovePosition(transform.position + (move * speed * Time.deltaTime));
+        Vector3 currentVelocity = rigidBody.linearVelocity;
+        Vector3 targetHorizontalVelocity = moveDir * speed;
+
+        rigidBody.linearVelocity = new Vector3(targetHorizontalVelocity.x, currentVelocity.y, targetHorizontalVelocity.z);
+
+        if (currentInput == Vector2.zero)
+        {
+            rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
+        }
     }
     void Jump()
     {
         if (!isGrounded) return;
 
-        rigidBody.AddForce(0,jumpForce,0, ForceMode.Impulse);
+        rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     bool IsGrounded()
     {
-        bool grounded;
-
-        if(Physics.Raycast(playerFeet.position,Vector3.down, 0.1f)) grounded = true;
-        else grounded = false;
-
-        return grounded;
+        return Physics.Raycast(playerFeet.position, Vector3.down, 0.2f);
     }
 
 

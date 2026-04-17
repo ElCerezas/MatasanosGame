@@ -11,7 +11,8 @@ public class PlayerCamera : NetworkBehaviour
     [SerializeField] float sensitivity = 2f;
     [SerializeField] float maxPitch = 80f;
 
-    private float pitchRotation = 0f;
+    float pitchRotation = 0f;
+    float yawRotation = 0f;
 
     private void Awake()
     {
@@ -21,31 +22,31 @@ public class PlayerCamera : NetworkBehaviour
     {
         if (!IsOwner) { 
             playerCam.GetComponentInChildren<Camera>().enabled = false;
-            //playerCam.GetComponent<AudioListener>().enabled = false;
             return;
         }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        yawRotation = transform.eulerAngles.y;
     }
 
     void Update()
     {
         if (!IsOwner) return;
-        Look();
+        Vector2 lookInput = playerInput.LookInput * sensitivity;
+
+        yawRotation += lookInput.x;
+        pitchRotation -= lookInput.y;
+
+        pitchRotation = Mathf.Clamp(pitchRotation, -maxPitch, maxPitch);
     }
 
-    private void Look()
+    private void LateUpdate()
     {
-        Vector2 lookInput = playerInput.LookInput * sensitivity;
-        float mouseX = lookInput.x;
-        float mouseY = lookInput.y;
+        if (!IsOwner) return;
 
-        //Vertical
-        pitchRotation -= mouseY;
-        pitchRotation = Mathf.Clamp(pitchRotation, -maxPitch, maxPitch);
+        // Rotacio vertical
         playerCam.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
-
-        //Horitzontal
-        gameObject.transform.Rotate(Vector3.up * mouseX);
+        // Rotacio horitontal
+        transform.rotation = Quaternion.Euler(0f, yawRotation, 0f);
     }
 }

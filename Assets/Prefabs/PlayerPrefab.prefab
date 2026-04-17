@@ -550,7 +550,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 7
-  jumpForce: 5
+  jumpForce: 500
   cameraTransform: {fileID: 5781543604421647710}
   playerFeet: {fileID: 6310138648623443877}
 --- !u!114 &3989753504083344194
