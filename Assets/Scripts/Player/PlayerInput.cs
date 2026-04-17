@@ -11,6 +11,9 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] InputActionReference pickReference;
     [SerializeField] InputActionReference jumpReference;
     [SerializeField] InputActionReference lookReference;
+
+    [SerializeField] InputActionReference TestSlipReference;
+
     //Chorrada per testear
     public Vector2 LookInput { get; private set; }
     public Vector2 MovementInput { get; private set; }
@@ -21,6 +24,8 @@ public class PlayerInput : NetworkBehaviour
     public event Action OnJumpPressed;
     public event Action OnPickUpPressed;
     public event Action OnInteractPressed;
+
+    public event Action OnSlipPressed;
 
     void OnEnable()
     {
@@ -34,9 +39,13 @@ public class PlayerInput : NetworkBehaviour
         pickReference.action.performed += OnPickUp;
         pickReference.action.Enable();
 
-        //Pick event
+        //Interact event
         interactReference.action.performed += OnInteract;
         interactReference.action.Enable();
+
+        //TEST SLip
+        TestSlipReference.action.performed += OnSlip;
+        TestSlipReference.action.Enable();
     }
     void OnDisable()
     {
@@ -78,5 +87,10 @@ public class PlayerInput : NetworkBehaviour
     {
         if (!IsOwner) return;
         OnInteractPressed?.Invoke();
+    }
+    void OnSlip(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+        OnSlipPressed?.Invoke();
     }
 }

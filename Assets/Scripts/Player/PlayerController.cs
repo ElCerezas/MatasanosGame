@@ -16,6 +16,7 @@ public class PlayerController : NetworkBehaviour
     Rigidbody rigidBody;
     Vector3 velocity;
     bool isGrounded;
+    bool isRagdoll = false;
 
     private void Awake()
     {
@@ -27,6 +28,12 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
         playerInput.OnJumpPressed += Jump;
     }
+
+    public void Ragdoll(bool active)
+    {
+        isRagdoll = active;
+    }
+
     void Update()
     {
         if(!IsOwner) return;
@@ -40,6 +47,7 @@ public class PlayerController : NetworkBehaviour
     }
     void Move()
     {
+        if (isRagdoll) return;
         Vector3 foward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         foward.y = 0f;
@@ -61,6 +69,7 @@ public class PlayerController : NetworkBehaviour
     }
     void Jump()
     {
+        if (isRagdoll) return;
         if (!isGrounded) return;
 
         rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
