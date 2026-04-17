@@ -9,7 +9,8 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     Rigidbody rb;
     public Transform holdPoint;
 
-    float springForce = 50f;
+    float damping = 5f; //Amortiguació
+    float springForce = 100f; //Força de braç
     float breakDistance = 5f;
      
     Dictionary<ulong, Transform> grabbers = new Dictionary<ulong, Transform>();
@@ -26,27 +27,20 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
         Vector3 netForce = Vector3.zero; 
         List<ulong> brokenGrabs = new List<ulong>();
 
-        foreach (var kvp in grabbers) //Calculo de todos los "muelles" que se suman a netForce
+        foreach (var kvp in grabbers)
         {
-            Transform holdPoint = kvp.Value;
-            if (holdPoint == null)
-            {
+            if(kvp.Value == null) continue;
+            Transform hPoint = kvp.Value;
+            if (hPoint == null) 
                 brokenGrabs.Add(kvp.Key);
-                continue;
-            }
 
-            Vector3 directionToTarget = holdPoint.position - rb.position;
+            Vector3 directionToTarget = hPoint.position - rb.position;
             float distance = directionToTarget.magnitude;
-            if (distance > breakDistance)
-            {
+            if (distance > breakDistance) 
                 brokenGrabs.Add(kvp.Key);
-                continue;
-            }
 
             //Llei de hook tete => ForçaFinal = springForce * direction
-            Vector3 fResult = directionToTarget * this.springForce;
-
-            //fTotal = Suma(forcesResultat)
+            Vector3 fResult = directionToTarget * springForce;
             netForce += fResult;
         }
         foreach (ulong clientId in brokenGrabs)
@@ -56,10 +50,8 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
 
         if (grabbers.Count > 0)
         {
-            //Vector3 dampingForce = -rb.linearVelocity * dampening;
-            //netForce += dampingForce;
-
-            rb.AddForce(netForce, ForceMode.Acceleration);
+            netForce += -rb.linearVelocity * damping; //Amortiguacio per evitar pilota orbitant
+            rb.AddForce(netForce, ForceMode.Force);
         }
     }
     public void AddGrabber(ulong clientId, Transform holdPoint)

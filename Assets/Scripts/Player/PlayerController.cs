@@ -38,8 +38,9 @@ public class PlayerController : NetworkBehaviour
         Vector2 input = playerInput.MovementInput;
         Vector3 move = cameraTransform.right * input.x + cameraTransform.forward * input.y;
 
-         move.y = 0f;
-        rigidBody.MovePosition(transform.position+move*speed*Time.deltaTime);
+        move.Normalize();
+        move.y = 0f;
+        rigidBody.MovePosition(transform.position + (move * speed * Time.deltaTime));
     }
     void Jump()
     {
