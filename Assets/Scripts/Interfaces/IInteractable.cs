@@ -2,5 +2,6 @@
 
 public interface IInteractable
 {
-    public void Interact(GameObject Interactor) { }
+    virtual public void Interact(ulong clientID) { }
+    virtual ulong GetNetworkObjectID() { return 0; }
 }

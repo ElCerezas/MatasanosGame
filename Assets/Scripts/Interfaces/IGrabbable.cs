@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 public interface IGrabbable
 {
-    void AddGrabber(ulong clientId, Transform holdPoint) { }
-    void RemoveGrabber(ulong clientId) { }
+    virtual void AddGrabber(ulong clientId, Transform holdPoint) { }
+    virtual void RemoveGrabber(ulong clientId) { }
+
+    virtual ulong GetNetworkObjectID() { return 0; }
 }

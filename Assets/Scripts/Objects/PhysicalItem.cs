@@ -69,5 +69,9 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             grabbers.Remove(clientId);
         }
     }
+    public ulong GetNetworkObjectID()
+    {
+        return NetworkObjectId;
+    }
 
 }
