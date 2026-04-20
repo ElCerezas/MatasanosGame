@@ -8,7 +8,7 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
 {
     Rigidbody rb;
     public Transform holdPoint;
-
+    [SerializeField] private bool isTool = false;
     float damping = 5f; //Amortiguació
     float springForce = 100f; //Força de braç
     float breakDistance = 5f;
@@ -42,6 +42,22 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             //Llei de hook tete => ForçaFinal = springForce * direction
             Vector3 fResult = directionToTarget * springForce;
             netForce += fResult;
+
+            // Si es tool, alinear rotación al forward horizontal del holdPoint
+            if (isTool)
+            {
+                Vector3 forward = hPoint.forward;
+                forward.y = 0f;
+                if (forward != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(forward);
+                    rb.MoveRotation(Quaternion.Slerp(
+                        rb.rotation,
+                        targetRotation,
+                        Time.fixedDeltaTime * 15f
+                    ));
+                }
+            }
         }
         foreach (ulong clientId in brokenGrabs)
         {
@@ -61,6 +77,8 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             grabbers.Add(clientId, holdPoint);
             rb.isKinematic = false;
         }
+        if (isTool)
+            NotifyHoldingToolClientRpc(true, clientId);
     }
     public void RemoveGrabber(ulong clientId)
     {
@@ -68,6 +86,19 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
         {
             grabbers.Remove(clientId);
         }
+        if (isTool)
+            NotifyHoldingToolClientRpc(false, clientId);
+    }
+
+    // Notifica solo al cliente
+    [ClientRpc]
+    private void NotifyHoldingToolClientRpc(bool holding, ulong targetClientId)
+    {
+        if (NetworkManager.Singleton.LocalClientId != targetClientId) return;
+
+        PlayerCamera cam = FindFirstObjectByType<PlayerCamera>();
+        if (cam != null && cam.IsOwner)
+            cam.SetHoldingTool(holding);
     }
     public ulong GetNetworkObjectID()
     {
