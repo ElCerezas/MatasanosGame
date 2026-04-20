@@ -23,6 +23,18 @@ package "Interfaces" {
         +Unsnap()
     }
 }
+package "Events" {
+    static class EventBus <<Static>> {
+        +Subscribe<T>(Action<T> listener)
+        +Unsubscribe<T>(Action<T> listener)
+        +Publish<T>(T eventItem)
+    }
+    
+    struct OnInject <<IEvent>> {
+        +ulong VictimID
+        +InyeccionType Type
+    }
+}
 package "Core Player" {
     class PlayerInput NETWORK_BEHAVIOUR {
       +Vector2 MovementInput
@@ -56,15 +68,27 @@ package "Core Player" {
       -EnterRagdoll(float ragdollTime)
       -RecoverJump()
       -ExitRagdoll()
+      -OnPlayerInjected(OnInject data)
     }
 }
 package "Items & Physics" {
+    package "Inyecciones" {
+      class InyecionItem {
+        -InyeccionType inyeccionType
+        +Inject(Gameobject victim)
+      }
+      class InyeccionCollider {
+        -InyeccionItem inyeccionItem
+        -OnTriggerEnter(Collider other)
+      }
+    }
     class PhysicalItem NETWORK_BEHAVIOUR {
       -Rigidbody rb
       -Dictionary<ulong, Transform> grabbers
       -FixedUpdate() : Hookes Law
       +AddGrabber(ulong clientId, Transform holdPoint)
       +RemoveGrabber(ulong clientId)
+      -NotifyHoldingToolClientRpc(bool holding, ulong targetClientId)
     }
     class SnappableItem NETWORK_BEHAVIOUR {
         +SnapType itemType
@@ -119,4 +143,10 @@ PlayerInteractor ---> IGrabbable
 PlayerInteractor ---> IInteractable
 PlayerInteractor ---> IUsable
 
+' InyeccionItem publica el evento a través del EventBus
+InyecionItem ..> EventBus : "Publish<OnInject>"
+InyecionItem ..> OnInject : "creates"
+
+AlienStateManager ..> EventBus : "Subscribes to OnInject"
+PlayerInteractor ..> EventBus : "Subscribes to OnInject"
 @enduml
