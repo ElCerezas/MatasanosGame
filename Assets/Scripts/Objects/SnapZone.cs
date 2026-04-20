@@ -11,19 +11,23 @@ public class SnapZone : NetworkBehaviour
     public UnityEvent OnObjectUnsnapped;
     public SnappableItem currentItem { get; private set; }
 
+    float cooldown = 5f;
+    float lastSnapTime;
+    private void Awake()
+    {
+        lastSnapTime = Time.time;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(0);
         if (!IsServer) return;
-        Debug.Log(1);
+        Debug.Log(Time.time - lastSnapTime);
+        if (Time.time - lastSnapTime < cooldown) return;
         if (currentItem != null) return;
-        Debug.Log(2);
         if (other.TryGetComponent(out SnappableItem snappable))
         {
-            Debug.Log(3);
             if (snappable.itemType == acceptedType && !snappable.isSnapped)
             {
-                Debug.Log(4);
                 currentItem = snappable;
                 currentItem.SnapTo(this);
 
@@ -36,6 +40,7 @@ public class SnapZone : NetworkBehaviour
         Debug.Log("released");
         if (currentItem != null)
         {
+            lastSnapTime = Time.time;
             currentItem.Unsnap();
             currentItem = null;
             OnObjectUnsnapped?.Invoke();
