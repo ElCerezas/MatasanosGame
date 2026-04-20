@@ -19,6 +19,8 @@ package "Interfaces" {
       +ulong GetNetworkObjectID()
     }
     interface ISnappable INTERFACE {
+        -bool isSnapped
+        -SnapZone currentZone
         +SnapTo(SnapZone zone)
         +Unsnap()
     }
@@ -100,6 +102,7 @@ package "Items & Physics" {
       +UnityEvent onInteract
       +Interact(ulong clientID)
     }
+    enum SnapType {}
 }
 
 package "Snap & Power" {
@@ -135,6 +138,7 @@ PlayerStateManager -left-> PlayerInteractor
 PhysicalItem .up.|> IGrabbable
 InteractableItem .up.|> IInteractable
 SnappableItem .up.|> ISnappable
+SnappableItem <|-- SnapType
 
 SnappableItem -right-> PhysicalItem
 SnapZone o-- ISnappable

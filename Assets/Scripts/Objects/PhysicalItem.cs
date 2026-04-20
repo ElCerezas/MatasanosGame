@@ -73,8 +73,16 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     {
         if (!grabbers.ContainsKey(clientId))
         {
+            if (TryGetComponent(out SnappableItem snappable))
+            {
+                if (snappable.isSnapped && snappable.currentZone != null)
+                {
+                    Debug.Log("Release");
+                    snappable.currentZone.ReleaseItem();
+                    rb.isKinematic = false;
+                }
+            }
             grabbers.Add(clientId, holdPoint);
-            rb.isKinematic = false;
         }
         if (isTool)
             NotifyHoldingToolClientRpc(true, clientId);
