@@ -12,7 +12,7 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     float damping = 5f; //Amortiguació
     float springForce = 100f; //Força de braç
     float breakDistance = 5f;
-     
+
     Dictionary<ulong, Transform> grabbers = new Dictionary<ulong, Transform>();
 
     void Awake()
@@ -24,19 +24,19 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     {
         if (!IsServer || grabbers.Count == 0) return;
 
-        Vector3 netForce = Vector3.zero; 
+        Vector3 netForce = Vector3.zero;
         List<ulong> brokenGrabs = new List<ulong>();
 
         foreach (var kvp in grabbers)
         {
-            if(kvp.Value == null) continue;
+            if (kvp.Value == null) continue;
             Transform hPoint = kvp.Value;
-            if (hPoint == null) 
+            if (hPoint == null)
                 brokenGrabs.Add(kvp.Key);
 
             Vector3 directionToTarget = hPoint.position - rb.position;
             float distance = directionToTarget.magnitude;
-            if (distance > breakDistance) 
+            if (distance > breakDistance)
                 brokenGrabs.Add(kvp.Key);
 
             //Llei de hook tete => ForçaFinal = springForce * direction
@@ -46,17 +46,16 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             // Si es tool, alinear rotación al forward horizontal del holdPoint
             if (isTool)
             {
+                rb.MovePosition(hPoint.position);
+
                 Vector3 forward = hPoint.forward;
                 forward.y = 0f;
                 if (forward != Vector3.zero)
                 {
                     Quaternion targetRotation = Quaternion.LookRotation(forward);
-                    rb.MoveRotation(Quaternion.Slerp(
-                        rb.rotation,
-                        targetRotation,
-                        Time.fixedDeltaTime * 15f
-                    ));
+                    rb.MoveRotation(targetRotation);
                 }
+                continue; // Saltar el cálculo de fuerzas
             }
         }
         foreach (ulong clientId in brokenGrabs)

@@ -35,4 +35,18 @@ public class AlienStateManager : NetworkBehaviour
             currentHealth = maxHealth;
         }
     }
+
+    public void ApplyInyeccion(InyeccionType type)
+    {
+        Debug.Log($"Applying inyeccion of type {type} to alien");
+        switch (type)
+        {
+            case InyeccionType.Calmante:
+                //ChangeState(new CalmState(this, calmantDuration));
+                break;
+            case InyeccionType.Estimulante:
+                
+                break;
+        }
+    }
 }
