@@ -89,15 +89,20 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             NotifyHoldingToolClientRpc(false, clientId);
     }
 
-    // Notifica solo al cliente
     [ClientRpc]
     private void NotifyHoldingToolClientRpc(bool holding, ulong targetClientId)
     {
         if (NetworkManager.Singleton.LocalClientId != targetClientId) return;
 
-        PlayerCamera cam = FindFirstObjectByType<PlayerCamera>();
-        if (cam != null && cam.IsOwner)
-            cam.SetHoldingTool(holding);
+        var localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
+        if (localPlayer != null)
+        {
+            PlayerCamera cam = localPlayer.GetComponentInChildren<PlayerCamera>();
+            if (cam != null)
+            {
+                cam.SetHoldingTool(holding);
+            }
+        }
     }
     public ulong GetNetworkObjectID()
     {

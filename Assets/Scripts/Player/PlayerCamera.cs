@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Unity.Netcode;
+
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerCamera : NetworkBehaviour
 {
@@ -13,11 +14,15 @@ public class PlayerCamera : NetworkBehaviour
     float pitchRotation = 0f;
     float yawRotation = 0f;
     float currentMinPitch;
+    float defaultMaxPitch;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         currentMinPitch = minPitch;
+        defaultMaxPitch = maxPitch;
     }
+
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) { 
@@ -28,11 +33,13 @@ public class PlayerCamera : NetworkBehaviour
         Cursor.visible = false;
         yawRotation = transform.eulerAngles.y;
     }
+
     public void SetHoldingTool(bool holding)
     {
-        maxPitch = holding ? maxPitchWhileHoldingTool : 80f;
-        pitchRotation = Mathf.Clamp(pitchRotation, minPitch, maxPitch);
+        maxPitch = holding ? maxPitchWhileHoldingTool : defaultMaxPitch;
+        pitchRotation = Mathf.Clamp(pitchRotation, currentMinPitch, maxPitch);
     }
+
     void Update()
     {
         if (!IsOwner) return;
@@ -41,12 +48,11 @@ public class PlayerCamera : NetworkBehaviour
         pitchRotation -= lookInput.y;
         pitchRotation = Mathf.Clamp(pitchRotation, currentMinPitch, maxPitch);
     }
+
     private void LateUpdate()
     {
         if (!IsOwner) return;
-        // Rotacio vertical
         playerCam.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
-        // Rotacio horitontal
         transform.rotation = Quaternion.Euler(0f, yawRotation, 0f);
     }
 }
