@@ -13,14 +13,9 @@ package "Interfaces" {
       +RemoveGrabber(ulong clientId)
       +ulong GetNetworkObjectID()
     }
-    interface IUsable INTERFACE {
-      +UseStart(ulong clientId)
-      +UseStop(ulong clientId)
-      +ulong GetNetworkObjectID()
-    }
     interface ISnappable INTERFACE {
-        -bool isSnapped
-        -SnapZone currentZone
+        +bool isSnapped
+        +SnapZone currentZone
         +SnapTo(SnapZone zone)
         +Unsnap()
     }
@@ -86,35 +81,69 @@ package "Items & Physics" {
     }
     class PhysicalItem NETWORK_BEHAVIOUR {
       -Rigidbody rb
+      +Transform holdPoint
+      -bool isTool
+      -float damping
+      -float springForce
+      -float breakDistance
       -Dictionary<ulong, Transform> grabbers
+      -Awake()
       -FixedUpdate() : Hookes Law
       +AddGrabber(ulong clientId, Transform holdPoint)
       +RemoveGrabber(ulong clientId)
       -NotifyHoldingToolClientRpc(bool holding, ulong targetClientId)
+      +ulong GetNetworkObjectID()
     }
     class SnappableItem NETWORK_BEHAVIOUR {
         +SnapType itemType
-        -PhysicalItem physics
+        +bool isSnapped
+        +SnapZone currentZone
+        -Rigidbody rb
+        -PhysicalItem physicalItem
+        -Awake()
         +SnapTo(SnapZone zone)
         +Unsnap()
     }
     class InteractableItem NETWORK_BEHAVIOUR {
       +UnityEvent onInteract
       +Interact(ulong clientID)
+      +ulong GetNetworkObjectID()
     }
-    enum SnapType {}
+    enum SnapType {
+        Enchufe
+        Bateria
+        Diente
+        Venda
+        Jeringuilla
+    }
 }
 
 package "Snap & Power" {
     class SnapZone NETWORK_BEHAVIOUR {
         +SnapType acceptedType
         +Transform snapAnchor
-        -ISnappable currentItem
-        +OnTriggerEnter(Collider other)
+        +UnityEvent OnObjectSnapped
+        +UnityEvent OnObjectUnsnapped
+        +SnappableItem currentItem
+        -float cooldown
+        -float lastSnapTime
+        -Awake()
+        -OnTriggerEnter(Collider other)
+        +ReleaseItem()
     }
-    class PowerReceiver MONO_BEHAVIOUR {
-        +bool isPowered
-        +OnPowerStatusChanged
+    class EnergyProvider NETWORK_BEHAVIOUR {
+        -Start()
+        -OnTriggerEnter(Collider other)
+        -OnTriggerExit(Collider other)
+    }
+    class PowerableItem NETWORK_BEHAVIOUR {
+        -bool powered
+        +UnityEvent OnPowered
+        +UnityEvent OnUnplugged
+        +UnityEvent Power
+        +EnablePower()
+        +DisablePower()
+        +Update()
     }
 }
 
@@ -141,11 +170,11 @@ SnappableItem .up.|> ISnappable
 SnappableItem <|-- SnapType
 
 SnappableItem -right-> PhysicalItem
-SnapZone o-- ISnappable
+SnapZone o-- SnappableItem
+EnergyProvider ..> PowerableItem : triggers
 
 PlayerInteractor ---> IGrabbable
 PlayerInteractor ---> IInteractable
-PlayerInteractor ---> IUsable
 
 ' InyeccionItem publica el evento a través del EventBus
 InyecionItem ..> EventBus : "Publish<OnInject>"
