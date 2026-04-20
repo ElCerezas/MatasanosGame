@@ -9,6 +9,7 @@ using System.Collections.Generic;
 public class GameManager : NetworkBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
+    bool isCursorLocked = true;
 
     public override void OnNetworkSpawn()
     {
@@ -45,7 +46,7 @@ public class GameManager : NetworkBehaviour
         }
         base.OnNetworkDespawn();
     }
-    
+
     public void DisconnectClient()
     {
         NetworkManager.Shutdown();
@@ -60,5 +61,24 @@ public class GameManager : NetworkBehaviour
     {
         NetworkManager.StartHost();
         Debug.Log("Player Hosting");
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (isCursorLocked)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                isCursorLocked = false;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                isCursorLocked = true;
+            }
+        }
     }
 }
