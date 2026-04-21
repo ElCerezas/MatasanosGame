@@ -13,22 +13,18 @@ public class SnapZone : NetworkBehaviour
     public UnityEvent OnObjectSnapped;
     public UnityEvent OnObjectUnsnapped;
     public SnappableItem currentItem { get; private set; }
-
-    /*
-    public SnappableItem starterSnappedItem;
-    private void Start()
-    {
-        if(starterSnappedItem != null)
-        {
-            currentItem = starterSnappedItem;
-            currentItem.SnapTo(this);
-
-            OnObjectSnapped?.Invoke();
-        }
-    }*/
-
     float cooldown = 5f;
     float lastSnapTime;
+
+
+    private void Start()
+    {
+        if (!IsServer ||currentItem == null) return;
+        
+        currentItem.SnapTo(this);
+        OnObjectSnapped?.Invoke();
+    }
+
     private void Awake()
     {
         lastSnapTime = Time.time;
@@ -52,7 +48,6 @@ public class SnapZone : NetworkBehaviour
     }
     public void ReleaseItem()
     {
-        Debug.Log("released");
         if (currentItem != null)
         {
             lastSnapTime = Time.time;
@@ -61,7 +56,4 @@ public class SnapZone : NetworkBehaviour
             OnObjectUnsnapped?.Invoke();
         }
     }
-
-
-    
 }

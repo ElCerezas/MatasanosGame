@@ -9,12 +9,20 @@ public class SnappableItem : NetworkBehaviour, ISnappable
     public bool isSnapped { get; private set; }
     public SnapZone currentZone { get; private set; }
 
-    private Rigidbody rb;
-    private PhysicalItem physicalItem;
+    Rigidbody rb;
+    Collider col;
+    PhysicalItem physicalItem;
     private void Awake()
     {
+        col = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         physicalItem = GetComponent<PhysicalItem>();
+    }
+    private void LateUpdate()
+    {
+        if (!IsServer || !isSnapped || currentZone == null) return;
+        transform.position = currentZone.snapAnchor.position;
+        transform.rotation = currentZone.snapAnchor.rotation;
     }
 
     public void SnapTo(SnapZone zone)
@@ -24,24 +32,17 @@ public class SnappableItem : NetworkBehaviour, ISnappable
         isSnapped = true;
         currentZone = zone;
 
+        Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), true);
         rb.isKinematic = true;
-
-        //if (zone.NetworkObject != null)
-        //    NetworkObject.TrySetParent(zone.NetworkObject, false);
-
-        transform.position = zone.snapAnchor.position;
-        transform.rotation = zone.snapAnchor.rotation;
-
-
     }
 
     public void Unsnap()
     {
         if (!IsServer || !isSnapped) return;
-        //NetworkObject.TryRemoveParent();
 
         isSnapped = false;
         currentZone.ReleaseItem();
+        Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), false);
         currentZone = null;
 
         rb.isKinematic = false;

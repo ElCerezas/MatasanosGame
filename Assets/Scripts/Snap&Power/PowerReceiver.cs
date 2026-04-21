@@ -16,7 +16,6 @@ public class PowerReceiver : NetworkBehaviour
     {
         if (!IsServer) return;
         if (wiredEmiters.Contains(emiter)) return;
-        Debug.Log("recivingPower: " + isPowered);
         hasPower.Value = isPowered;
         if (wiredEmiters.Length >= 0)
         {

@@ -44,7 +44,6 @@ public class PowerEmitter : NetworkBehaviour
     {
         if (!IsServer) return;
         hasPower.Value = emitting;
-        Debug.Log("Emiting: " + emitting);
         if (connectedReceiver != null)
         {
             connectedReceiver.SetPower(hasPower.Value, this);
