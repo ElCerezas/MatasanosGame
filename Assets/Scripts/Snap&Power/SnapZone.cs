@@ -1,7 +1,9 @@
 ﻿using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(NetworkTransform))]
 public class SnapZone : NetworkBehaviour
 {
     public SnapType acceptedType;
@@ -21,7 +23,6 @@ public class SnapZone : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!IsServer) return;
-        Debug.Log(Time.time - lastSnapTime);
         if (Time.time - lastSnapTime < cooldown) return;
         if (currentItem != null) return;
         if (other.TryGetComponent(out SnappableItem snappable))
