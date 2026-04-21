@@ -36,6 +36,7 @@ public class SnapZone : NetworkBehaviour
         if (currentItem != null) return;
         if (other.TryGetComponent(out SnappableItem snappable))
         {
+            if (!snappable.isSnappable) return;
             if (snappable.itemType == acceptedType && !snappable.isSnapped)
             {
                 currentItem = snappable;
@@ -47,6 +48,7 @@ public class SnapZone : NetworkBehaviour
     }
     public void ReleaseItem()
     {
+        if (!currentItem.isUnsnappable) return;
         if (currentItem != null)
         {
             lastSnapTime = Time.time;

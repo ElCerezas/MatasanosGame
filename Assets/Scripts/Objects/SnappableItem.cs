@@ -9,6 +9,8 @@ public class SnappableItem : NetworkBehaviour, ISnappable
     public bool isSnapped { get; private set; }
     public SnapZone currentZone { get; private set; }
 
+    public bool isSnappable = true;
+    public bool isUnsnappable = true;
     Rigidbody rb;
     Collider col;
     PhysicalItem physicalItem;
