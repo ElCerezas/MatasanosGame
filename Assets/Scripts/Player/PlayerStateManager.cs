@@ -11,6 +11,7 @@ public class PlayerStateManager : NetworkBehaviour
 {
     PlayerController controller;
     PlayerInteractor interactor;
+    PlayerCamera playerCamera;
     Rigidbody rb;
     [Header("Ragdoll Settings")]
     [SerializeField] float stunDuration = 0f;
@@ -23,6 +24,7 @@ public class PlayerStateManager : NetworkBehaviour
     {
         controller = GetComponent<PlayerController>();
         interactor = GetComponent<PlayerInteractor>();
+        playerCamera = GetComponent<PlayerCamera>();
         rb = GetComponent<Rigidbody>();
     }
     public override void OnNetworkSpawn()
@@ -66,6 +68,7 @@ public class PlayerStateManager : NetworkBehaviour
         stunDuration = ragdollTime;
         controller.Ragdoll(true);
         interactor.Ragdoll(true);
+        playerCamera.Ragdoll(true);
         rb.constraints = RigidbodyConstraints.None;
         rb.freezeRotation = false;
 
@@ -85,6 +88,7 @@ public class PlayerStateManager : NetworkBehaviour
     {
         controller.Ragdoll(false);
         interactor.Ragdoll(false);
+        playerCamera.Ragdoll(false);
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.freezeRotation = true;

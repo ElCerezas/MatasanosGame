@@ -16,6 +16,8 @@ public class PlayerCamera : NetworkBehaviour
     float currentMinPitch;
     float defaultMaxPitch;
 
+    bool isRagdoll = false;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -33,7 +35,10 @@ public class PlayerCamera : NetworkBehaviour
         Cursor.visible = false;
         yawRotation = transform.eulerAngles.y;
     }
-
+    public void Ragdoll(bool active)
+    {
+        isRagdoll = active;
+    }
     public void SetHoldingTool(bool holding)
     {
         maxPitch = holding ? maxPitchWhileHoldingTool : defaultMaxPitch;
@@ -53,6 +58,10 @@ public class PlayerCamera : NetworkBehaviour
     {
         if (!IsOwner) return;
         playerCam.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
-        transform.rotation = Quaternion.Euler(0f, yawRotation, 0f);
+        if (!isRagdoll)
+        {
+            transform.rotation = Quaternion.Euler(0f, yawRotation, 0f);
+        }
+        
     }
 }
