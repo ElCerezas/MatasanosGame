@@ -1,5 +1,6 @@
 ﻿using Unity.Netcode;
 using Unity.Netcode.Components;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,19 @@ public class SnapZone : NetworkBehaviour
     public UnityEvent OnObjectSnapped;
     public UnityEvent OnObjectUnsnapped;
     public SnappableItem currentItem { get; private set; }
+
+    /*
+    public SnappableItem starterSnappedItem;
+    private void Start()
+    {
+        if(starterSnappedItem != null)
+        {
+            currentItem = starterSnappedItem;
+            currentItem.SnapTo(this);
+
+            OnObjectSnapped?.Invoke();
+        }
+    }*/
 
     float cooldown = 5f;
     float lastSnapTime;
@@ -47,4 +61,7 @@ public class SnapZone : NetworkBehaviour
             OnObjectUnsnapped?.Invoke();
         }
     }
+
+
+    
 }

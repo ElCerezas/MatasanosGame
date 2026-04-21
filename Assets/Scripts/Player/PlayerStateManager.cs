@@ -15,8 +15,8 @@ public class PlayerStateManager : NetworkBehaviour
     Rigidbody rb;
     [Header("Ragdoll Settings")]
     [SerializeField] float stunDuration = 0f;
-    [SerializeField] float inbulnerableTime = 3f;
-    float inbulnerableCountdown;
+    [SerializeField] float invulnerableTime = 3f;
+    float invulnerableCountdown;
 
     [Header("Slip Variables")]
     [SerializeField] float slipForce = 10f;
@@ -57,13 +57,13 @@ public class PlayerStateManager : NetworkBehaviour
         if (stunDuration > 0f)
             stunDuration -= Time.deltaTime;
 
-        if (inbulnerableCountdown > 0f)
-            inbulnerableCountdown -= Time.deltaTime;
+        if (invulnerableCountdown > 0f)
+            invulnerableCountdown -= Time.deltaTime;
     }
-    void EnterRagdoll(float ragdollTime, bool overrideInbulnerability = false)
+    void EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
     {
-        if (!overrideInbulnerability)
-            if (inbulnerableCountdown > 0) return;
+        if (!overrideInvulnerability)
+            if (invulnerableCountdown > 0) return;
 
         stunDuration = ragdollTime;
         controller.Ragdoll(true);
@@ -78,7 +78,7 @@ public class PlayerStateManager : NetworkBehaviour
         if (stunDuration > 0f) return;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.freezeRotation = true;
-        inbulnerableCountdown = inbulnerableTime;
+        invulnerableCountdown = invulnerableTime;
 
         //Salto para recuperar stand
 
