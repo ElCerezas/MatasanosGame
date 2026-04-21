@@ -1,6 +1,5 @@
 ﻿using Unity.Netcode;
 using Unity.Netcode.Components;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,22 +11,22 @@ public class SnapZone : NetworkBehaviour
 
     public UnityEvent OnObjectSnapped;
     public UnityEvent OnObjectUnsnapped;
-    public SnappableItem currentItem { get; private set; }
+    public SnappableItem currentItem;
     float cooldown = 5f;
     float lastSnapTime;
 
 
-    private void Start()
-    {
-        if (!IsServer ||currentItem == null) return;
-        
-        currentItem.SnapTo(this);
-        OnObjectSnapped?.Invoke();
-    }
 
     private void Awake()
     {
         lastSnapTime = Time.time;
+    }
+    public override void OnNetworkSpawn()
+    {
+        if (!IsServer ||currentItem == null) return;
+        Debug.Log($"Start plug {gameObject.name} has pluged {currentItem.name}");
+        currentItem.SnapTo(this);
+        OnObjectSnapped?.Invoke();
     }
 
     private void OnTriggerEnter(Collider other)
