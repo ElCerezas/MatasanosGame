@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4069341215
+  GlobalObjectIdHash: 526547934
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -264,5 +264,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SnappableItem
   ShowTopMostFoldoutHeaderGroup: 1
   itemType: 2
-  allowPull: 0
-  allowSnap: 1
+  isSnappable: 1
+  isUnsnappable: 0
