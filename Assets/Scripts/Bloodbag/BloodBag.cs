@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,17 +8,21 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(100f);
     [SerializeField] private float bloodLossQuantity = 1f;
     [SerializeField] private float bloodLossRate = 1f;
+    [SerializeField] private TextMeshPro capacityText;
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
     private bool IsAttached = false;
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         if (IsServer)
         {
             bloodBagCurrentCapacity.Value = bloodBagMaxCapacity;
             isEmptySent = false;
         }
+        EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
+        
     }
 
     void Update()
@@ -36,7 +41,7 @@ public class BloodBag : NetworkBehaviour
             bloodLossTimer -= bloodLossRate; 
 
             bloodBagCurrentCapacity.Value -= bloodLossQuantity;
-
+            capacityText.text = bloodBagCurrentCapacity.Value.ToString();
             if (bloodBagCurrentCapacity.Value <= 0f)
             {
                 bloodBagCurrentCapacity.Value = 0f;
@@ -48,8 +53,9 @@ public class BloodBag : NetworkBehaviour
             }
         }
     }
-    public void OnAttach()
+    public void OnAttach(OnBloodBagSnapped e)
     {
+        if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
         IsAttached = true;
     }
     private void BloodBagEmpty()

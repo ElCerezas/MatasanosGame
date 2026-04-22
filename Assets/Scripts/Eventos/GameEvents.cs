@@ -33,3 +33,12 @@ public struct OnBloodBagEmpty : IEvent
 {
     public ulong BloodBagID;
 }
+public struct OnBloodBagSnapped : IEvent
+{
+    public ulong BloodBagID;
+}
+
+public struct OnBloodBagDetached : IEvent
+{
+    public ulong BloodBagID;
+}
