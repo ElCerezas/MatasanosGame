@@ -25,6 +25,6 @@ public class PowerReceiver : NetworkBehaviour
             }
         }
         if (toolToPower != null)
-            toolToPower.hasPower.Value = hasPower.Value;
+            toolToPower.SetPowered(hasPower.Value);
     }
 }
