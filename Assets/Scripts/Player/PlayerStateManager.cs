@@ -16,7 +16,9 @@ public class PlayerStateManager : NetworkBehaviour
     [Header("Ragdoll Settings")]
     [SerializeField] float stunDuration = 0f;
     [SerializeField] float invulnerableTime = 3f;
+    [SerializeField] float minimumForceToRagdoll;
     float invulnerableCountdown;
+    
 
     [Header("Slip Variables")]
     [SerializeField] float slipForce = 10f;
@@ -105,6 +107,17 @@ public class PlayerStateManager : NetworkBehaviour
             case InyeccionType.Estimulante:
 
                 break;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Vector3 relativeVelocity = collision.relativeVelocity;
+        Debug.Log(relativeVelocity.magnitude);
+        if (relativeVelocity.magnitude > minimumForceToRagdoll)
+        {
+            EnterRagdoll(3f);
+            rb.AddForce(relativeVelocity/2, ForceMode.Impulse);
         }
     }
 
