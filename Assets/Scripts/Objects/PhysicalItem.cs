@@ -13,7 +13,7 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     float springForce = 100f; //Força de braç
     float breakDistance = 5f;
 
-    Dictionary<ulong, Transform> grabbers = new Dictionary<ulong, Transform>();
+    public Dictionary<ulong, Transform> grabbers = new Dictionary<ulong, Transform>();
 
     void Awake()
     {

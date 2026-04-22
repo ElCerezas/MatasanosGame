@@ -10,6 +10,8 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private float bloodLossQuantity = 1f;
     [SerializeField] private float bloodLossRate = 1f;
     [SerializeField] private TextMeshPro capacityText;
+    [Header("Collision Explosion Settings")]
+    [SerializeField] private float velocityThreshold = 2f; // Velocidad mínima para que explote
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
     private bool IsAttached = false;
@@ -73,8 +75,19 @@ public class BloodBag : NetworkBehaviour
         EventBus.Publish(new OnBloodBagEmpty { BloodBagID = GetComponentInParent<NetworkObject>().NetworkObjectId });
     }
 
-    public bool Equals(TextMeshPro other)
+    void OnCollisionEnter(Collision collision)
     {
-        throw new NotImplementedException();
+        if (!IsServer) return;
+        if (collision.relativeVelocity.magnitude < velocityThreshold) return;
+
+        if (collision.gameObject.TryGetComponent(out NetworkObject netObject))
+        {
+            
+        }
     }
+
+    /*
+        HAY QUE IMPLEMENTAR QUE LAS TOOLS TENGAN UN SÓLO DUEÑO (HACER EL TUTO)
+        LANZA RAYCASTS EN CONO PARA DETECTAR EL SUELO Y SPAWNEA VARIOS CHARCOS EN POSICIONES VÁLIDAS
+    */
 }

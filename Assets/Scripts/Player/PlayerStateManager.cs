@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(PlayerInteractor))]
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerStateManager : NetworkBehaviour
+public class PlayerStateManager : NetworkBehaviour, IEffectable
 {
     PlayerController controller;
     PlayerInteractor interactor;
@@ -121,4 +121,13 @@ public class PlayerStateManager : NetworkBehaviour
         }
     }
 
+    public void ApplyEffect(string effectType, float duration)
+    {
+        switch (effectType)
+        {
+            case "Blood":
+                EnterRagdoll(duration);
+                break;
+        }
+    }
 }
