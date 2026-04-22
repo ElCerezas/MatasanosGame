@@ -4,5 +4,6 @@
     Bateria,
     Diente,
     Venda,
-    Jeringuilla
+    Jeringuilla,
+    Bloodbag
 }

@@ -12,7 +12,8 @@ public class StateMachine
 
     public void ChangeState(State _NewState)
     {
-        CurrentState.OnExit();
+        if (_NewState == null) return;
+        CurrentState?.OnExit();
         CurrentState = _NewState;
         CurrentState.OnEnter();
     }
