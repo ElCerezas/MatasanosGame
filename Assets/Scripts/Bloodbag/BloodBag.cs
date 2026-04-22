@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -22,7 +23,12 @@ public class BloodBag : NetworkBehaviour
             isEmptySent = false;
         }
         EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
-        
+        EventBus.Subscribe<OnBloodBagDetached>(OnDetach);
+
+        bloodBagCurrentCapacity.OnValueChanged += (oldVal, newVal) =>
+        {
+            capacityText.text = newVal.ToString();
+        };
     }
 
     void Update()
@@ -41,7 +47,6 @@ public class BloodBag : NetworkBehaviour
             bloodLossTimer -= bloodLossRate; 
 
             bloodBagCurrentCapacity.Value -= bloodLossQuantity;
-            capacityText.text = bloodBagCurrentCapacity.Value.ToString();
             if (bloodBagCurrentCapacity.Value <= 0f)
             {
                 bloodBagCurrentCapacity.Value = 0f;
@@ -58,8 +63,18 @@ public class BloodBag : NetworkBehaviour
         if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
         IsAttached = true;
     }
+    public void OnDetach(OnBloodBagDetached e)
+    {
+        if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
+        IsAttached = false;
+    }
     private void BloodBagEmpty()
     {
         EventBus.Publish(new OnBloodBagEmpty { BloodBagID = GetComponentInParent<NetworkObject>().NetworkObjectId });
+    }
+
+    public bool Equals(TextMeshPro other)
+    {
+        throw new NotImplementedException();
     }
 }

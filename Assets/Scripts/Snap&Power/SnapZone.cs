@@ -15,8 +15,6 @@ public class SnapZone : NetworkBehaviour
     float cooldown = 5f;
     float lastSnapTime;
 
-
-
     private void Awake()
     {
         lastSnapTime = Time.time;
@@ -57,12 +55,12 @@ public class SnapZone : NetworkBehaviour
         if (!currentItem.isUnsnappable) return;
         if (currentItem != null)
         {
-            lastSnapTime = Time.time;
-            currentItem.Unsnap();
             if (acceptedType == SnapType.Bloodbag)
             {
                 EventBus.Publish(new OnBloodBagDetached { BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId });
             }
+            lastSnapTime = Time.time;
+            currentItem.Unsnap();
             currentItem = null;
             OnObjectUnsnapped?.Invoke();
         }
