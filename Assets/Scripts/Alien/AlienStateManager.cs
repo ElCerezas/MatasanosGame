@@ -42,6 +42,7 @@ public class AlienStateManager : NetworkBehaviour
             });
         };
         EventBus.Subscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
+        EventBus.Subscribe<OnBloodBagSnapped>(OnBloodBagConnected);
     }
     public override void OnNetworkDespawn()
     {
@@ -173,18 +174,18 @@ public class AlienStateManager : NetworkBehaviour
                 break;
         }
     }
-    public void OnBloodBagConnected()
+    public void OnBloodBagConnected(OnBloodBagSnapped e)
     {
-        Debug.Log("BloodBag conectada al Alien");
+        bloodBagID = e.BloodBagID;
         isBloodbagFull = true;
     }
 
     private void OnBloodBagEmptyReceived(OnBloodBagEmpty e)
     {
-        if (e.BloodBagID != NetworkObjectId) return;
-
+        if (e.BloodBagID != bloodBagID) return;
         if (IsServer)
         {
+            isBloodbagFull = false;
             ChangeState(new CriticalState(this.stateMachine));
         }
     }

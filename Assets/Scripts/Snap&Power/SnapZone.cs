@@ -41,8 +41,14 @@ public class SnapZone : NetworkBehaviour
             {
                 currentItem = snappable;
                 currentItem.SnapTo(this);
-
-                OnObjectSnapped?.Invoke();
+                if (acceptedType == SnapType.Bloodbag)
+                {
+                    EventBus.Publish(new OnBloodBagSnapped { BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId });
+                }else
+                {
+                    OnObjectSnapped?.Invoke();
+                }
+                
             }
         }
     }
@@ -53,6 +59,10 @@ public class SnapZone : NetworkBehaviour
         {
             lastSnapTime = Time.time;
             currentItem.Unsnap();
+            if (acceptedType == SnapType.Bloodbag)
+            {
+                EventBus.Publish(new OnBloodBagDetached { BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId });
+            }
             currentItem = null;
             OnObjectUnsnapped?.Invoke();
         }
