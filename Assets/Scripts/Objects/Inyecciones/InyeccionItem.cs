@@ -13,13 +13,14 @@ public class InyeccionItem : NetworkBehaviour
     {
         if (victim.TryGetComponent<NetworkObject>(out var netObj))
         {
+            InyeccionType tipoAInyectar = inyeccionType;
             EventBus.Publish<OnInject>(new OnInject
             {
                 VictimID = netObj.NetworkObjectId,
-                Type = inyeccionType
+                Type = tipoAInyectar
             });
+            inyeccionType = InyeccionType.Empty;
         }
-        inyeccionType = InyeccionType.Empty;
     }
 
 }
