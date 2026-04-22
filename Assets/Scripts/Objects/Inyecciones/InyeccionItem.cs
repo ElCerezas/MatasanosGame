@@ -9,7 +9,6 @@ public class InyeccionItem : NetworkBehaviour
     [SerializeField] private InyeccionType inyeccionType;
     [SerializeField] private InyeccionCollider inyeccionCollider;
 
-
     public void Inject(GameObject victim)
     {
         if (victim.TryGetComponent<NetworkObject>(out var netObj))
@@ -20,6 +19,7 @@ public class InyeccionItem : NetworkBehaviour
                 Type = inyeccionType
             });
         }
+        inyeccionType = InyeccionType.Empty;
     }
 
 }
