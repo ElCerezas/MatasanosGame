@@ -16,6 +16,6 @@ public class InsectSpawner : NetworkBehaviour
 
     void SpawnInsects(OnAlienParasiteAttack e)
     {
-        
+        Instantiate(InsectPrefab, spawnTransform.position, spawnTransform.rotation);
     }
 }
