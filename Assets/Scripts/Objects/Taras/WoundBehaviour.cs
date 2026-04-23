@@ -17,6 +17,7 @@ public class WoundBehaviour : TaraBase
             healTimer += Time.deltaTime;
             if (healTimer >= healingTimeRequired)
             {
+                MarkAsHealed();
                 GetComponent<NetworkObject>().Despawn();
                 Destroy(gameObject);
             }

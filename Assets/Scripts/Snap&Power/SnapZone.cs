@@ -42,7 +42,8 @@ public class SnapZone : NetworkBehaviour
                 if (acceptedType == SnapType.Bloodbag)
                 {
                     EventBus.Publish(new OnBloodBagSnapped { BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId });
-                }else
+                }
+                else
                 {
                     OnObjectSnapped?.Invoke();
                 }
