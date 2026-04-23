@@ -19,7 +19,11 @@ package "Interfaces" {
         +SnapTo(SnapZone zone)
         +Unsnap()
     }
+    interface IEffectable INTERFACE {
+        +ApplyEffect(string effectName, float duration)
+    }
 }
+
 package "Events" {
     static class EventBus <<Static>> {
         +Subscribe<T>(Action<T> listener)
@@ -31,7 +35,21 @@ package "Events" {
         +ulong VictimID
         +InyeccionType Type
     }
+    struct OnAlienHealthChanged <<IEvent>> {
+        +float CurrentHealth
+        +float MaxHealth
+    }
+    struct OnAlienDeath <<IEvent>> {
+        +ulong AlienID
+    }
+    struct OnBloodBagSnapped <<IEvent>> {
+        +ulong BloodBagID
+    }
+    struct OnBloodBagDetached <<IEvent>> {
+        +ulong BloodBagID
+    }
 }
+
 package "Core Player" {
     class PlayerInput NETWORK_BEHAVIOUR {
       +Vector2 MovementInput
@@ -55,9 +73,6 @@ package "Core Player" {
       +Ragdoll(bool active)
       -TryGrabOrThrow()
       -TryInteract()
-      +InteractServerRpc()
-      +GrabObjectServerRpc()
-      +ReleaseObjectServerRpc()
     }
     class PlayerStateManager NETWORK_BEHAVIOUR {
       -float stunDuration
@@ -65,49 +80,42 @@ package "Core Player" {
       -EnterRagdoll(float ragdollTime)
       -RecoverJump()
       -ExitRagdoll()
-      -OnPlayerInjected(OnInject data)
+      +ApplyInyeccion(InyeccionType type)
+      +ApplyEffect(string effectName, float duration)
     }
 }
-package "Items & Physics" {
-    package "Inyecciones" {
-      class InyecionItem {
-        -InyeccionType inyeccionType
-        +Inject(Gameobject victim)
-      }
-      class InyeccionCollider {
-        -InyeccionItem inyeccionItem
-        -OnTriggerEnter(Collider other)
-      }
+
+package "Environment & Hazards" {
+    class PuddleSpawner MONO_BEHAVIOUR {
+        +static Instance
+        +GameObject puddlePrefab
+        +SpawnPuddleServerRpc(Vector3 position, float duration)
     }
+    class BloodPuddle NETWORK_BEHAVIOUR {
+        -float effectDuration
+        -OnTriggerEnter(Collider other)
+        -DespawnPuddle()
+    }
+}
+
+package "Items & Physics" {
     class PhysicalItem NETWORK_BEHAVIOUR {
       -Rigidbody rb
-      +Transform holdPoint
-      -bool isTool
-      -float damping
-      -float springForce
-      -float breakDistance
       -Dictionary<ulong, Transform> grabbers
-      -Awake()
       -FixedUpdate() : Hookes Law
       +AddGrabber(ulong clientId, Transform holdPoint)
       +RemoveGrabber(ulong clientId)
-      -NotifyHoldingToolClientRpc(bool holding, ulong targetClientId)
-      +ulong GetNetworkObjectID()
     }
     class SnappableItem NETWORK_BEHAVIOUR {
         +SnapType itemType
-        +bool isSnapped
-        +SnapZone currentZone
-        -Rigidbody rb
-        -PhysicalItem physicalItem
-        -Awake()
+        +bool isSnappable
+        +bool isUnsnappable
         +SnapTo(SnapZone zone)
         +Unsnap()
     }
     class InteractableItem NETWORK_BEHAVIOUR {
       +UnityEvent onInteract
       +Interact(ulong clientID)
-      +ulong GetNetworkObjectID()
     }
     enum SnapType {
         Enchufe
@@ -115,71 +123,103 @@ package "Items & Physics" {
         Diente
         Venda
         Jeringuilla
+        Bloodbag
     }
 }
 
-package "Snap & Power" {
+package "Snap & Power System" {
     class SnapZone NETWORK_BEHAVIOUR {
         +SnapType acceptedType
         +Transform snapAnchor
         +UnityEvent OnObjectSnapped
         +UnityEvent OnObjectUnsnapped
         +SnappableItem currentItem
-        -float cooldown
-        -float lastSnapTime
-        -Awake()
         -OnTriggerEnter(Collider other)
         +ReleaseItem()
     }
-    class EnergyProvider NETWORK_BEHAVIOUR {
-        -Start()
-        -OnTriggerEnter(Collider other)
-        -OnTriggerExit(Collider other)
+    class PowerReceiver NETWORK_BEHAVIOUR {
+        +NetworkVariable<bool> hasPower
+        -PowerEmitter[] wiredEmiters
+        -PoweredItem toolToPower
+        +SetPower(bool isPowered, PowerEmitter emiter)
     }
-    class PowerableItem NETWORK_BEHAVIOUR {
-        -bool powered
-        +UnityEvent OnPowered
-        +UnityEvent OnUnplugged
-        +UnityEvent Power
-        +EnablePower()
-        +DisablePower()
-        +Update()
+    class PowerEmitter NETWORK_BEHAVIOUR {
+        +NetworkVariable<bool> hasPower
+        -PowerReceiver connectedReceiver
+        +OnPlug()
+        +OnUnplug()
+        +SetEmitting(bool emitting)
+    }
+    class PoweredItem NETWORK_BEHAVIOUR {
+        +int energyLoad
+        +NetworkVariable<bool> isTurnedOn
+        +NetworkVariable<bool> hasPower
+        +SetPowered(bool powered)
+        +Interact(ulong clientID)
+    }
+}
+
+package "Tools & Mechanics" {
+    class LuzBehaviour NETWORK_BEHAVIOUR {
+        +Transform originPoint
+        +float rayDistance
+        -EmitLight()
+        -NotifyHealWoundServerRpc()
+        -RequestNewWoundServerRpc()
     }
 }
 
 package "Alien System" {
     class AlienStateManager NETWORK_BEHAVIOUR {
-      +enum State { Calmado, Alterado, Critico, Dañado }
-      +float health
-      +float calmantDuration
-      +ChangeState(State newState)
-      +TakeDamage(float amount)
-      +Heal(float amount)
+      +NetworkVariable<float> currentHealth
+      +ApplyInyeccion(InyeccionType type)
+      +OnBloodBagConnected(OnBloodBagSnapped e)
+    }
+    class AlienWoundManager NETWORK_BEHAVIOUR {
+      +GameObject woundPrefab
+      +GenerateWound(Vector3 position, Vector3 normal)
+    }
+    class WoundBehaviour NETWORK_BEHAVIOUR {
+      +float healingTimeRequired
+      +ReceiveHealTick()
     }
 }
 
+' Relaciones Core Player
 PlayerController o-- PlayerInput
 PlayerCamera o-- PlayerInput
 PlayerInteractor o-- PlayerInput
 PlayerStateManager -left-> PlayerController
 PlayerStateManager -left-> PlayerInteractor
 
-PhysicalItem .up.|> IGrabbable
-InteractableItem .up.|> IInteractable
-SnappableItem .up.|> ISnappable
-SnappableItem <|-- SnapType
-
-SnappableItem -right-> PhysicalItem
-SnapZone o-- SnappableItem
-EnergyProvider ..> PowerableItem : triggers
-
 PlayerInteractor ---> IGrabbable
 PlayerInteractor ---> IInteractable
 
-' InyeccionItem publica el evento a través del EventBus
-InyecionItem ..> EventBus : "Publish<OnInject>"
-InyecionItem ..> OnInject : "creates"
+' Relaciones Hazards
+PlayerStateManager .up.|> IEffectable
+BloodPuddle ..> IEffectable : "Llama a ApplyEffect()"
+PuddleSpawner ..> BloodPuddle : "Spawnea"
 
-AlienStateManager ..> EventBus : "Subscribes to OnInject"
-PlayerInteractor ..> EventBus : "Subscribes to OnInject"
+' Relaciones Items & Snap
+PhysicalItem .up.|> IGrabbable
+InteractableItem .up.|> IInteractable
+SnappableItem .up.|> ISnappable
+SnappableItem -right-> PhysicalItem
+SnapZone o-- SnappableItem
+
+' Relaciones Power System
+PoweredItem -up-|> InteractableItem
+PowerEmitter o-- PowerReceiver : "Conecta con"
+PowerReceiver o-- PowerEmitter : "Puede tener hijos (Alargador)"
+PowerReceiver o-- PoweredItem : "Da energía a herramienta"
+SnapZone ..> PowerEmitter : "Eventos (OnObjectSnapped)"
+
+' Relaciones Tools y Alien System
+LuzBehaviour ..> WoundBehaviour : "Cura (HealTick)"
+LuzBehaviour ..> AlienWoundManager : "Crea heridas"
+
+' Relaciones EventBus
+SnapZone ..> EventBus : "Publish<OnBloodBagSnapped/Detached>"
+AlienStateManager ..> EventBus : "Subscribe<OnBloodBagSnapped/Detached>"
+
 @enduml
