@@ -13,7 +13,6 @@ public class PlayerCamera : NetworkBehaviour
     float pitchRotation = 0f;
     float yawRotation = 0f;
     float currentMinPitch;
-    float defaultMaxPitch;
 
     bool isRagdoll = false;
 
@@ -21,7 +20,6 @@ public class PlayerCamera : NetworkBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         currentMinPitch = minPitch;
-        defaultMaxPitch = maxPitch;
     }
 
     public override void OnNetworkSpawn()

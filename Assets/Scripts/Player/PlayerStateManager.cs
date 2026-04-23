@@ -35,11 +35,13 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         gameObject.GetComponent<PlayerInput>().OnJumpPressed += RecoverJump;
         gameObject.GetComponent<PlayerInput>().OnSlipPressed += Slip;
         EventBus.Subscribe<OnInject>(OnPlayerInjected);
+        EventBus.Subscribe<OnInsectExplosion>(OnInsectExplosion);
     }
     public override void OnNetworkDespawn()
     {
 
         EventBus.Unsubscribe<OnInject>(OnPlayerInjected);
+        EventBus.Unsubscribe<OnInsectExplosion>(OnInsectExplosion);
         base.OnNetworkDespawn();
     }
     private void OnPlayerInjected(OnInject data)
@@ -108,6 +110,12 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
 
                 break;
         }
+    }
+
+    public void OnInsectExplosion(OnInsectExplosion data)
+    {
+        if (data.VictimID != NetworkObjectId) return;
+        Debug.Log($"Player {gameObject.name} was exploted by an insect");
     }
 
     private void OnCollisionEnter(Collision collision)
