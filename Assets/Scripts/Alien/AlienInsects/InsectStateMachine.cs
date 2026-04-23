@@ -51,7 +51,7 @@ public class InsectStateMachine : NetworkBehaviour
         {
             if (hit.CompareTag("Player"))
             {
-                Debug.Log("PlayerDetected!");
+                //Debug.Log("PlayerDetected!");
                 detectedPlayer = hit.gameObject;
                 ChangeState(new InsectAttack(stateMachine, this));
             }
@@ -90,7 +90,7 @@ public class InsectStateMachine : NetworkBehaviour
             }
         }
         Vector3 relativeVelocity = collision.relativeVelocity;
-        Debug.Log(relativeVelocity.magnitude);
+        //Debug.Log(relativeVelocity.magnitude);
         if (relativeVelocity.magnitude > minimumForceToExplode)
         {
             Destroy(gameObject);

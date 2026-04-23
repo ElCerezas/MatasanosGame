@@ -81,7 +81,7 @@ public class AlienStateManager : NetworkBehaviour
             {
                 isCalmantActive = false;
                 calmantTimer = 0;
-                Debug.Log("Calmante agotado.");
+                //Debug.Log("Calmante agotado.");
             }
         }
 

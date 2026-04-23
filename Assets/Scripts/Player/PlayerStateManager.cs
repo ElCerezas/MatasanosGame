@@ -47,7 +47,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     private void OnPlayerInjected(OnInject data)
     {
         if (data.VictimID != NetworkObjectId) return;
-        Debug.Log($"Player {gameObject.name} injected with type {data.Type}");
+        //Debug.Log($"Player {gameObject.name} injected with type {data.Type}");
         ApplyInyeccion(data.Type);
     }
 
@@ -100,7 +100,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
 
     public void ApplyInyeccion(InyeccionType type)
     {
-        Debug.Log($"Applying inyeccion of type {type} to player");
+        //Debug.Log($"Applying inyeccion of type {type} to player");
         switch (type)
         {
             case InyeccionType.Calmante:
@@ -115,7 +115,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     public void OnInsectExplosion(OnInsectExplosion data)
     {
         if (data.VictimID != NetworkObjectId) return;
-        Debug.Log($"Player {gameObject.name} was exploted by an insect");
+        //Debug.Log($"Player {gameObject.name} was exploted by an insect");
     }
 
     private void OnCollisionEnter(Collision collision)

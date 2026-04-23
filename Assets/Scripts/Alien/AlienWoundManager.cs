@@ -60,7 +60,7 @@ public class AlienWoundManager : NetworkBehaviour
 
         if (woundPrefab == null)
         {
-            Debug.LogError("WoundPrefab no asignado", this);
+            //Debug.LogError("WoundPrefab no asignado", this);
             return;
         }
 
@@ -73,7 +73,7 @@ public class AlienWoundManager : NetworkBehaviour
         NetworkObject netObj = woundObj.GetComponent<NetworkObject>();
         if (netObj == null)
         {
-            Debug.LogError("El woundPrefab no tiene NetworkObject", woundObj);
+            //Debug.LogError("El woundPrefab no tiene NetworkObject", woundObj);
             Destroy(woundObj);
             return;
         }

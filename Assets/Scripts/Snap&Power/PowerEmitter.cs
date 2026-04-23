@@ -54,7 +54,7 @@ public class PowerEmitter : NetworkBehaviour
     }
     public int GetLoad()
     {
-        Debug.Log("emiterChecker");
+        //Debug.Log("emiterChecker");
         if (connectedReceiver != null) return connectedReceiver.GetLoad();
         return 0;
     }
@@ -64,12 +64,12 @@ public class PowerEmitter : NetworkBehaviour
         if (powerProvider != null)
         {
             powerProvider.ConectedConsumerChanged();
-            Debug.Log("Socket:" + gameObject.name);
+            //Debug.Log("Socket:" + gameObject.name);
         }    
         if(generator != null)
         {
             generator.EvaluateLoad();
-            Debug.Log("Arrive at gen");
+            //Debug.Log("Arrive at gen");
         }  
     }
 }

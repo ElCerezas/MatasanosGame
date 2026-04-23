@@ -23,21 +23,21 @@ public class GeneratorSystem : NetworkBehaviour
     public void EvaluateLoad()
     {
         if (!IsServer) return;
-        Debug.Log("2");
+        //Debug.Log("2");
         if (!isGeneratorOn.Value) return;
-        Debug.Log("1");
+       // Debug.Log("1");
         int calculatedLoad = 0;
         foreach (var emitter in mainEmitters)
         {
-            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             calculatedLoad += emitter.GetLoad();
         }
         currentLoad.Value = calculatedLoad;
-        Debug.Log($"PowerLoad: {currentLoad.Value} / {maxPowerLoad}");
+        //Debug.Log($"PowerLoad: {currentLoad.Value} / {maxPowerLoad}");
 
         if (currentLoad.Value > maxPowerLoad)
         {
-            Debug.LogWarning("Sobrecarga: BoOoOm");
+            //Debug.LogWarning("Sobrecarga: BoOoOm");
             isGeneratorOn.Value = false;
             foreach (var emitter in mainEmitters)
             {

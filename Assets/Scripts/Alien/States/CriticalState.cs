@@ -9,7 +9,7 @@ public class CriticalState : State
 
     public override void OnEnter()
     {
-        Debug.Log("Entrando en estado CRÍTICO");
+        //Debug.Log("Entrando en estado CRÍTICO");
     }
     public override void OnUpdate()
     {

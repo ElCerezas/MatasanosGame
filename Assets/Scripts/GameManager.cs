@@ -43,17 +43,17 @@ public class GameManager : NetworkBehaviour
     public void DisconnectClient()
     {
         NetworkManager.Shutdown();
-        Debug.Log("Player Disconnected");
+        //Debug.Log("Player Disconnected");
     }
     public void StartClient()
     {
         NetworkManager.StartClient();
-        Debug.Log("Player Joined");
+        //Debug.Log("Player Joined");
     }
     public void StartHost()
     {
         NetworkManager.StartHost();
-        Debug.Log("Player Hosting");
+        //Debug.Log("Player Hosting");
     }
     public void Update()
     {
