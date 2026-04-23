@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class WoundBehaviour : NetworkBehaviour
+public class WoundBehaviour : TaraBase
 {
     private float healTimer = 0f;
     public float healingTimeRequired = 3f;
