@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using System;
-using UnityEngine.XR;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
@@ -19,7 +16,6 @@ public class GameManager : NetworkBehaviour
         NetworkManager.OnClientConnectedCallback += SpawnPlayer;
         NetworkManager.SceneManager.OnLoadEventCompleted += HandleSceneLoadCompleted;
     }
-
     private void HandleSceneLoadCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
         foreach (ulong clientId in clientsCompleted)
@@ -27,7 +23,6 @@ public class GameManager : NetworkBehaviour
             SpawnPlayer(clientId);
         }
     }
-
     private void SpawnPlayer(ulong clientID)
     {
         if (NetworkManager.ConnectedClients[clientID].PlayerObject != null) return;
@@ -36,7 +31,6 @@ public class GameManager : NetworkBehaviour
             player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true); //Se destruye el player al hacer reload de la escena.
         }
     }
-
     public override void OnNetworkDespawn()
     {
         if (IsServer)
@@ -46,7 +40,6 @@ public class GameManager : NetworkBehaviour
         }
         base.OnNetworkDespawn();
     }
-
     public void DisconnectClient()
     {
         NetworkManager.Shutdown();
@@ -62,7 +55,6 @@ public class GameManager : NetworkBehaviour
         NetworkManager.StartHost();
         Debug.Log("Player Hosting");
     }
-
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
