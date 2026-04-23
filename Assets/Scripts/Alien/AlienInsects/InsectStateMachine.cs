@@ -8,17 +8,13 @@ public class InsectStateMachine : NetworkBehaviour
     [SerializeField] float attackSpeed = 5f;
     [SerializeField] float detectionRadius = 5f;
     StateMachine stateMachine;
-    public NetworkVariable<InsectStatesEnum> currentActiveState = new NetworkVariable<InsectStatesEnum>(); 
+    public NetworkVariable<InsectStatesEnum> currentActiveState = new NetworkVariable<InsectStatesEnum>(InsectStatesEnum.Wander); 
 
     private Rigidbody rb;
     private Vector3 direction;
     private float timer;
     private GameObject detectedPlayer;
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-    }
     void Awake()
     {
         stateMachine = new StateMachine();
@@ -34,10 +30,6 @@ public class InsectStateMachine : NetworkBehaviour
         }
 
         stateMachine.Update();
-    }
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
     }
     private void ChangeState(State newState)
     {

@@ -29,8 +29,9 @@ public class SnappableItem : NetworkBehaviour, ISnappable
 
     public void SnapTo(SnapZone zone)
     {
+        Debug.Log("PSPSPSP");
         if (!IsServer) return;
-
+        Debug.Log("sap");
         isSnapped = true;
         currentZone = zone;
 

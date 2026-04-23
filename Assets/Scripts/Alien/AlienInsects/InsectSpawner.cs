@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class InsectSpawner : NetworkBehaviour
@@ -16,6 +16,7 @@ public class InsectSpawner : NetworkBehaviour
 
     void SpawnInsects(OnAlienParasiteAttack e)
     {
-        Instantiate(InsectPrefab, spawnTransform.position, spawnTransform.rotation);
+        GameObject i = Instantiate(InsectPrefab, spawnTransform.position, spawnTransform.rotation);
+        i.GetComponent<NetworkObject>().Spawn();
     }
 }

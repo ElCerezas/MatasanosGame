@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AlteredState : State
 {
@@ -12,7 +12,6 @@ public class AlteredState : State
 
     public override void OnEnter()
     {
-        Debug.Log("Entrando en estado ALTERADO");
         parasiteTimer = 0f;
     }
 

@@ -15,14 +15,24 @@ public class SnapZone : NetworkBehaviour
     float cooldown = 5f;
     float lastSnapTime;
 
+    bool firstActivation = true;
     private void Awake()
     {
         lastSnapTime = Time.time;
+    }
+    private void Update()
+    {
+        if (!firstActivation)
+        {
+            currentItem.SnapTo(this);
+            firstActivation = true;
+        }
     }
     public override void OnNetworkSpawn()
     {
         if (!IsServer ||currentItem == null) return;
         Debug.Log($"Start plug {gameObject.name} has pluged {currentItem.name}");
+        if (currentItem != null) firstActivation = false;
         currentItem.SnapTo(this);
         OnObjectSnapped?.Invoke();
     }
