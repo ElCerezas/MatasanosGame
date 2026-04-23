@@ -128,6 +128,14 @@ package "Items & Physics" {
 }
 
 package "Snap & Power System" {
+    class GeneratorSystem NETWORK_BEHAVIOUR {
+        +int maxPowerLoad
+        +NetworkVariable<int> currentLoad
+        +NetworkVariable<bool> isGeneratorOn
+        -PowerEmitter[] mainEmitters
+        +EvaluateLoad()
+        +TurnOnGenerator()
+    }
     class SnapZone NETWORK_BEHAVIOUR {
         +SnapType acceptedType
         +Transform snapAnchor
@@ -142,20 +150,28 @@ package "Snap & Power System" {
         -PowerEmitter[] wiredEmiters
         -PoweredItem toolToPower
         +SetPower(bool isPowered, PowerEmitter emiter)
+        +GetLoad()
+        +OnChildLoadChanged()
     }
     class PowerEmitter NETWORK_BEHAVIOUR {
         +NetworkVariable<bool> hasPower
         -PowerReceiver connectedReceiver
+        -GeneratorSystem generator
+        -PowerReceiver powerProvider
         +OnPlug()
         +OnUnplug()
         +SetEmitting(bool emitting)
+        +GetLoad()
+        +OnChildLoadChanged()
     }
     class PoweredItem NETWORK_BEHAVIOUR {
         +int energyLoad
         +NetworkVariable<bool> isTurnedOn
         +NetworkVariable<bool> hasPower
+        -PowerReceiver ownPlug
         +SetPowered(bool powered)
         +Interact(ulong clientID)
+        +GetLoad()
     }
 }
 
@@ -208,10 +224,14 @@ SnappableItem -right-> PhysicalItem
 SnapZone o-- SnappableItem
 
 ' Relaciones Power System
+GeneratorSystem o-- PowerEmitter : "mainEmitters"
 PoweredItem -up-|> InteractableItem
-PowerEmitter o-- PowerReceiver : "Conecta con"
-PowerReceiver o-- PowerEmitter : "Puede tener hijos (Alargador)"
-PowerReceiver o-- PoweredItem : "Da energía a herramienta"
+PowerEmitter o-- PowerReceiver : "connectedReceiver (OnPlug)"
+PowerEmitter o-- PowerReceiver : "powerProvider (Inspector)"
+PowerEmitter o-- GeneratorSystem : "generator (Inspector)"
+PowerReceiver o-- PowerEmitter : "wiredEmiters (Alargador)"
+PowerReceiver o-- PoweredItem : "toolToPower"
+PoweredItem o-- PowerReceiver : "ownPlug (Inspector)"
 SnapZone ..> PowerEmitter : "Eventos (OnObjectSnapped)"
 
 ' Relaciones Tools y Alien System

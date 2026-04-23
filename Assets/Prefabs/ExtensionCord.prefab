@@ -130,8 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3478863840
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2852525851
+  InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -207,6 +207,8 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  generator: {fileID: 0}
+  powerProvider: {fileID: 4440254498009989614}
 --- !u!114 &961247178668132080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,8 +493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3640627406
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2621644206
+  InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -529,7 +531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4847913821199252172}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.70710665, w: 0.70710695}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 19.49, y: 0.53452, z: 8.05477}
   m_LocalScale: {x: 1, y: 0.82084, z: 1}
   m_ConstrainProportionsScale: 0
@@ -550,8 +552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2188057960
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3770646100
+  InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -693,8 +695,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1895945806
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3542785412
+  InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -792,6 +794,8 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  generator: {fileID: 0}
+  powerProvider: {fileID: 4440254498009989614}
 --- !u!1 &9036547467643679827
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,6 +1034,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SnappableItem
   ShowTopMostFoldoutHeaderGroup: 1
   itemType: 0
+  isSnappable: 1
+  isUnsnappable: 1
 --- !u!114 &4440254498009989614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,8 +1070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2627615954
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1846779026
+  InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ public class PowerEmitter : NetworkBehaviour
 
     PowerReceiver connectedReceiver;
 
+    [Header("PowerLoad System")]
+    [SerializeField] GeneratorSystem generator;
+    [SerializeField] PowerReceiver powerProvider;
     private void Awake()
     {
         zone = GetComponent<SnapZone>();
@@ -25,7 +29,6 @@ public class PowerEmitter : NetworkBehaviour
         if (!IsServer) return;
         if (zone.currentItem != null && zone.currentItem.TryGetComponent(out PowerReceiver pr))
         {
-            Debug.Log("Pluged");
             connectedReceiver = pr;
             connectedReceiver.SetPower(hasPower.Value, this);
         }
@@ -35,9 +38,9 @@ public class PowerEmitter : NetworkBehaviour
         if (!IsServer) return;
         if (connectedReceiver != null)
         {
-            Debug.Log("UnPluged");
             connectedReceiver.SetPower(false, this);
             connectedReceiver = null;
+            ConectedReciverChanged();
         }
     }
     public void SetEmitting(bool emitting)
@@ -48,5 +51,25 @@ public class PowerEmitter : NetworkBehaviour
         {
             connectedReceiver.SetPower(hasPower.Value, this);
         }
+    }
+    public int GetLoad()
+    {
+        Debug.Log("emiterChecker");
+        if (connectedReceiver != null) return connectedReceiver.GetLoad();
+        return 0;
+    }
+    public void ConectedReciverChanged()
+    {
+        if (!IsServer) return;
+        if (powerProvider != null)
+        {
+            powerProvider.ConectedConsumerChanged();
+            Debug.Log("Socket:" + gameObject.name);
+        }    
+        if(generator != null)
+        {
+            generator.EvaluateLoad();
+            Debug.Log("Arrive at gen");
+        }  
     }
 }

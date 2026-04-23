@@ -113,7 +113,6 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     private void OnCollisionEnter(Collision collision)
     {
         Vector3 relativeVelocity = collision.relativeVelocity;
-        Debug.Log(relativeVelocity.magnitude);
         if (relativeVelocity.magnitude > minimumForceToRagdoll)
         {
             EnterRagdoll(3f);

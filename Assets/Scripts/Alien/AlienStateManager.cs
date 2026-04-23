@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -147,7 +147,6 @@ public class AlienStateManager : NetworkBehaviour
     }
     private void HandleDeath()
     {
-        Debug.Log("El Alien ha muerto");
         EventBus.Publish(new OnAlienDeath { AlienID = NetworkObjectId });
     }
     private void OnInjectionReceived(OnInject inject)
