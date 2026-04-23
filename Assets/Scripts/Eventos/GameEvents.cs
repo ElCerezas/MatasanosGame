@@ -1,3 +1,8 @@
+public struct VictoryEvent : IEvent
+{
+    
+}
+
 public struct OnInject : IEvent
 {
     public ulong VictimID;
@@ -22,6 +27,15 @@ public struct OnAlienDeath : IEvent
 public struct OnAlienParasiteAttack : IEvent
 {
     public ulong AlienID;
+}
+
+public struct TaraGeneratedEvent : IEvent
+{
+    public ulong TaraID;
+}
+public struct TaraHealedEvent : IEvent
+{
+    public ulong TaraID;
 }
 /*
 ==============================================================================

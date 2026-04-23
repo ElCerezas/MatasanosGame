@@ -8,9 +8,8 @@ public class PlayerCamera : NetworkBehaviour
     [SerializeField] Transform playerCam;
     [Header("Settings")]
     [SerializeField] float sensitivity = 2f;
-    [SerializeField] float maxPitch = 80f;
+    [SerializeField] float maxPitch = 30f;
     [SerializeField] float minPitch = -80f;
-    [SerializeField] float maxPitchWhileHoldingTool = 0f;
     float pitchRotation = 0f;
     float yawRotation = 0f;
     float currentMinPitch;
@@ -41,7 +40,6 @@ public class PlayerCamera : NetworkBehaviour
     }
     public void SetHoldingTool(bool holding)
     {
-        maxPitch = holding ? maxPitchWhileHoldingTool : defaultMaxPitch;
         pitchRotation = Mathf.Clamp(pitchRotation, currentMinPitch, maxPitch);
     }
 
