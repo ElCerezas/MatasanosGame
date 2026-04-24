@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7715589933694038916}
   - component: {fileID: 145356025527373332}
   - component: {fileID: 5622523838998752503}
+  - component: {fileID: 5714073971549250017}
   m_Layer: 6
   m_Name: TeethSocket
   m_TagString: Untagged
@@ -149,3 +150,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.11893257}
   m_Center: {x: 0, y: 0, z: -0.002317244}
+--- !u!114 &5714073971549250017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414369273511159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3589b1a99357c8d45b5cb20e890014f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeethBehaviour
+  ShowTopMostFoldoutHeaderGroup: 1

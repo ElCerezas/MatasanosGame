@@ -375,6 +375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4452952027163482679}
+  - component: {fileID: 1999887405777294357}
   m_Layer: 0
   m_Name: GrabPoint
   m_TagString: Player
@@ -391,12 +392,58 @@ Transform:
   m_GameObject: {fileID: 5308070177909479481}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.078999996, z: 2}
+  m_LocalPosition: {x: 0, y: -0.5, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 575021304936587847}
+  m_Father: {fileID: 5781543604421647710}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1999887405777294357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5308070177909479481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Multiplayer.Center.NetcodeForGameObjectsExample::Unity.Multiplayer.Center.NetcodeForGameObjectsExample.ClientNetworkTransform
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 1
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &7414175457855712597
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,6 +505,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4452952027163482679}
   - {fileID: 1687163605325812831}
   m_Father: {fileID: 575021304936587847}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -549,7 +597,6 @@ Transform:
   - {fileID: 39465731549779667}
   - {fileID: 5781543604421647710}
   - {fileID: 6310138648623443877}
-  - {fileID: 4452952027163482679}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1923783326939246479

@@ -31,9 +31,9 @@ public class SnapZone : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsServer ||currentItem == null) return;
-        Debug.Log($"Start plug {gameObject.name} has pluged {currentItem.name}");
+        //Debug.Log($"Start plug {gameObject.name} has pluged {currentItem.name}");
         if (currentItem != null) firstActivation = false;
-        currentItem.SnapTo(this);
+        currentItem.SnapTo(this);     
         OnObjectSnapped?.Invoke();
     }
 
@@ -55,7 +55,7 @@ public class SnapZone : NetworkBehaviour
                 }
                 else if (acceptedType == SnapType.Diente)
                 {
-                    EventBus.Publish(new OnDienteSnap { currentItem = currentItem });
+                    EventBus.Publish(new OnDienteSnap { ID = NetworkObjectId, currentItem = currentItem    });
                 }
                 else
                 {

@@ -2,28 +2,18 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
-public class VictoryHandlerUI : NetworkBehaviour
+public class VictoryHandlerUI : MonoBehaviour
 {
     [SerializeField] GameObject victoryScreen;
-    public override void OnNetworkSpawn()
+    public void Awake()
     {
         EventBus.Subscribe<VictoryEvent>(OnVictory);
         victoryScreen.SetActive(false);
     }
 
-    private void OnVictory(VictoryEvent @event)
+    private void OnVictory(VictoryEvent e)
     {
+        Debug.Log("VictoryEvent received!");
         victoryScreen.SetActive(true);
-    }
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

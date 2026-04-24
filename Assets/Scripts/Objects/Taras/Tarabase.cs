@@ -3,12 +3,7 @@ using UnityEngine;
 public abstract class TaraBase : NetworkBehaviour
 {
     private bool _wasHealed = false;
-
-    public override void OnNetworkSpawn()
-    {
-        if (IsServer)
-            EventBus.Publish(new TaraGeneratedEvent { TaraID = NetworkObjectId });
-    }
+    public bool WasHealed => _wasHealed;
 
     protected void MarkAsHealed()
     {

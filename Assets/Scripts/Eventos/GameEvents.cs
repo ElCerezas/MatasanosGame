@@ -13,6 +13,7 @@ public struct OnInject : IEvent
 
 public struct OnDienteSnap : IEvent
 {
+    public ulong ID;
     public SnappableItem currentItem;
 }
 /*
@@ -33,11 +34,6 @@ public struct OnAlienDeath : IEvent
 public struct OnAlienParasiteAttack : IEvent
 {
     public ulong AlienID;
-}
-
-public struct TaraGeneratedEvent : IEvent
-{
-    public ulong TaraID;
 }
 public struct TaraHealedEvent : IEvent
 {
