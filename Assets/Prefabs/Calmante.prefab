@@ -101,12 +101,12 @@ GameObject:
   - component: {fileID: 3855344783938495016}
   - component: {fileID: 6744497737484140002}
   - component: {fileID: 7342518273106242945}
-  - component: {fileID: 461246987684250994}
   - component: {fileID: 177076667709483176}
   - component: {fileID: 3948841760047702708}
   - component: {fileID: 6022525632570896004}
   - component: {fileID: 3444320936525610741}
   - component: {fileID: 7714727616402936460}
+  - component: {fileID: -8884851812499965897}
   m_Layer: 6
   m_Name: Calmante
   m_TagString: Untagged
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3419184362
+  GlobalObjectIdHash: 1893500208
   InScenePlacedSourceGlobalObjectIdHash: 1893500208
   DeferredDespawnTick: 0
   Ownership: 1
@@ -171,21 +171,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   inyeccionType: 1
   inyeccionCollider: {fileID: 0}
---- !u!114 &461246987684250994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2508039921191908271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90d4260f9a111b04abc0e25a3ea1c31f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
-  ShowTopMostFoldoutHeaderGroup: 1
-  holdPoint: {fileID: 0}
-  isTool: 1
 --- !u!65 &177076667709483176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -325,6 +310,19 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &-8884851812499965897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2508039921191908271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72366d9c28971d240b198b3c6f821aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToolItem
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6020134055269455491
 GameObject:
   m_ObjectHideFlags: 0

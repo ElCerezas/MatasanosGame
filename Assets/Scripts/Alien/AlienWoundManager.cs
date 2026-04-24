@@ -4,7 +4,7 @@ using UnityEngine;
 public class AlienWoundManager : NetworkBehaviour
 {
     public GameObject woundPrefab;
-    public int initialWounds = 3;
+    public int initialWounds = 0;
 
     [Header("Wound Placement")]
     [Range(0f, 1f)]

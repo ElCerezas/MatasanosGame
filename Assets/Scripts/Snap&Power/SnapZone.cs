@@ -53,6 +53,10 @@ public class SnapZone : NetworkBehaviour
                 {
                     EventBus.Publish(new OnBloodBagSnapped { BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId });
                 }
+                else if (acceptedType == SnapType.Diente)
+                {
+                    EventBus.Publish(new OnDienteSnap { currentItem = currentItem });
+                }
                 else
                 {
                     OnObjectSnapped?.Invoke();

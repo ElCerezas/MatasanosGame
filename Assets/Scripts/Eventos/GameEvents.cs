@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public struct VictoryEvent : IEvent
 {
     
@@ -9,6 +11,10 @@ public struct OnInject : IEvent
     public InyeccionType Type;
 }
 
+public struct OnDienteSnap : IEvent
+{
+    public SnappableItem currentItem;
+}
 /*
 ==============================================================================
                                 EVENTOS DE ALIEN

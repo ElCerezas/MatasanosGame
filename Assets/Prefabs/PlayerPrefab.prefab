@@ -391,11 +391,11 @@ Transform:
   m_GameObject: {fileID: 5308070177909479481}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 2}
+  m_LocalPosition: {x: 0, y: 0.078999996, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5781543604421647710}
+  m_Father: {fileID: 575021304936587847}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7414175457855712597
 GameObject:
@@ -459,7 +459,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1687163605325812831}
-  - {fileID: 4452952027163482679}
   m_Father: {fileID: 575021304936587847}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8039971835821123392
@@ -550,6 +549,7 @@ Transform:
   - {fileID: 39465731549779667}
   - {fileID: 5781543604421647710}
   - {fileID: 6310138648623443877}
+  - {fileID: 4452952027163482679}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1923783326939246479
@@ -741,8 +741,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
   ShowTopMostFoldoutHeaderGroup: 1
   playerCam: {fileID: 5781543604421647710}
+  holdPoint: {fileID: 4452952027163482679}
+  holdPointDistance: 2
+  holdPointHeight: 0.5
+  maxHoldPointAngleFromCamera: 25
   sensitivity: 0.2
-  maxPitch: 40
+  maxPitch: 50
   minPitch: -50
 --- !u!114 &4496925725958259524
 MonoBehaviour:

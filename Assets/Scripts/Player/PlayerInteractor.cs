@@ -1,18 +1,18 @@
-﻿using Unity.Netcode;
+﻿// PlayerInteractor.cs
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInteractor : NetworkBehaviour
 {
     PlayerInput playerInput;
-    [SerializeField] Transform holdPoint;
+    public Transform holdPoint;
     [SerializeField] Transform cameraTransform;
-    private bool isRagdoll = false; 
+    private bool isRagdoll = false;
 
     [Header("Interaction Settings")]
     [SerializeField] float interactRange = 3f;
     [SerializeField] LayerMask interactLayer;
-
     IGrabbable currentlyGrabbedItem;
 
     void Awake()
@@ -33,7 +33,7 @@ public class PlayerInteractor : NetworkBehaviour
     }
     void TryGrabOrThrow()
     {
-        if(isRagdoll) return;
+        if (isRagdoll) return;
         if (currentlyGrabbedItem != null)
         {
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
@@ -59,57 +59,54 @@ public class PlayerInteractor : NetworkBehaviour
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
         {
-            if(hit.collider.TryGetComponent(out IInteractable interactable))
-            {
+            if (hit.collider.TryGetComponent(out IInteractable interactable))
                 InteractServerRpc(interactable.GetNetworkObjectID());
-            }
         }
     }
 
     public void Ragdoll(bool active)
     {
-        if (active) {
-            if (currentlyGrabbedItem != null && active)
-            {
-                ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
-                currentlyGrabbedItem = null;
-            }
-        }
-        else
+        isRagdoll = active;
+        if (active && currentlyGrabbedItem != null)
         {
-            isRagdoll = false;
+            ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
+            currentlyGrabbedItem = null;
         }
     }
 
     #region ServerCom
-    [ServerRpc] void InteractServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
+    [ServerRpc]
+    void InteractServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
             if (netObj.TryGetComponent(out IInteractable interact))
-            {
                 interact.Interact(rpcParams.Receive.SenderClientId);
-            }
         }
     }
-    [ServerRpc] void GrabObjectServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
+
+    [ServerRpc]
+    void GrabObjectServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
     {
+        ulong senderClientId = rpcParams.Receive.SenderClientId;
+
+        if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(senderClientId, out NetworkClient client)) return;
+        Transform serverHoldPoint = client.PlayerObject.GetComponent<PlayerInteractor>().holdPoint;
+
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
             if (netObj.TryGetComponent(out IGrabbable grabbable))
-            {
-                grabbable.AddGrabber(rpcParams.Receive.SenderClientId, holdPoint);
-            }
+                grabbable.AddGrabber(senderClientId, serverHoldPoint);
         }
     }
-    [ServerRpc] void ReleaseObjectServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
+
+    [ServerRpc]
+    void ReleaseObjectServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
-            if (netObj.TryGetComponent(out PhysicalItem grabbable))
-            {
-                grabbable.RemoveGrabber(rpcParams.Receive.SenderClientId);
-            }
+            if (netObj.TryGetComponent(out PhysicalItem item))
+                item.RemoveGrabber(rpcParams.Receive.SenderClientId);
         }
     }
     #endregion

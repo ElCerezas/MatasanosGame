@@ -226,12 +226,12 @@ GameObject:
   - component: {fileID: 5061430740486871678}
   - component: {fileID: 9210147826842437750}
   - component: {fileID: 239107663413896345}
-  - component: {fileID: 6582047761188492981}
   - component: {fileID: 4957130960534998900}
-  - component: {fileID: 3245262158718019991}
-  - component: {fileID: 2526734790689244382}
-  - component: {fileID: 5669233562181049008}
   - component: {fileID: 7758830782004584291}
+  - component: {fileID: -8457791925912253374}
+  - component: {fileID: -7630602086959937717}
+  - component: {fileID: 9118996720704495959}
+  - component: {fileID: 3386439851974111025}
   m_Layer: 6
   m_Name: Bloodbag
   m_TagString: Untagged
@@ -358,7 +358,34 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &6582047761188492981
+--- !u!54 &4957130960534998900
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4467649564059008264}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &7758830782004584291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -367,9 +394,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 4467649564059008264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: 6268237cc1fdea6448e0cc3319cced31, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkTransform
+  m_EditorClassIdentifier: Assembly-CSharp::BloodBag
+  ShowTopMostFoldoutHeaderGroup: 1
+  bloodBagMaxCapacity: 100
+  bloodBagCurrentCapacity:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 100
+  bloodLossQuantity: 1
+  bloodLossRate: 1
+  capacityText: {fileID: 5738582634344354292}
+  velocityThreshold: 2
+--- !u!114 &-8457791925912253374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4467649564059008264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Multiplayer.Center.NetcodeForGameObjectsExample::Unity.Multiplayer.Center.NetcodeForGameObjectsExample.ClientNetworkTransform
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkTransformExpanded: 0
   AutoOwnerAuthorityTickOffset: 1
@@ -404,34 +454,7 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!54 &4957130960534998900
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4467649564059008264}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &3245262158718019991
+--- !u!114 &-7630602086959937717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -448,7 +471,7 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
---- !u!114 &2526734790689244382
+--- !u!114 &9118996720704495959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -457,13 +480,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4467649564059008264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90d4260f9a111b04abc0e25a3ea1c31f, type: 3}
+  m_Script: {fileID: 11500000, guid: 72366d9c28971d240b198b3c6f821aac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
+  m_EditorClassIdentifier: Assembly-CSharp::ToolItem
   ShowTopMostFoldoutHeaderGroup: 1
   holdPoint: {fileID: 0}
-  isTool: 1
---- !u!114 &5669233562181049008
+--- !u!114 &3386439851974111025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -479,25 +501,3 @@ MonoBehaviour:
   itemType: 5
   isSnappable: 1
   isUnsnappable: 1
---- !u!114 &7758830782004584291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4467649564059008264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6268237cc1fdea6448e0cc3319cced31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BloodBag
-  ShowTopMostFoldoutHeaderGroup: 1
-  bloodBagMaxCapacity: 100
-  bloodBagCurrentCapacity:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 100
-  bloodLossQuantity: 1
-  bloodLossRate: 1
-  capacityText: {fileID: 5738582634344354292}

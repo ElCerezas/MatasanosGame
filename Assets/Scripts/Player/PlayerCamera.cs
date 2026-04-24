@@ -6,6 +6,11 @@ public class PlayerCamera : NetworkBehaviour
 {
     PlayerInput playerInput;
     [SerializeField] Transform playerCam;
+    [SerializeField] Transform holdPoint;
+    [SerializeField] float holdPointDistance = 1.5f;
+    [SerializeField] float holdPointHeight = 1.2f;
+    [SerializeField] float maxHoldPointAngleFromCamera = 10f;
+
     [Header("Settings")]
     [SerializeField] float sensitivity = 2f;
     [SerializeField] float maxPitch = 30f;
@@ -24,7 +29,8 @@ public class PlayerCamera : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) { 
+        if (!IsOwner)
+        {
             playerCam.GetComponentInChildren<Camera>().enabled = false;
             return;
         }
@@ -53,11 +59,17 @@ public class PlayerCamera : NetworkBehaviour
     private void LateUpdate()
     {
         if (!IsOwner) return;
+
         playerCam.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
+
         if (!isRagdoll)
-        {
             transform.rotation = Quaternion.Euler(0f, yawRotation, 0f);
-        }
-        
+
+        float clampedPitch = Mathf.Min(pitchRotation, maxHoldPointAngleFromCamera);
+
+        Vector3 holdDirection = Quaternion.Euler(clampedPitch, yawRotation, 0f) * Vector3.forward;
+
+        holdPoint.position = transform.position + Vector3.up * holdPointHeight + holdDirection * holdPointDistance;
+        holdPoint.rotation = Quaternion.Euler(clampedPitch, yawRotation, 0f);
     }
 }
