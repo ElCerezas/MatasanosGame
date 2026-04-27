@@ -766,12 +766,16 @@ package "Items & Physics" {
         +NotifyHoldingToolClientRpc(bool, ulong)
         +TeleportWhenOwner(Vector3, Quaternion)
     }
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     class PoweredItem NETWORK_BEHAVIOUR {
         +int energyLoad
         +NetworkVariable<bool> isTurnedOn
         +NetworkVariable<bool> hasPower
         -PowerReceiver ownPlug
+<<<<<<< Updated upstream
         +OnNetworkSpawn()
         +SetPowered(bool powered)
         +Interact(ulong clientID)
@@ -819,6 +823,34 @@ package "Items & Physics" {
     TaraBase <|-- TeethBehaviour
     SnappableItem --> PhysicalItem
     InyeccionItem --> InyeccionType
+=======
+        +SetPowered(bool powered)
+        +Interact(ulong clientID)
+        +GetLoad()
+    }
+    enum SnapType {
+        Enchufe
+        Bateria
+        Diente
+        Venda
+        Jeringuilla
+        Bloodbag
+    }
+    package "Tools" {
+        class Aspiradora NETWORK_BEHAVIOUR {
+        }
+    }
+    package "Items"{
+        class BloodBag NETWORK_BEHAVIOUR {
+
+        }
+    }
+    package "Systems"{
+        class Impresora3D NETWORK_BEHAVIOUR {
+
+        }
+    }
+>>>>>>> Stashed changes
 }
 
 package "Power & Snap System" {
@@ -867,6 +899,7 @@ package "Power & Snap System" {
         +OnTriggerEnter(Collider other)
         +ReleaseItem()
     }
+<<<<<<< Updated upstream
     
     GeneratorSystem o-- PowerEmitter : "mainEmitters"
     PowerEmitter o-- PowerReceiver : "connectedReceiver"
@@ -910,6 +943,8 @@ package "Tools & Mechanics" {
     
     LuzBehaviour --> WoundBehaviour : "Cura (HealTick)"
     LuzBehaviour --> AlienWoundManager : "Genera heridas"
+=======
+>>>>>>> Stashed changes
 }
 
 package "Alien System" {
@@ -1034,10 +1069,44 @@ BloodPuddle ..|> IEffectable
 PlayerController o-- PlayerInput
 PlayerCamera o-- PlayerInput
 PlayerInteractor o-- PlayerInput
+<<<<<<< Updated upstream
 GeneratorSystem o-- PowerEmitter : "mainEmitters"
 PowerEmitter o-- PowerReceiver : "connectedReceiver"
 PowerEmitter o-- PowerReceiver : "powerProvider"
 PowerReceiver o-- PowerEmitter : "wiredEmiters"
+=======
+PlayerStateManager -left-> PlayerController
+PlayerStateManager -left-> PlayerInteractor
+
+PlayerInteractor ---> IInteractable
+PlayerInteractor ---> IGrabbable
+
+' Relaciones Hazards
+PlayerStateManager .up.|> IEffectable
+BloodPuddle ..> IEffectable : "Llama a ApplyEffect()"
+PuddleSpawner ..> BloodPuddle : "Spawnea"
+
+' Relaciones Items & Snap
+PhysicalItem .up.|> IGrabbable
+InteractableItem .up.|> IInteractable
+SnappableItem .up.|> ISnappable
+SnappableItem -right-> PhysicalItem
+SnapZone o-- SnappableItem
+PoweredItem -|> InteractableItem
+
+' Relaciones Objetos
+PoweredItem <|-- Tools
+PhysicalItem <|-- Items
+InteractableItem <|-- Systems
+
+' Relaciones Power System
+GeneratorSystem o-- PowerEmitter : "mainEmitters"
+
+PowerEmitter o-- PowerReceiver : "connectedReceiver (OnPlug)"
+PowerEmitter o-- PowerReceiver : "powerProvider (Inspector)"
+PowerEmitter o-- GeneratorSystem : "generator (Inspector)"
+PowerReceiver o-- PowerEmitter : "wiredEmiters (Alargador)"
+>>>>>>> Stashed changes
 PowerReceiver o-- PoweredItem : "toolToPower"
 PoweredItem o-- PowerReceiver : "ownPlug"
 SnapZone o-- SnappableItem
