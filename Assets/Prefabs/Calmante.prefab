@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 6022525632570896004}
   - component: {fileID: 3444320936525610741}
   - component: {fileID: 7714727616402936460}
-  - component: {fileID: -8884851812499965897}
+  - component: {fileID: 5315502327179139065}
   m_Layer: 6
   m_Name: Calmante
   m_TagString: Untagged
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1893500208
+  GlobalObjectIdHash: 3419184362
   InScenePlacedSourceGlobalObjectIdHash: 1893500208
   DeferredDespawnTick: 0
   Ownership: 1
@@ -310,7 +310,7 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
---- !u!114 &-8884851812499965897
+--- !u!114 &5315502327179139065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,10 +319,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2508039921191908271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72366d9c28971d240b198b3c6f821aac, type: 3}
+  m_Script: {fileID: 11500000, guid: 90d4260f9a111b04abc0e25a3ea1c31f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ToolItem
+  m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
+  isTool: 1
+  holdPoint: {fileID: 0}
 --- !u!1 &6020134055269455491
 GameObject:
   m_ObjectHideFlags: 0

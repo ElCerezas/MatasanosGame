@@ -1,5 +1,4 @@
-﻿// PlayerInteractor.cs
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInput))]
@@ -105,8 +104,8 @@ public class PlayerInteractor : NetworkBehaviour
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
-            if (netObj.TryGetComponent(out PhysicalItem item))
-                item.RemoveGrabber(rpcParams.Receive.SenderClientId);
+            if (netObj.TryGetComponent(out IGrabbable grabbable))
+                grabbable.RemoveGrabber(rpcParams.Receive.SenderClientId);
         }
     }
     #endregion

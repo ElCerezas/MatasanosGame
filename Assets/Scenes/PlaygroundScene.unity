@@ -1486,13 +1486,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6022525632570896004, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
+      propertyPath: AuthorityMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6022525632570896004, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
+      propertyPath: NetworkTransformExpanded
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6744497737484140002, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3419184362
-      objectReference: {fileID: 0}
-    - target: {fileID: 6744497737484140002, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 1893500208
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1880,8 +1884,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
+  isTool: 0
   holdPoint: {fileID: 0}
-  isTool: 1
 --- !u!114 &899783640
 MonoBehaviour:
   m_ObjectHideFlags: 0
