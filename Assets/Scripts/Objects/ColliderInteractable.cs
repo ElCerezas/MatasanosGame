@@ -15,14 +15,14 @@ public class ColliderInteractable : NetworkBehaviour
 
     [SerializeField] private List<CollisionEntry> collisionEntries = new();
 
-    private Dictionary<ColliderInteractableType, CollisionEntry> _entryMap;
+    private Dictionary<ColliderInteractableType, CollisionEntry> diccionario;
 
     private void Awake()
     {
-        _entryMap = new Dictionary<ColliderInteractableType, CollisionEntry>();
+        diccionario = new Dictionary<ColliderInteractableType, CollisionEntry>();
         foreach (var entry in collisionEntries)
         {
-            _entryMap.TryAdd(entry.itemType, entry);
+            diccionario.TryAdd(entry.itemType, entry);
         }
     }
 
@@ -43,7 +43,7 @@ public class ColliderInteractable : NetworkBehaviour
             return;
         }
 
-        if (_entryMap.TryGetValue(item.itemType, out CollisionEntry entry))
+        if (diccionario.TryGetValue(item.itemType, out CollisionEntry entry))
         {
             if (enter) entry.onEnter?.Invoke();
             else entry.onExit?.Invoke();

@@ -25,7 +25,6 @@ public class Carretilla : PoweredItem
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(hasPower.Value && isTurnedOn.Value);
         if (hasPower.Value && isTurnedOn.Value)
         {
             Vector3 newposition = elevadorCarretilla.position + new Vector3(0, elevation * Time.deltaTime, 0);

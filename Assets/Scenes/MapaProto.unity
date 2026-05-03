@@ -59992,6 +59992,7 @@ GameObject:
   - component: {fileID: 731570531}
   - component: {fileID: 731570530}
   - component: {fileID: 731570533}
+  - component: {fileID: 731570534}
   m_Layer: 0
   m_Name: DecalSangre
   m_TagString: Untagged
@@ -60110,10 +60111,35 @@ MonoBehaviour:
   - itemType: 0
     onEnter:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 731570534}
+          m_TargetAssemblyTypeName: Wounds, Assembly-CSharp
+          m_MethodName: Heal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     onExit:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &731570534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731570528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b68889766061c8e4b8e0d34e68b0b6ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Wounds
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &746981631
 GameObject:
   m_ObjectHideFlags: 0
@@ -60131,6 +60157,7 @@ GameObject:
   - component: {fileID: 746981635}
   - component: {fileID: 746981634}
   - component: {fileID: 746981633}
+  - component: {fileID: 746981641}
   m_Layer: 6
   m_Name: Sphere (2)
   m_TagString: Untagged
@@ -60361,6 +60388,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &746981641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746981631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe0b80b48d99fe45a57d62aaffea6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColliderInteractItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  itemType: 0
 --- !u!1 &756620346
 GameObject:
   m_ObjectHideFlags: 0
