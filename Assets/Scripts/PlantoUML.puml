@@ -5,10 +5,8 @@ title MATASANOS GAME - Diagrama UML Completo
 !define INTERFACE <<(I,#87CEEB)>>
 !define ABSTRACT <<(A,#FFD700)>>
 !define ENUM <<(E,#98FB98)>>
+!define STATE <<(S,#FF0000)>>
 
-' ============================================================
-' ENUMERACIONES (4 enums)
-' ============================================================
 package "Enums" {
     enum SnapType ENUM {
         Enchufe
@@ -37,9 +35,6 @@ package "Enums" {
     }
 }
 
-' ============================================================
-' INTERFACES (5 interfaces)
-' ============================================================
 package "Interfaces" {
     interface IEffectable INTERFACE {
         +ApplyEffect(string effectName, float duration)
@@ -64,120 +59,34 @@ package "Interfaces" {
     }
 }
 
-' ============================================================
-' EVENTOS (12 structs de eventos)
-' ============================================================
-package "Eventos y Bus" {
+package "Eventos" {
     class EventBus <<static>> {
         +{static} Subscribe<T>(Action<T> listener)
         +{static} Unsubscribe<T>(Action<T> listener)
         +{static} Publish<T>(T eventItem)
         +{static} Clear()
     }
-    
-    struct VictoryEvent { }
-    struct OnInject {
-        ulong VictimID
-        InyeccionType Type
-    }
-    struct OnAlienHealthChanged {
-        ulong AlienID
-        float CurrentHealth, MaxHealth
-    }
-    struct OnAlienDeath {
-        ulong AlienID
-    }
-    struct OnAlienParasiteAttack {
-        ulong AlienID
-    }
-    struct OnBloodBagSnapped {
-        ulong BloodBagID
-    }
-    struct OnBloodBagDetached {
-        ulong BloodBagID
-    }
-    struct OnBloodBagEmpty {
-        ulong BloodBagID
-    }
-    struct OnDienteSnap {
-        SnappableItem currentItem
-    }
-    struct TaraHealedEvent {
-        ulong TaraID
-    }
-    struct OnInsectExplosion {
-        ulong VictimID
+    class GameEvents{
+
     }
 }
 
-' ============================================================
-' MÁQUINA DE ESTADOS (FSM)
-' ============================================================
-package "FSM - State Machine" {
+package "FSM" {
     class StateMachine {
         -State currentState
         +Initialize(State initial)
         +ChangeState(State newState)
         +Update()
     }
-    
     abstract class State ABSTRACT {
         #StateMachine stateMachine
         +{abstract} OnEnter()
         +{abstract} OnUpdate()
         +{abstract} OnExit()
     }
-    
-    ' Estados del Alienígena
-    class CalmState NETWORK {
-        +OnEnter()
-        +OnUpdate()
-        +OnExit()
-    }
-    
-    class AlteredState NETWORK {
-        +OnEnter()
-        +OnUpdate()
-        +ParasyteAttack()
-        +OnExit()
-    }
-    
-    class CriticalState NETWORK {
-        +OnEnter()
-        +OnUpdate()
-        +OnExit()
-    }
-    
-    ' Estados del Insecto
-    class InsectWander NETWORK {
-        +OnEnter()
-        +OnUpdate()
-    }
-    
-    class InsectAttack NETWORK {
-        +OnEnter()
-        +OnUpdate()
-    }
-    
-    State <|-- CalmState
-    State <|-- AlteredState
-    State <|-- CriticalState
-    State <|-- InsectWander
-    State <|-- InsectAttack
 }
 
-' ============================================================
-' SISTEMA DE JUGADOR (6 clases)
-' ============================================================
 package "Player System" {
-    class GameManager NETWORK {
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +DisconnectClient()
-        +StartClient()
-        +StartHost()
-    }
-    
     class PlayerInput NETWORK {
         +Vector2 MovementInput
         +Vector2 LookInput
@@ -227,25 +136,22 @@ package "Player System" {
     PlayerInteractor o-- PlayerInput
     PlayerStateManager --> PlayerController
     PlayerStateManager --> PlayerInteractor
+    PlayerStateManager --> PlayerCamera
 }
 
-' ============================================================
-' SISTEMA DE ÍTEMS Y FÍSICA (13 clases)
-' ============================================================
-package "Items & Physics" {
+package "Objects" {
     class InteractableItem NETWORK {
         +UnityEvent onInteract
         +Interact(ulong clientID)
         +GetNetworkObjectID()
     }
-    
     class PhysicalItem NETWORK {
+        -bool isTool
         -Rigidbody rb
         -Dictionary<ulong, Transform> grabbers
         +AddGrabber(ulong, Transform)
         +RemoveGrabber(ulong)
     }
-    
     class SnappableItem NETWORK {
         +SnapType itemType
         +bool isSnappable, isUnsnappable
@@ -254,13 +160,6 @@ package "Items & Physics" {
         +SnapTo(SnapZone)
         +Unsnap()
     }
-    
-    class ToolItem NETWORK {
-        -Transform localHoldPoint
-        +AddGrabber(ulong, Transform) override
-        +RemoveGrabber(ulong) override
-    }
-    
     class PoweredItem NETWORK {
         +int energyLoad
         +bool isTurnedOn
@@ -269,67 +168,89 @@ package "Items & Physics" {
         +SetPowered(bool)
         +Interact(ulong)
     }
-    
-    class Aspiradora NETWORK {
-        +Interact(ulong)
+    class PoweredDevice NETWORK{
+        -bool hasPower
     }
-    
-    class LuzBehaviour NETWORK {
-        +Transform originPoint
-        +float rayDistance
-        +EmitLight()
-    }
-    
-    class InyeccionItem NETWORK {
-        +Inject(GameObject victim)
-    }
-    
-    class InyeccionCollider MONO {
-        +OnTriggerEnter(Collider)
-    }
-    
     abstract class TaraBase ABSTRACT {
         #ulong taraID
         +OnNetworkSpawn()
         +MarkAsHealed()
     }
-    
-    class WoundBehaviour NETWORK {
-        +float healingTimeRequired
-        +bool isBeingHealed
-        +ReceiveHealTick()
+
+    package "Tools"{
+        class Aspiradora NETWORK {
+        +Interact(ulong)
+        }
+        class Carretilla NETWORK{
+
+        }
+        class LamparaCuradora NETWORK{
+
+        }
     }
-    
-    class TeethBehaviour NETWORK {
-        +OnNetworkSpawn()
-        +OnDienteSnapHandler(OnDienteSnap)
-    }
-    
-    class BloodBag NETWORK {
+    package "Items"{
+        class BloodBag NETWORK {
         +float bloodBagCurrentCapacity
         +OnAttach(OnBloodBagSnapped)
         +OnDetach(OnBloodBagDetached)
+        }
+        class Inyeccion NETWORK {
+        }
+    }
+    package "Devices"{
+        class Impresora3D NETWORK{
+
+        }
+        class Centralita NETWORK{
+
+        }
+    }
+    package "Hazards"{
+        class BloodPuddle NETWORK {
+            -float effectDuration
+            -OnTriggerEnter(Collider)
+            -DespawnPuddle()
+        }
+
+        class PuddleSpawner MONO {
+            +{static} Instance
+            +GameObject puddlePrefab
+            +SpawnPuddleServerRpc(Vector3, float)
+        }
+        
+    }
+    package "Taras"{
+        class WoundBehaviour NETWORK {
+        +float healingTimeRequired
+        +bool isBeingHealed
+        +ReceiveHealTick()
+        }
+    
+        class TeethBehaviour NETWORK {
+        +OnNetworkSpawn()
+        +OnDienteSnapHandler(OnDienteSnap)
+        }
     }
     
-    ' Herencias
-    InteractableItem ..|> IInteractable
-    PhysicalItem ..|> IGrabbable
-    SnappableItem ..|> ISnappable
-    InyeccionItem ..|> IInteractable
+    'Interfaces:
+    IInteractable <|.. InteractableItem
+    IGrabbable <|.. PhysicalItem
+    ISnappable <|.. SnappableItem
+
+
+    'General objects:
+    PoweredItem <|- InteractableItem
+    SnappableItem -> PhysicalItem : "usa"
+
+    'Subpackages
+    TaraBase <|-- Taras
+    PoweredItem <|-- Tools
+    PhysicalItem <|-- Tools
+    PoweredDevice <|-- Devices
+    PhysicalItem <|-- Items
     
-    InteractableItem <|-- PoweredItem
-    PoweredItem <|-- Aspiradora
-    PhysicalItem <|-- ToolItem
-    TaraBase <|-- WoundBehaviour
-    TaraBase <|-- TeethBehaviour
-    
-    ' Referencias
-    SnappableItem --> PhysicalItem : "usa"
 }
 
-' ============================================================
-' SISTEMA DE ENERGÍA Y ACOPLAMIENTO (5 clases)
-' ============================================================
 package "Power & Snap System" {
     class GeneratorSystem NETWORK {
         +int maxPowerLoad
@@ -371,19 +292,13 @@ package "Power & Snap System" {
     }
     
     ' Referencias
-    GeneratorSystem o-- PowerEmitter : "[mainEmitters]"
-    PowerEmitter o-- PowerReceiver : "[connectedReceiver]"
-    PowerEmitter o-- PowerReceiver : "[powerProvider]"
-    PowerReceiver o-- PowerEmitter : "[wiredEmiters]"
-    PowerReceiver o-- PoweredItem : "[toolToPower]"
-    PoweredItem o-- PowerReceiver : "[ownPlug]"
-    SnapZone o-- SnappableItem : "[currentItem]"
+    GeneratorSystem o-- PowerEmitter
+    PowerEmitter <-> PowerReceiver
+    SnapZone o-- PowerEmitter
+    SnapZone o- SnappableItem
 }
 
-' ============================================================
-' SISTEMA DE ALIENÍGENA (7 clases)
-' ============================================================
-package "Alien System" {
+package "Alien" {
     class AlienStateManager NETWORK {
         -StateMachine stateMachine
         +AlienStateEnum currentActiveState
@@ -391,77 +306,68 @@ package "Alien System" {
         +OnNetworkSpawn()
         +TakeDamage(float)
         +NotifyParasiteAttack()
-    }
-    
+    }   
     class AlienWoundManager NETWORK {
         +GameObject woundPrefab
         +OnNetworkSpawn()
         +GenerateWound(Vector3, Vector3)
     }
     
-    class InsectSpawner NETWORK {
-        +OnNetworkSpawn()
-        +SpawnInsects(OnAlienParasiteAttack)
-    }
+    package AlienInsects{
+        class InsectSpawner NETWORK {
+            +OnNetworkSpawn()
+            +SpawnInsects(OnAlienParasiteAttack)
+        }
+        class InsectStateMachine NETWORK {
+            -StateMachine stateMachine
+            +InsectStatesEnum currentActiveState
+            +OnNetworkSpawn()
+            +AttackPlayer()
+            +WanderInsect()
+            +CheckPlayer()
+        }
+        package InsectStates{
+            class InsectWander STATE{
+                +OnEnter()
+                +OnUpdate()
+            }
     
-    class InsectStateMachine NETWORK {
-        -StateMachine stateMachine
-        +InsectStatesEnum currentActiveState
-        +OnNetworkSpawn()
-        +AttackPlayer()
-        +WanderInsect()
-        +CheckPlayer()
+            class InsectAttack STATE{
+                +OnEnter()
+                +OnUpdate()
+            }
+        }
     }
+    package States{
+        class CalmState STATE {
+            +OnEnter()
+            +OnUpdate()
+            +OnExit()
+        }
     
+        class AlteredState STATE {
+            +OnEnter()
+            +OnUpdate()
+            +ParasyteAttack()
+            +OnExit()
+        }
+    
+        class CriticalState STATE {
+            +OnEnter()
+            +OnUpdate()
+            +OnExit()
+        }
+    }
+
     ' Referencias
-    AlienStateManager o-- BloodBag
-    AlienStateManager --> CalmState
-    AlienStateManager --> AlteredState
-    AlienStateManager --> CriticalState
-    InsectStateMachine --> InsectWander
-    InsectStateMachine --> InsectAttack
+    AlienStateManager o-- States
+    InsectStateMachine o-- InsectStates
+    AlienStateManager --> InsectSpawner
+    AlienStateManager o--- BloodBag
+    AlienStateManager o--- Inyeccion
 }
 
-' ============================================================
-' ENTORNO (3 clases)
-' ============================================================
-package "Environment" {
-    class BloodPuddle NETWORK {
-        -float effectDuration
-        +OnNetworkSpawn()
-        +OnTriggerEnter(Collider)
-    }
-    
-    class PuddleSpawner MONO {
-        +{static} Instance
-        +GameObject puddlePrefab
-        +SpawnPuddleServerRpc(Vector3, float)
-    }
-    
-    BloodPuddle ..|> IEffectable
-    PuddleSpawner --> BloodPuddle : "spawnea"
-}
-
-' ============================================================
-' HERRAMIENTAS Y MECÁNICAS (1 clase)
-' ============================================================
-package "Tools & Mechanics" {
-    class LuzBehaviour NETWORK {
-        +Transform originPoint
-        +float rayDistance
-        +EmitLight()
-    }
-}
-
-' ============================================================
-' UI Y MANAGERS (4 clases)
-' ============================================================
-package "UI & Managers" {
-    class MenuNetwork MONO {
-        +Start()
-        +OnServerStarted()
-    }
-    
+package "HUD" {
     class AlienHealthbarUI NETWORK {
         +OnNetworkSpawn()
         +UpdateUI(OnAlienHealthChanged)
@@ -473,645 +379,27 @@ package "UI & Managers" {
         +Awake()
         +OnVictory(VictoryEvent)
     }
-    
+    package "Menu"{
+        class MenuNetwork MONO {
+            +Start()
+            +OnServerStarted()
+        }
+    }
+}
+
+package "Managers" {
     class WinConditionManager NETWORK {
         +OnNetworkSpawn()
         +OnTaraSpawned(TaraGeneratedEvent)
         +OnTaraHealed(TaraHealedEvent)
         +CheckWinCondition()
     }
-}
-
-@enduml
-
-package "Enums" {
-    enum SnapType ENUM_TYPE {
-        Enchufe
-        Bateria
-        Diente
-        Venda
-        Jeringuilla
-        Bloodbag
-    }
-    
-    enum AlienStateEnum ENUM_TYPE {
-        Calmado
-        Alterado
-        Critico
-    }
-    
-    enum InsectStatesEnum ENUM_TYPE {
-        Wander
-        Attack
-    }
-    
-    enum InyeccionType ENUM_TYPE {
-        Empty
-        Calmante
-        Estimulante
-    }
-}
-
-package "Interfaces" {
-    interface IInteractable INTERFACE {
-        +Interact(ulong clientID)
-        +ulong GetNetworkObjectID()
-    }
-    interface IGrabbable INTERFACE {
-        +AddGrabber(ulong clientId, Transform holdPoint)
-        +RemoveGrabber(ulong clientId)
-        +ulong GetNetworkObjectID()
-    }
-    interface ISnappable INTERFACE {
-        +bool isSnapped
-        +SnapZone currentZone
-        +SnapTo(SnapZone zone)
-        +Unsnap()
-    }
-    interface IEffectable INTERFACE {
-        +ApplyEffect(string effectName, float duration)
-    }
-}
-
-package "Events & Bus" {
-    static class EventBus <<Static>> {
-        +Subscribe<T>(Action<T> listener)
-        +Unsubscribe<T>(Action<T> listener)
-        +Publish<T>(T eventItem)
-        +Clear()
-    }
-    
-    struct OnInject <<IEvent>> {
-        +ulong VictimID
-        +InyeccionType Type
-    }
-    struct OnAlienHealthChanged <<IEvent>> {
-        +ulong AlienID
-        +float CurrentHealth
-        +float MaxHealth
-    }
-    struct OnAlienDeath <<IEvent>> {
-        +ulong AlienID
-    }
-    struct OnAlienParasiteAttack <<IEvent>> {
-        +ulong AlienID
-    }
-    struct OnBloodBagSnapped <<IEvent>> {
-        +ulong BloodBagID
-    }
-    struct OnBloodBagDetached <<IEvent>> {
-        +ulong BloodBagID
-    }
-    struct OnBloodBagEmpty <<IEvent>> {
-        +ulong BloodBagID
-    }
-    struct OnDienteSnap <<IEvent>> {
-        +SnappableItem currentItem
-    }
-    struct TaraGeneratedEvent <<IEvent>> {
-        +ulong TaraID
-    }
-    struct TaraHealedEvent <<IEvent>> {
-        +ulong TaraID
-    }
-    struct OnInsectExplosion <<IEvent>> {
-        +ulong VictimID
-    }
-    struct VictoryEvent <<IEvent>> {
-    }
-}
-
-package "FSM & State Pattern" {
-    abstract class State ABSTRACT_CLASS {
-        #StateMachine stateMachine
-        +OnEnter()
-        +OnUpdate()
-        +OnExit()
-    }
-    
-    class StateMachine {
-        -State currentState
-        +Initialize(State initial)
-        +ChangeState(State newState)
-        +Update()
-    }
-    
-    class CalmState NETWORK_BEHAVIOUR {
-        +OnEnter()
-        +OnUpdate()
-        +OnExit()
-    }
-    
-    class AlteredState NETWORK_BEHAVIOUR {
-        +OnEnter()
-        +OnUpdate()
-        +ParasyteAttack()
-        +OnExit()
-    }
-    
-    class CriticalState NETWORK_BEHAVIOUR {
-        +OnEnter()
-        +OnUpdate()
-        +OnExit()
-    }
-    
-    class InsectWander NETWORK_BEHAVIOUR {
-        +OnEnter()
-        +OnUpdate()
-    }
-    
-    class InsectAttack NETWORK_BEHAVIOUR {
-        +OnEnter()
-        +OnUpdate()
-    }
-    
-    State <|-- CalmState
-    State <|-- AlteredState
-    State <|-- CriticalState
-    State <|-- InsectWander
-    State <|-- InsectAttack
-}
-
-package "Player System" {
-    class PlayerInput NETWORK_BEHAVIOUR {
-        +Vector2 MovementInput
-        +Vector2 LookInput
-        +event Action OnJumpPressed
-        +event Action OnPickUpPressed
-        +event Action OnInteractPressed
-        +event Action OnSlipPressed
-        +OnEnable()
-        +OnDisable()
-        +Update()
-    }
-    
-    class PlayerController NETWORK_BEHAVIOUR {
-        -Rigidbody rigidBody
-        -bool isRagdoll
-        +OnNetworkSpawn()
-        +Update()
-        +FixedUpdate()
-        +Move()
-        +Jump()
-        +IsGrounded()
-        +Ragdoll(bool active)
-    }
-    
-    class PlayerCamera NETWORK_BEHAVIOUR {
-        -Transform playerCam
-        -Transform holdPoint
-        +OnNetworkSpawn()
-        +Update()
-        +LateUpdate()
-        +Ragdoll(bool)
-        +SetHoldingTool(bool)
-    }
-    
-    class PlayerInteractor NETWORK_BEHAVIOUR {
-        -IGrabbable currentlyGrabbedItem
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +TryGrabOrThrow()
-        +TryInteract()
-        +Ragdoll(bool)
-        +InteractServerRpc(ulong)
-        +GrabObjectServerRpc(ulong)
-        +ReleaseObjectServerRpc(ulong)
-    }
-    
-    class PlayerStateManager NETWORK_BEHAVIOUR {
-        -float stunDuration
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +Update()
-        +Slip()
-        +EnterRagdoll(float, bool)
-        +RecoverJump()
-        +ExitRagdoll()
-        +ApplyInyeccion(InyeccionType type)
-        +ApplyEffect(string effectName, float duration)
-        +OnPlayerInjected(OnInject)
-        +OnInsectExplosion(OnInsectExplosion)
-        +OnCollisionEnter(Collision)
-    }
-    
-    class GameManager NETWORK_BEHAVIOUR {
+    class GameManager NETWORK {
         +OnNetworkSpawn()
         +OnNetworkDespawn()
         +DisconnectClient()
         +StartClient()
         +StartHost()
-        +Update()
-    }
-    
-    PlayerController o-- PlayerInput
-    PlayerCamera o-- PlayerInput
-    PlayerInteractor o-- PlayerInput
-    PlayerStateManager --> PlayerController
-    PlayerStateManager --> PlayerInteractor
-    PlayerInteractor --> IGrabbable
-    PlayerInteractor --> IInteractable
-    PlayerStateManager ..|> IEffectable
-}
-
-package "Environment & Hazards" {
-    class PuddleSpawner MONO_BEHAVIOUR {
-        +static Instance
-        +GameObject puddlePrefab
-        +SpawnPuddleServerRpc(Vector3 position, float duration)
-    }
-    class BloodPuddle NETWORK_BEHAVIOUR {
-        -float effectDuration
-        -OnTriggerEnter(Collider other)
-        -DespawnPuddle()
     }
 }
-
-package "Items & Physics" {
-    class InteractableItem NETWORK_BEHAVIOUR {
-        +UnityEvent onInteract
-        +Interact(ulong clientID)
-        +GetNetworkObjectID()
-    }
-    
-    class PhysicalItem NETWORK_BEHAVIOUR {
-        -Rigidbody rb
-        -Dictionary<ulong, Transform> grabbers
-        +AddGrabber(ulong clientId, Transform holdPoint)
-        +RemoveGrabber(ulong clientId)
-        +GetNetworkObjectID()
-        -FixedUpdate()
-    }
-    
-    class SnappableItem NETWORK_BEHAVIOUR {
-        +SnapType itemType
-        +bool isSnappable
-        +bool isUnsnappable
-        -bool isSnapped
-        -SnapZone currentZone
-        +SnapTo(SnapZone zone)
-        +Unsnap()
-        +LateUpdate()
-    }
-    
-    class ToolItem NETWORK_BEHAVIOUR {
-        -Transform localHoldPoint
-        +FixedUpdate()
-        +AddGrabber(ulong, Transform)
-        +RemoveGrabber(ulong)
-        +EnableToolPhysicsClientRpc(ulong)
-        +SetLocalHoldPointClientRpc(ulong, ulong)
-        +ClearLocalHoldPointClientRpc(ulong)
-        +TeleportToHoldPointClientRpc(Vector3, Quaternion, ulong)
-        +NotifyHoldingToolClientRpc(bool, ulong)
-        +TeleportWhenOwner(Vector3, Quaternion)
-    }
-<<<<<<< Updated upstream
-    
-=======
->>>>>>> Stashed changes
-    class PoweredItem NETWORK_BEHAVIOUR {
-        +int energyLoad
-        +NetworkVariable<bool> isTurnedOn
-        +NetworkVariable<bool> hasPower
-        -PowerReceiver ownPlug
-<<<<<<< Updated upstream
-        +OnNetworkSpawn()
-        +SetPowered(bool powered)
-        +Interact(ulong clientID)
-        +GetLoad()
-    }
-    
-    class Aspiradora NETWORK_BEHAVIOUR {
-        +Interact(ulong clientID)
-        +Update()
-    }
-    
-    class InyeccionItem NETWORK_BEHAVIOUR {
-        +Inject(GameObject victim)
-    }
-    
-    class InyeccionCollider MONO_BEHAVIOUR {
-        +OnTriggerEnter(Collider)
-    }
-    
-    abstract class TaraBase ABSTRACT_CLASS {
-        #ulong taraID
-        +OnNetworkSpawn()
-        +MarkAsHealed()
-    }
-    
-    class WoundBehaviour NETWORK_BEHAVIOUR {
-        +float healingTimeRequired
-        +NetworkVariable<bool> isBeingHealed
-        +Update()
-        +ReceiveHealTick()
-    }
-    
-    class TeethBehaviour NETWORK_BEHAVIOUR {
-        +OnNetworkSpawn()
-        +OnDienteSnapHandler(OnDienteSnap)
-    }
-    
-    InteractableItem ..|> IInteractable
-    PhysicalItem ..|> IGrabbable
-    SnappableItem ..|> ISnappable
-    PoweredItem --|> InteractableItem
-    Aspiradora --|> PoweredItem
-    ToolItem --|> PhysicalItem
-    TaraBase <|-- WoundBehaviour
-    TaraBase <|-- TeethBehaviour
-    SnappableItem --> PhysicalItem
-    InyeccionItem --> InyeccionType
-=======
-        +SetPowered(bool powered)
-        +Interact(ulong clientID)
-        +GetLoad()
-    }
-    enum SnapType {
-        Enchufe
-        Bateria
-        Diente
-        Venda
-        Jeringuilla
-        Bloodbag
-    }
-    package "Tools" {
-        class Aspiradora NETWORK_BEHAVIOUR {
-        }
-    }
-    package "Items"{
-        class BloodBag NETWORK_BEHAVIOUR {
-
-        }
-    }
-    package "Systems"{
-        class Impresora3D NETWORK_BEHAVIOUR {
-
-        }
-    }
->>>>>>> Stashed changes
-}
-
-package "Power & Snap System" {
-    class GeneratorSystem NETWORK_BEHAVIOUR {
-        +int maxPowerLoad
-        +NetworkVariable<int> currentLoad
-        +NetworkVariable<bool> isGeneratorOn
-        -PowerEmitter[] mainEmitters
-        +OnNetworkSpawn()
-        +EvaluateLoad()
-        +TurnOnGenerator()
-    }
-    
-    class PowerEmitter NETWORK_BEHAVIOUR {
-        +NetworkVariable<bool> hasPower
-        -PowerReceiver connectedReceiver
-        -GeneratorSystem generator
-        -PowerReceiver powerProvider
-        +OnNetworkSpawn()
-        +OnPlug()
-        +OnUnplug()
-        +SetEmitting(bool emitting)
-        +GetLoad()
-        +ConectedReciverChanged()
-    }
-    
-    class PowerReceiver NETWORK_BEHAVIOUR {
-        +NetworkVariable<bool> hasPower
-        -PowerEmitter[] wiredEmiters
-        -PoweredItem toolToPower
-        +SetPower(bool isPowered, PowerEmitter emiter)
-        +GetLoad()
-        +ConectedConsumerChanged()
-    }
-    
-    class SnapZone NETWORK_BEHAVIOUR {
-        +SnapType acceptedType
-        +Transform snapAnchor
-        +SnappableItem currentItem
-        -float cooldown
-        +UnityEvent OnObjectSnapped
-        +UnityEvent OnObjectUnsnapped
-        +Awake()
-        +Update()
-        +OnNetworkSpawn()
-        +OnTriggerEnter(Collider other)
-        +ReleaseItem()
-    }
-<<<<<<< Updated upstream
-    
-    GeneratorSystem o-- PowerEmitter : "mainEmitters"
-    PowerEmitter o-- PowerReceiver : "connectedReceiver"
-    PowerEmitter o-- PowerReceiver : "powerProvider"
-    PowerEmitter --> GeneratorSystem
-    PowerReceiver o-- PowerEmitter : "wiredEmiters"
-    PowerReceiver o-- PoweredItem : "toolToPower"
-    PoweredItem o-- PowerReceiver : "ownPlug"
-    SnapZone o-- SnappableItem
-}
-
-package "Environment & Hazards" {
-    class BloodPuddle NETWORK_BEHAVIOUR {
-        -float effectDuration
-        +OnNetworkSpawn()
-        +OnTriggerEnter(Collider other)
-        -DespawnPuddle()
-    }
-    
-    class PuddleSpawner MONO_BEHAVIOUR {
-        +static Instance
-        +GameObject puddlePrefab
-        +Awake()
-        +SpawnPuddleServerRpc(Vector3 position, float duration)
-    }
-    
-    BloodPuddle ..|> IEffectable
-    PuddleSpawner --> BloodPuddle : "Spawnea"
-}
-
-package "Tools & Mechanics" {
-    class LuzBehaviour NETWORK_BEHAVIOUR {
-        +Transform originPoint
-        +float rayDistance
-        +Update()
-        +EmitLight()
-        +ResetTargets()
-        +NotifyHealWoundServerRpc(ulong)
-        +RequestNewWoundServerRpc(Vector3, Vector3, ulong)
-    }
-    
-    LuzBehaviour --> WoundBehaviour : "Cura (HealTick)"
-    LuzBehaviour --> AlienWoundManager : "Genera heridas"
-=======
->>>>>>> Stashed changes
-}
-
-package "Alien System" {
-    class AlienStateManager NETWORK_BEHAVIOUR {
-        -StateMachine stateMachine
-        +NetworkVariable<AlienStateEnum> currentActiveState
-        +NetworkVariable<float> currentHealth
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +Update()
-        +TakeDamage(float damage)
-        +NotifyParasiteAttack()
-        -HandleStateLogic()
-        -HandleDamageOverTime()
-        -ChangeState(State)
-        -OnInjectionReceived(OnInject)
-        -OnBloodBagEmptyReceived(OnBloodBagEmpty)
-        -OnBloodBagConnected(OnBloodBagSnapped)
-        -HandleDeath()
-    }
-    
-    class AlienWoundManager NETWORK_BEHAVIOUR {
-        +GameObject woundPrefab
-        +OnNetworkSpawn()
-        +GenerateWound(Vector3 position, Vector3 normal)
-        -SpawnInitialWounds(int count)
-        -TryGenerateRandomWound()
-        -SpawnWoundsNextFrame()
-    }
-    
-    class BloodBag NETWORK_BEHAVIOUR {
-        +NetworkVariable<float> bloodBagCurrentCapacity
-        +OnNetworkSpawn()
-        +Update()
-        +OnAttach(OnBloodBagSnapped e)
-        +OnDetach(OnBloodBagDetached e)
-        +OnCollisionEnter(Collision)
-        -HandleBloodLoss()
-        -BloodBagEmpty()
-    }
-    
-    class InsectSpawner NETWORK_BEHAVIOUR {
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +SpawnInsects(OnAlienParasiteAttack e)
-    }
-    
-    class InsectStateMachine NETWORK_BEHAVIOUR {
-        -StateMachine stateMachine
-        +NetworkVariable<InsectStatesEnum> currentActiveState
-        +OnNetworkSpawn()
-        +AttackPlayer()
-        +WanderInsect()
-        +CheckPlayer()
-        -Update()
-        -ChangeState(State)
-        -NewWanderDirection()
-        -OnCollisionEnter(Collision)
-    }
-    
-    AlienStateManager --> CalmState
-    AlienStateManager --> AlteredState
-    AlienStateManager --> CriticalState
-    InsectStateMachine --> InsectWander
-    InsectStateMachine --> InsectAttack
-    AlienStateManager o-- BloodBag
-}
-
-package "UI & Managers" {
-    class AlienHealthbarUI NETWORK_BEHAVIOUR {
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +Update()
-        +UpdateUI(OnAlienHealthChanged e)
-        +SetFill(float Pct, float MaxPct)
-    }
-    
-    class VictoryHandlerUI NETWORK_BEHAVIOUR {
-        +OnNetworkSpawn()
-        +Update()
-        +OnVictory(VictoryEvent)
-    }
-    
-    class WinConditionManager NETWORK_BEHAVIOUR {
-        +OnNetworkSpawn()
-        +OnNetworkDespawn()
-        +OnTaraSpawned(TaraGeneratedEvent)
-        +OnTaraHealed(TaraHealedEvent)
-        +CheckWinCondition()
-        +NotifyVictoryClientRpc()
-    }
-    
-    class MenuNetwork MONO_BEHAVIOUR {
-        +Start()
-        +OnServerStarted()
-        +OnDisable()
-    }
-    
-}
-
-' ============ HERENCIAS ============
-State <|-- CalmState
-State <|-- AlteredState
-State <|-- CriticalState
-State <|-- InsectWander
-State <|-- InsectAttack
-InteractableItem <|-- PoweredItem
-PoweredItem <|-- Aspiradora
-PhysicalItem <|-- ToolItem
-TaraBase <|-- WoundBehaviour
-TaraBase <|-- TeethBehaviour
-
-' ============ IMPLEMENTACIONES DE INTERFACES ============
-PhysicalItem ..|> IGrabbable
-SnappableItem ..|> ISnappable
-InteractableItem ..|> IInteractable
-InyeccionItem ..|> IInteractable
-PlayerStateManager ..|> IEffectable
-BloodPuddle ..|> IEffectable
-
-' ============ REFERENCIAS DIRECTAS ============
-PlayerController o-- PlayerInput
-PlayerCamera o-- PlayerInput
-PlayerInteractor o-- PlayerInput
-<<<<<<< Updated upstream
-GeneratorSystem o-- PowerEmitter : "mainEmitters"
-PowerEmitter o-- PowerReceiver : "connectedReceiver"
-PowerEmitter o-- PowerReceiver : "powerProvider"
-PowerReceiver o-- PowerEmitter : "wiredEmiters"
-=======
-PlayerStateManager -left-> PlayerController
-PlayerStateManager -left-> PlayerInteractor
-
-PlayerInteractor ---> IInteractable
-PlayerInteractor ---> IGrabbable
-
-' Relaciones Hazards
-PlayerStateManager .up.|> IEffectable
-BloodPuddle ..> IEffectable : "Llama a ApplyEffect()"
-PuddleSpawner ..> BloodPuddle : "Spawnea"
-
-' Relaciones Items & Snap
-PhysicalItem .up.|> IGrabbable
-InteractableItem .up.|> IInteractable
-SnappableItem .up.|> ISnappable
-SnappableItem -right-> PhysicalItem
-SnapZone o-- SnappableItem
-PoweredItem -|> InteractableItem
-
-' Relaciones Objetos
-PoweredItem <|-- Tools
-PhysicalItem <|-- Items
-InteractableItem <|-- Systems
-
-' Relaciones Power System
-GeneratorSystem o-- PowerEmitter : "mainEmitters"
-
-PowerEmitter o-- PowerReceiver : "connectedReceiver (OnPlug)"
-PowerEmitter o-- PowerReceiver : "powerProvider (Inspector)"
-PowerEmitter o-- GeneratorSystem : "generator (Inspector)"
-PowerReceiver o-- PowerEmitter : "wiredEmiters (Alargador)"
->>>>>>> Stashed changes
-PowerReceiver o-- PoweredItem : "toolToPower"
-PoweredItem o-- PowerReceiver : "ownPlug"
-SnapZone o-- SnappableItem
-AlienStateManager o-- BloodBag
-PuddleSpawner --> BloodPuddle : "Spawnea"
-SnappableItem --> PhysicalItem
-
 @enduml
