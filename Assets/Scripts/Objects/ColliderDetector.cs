@@ -4,24 +4,24 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ColliderInteractable : NetworkBehaviour
+public class ColliderDetector : NetworkBehaviour
 {
+    [SerializeField] public ColliderDetectorType detectorType;
 
-    
     [Serializable] public class CollisionEntry
     {
-       public ColliderInteractableType itemType;
+       public ColliderItemType itemType;
        public UnityEvent onEnter;
        public UnityEvent onExit;
     }
 
     [SerializeField] private List<CollisionEntry> collisionEntries = new();
 
-    private Dictionary<ColliderInteractableType, CollisionEntry> diccionario;
+    private Dictionary<ColliderItemType, CollisionEntry> diccionario;
 
     private void Awake()
     {
-       diccionario = new Dictionary<ColliderInteractableType, CollisionEntry>();
+       diccionario = new Dictionary<ColliderItemType, CollisionEntry>();
        foreach (CollisionEntry entry in collisionEntries)
        {
            diccionario.TryAdd(entry.itemType, entry);
@@ -47,8 +47,16 @@ public class ColliderInteractable : NetworkBehaviour
 
         if (diccionario.TryGetValue(item.itemType, out CollisionEntry entry))
         {
-            if (enter) entry.onEnter?.Invoke();
-            else entry.onExit?.Invoke();
+            if (enter)
+            {
+                item.OnEnter(detectorType);
+                entry.onEnter?.Invoke();
+            }
+            else
+            {
+                item.OnExit(detectorType);
+                entry.onExit?.Invoke();
+            } 
         }
 
     }

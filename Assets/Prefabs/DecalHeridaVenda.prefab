@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2456385189
+  GlobalObjectIdHash: 3332195338
   InScenePlacedSourceGlobalObjectIdHash: 3243092559
   DeferredDespawnTick: 0
   Ownership: 1
@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColliderInteractable
   ShowTopMostFoldoutHeaderGroup: 1
+  detectorType: 1
   collisionEntries:
   - itemType: 1
     onEnter:
@@ -176,10 +177,10 @@ MonoBehaviour:
         - m_Target: {fileID: 510865694355661995}
           m_TargetAssemblyTypeName: WoundVendaBehaviour, Assembly-CSharp
           m_MethodName: DesinfectedByCotton
-          m_Mode: 2
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 

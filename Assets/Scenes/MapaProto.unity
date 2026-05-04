@@ -54276,6 +54276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToolItem
   ShowTopMostFoldoutHeaderGroup: 1
   holdPoint: {fileID: 0}
+  isTool: 0
 --- !u!1 &514482175
 GameObject:
   m_ObjectHideFlags: 0
@@ -60541,6 +60542,7 @@ GameObject:
   - component: {fileID: 746981634}
   - component: {fileID: 746981633}
   - component: {fileID: 746981641}
+  - component: {fileID: 746981642}
   m_Layer: 6
   m_Name: Algodon
   m_TagString: Untagged
@@ -60587,6 +60589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
   holdPoint: {fileID: 0}
+  isTool: 0
 --- !u!114 &746981634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60784,6 +60787,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColliderInteractItem
   ShowTopMostFoldoutHeaderGroup: 1
   itemType: 0
+  collisionEntries:
+  - detectorType: 0
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 746981642}
+          m_TargetAssemblyTypeName: Algodon, Assembly-CSharp
+          m_MethodName: Desinfectar
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
+  - detectorType: 1
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 746981642}
+          m_TargetAssemblyTypeName: Algodon, Assembly-CSharp
+          m_MethodName: AlgodonInfectado
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &746981642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746981631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84bb67f620e732549a863a60ac36a7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Algodon
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &754723804
 GameObject:
   m_ObjectHideFlags: 0
@@ -63849,6 +63904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
   holdPoint: {fileID: 0}
+  isTool: 0
 --- !u!114 &901012907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136530,6 +136586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
   holdPoint: {fileID: 0}
+  isTool: 0
 --- !u!1 &1158700190
 GameObject:
   m_ObjectHideFlags: 0
@@ -199024,10 +199081,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1772347681}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd0bd22ddf994ce4c9b53e7f658398dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c1f911117c011c49ba5b0935886fb2c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AlcoholLiquidBehaviour
+  m_EditorClassIdentifier: Assembly-CSharp::ColliderInteractable
   ShowTopMostFoldoutHeaderGroup: 1
+  detectorType: 0
+  collisionEntries:
+  - itemType: 0
+    onEnter:
+      m_PersistentCalls:
+        m_Calls: []
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!43 &1773701400
 Mesh:
   m_ObjectHideFlags: 0

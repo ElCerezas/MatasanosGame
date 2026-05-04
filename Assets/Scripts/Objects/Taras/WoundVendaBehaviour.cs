@@ -5,13 +5,19 @@ public class WoundVendaBehaviour : TaraBase
 {
     private NetworkVariable<bool> isDesinfected = new NetworkVariable<bool>(false);
     private NetworkVariable<bool> isHealed = new NetworkVariable<bool>(false);
+    private ColliderDetector colliderInteracttable;
 
+    private void Awake()
+    {
+        colliderInteracttable = gameObject.GetComponent<ColliderDetector>();
+    }
     public void DesinfectedByCotton()
     {
         if (!isDesinfected.Value)
         {
+            colliderInteracttable.detectorType = ColliderDetectorType.HeridaDesinfectada;
             isDesinfected.Value = true;
-            Debug.Log("Desinfectado");
+            Debug.Log("Desinfectada herida");
         }
     }
     public void HealedByBandage()
