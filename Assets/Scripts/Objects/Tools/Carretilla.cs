@@ -30,7 +30,6 @@ public class Carretilla : PoweredItem
             Vector3 newposition = elevadorCarretilla.position + new Vector3(0, elevation * Time.deltaTime, 0);
             if (Vector3.Distance(gameObject.transform.position, newposition) > minElevation && Vector3.Distance(gameObject.transform.position, newposition) < maxElevation)
             {
-                Debug.Log("elevado");
                 elevadorCarretilla.transform.position = newposition;
             }
         }

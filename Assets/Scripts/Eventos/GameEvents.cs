@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public struct VictoryEvent : IEvent
 {
@@ -68,4 +70,15 @@ public struct OnBloodBagSnapped : IEvent
 public struct OnBloodBagDetached : IEvent
 {
     public ulong BloodBagID;
+}
+
+/*
+==============================================================================
+                                EVENTOS DE HERIDAS
+==============================================================================
+*/
+[Serializable]
+public struct ColliderInteractableEvent : IEvent
+{
+    public ulong ObjectID;
 }

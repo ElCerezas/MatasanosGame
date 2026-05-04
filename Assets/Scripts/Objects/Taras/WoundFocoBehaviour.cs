@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class WoundBehaviour : TaraBase
+public class WoundFocoBehaviour : TaraBase
 {
     private float healTimer = 0f;
     public float healingTimeRequired = 3f;

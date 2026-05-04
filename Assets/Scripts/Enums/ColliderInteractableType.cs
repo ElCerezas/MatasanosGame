@@ -1,4 +1,5 @@
 public enum ColliderInteractableType
 {
-    Algodon
+    Algodon,
+    AlgodonEstirilizado
 }

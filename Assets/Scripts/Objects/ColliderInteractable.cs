@@ -6,11 +6,13 @@ using UnityEngine.Events;
 
 public class ColliderInteractable : NetworkBehaviour
 {
+
+    
     [Serializable] public class CollisionEntry
     {
-        public ColliderInteractableType itemType;
-        public UnityEvent onEnter;
-        public UnityEvent onExit;
+       public ColliderInteractableType itemType;
+       public UnityEvent onEnter;
+       public UnityEvent onExit;
     }
 
     [SerializeField] private List<CollisionEntry> collisionEntries = new();
@@ -19,11 +21,11 @@ public class ColliderInteractable : NetworkBehaviour
 
     private void Awake()
     {
-        diccionario = new Dictionary<ColliderInteractableType, CollisionEntry>();
-        foreach (var entry in collisionEntries)
-        {
-            diccionario.TryAdd(entry.itemType, entry);
-        }
+       diccionario = new Dictionary<ColliderInteractableType, CollisionEntry>();
+       foreach (CollisionEntry entry in collisionEntries)
+       {
+           diccionario.TryAdd(entry.itemType, entry);
+       }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,5 +50,6 @@ public class ColliderInteractable : NetworkBehaviour
             if (enter) entry.onEnter?.Invoke();
             else entry.onExit?.Invoke();
         }
+
     }
 }

@@ -13,7 +13,7 @@ public class LuzBehaviour : NetworkBehaviour
     public float timeToHeal = 1.5f;
 
     private float alienTimer = 0f;
-    private WoundBehaviour currentWoundTarget = null;
+    private WoundFocoBehaviour currentWoundTarget = null;
     private AlienWoundManager currentAlienTarget = null;
 
     void Update()
@@ -30,7 +30,7 @@ public class LuzBehaviour : NetworkBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, alienLayer))
         {
-            if (hit.collider.TryGetComponent<WoundBehaviour>(out var herida))
+            if (hit.collider.TryGetComponent<WoundFocoBehaviour>(out var herida))
             {
                 currentAlienTarget = null;
                 alienTimer = 0f;
@@ -73,7 +73,7 @@ public class LuzBehaviour : NetworkBehaviour
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(woundNetId, out var obj))
         {
-            if (obj.TryGetComponent<WoundBehaviour>(out var wound))
+            if (obj.TryGetComponent<WoundFocoBehaviour>(out var wound))
             {
                 wound.ReceiveHealTick();
             }
