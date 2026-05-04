@@ -6,13 +6,11 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkRigidbody))]
 public class PhysicalItem : NetworkBehaviour, IGrabbable
 {
-    [SerializeField] bool isTool;
     public Transform holdPoint;
 
     float damping = 5f;
     float springForce = 100f;
     float breakDistance = 5f;
-    float toolRotationSpeed = 15f;
 
     protected Rigidbody rb;
     public Dictionary<ulong, Transform> grabbers = new Dictionary<ulong, Transform>();
@@ -59,15 +57,9 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
         {
             netForce += -rb.linearVelocity * damping;
             rb.AddForce(netForce, ForceMode.Force);
-
-            if (isTool && grabbers.Count == 1 && singleGrabberPoint != null)
-            {
-                Quaternion targetRotation = singleGrabberPoint.rotation;
-                rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * toolRotationSpeed));
-            }
         }
     }
-    public void AddGrabber(ulong clientId, Transform holdPoint)
+    public virtual void AddGrabber(ulong clientId, Transform holdPoint)
     {
         if (!grabbers.ContainsKey(clientId))
         {

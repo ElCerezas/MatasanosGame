@@ -53858,6 +53858,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504314924}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &509679753 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2508039921191908271, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
+  m_PrefabInstance: {fileID: 1402490791}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &509679763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509679753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72366d9c28971d240b198b3c6f821aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToolItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdPoint: {fileID: 0}
+  holdForce: 200
+  holdDamping: 15
 --- !u!1 &514482175
 GameObject:
   m_ObjectHideFlags: 0
@@ -60203,7 +60224,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
-  isTool: 0
   holdPoint: {fileID: 0}
 --- !u!114 &746981634
 MonoBehaviour:
@@ -63223,7 +63243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
-  isTool: 0
   holdPoint: {fileID: 0}
 --- !u!114 &901012907
 MonoBehaviour:
@@ -135905,7 +135924,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
   ShowTopMostFoldoutHeaderGroup: 1
-  isTool: 0
   holdPoint: {fileID: 0}
 --- !u!1 &1158700190
 GameObject:
@@ -155096,10 +155114,14 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 1893500208
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5315502327179139065, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2508039921191908271, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 509679763}
   m_SourcePrefab: {fileID: 100100000, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
 --- !u!1 &1407321708
 GameObject:
