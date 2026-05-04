@@ -72,7 +72,7 @@ public class PlayerController : NetworkBehaviour
         if (isRagdoll) return;
         if (!isGrounded) return;
 
-        rigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        rigidBody.AddForce(Vector3.up * jumpForce * rigidBody.mass, ForceMode.Impulse);
     }
 
     bool IsGrounded()

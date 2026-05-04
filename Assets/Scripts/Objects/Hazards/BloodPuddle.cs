@@ -1,26 +1,49 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class BloodPuddle : NetworkBehaviour
 {
     [SerializeField] private float effectDuration = 5f;
+    
+    private NetworkVariable<bool> isActive = new NetworkVariable<bool>(true);
+    private DecalProjector decalProjector;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        decalProjector = GetComponentInChildren<DecalProjector>();
         if (!IsServer) return;
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (!IsServer) return;
+        if (!isActive.Value) return;
+        
         if (other.TryGetComponent(out IEffectable victim))
         {
-            victim.ApplyEffect("BloodPuddle", effectDuration);
+            victim.ApplyEffect("Blood", effectDuration);
         }
     }
 
-    private void DespawnPuddle()
+    public void Clean()
     {
-        if (NetworkObject.IsSpawned) NetworkObject.Despawn();
+        if (!IsServer) return;
+        if (!isActive.Value) return;
+
+        isActive.Value = false;
+        CleanPuddleClientRpc();
     }
+
+    [ClientRpc]
+    private void CleanPuddleClientRpc()
+    {
+        if (NetworkObject.IsSpawned)
+        {
+            NetworkObject.Despawn();
+        }
+    }
+
+    public bool IsActive() => isActive.Value;
 }
