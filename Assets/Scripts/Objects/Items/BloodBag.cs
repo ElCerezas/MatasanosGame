@@ -116,7 +116,7 @@ public class BloodBag : NetworkBehaviour
         NetworkObject parentNetObject = GetComponentInParent<NetworkObject>();
         if (parentNetObject != null && parentNetObject.IsSpawned)
         {
-            parentNetObject.Despawn(false);
+            parentNetObject.Despawn();
         }
     }
 }
