@@ -2,6 +2,7 @@
 using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.Rendering;
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerInteractor))]
@@ -54,7 +55,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     public void Slip(/*float stunTime*/)
     {
         EnterRagdoll(3f);
-        //ragrollForce
+        rb.AddTorque(transform.right * -1000);
     }
     private void Update()
     {

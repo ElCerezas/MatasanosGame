@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -19,12 +19,12 @@ public class BloodBag : NetworkBehaviour
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
     private bool IsAttached = false;
-    private ToolItem toolItem;
+    private PhysicalItem toolItem;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        toolItem = GetComponent<ToolItem>();
+        toolItem = GetComponent<PhysicalItem>();
         if (IsServer)
         {
             bloodBagCurrentCapacity.Value = bloodBagMaxCapacity;

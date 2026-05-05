@@ -6,33 +6,39 @@ public class PlayerInteractor : NetworkBehaviour
 {
     PlayerInput playerInput;
     public Transform holdPoint;
+
     [SerializeField] Transform cameraTransform;
     private bool isRagdoll = false;
 
     [Header("Interaction Settings")]
     [SerializeField] float interactRange = 3f;
     [SerializeField] LayerMask interactLayer;
+
     IGrabbable currentlyGrabbedItem;
 
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
     }
+
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
         playerInput.OnInteractPressed += TryInteract;
         playerInput.OnPickUpPressed += TryGrabOrThrow;
     }
+
     public override void OnNetworkDespawn()
     {
         if (!IsOwner) return;
         playerInput.OnInteractPressed -= TryInteract;
         playerInput.OnPickUpPressed -= TryGrabOrThrow;
     }
+
     void TryGrabOrThrow()
     {
         if (isRagdoll) return;
+
         if (currentlyGrabbedItem != null)
         {
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
@@ -74,6 +80,7 @@ public class PlayerInteractor : NetworkBehaviour
     }
 
     #region ServerCom
+
     [ServerRpc]
     void InteractServerRpc(ulong networkObjectId, ServerRpcParams rpcParams = default)
     {
@@ -90,12 +97,12 @@ public class PlayerInteractor : NetworkBehaviour
         ulong senderClientId = rpcParams.Receive.SenderClientId;
 
         if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(senderClientId, out NetworkClient client)) return;
-        Transform serverHoldPoint = client.PlayerObject.GetComponent<PlayerInteractor>().holdPoint;
+        NetworkObject playerNetObj = client.PlayerObject;
 
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
             if (netObj.TryGetComponent(out IGrabbable grabbable))
-                grabbable.AddGrabber(senderClientId, serverHoldPoint);
+                grabbable.AddGrabber(senderClientId, playerNetObj);
         }
     }
 
@@ -108,5 +115,6 @@ public class PlayerInteractor : NetworkBehaviour
                 grabbable.RemoveGrabber(rpcParams.Receive.SenderClientId);
         }
     }
+
     #endregion
 }
