@@ -11,11 +11,13 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private float bloodLossRate = 1f;
     [SerializeField] private TextMeshPro capacityText;
     [Header("Collision Explosion Settings")]
-    [SerializeField] private float velocityThreshold = 2f;
+    [SerializeField] private float velocityThreshold = 1f;
+    [SerializeField] private bool debugCollisions = true;
     [SerializeField] private int puddleCount = 5;
     [SerializeField] private float puddleSpreadRadius = 3f;
     [SerializeField] private LayerMask groundLayer;
     
+
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
     private bool IsAttached = false;
@@ -51,7 +53,7 @@ public class BloodBag : NetworkBehaviour
         bloodLossTimer += Time.deltaTime;
         if (bloodLossTimer >= bloodLossRate)
         {
-            bloodLossTimer -= bloodLossRate; 
+            bloodLossTimer -= bloodLossRate;
             bloodBagCurrentCapacity.Value -= bloodLossQuantity;
             if (bloodBagCurrentCapacity.Value <= 0f)
             {
@@ -82,11 +84,23 @@ public class BloodBag : NetworkBehaviour
         EventBus.Publish(new OnBloodBagEmpty { BloodBagID = GetComponentInParent<NetworkObject>().NetworkObjectId });
     }
 
+
     void OnCollisionEnter(Collision collision)
     {
         if (!IsServer) return;
         if (toolItem.grabbers.Count == 0) return;
-        if (collision.relativeVelocity.magnitude < velocityThreshold) return;
+
+        float impactVelocity = Mathf.Max(
+            GetComponent<Rigidbody>().linearVelocity.magnitude,
+            collision.relativeVelocity.magnitude
+        );
+
+        if (debugCollisions)
+        {
+            Debug.Log($"[{NetworkManager.Singleton.LocalClientId}] Impact: {impactVelocity} vs Threshold: {velocityThreshold}");
+        }
+
+        if (impactVelocity < velocityThreshold) return;
 
         SpawnBloodPuddles(collision.contacts[0].point);
         DespawnBloodBag();
@@ -103,7 +117,7 @@ public class BloodBag : NetworkBehaviour
             );
 
             Vector3 puddlePosition = impactPoint + randomOffset;
-            
+
             if (Physics.Raycast(puddlePosition + Vector3.up * 10f, Vector3.down, out RaycastHit hit, 20f, groundLayer))
             {
                 PuddleSpawner.Instance.SpawnPuddleServerRpc(hit.point, hit.normal);
@@ -113,7 +127,7 @@ public class BloodBag : NetworkBehaviour
 
     private void DespawnBloodBag()
     {
-        NetworkObject parentNetObject = GetComponentInParent<NetworkObject>();
+        NetworkObject parentNetObject = GetComponent<NetworkObject>();
         if (parentNetObject != null && parentNetObject.IsSpawned)
         {
             parentNetObject.Despawn();

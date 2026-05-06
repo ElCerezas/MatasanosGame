@@ -19,7 +19,7 @@ public class AlienWoundManager : NetworkBehaviour
 
 
 
-    // Añade estas variables para guardar el estado de debug
+    // Aï¿½ade estas variables para guardar el estado de debug
     private List<(Vector3 origin, Vector3 direction, bool hit)> _debugRays = new();
     private Vector3 _debugSphereCenter;
     private float _debugSphereRadius = 10f;
@@ -115,7 +115,7 @@ public class AlienWoundManager : NetworkBehaviour
         netObj.Spawn();
         netObj.TrySetParent(transform, worldPositionStays: true);
     }
-
+    /*
     void OnDrawGizmos()
     {
         // Dibuja la esfera de muestreo
@@ -132,11 +132,12 @@ public class AlienWoundManager : NetworkBehaviour
             Gizmos.color = wasHit ? Color.green : Color.red;
             Gizmos.DrawSphere(origin, 0.05f);
 
-            // Línea del rayo
+            // Lï¿½nea del rayo
             Gizmos.color = wasHit
                 ? new Color(0f, 1f, 0f, 0.8f)
                 : new Color(1f, 0f, 0f, 0.4f);
             Gizmos.DrawRay(origin, direction * 6f);
         }
     }
+    */
 }
