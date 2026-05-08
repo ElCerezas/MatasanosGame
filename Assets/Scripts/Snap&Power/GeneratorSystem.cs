@@ -17,31 +17,28 @@ public class GeneratorSystem : NetworkBehaviour
         {
             foreach (var emitter in mainEmitters)
                 emitter.SetEmitting(isGeneratorOn.Value);
+            EventBus.Publish(new GeneratorEvent { IsGeneratorOn = true });
             EvaluateLoad();
         }
     }
     public void EvaluateLoad()
     {
         if (!IsServer) return;
-        //Debug.Log("2");
         if (!isGeneratorOn.Value) return;
-       // Debug.Log("1");
         int calculatedLoad = 0;
         foreach (var emitter in mainEmitters)
         {
-            //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             calculatedLoad += emitter.GetLoad();
         }
         currentLoad.Value = calculatedLoad;
-        //Debug.Log($"PowerLoad: {currentLoad.Value} / {maxPowerLoad}");
 
         if (currentLoad.Value > maxPowerLoad)
         {
-            //Debug.LogWarning("Sobrecarga: BoOoOm");
             isGeneratorOn.Value = false;
             foreach (var emitter in mainEmitters)
             {
                 emitter.SetEmitting(false);
+                EventBus.Publish(new GeneratorEvent { IsGeneratorOn = false });
             }
             
             currentLoad.Value = 0;
@@ -51,6 +48,7 @@ public class GeneratorSystem : NetworkBehaviour
     {
         if (!IsServer) return;
         isGeneratorOn.Value = true;
+        EventBus.Publish(new GeneratorEvent { IsGeneratorOn = true });
         foreach (var emitter in mainEmitters)
         {
             emitter.SetEmitting(true);

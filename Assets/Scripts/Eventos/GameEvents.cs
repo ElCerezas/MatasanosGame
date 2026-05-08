@@ -1,10 +1,14 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public struct VictoryEvent : IEvent
 {
     
+}
+public struct GeneratorEvent : IEvent
+{
+    public bool IsGeneratorOn;
 }
 
 public struct OnInject : IEvent
