@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlaneHeartbeatVisualizer : MonoBehaviour
+public class PlaneHeartbeatVisualizer : NetworkBehaviour
 {
     private LineRenderer lineRenderer;
 
@@ -14,22 +15,29 @@ public class PlaneHeartbeatVisualizer : MonoBehaviour
     [SerializeField] private bool flatline = false;
 
     [Header("Visualización")]
-    [SerializeField] private Color waveColor = Color.red;
+    private Color waveColor = Color.red;
     [Range(0.05f, 0.5f)]
     [SerializeField] private float lineWidth = 0.1f;
     [SerializeField] private int pointsPerLine = 500;
 
     [Header("Pantalla")]
     [SerializeField] private float planeWidth = 10f;
-    [SerializeField] private bool autoCycles = true; 
+    [SerializeField] private bool autoCycles = true;
     [SerializeField] private int targetCyclesAt60BPM = 4;
     [SerializeField] private float scrollSpeed = 1f;
     [SerializeField] private float baselineNoise = 0.01f;
-    
+    [Header("Colores")]
+    [SerializeField] private Color calmantColor = Color.blue;
+    [SerializeField] private Color defaultColor = Color.red;
+
     private int cyclesVisible = 2;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        EventBus.Subscribe<OnAlienCalmantUsed>(CalmantApplied);
+        EventBus.Subscribe<OnCalmantEnded>(CalmantEnded);
+
+        waveColor = defaultColor;
         lineRenderer = GetComponent<LineRenderer>();
         if (lineRenderer == null)
         {
@@ -47,8 +55,26 @@ public class PlaneHeartbeatVisualizer : MonoBehaviour
             planeTransform = transform;
     }
 
+    public override void OnNetworkDespawn()
+    {
+        EventBus.Unsubscribe<OnAlienCalmantUsed>(CalmantApplied);
+        EventBus.Unsubscribe<OnCalmantEnded>(CalmantEnded);
+    }
+    
+
+    private void CalmantApplied(OnAlienCalmantUsed used)
+    {
+        waveColor = calmantColor;
+    }
+
+    private void CalmantEnded(OnCalmantEnded ended)
+    {
+        waveColor = defaultColor;
+    }
+
     void Update()
     {
+        if (lineRenderer == null) return;
         lineRenderer.startColor = waveColor;
         lineRenderer.endColor = waveColor;
         lineRenderer.startWidth = lineWidth;

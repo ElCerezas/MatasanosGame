@@ -12,6 +12,7 @@ public class AlteredState : State
 
     public override void OnEnter()
     {
+        Debug.Log("Entrando en estado ALTERADO");
         parasiteTimer = 0f;
     }
 
@@ -25,7 +26,11 @@ public class AlteredState : State
             ParasyteAttack();
         }
     }
-
+    public override void OnExit()
+    {
+        
+    }
+    
     private void ParasyteAttack()
     {
         alien.NotifyParasiteAttack(); 

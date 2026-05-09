@@ -45,6 +45,27 @@ public struct TaraHealedEvent : IEvent
 {
     public ulong TaraID;
 }
+public struct OnAlienStateChanged : IEvent
+{
+    public ulong AlienID;
+    public AlienStateEnum NewState;
+}
+
+public struct OnAlienCalmantUsed : IEvent
+{
+    public ulong AlienID;
+}
+public struct OnCalmantChanged : IEvent
+{
+    public ulong AlienID;
+    public float CurrentCalmant;
+    public float MaxCalmant;
+}
+
+public struct OnCalmantEnded : IEvent
+{
+    public ulong AlienID;
+}
 /*
 ==============================================================================
                                 EVENTOS DE INSECTO

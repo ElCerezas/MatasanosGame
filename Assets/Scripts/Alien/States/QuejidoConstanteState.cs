@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class CriticalState : State
+public class QuejidoConstanteState : State
 {
-    public CriticalState(StateMachine _StateMachine) : base(_StateMachine)
+    public QuejidoConstanteState(StateMachine _StateMachine) : base(_StateMachine)
     {
         
     }
 
     public override void OnEnter()
     {
-        Debug.Log("Entrando en estado CRÍTICO");
+        Debug.Log("Entrando en estado QUEJIDO CONSTANTE");
     }
     public override void OnUpdate()
     {
@@ -19,5 +19,4 @@ public class CriticalState : State
     {
         
     }
-
 }

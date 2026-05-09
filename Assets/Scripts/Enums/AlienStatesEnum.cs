@@ -1,5 +1,8 @@
 public enum AlienStateEnum { 
     Calmado, 
     Alterado, 
-    Critico 
+    Critico,
+    Inquieto,
+    Estornudo,
+    Desangrado
 }

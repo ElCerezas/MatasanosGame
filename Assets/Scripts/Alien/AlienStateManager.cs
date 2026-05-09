@@ -6,7 +6,7 @@ public class AlienStateManager : NetworkBehaviour
 {
     StateMachine stateMachine;
     State currentState;
-    public NetworkVariable<AlienStateEnum> currentActiveState = new NetworkVariable<AlienStateEnum>(); //Para poder sincronizar animaciones y otras cosas
+    public NetworkVariable<AlienStateEnum> currentActiveState = new NetworkVariable<AlienStateEnum>();
 
     [Header("Health Settings")]
     [SerializeField] private NetworkVariable<float> currentHealth = new NetworkVariable<float>(100f);
@@ -19,19 +19,24 @@ public class AlienStateManager : NetworkBehaviour
     [SerializeField] private float criticalDamageMultiplier = 2f;
     [SerializeField] private float damageRate = 1f;
     private float damageTimer = 0f;
+
     [Header("State Settings")]
     public float timeBetweenAttacks { get; private set; } = 3f;
+    [SerializeField] private float DesangradoThreshold = 10f;
 
     [Header("Calmant Settings")]
     [SerializeField] private float calmantDuration = 5f;
-    private float calmantTimer = 0f;
-    private bool isCalmantActive = false;
+    [SerializeField] private float maxCalmant = 100f;
+    [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(0f);
+
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         if (IsServer) currentHealth.Value = maxHealth;
+
         EventBus.Subscribe<OnInject>(OnInjectionReceived);
+
         currentHealth.OnValueChanged += (oldVal, newVal) =>
         {
             EventBus.Publish(new OnAlienHealthChanged
@@ -41,9 +46,31 @@ public class AlienStateManager : NetworkBehaviour
                 MaxHealth = maxHealth
             });
         };
+
+        currentCalmant.OnValueChanged += (oldVal, newVal) =>
+        {
+            EventBus.Publish(new OnCalmantChanged
+            {
+                AlienID = NetworkObjectId,
+                CurrentCalmant = newVal,
+                MaxCalmant = maxCalmant
+            });
+        };
+
+        currentActiveState.OnValueChanged += (oldVal, newVal) =>
+        {
+            EventBus.Publish(new OnAlienStateChanged
+            {
+                AlienID = NetworkObjectId,
+                NewState = newVal
+            });
+        };
+
         EventBus.Subscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
         EventBus.Subscribe<OnBloodBagSnapped>(OnBloodBagConnected);
+        EventBus.Subscribe<TaraHealedEvent>(OnTaraHealed);
     }
+
     public override void OnNetworkDespawn()
     {
         EventBus.Unsubscribe<OnInject>(OnInjectionReceived);
@@ -62,64 +89,41 @@ public class AlienStateManager : NetworkBehaviour
 
         if (stateMachine.CurrentState == null)
         {
-            stateMachine.Initialize(new AlteredState(stateMachine, this));
+            stateMachine.Initialize(new InquietoState(stateMachine));
         }
 
-        HandleStateLogic();
+        HandleCalmant();
         HandleDamageOverTime();
         stateMachine.Update();
     }
 
-    private void HandleStateLogic()
+    private void HandleCalmant()
     {
-        if (!IsServer) return;
+        if (currentCalmant.Value > 0)
+        {
+            float decayPerSecond = maxCalmant / calmantDuration;
+            currentCalmant.Value -= decayPerSecond * Time.deltaTime;
 
-        if (isCalmantActive)
-        {
-            calmantTimer += Time.deltaTime;
-            if (calmantTimer >= calmantDuration)
+            if (currentCalmant.Value < 0)
             {
-                isCalmantActive = false;
-                calmantTimer = 0;
-                //Debug.Log("Calmante agotado.");
-            }
-        }
-
-        //Si la bolsa está vacía, SIEMPRE debe estar en CRÍTICO
-        if (!isBloodbagFull)
-        {
-            if (!(stateMachine.CurrentState is CriticalState))
-            {
-                ChangeState(new CriticalState(this.stateMachine));
-            }
-            return;
-        }
-
-        // Si la bolsa está llena, decidimos entre CALMADO o ALTERADO
-        if (isCalmantActive)
-        {
-            // Si hay calmante y no estamos en estado Calmado, cambiamos
-            if (!(stateMachine.CurrentState is CalmState))
-            {
-                ChangeState(new CalmState(this.stateMachine));
-            }
-        }
-        else
-        {
-            // Si NO hay calmante y no estamos en estado Alterado, cambiamos
-            if (!(stateMachine.CurrentState is AlteredState))
-            {
-                ChangeState(new AlteredState(stateMachine, this));
+                currentCalmant.Value = 0f;
+                UpdateCalmantStatusClientRpc(false);
+                ChangeState(new InquietoState(stateMachine));
             }
         }
     }
+
     private void ChangeState(State newState)
     {
+        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
         stateMachine.ChangeState(newState);
 
         if (newState is CalmState) currentActiveState.Value = AlienStateEnum.Calmado;
         else if (newState is AlteredState) currentActiveState.Value = AlienStateEnum.Alterado;
         else if (newState is CriticalState) currentActiveState.Value = AlienStateEnum.Critico;
+        else if (newState is InquietoState) currentActiveState.Value = AlienStateEnum.Inquieto;
+        else if (newState is EstornudoState) currentActiveState.Value = AlienStateEnum.Estornudo;
+        else if (newState is DesangradoState) currentActiveState.Value = AlienStateEnum.Desangrado;
     }
 
     private void HandleDamageOverTime()
@@ -132,12 +136,18 @@ public class AlienStateManager : NetworkBehaviour
             TakeDamage(damageAmount);
         }
     }
+
     public void TakeDamage(float damage)
     {
         if (!IsServer) return;
 
-        float multiplier = (stateMachine.CurrentState is CriticalState) ? criticalDamageMultiplier : 1f;
+        float multiplier = isBloodbagFull ? criticalDamageMultiplier : 1f;
         currentHealth.Value -= damage * multiplier;
+
+        if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
+        {
+            ChangeState(new DesangradoState(stateMachine));
+        }
 
         if (currentHealth.Value <= 0)
         {
@@ -145,34 +155,40 @@ public class AlienStateManager : NetworkBehaviour
             HandleDeath();
         }
     }
+
     private void HandleDeath()
     {
         EventBus.Publish(new OnAlienDeath { AlienID = NetworkObjectId });
     }
+
     private void OnInjectionReceived(OnInject inject)
     {
         if (inject.VictimID != NetworkObjectId) return;
         ApplyInyeccion(inject.Type);
     }
+
     public void ApplyInyeccion(InyeccionType type)
     {
         if (!IsServer) return;
+
         switch (type)
         {
             case InyeccionType.Calmante:
-                isCalmantActive = true;
-                calmantTimer = 0f;
+                UpdateCalmantStatusClientRpc(true);
 
-                if (stateMachine.CurrentState is AlteredState)
+                currentCalmant.Value = maxCalmant;
+
+                if (!(stateMachine.CurrentState is CalmState))
                 {
                     ChangeState(new CalmState(this.stateMachine));
                 }
                 break;
-            case InyeccionType.Estimulante:
-
+            default:
+                ChangeState(new AlteredState(this.stateMachine, this));
                 break;
         }
     }
+
     public void OnBloodBagConnected(OnBloodBagSnapped e)
     {
         bloodBagID = e.BloodBagID;
@@ -185,14 +201,21 @@ public class AlienStateManager : NetworkBehaviour
         if (IsServer)
         {
             isBloodbagFull = false;
-            ChangeState(new CriticalState(this.stateMachine));
+            ChangeState(new InquietoState(this.stateMachine));
+        }
+    }
+
+    private void OnTaraHealed(TaraHealedEvent data)
+    {
+        if (currentActiveState.Value == AlienStateEnum.Inquieto)
+        {
+            ChangeState(new AlteredState(this.stateMachine, this));
         }
     }
 
     public void NotifyParasiteAttack()
     {
         if (!IsServer) return;
-
         NotifyParasiteClientRpc();
     }
 
@@ -200,5 +223,18 @@ public class AlienStateManager : NetworkBehaviour
     private void NotifyParasiteClientRpc()
     {
         EventBus.Publish(new OnAlienParasiteAttack { AlienID = NetworkObjectId });
+    }
+
+    [ClientRpc]
+    private void UpdateCalmantStatusClientRpc(bool isCalmantActive)
+    {
+        if (isCalmantActive)
+        {
+            EventBus.Publish(new OnAlienCalmantUsed { AlienID = NetworkObjectId });
+        }
+        else
+        {
+            EventBus.Publish(new OnCalmantEnded { AlienID = NetworkObjectId });
+        }
     }
 }

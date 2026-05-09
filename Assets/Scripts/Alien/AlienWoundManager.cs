@@ -17,9 +17,6 @@ public class AlienWoundManager : NetworkBehaviour
     public float minHeightBias = 0.2f;
     public int maxRaycastAttempts = 10;
 
-
-
-    // A�ade estas variables para guardar el estado de debug
     private List<(Vector3 origin, Vector3 direction, bool hit)> _debugRays = new();
     private Vector3 _debugSphereCenter;
     private float _debugSphereRadius = 10f;
@@ -65,7 +62,7 @@ public class AlienWoundManager : NetworkBehaviour
                 Debug.DrawRay(origin, direction);
                 if (hit.collider.transform.IsChildOf(transform) || hit.collider.transform == transform)
                 {
-                    Debug.Log(hit.collider.transform == transform);
+                    //Debug.Log(hit.collider.transform == transform);
                     if (Vector3.Dot(hit.normal, Vector3.down) < minHeightBias)
                     {
                         didHit = true;
@@ -96,7 +93,7 @@ public class AlienWoundManager : NetworkBehaviour
         Quaternion correctedRotation = baseRotation * Quaternion.Euler(-90f, 0f, 0f);
         GameObject woundObj;
         int random = UnityEngine.Random.Range(0, 2);
-        Debug.Log(random);
+        //Debug.Log(random);
         if (random == 0)
         {
             woundObj = Instantiate(woundFocoPrefab, position, correctedRotation);

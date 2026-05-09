@@ -1,15 +1,14 @@
 using UnityEngine;
 
-public class CriticalState : State
+public class DesangradoState : State
 {
-    public CriticalState(StateMachine _StateMachine) : base(_StateMachine)
+    public DesangradoState(StateMachine _StateMachine) : base(_StateMachine)
     {
         
     }
-
     public override void OnEnter()
     {
-        Debug.Log("Entrando en estado CRÍTICO");
+       Debug.Log("Entrando en estado DESANGRADO");
     }
     public override void OnUpdate()
     {
@@ -19,5 +18,4 @@ public class CriticalState : State
     {
         
     }
-
 }

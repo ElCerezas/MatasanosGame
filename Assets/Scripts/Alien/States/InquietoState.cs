@@ -1,15 +1,14 @@
 using UnityEngine;
 
-public class CriticalState : State
+public class InquietoState : State
 {
-    public CriticalState(StateMachine _StateMachine) : base(_StateMachine)
+    public InquietoState(StateMachine _StateMachine) : base(_StateMachine)
     {
-        
     }
 
     public override void OnEnter()
     {
-        Debug.Log("Entrando en estado CRÍTICO");
+        Debug.Log("Entrando en estado INQUIETO");   
     }
     public override void OnUpdate()
     {
