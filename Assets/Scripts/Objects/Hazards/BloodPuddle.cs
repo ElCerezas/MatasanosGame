@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 public class BloodPuddle : NetworkBehaviour
 {
     [SerializeField] private float effectDuration = 5f;
-    
+
     private NetworkVariable<bool> isActive = new NetworkVariable<bool>(true);
     private DecalProjector decalProjector;
 
@@ -20,10 +20,13 @@ public class BloodPuddle : NetworkBehaviour
     {
         if (!IsServer) return;
         if (!isActive.Value) return;
-        
-        if (other.TryGetComponent(out IEffectable victim))
+
+        if (other.TryGetComponent(out NetworkObject victimNetObj))
         {
-            victim.ApplyEffect("Blood", effectDuration);
+            if (victimNetObj.TryGetComponent(out PlayerStateManager stateManager))
+            {
+                stateManager.SlipServerRpc(effectDuration);
+            }
         }
     }
 

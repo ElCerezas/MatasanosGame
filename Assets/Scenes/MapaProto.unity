@@ -1101,6 +1101,7 @@ MonoBehaviour:
   criticalDamageMultiplier: 2
   damageRate: 1
   DesangradoThreshold: 10
+  estornudoComponent: {fileID: 0}
   calmantDuration: 5
   maxCalmant: 100
   currentCalmant:
@@ -1769,6 +1770,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1316661239526176316, guid: e765b55e2cd1e284aa1a93828602ebe1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2695127281716007661, guid: e765b55e2cd1e284aa1a93828602ebe1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 23.909243
@@ -1813,6 +1818,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BloodBagHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 3228030979407860527, guid: e765b55e2cd1e284aa1a93828602ebe1, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3887027364757059203, guid: e765b55e2cd1e284aa1a93828602ebe1, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3141648882
@@ -1830,6 +1839,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1335716537}
     m_Modifications:
+    - target: {fileID: 3107296581055136696, guid: 2252cc2142df1f1458a6493f18b05396, type: 3}
+      propertyPath: isUnsnappable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3969969447881035861, guid: 2252cc2142df1f1458a6493f18b05396, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.99338245
@@ -54404,6 +54417,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72366d9c28971d240b198b3c6f821aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToolItem
+--- !u!114 &509679764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509679753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d4260f9a111b04abc0e25a3ea1c31f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdPoint: {fileID: 0}
+  isTool: 1
 --- !u!1 &514482175
 GameObject:
   m_ObjectHideFlags: 0
@@ -156337,6 +156365,7 @@ MonoBehaviour:
   criticalDamageMultiplier: 2
   damageRate: 1
   DesangradoThreshold: 10
+  estornudoComponent: {fileID: 0}
   calmantDuration: 5
   maxCalmant: 100
   currentCalmant:
@@ -156412,6 +156441,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2508039921191908271, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
       insertIndex: 1
       addedObject: {fileID: 509679763}
+    - targetCorrespondingSourceObject: {fileID: 2508039921191908271, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 509679764}
   m_SourcePrefab: {fileID: 100100000, guid: 88509cdc705e42046b0b5138d5df5c9c, type: 3}
 --- !u!1 &1407321708
 GameObject:

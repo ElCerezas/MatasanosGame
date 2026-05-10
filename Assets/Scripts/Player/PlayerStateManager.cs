@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(PlayerInteractor))]
 [RequireComponent(typeof(Rigidbody))]
 
-public class PlayerStateManager : NetworkBehaviour, IEffectable
+public class PlayerStateManager : NetworkBehaviour
 {
     PlayerController controller;
     PlayerInteractor interactor;
@@ -55,16 +55,6 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     {
         EnterRagdoll(ragdollTime, true);
     }
-    public void Slip(float stunTime)
-    {
-        EnterRagdoll(stunTime);
-
-        Vector3 feetPosition = transform.position + Vector3.down * 0.5f;
-
-        rb.AddForce(Vector3.up * 120f, ForceMode.Impulse);
-        rb.AddForceAtPosition(transform.forward * 250f, feetPosition, ForceMode.Impulse);
-       
-    }
     private void Update()
     {
         if (stunDuration > 0f)
@@ -73,7 +63,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         if (invulnerableCountdown > 0f)
             invulnerableCountdown -= Time.deltaTime;
     }
-    
+
     void EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
     {
         if (!overrideInvulnerability)
@@ -138,13 +128,19 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         }
     }
 
-    public void ApplyEffect(string effectType, float duration)
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SlipServerRpc(float stunTime)
     {
-        switch (effectType)
-        {
-            case "Blood":
-                Slip(duration);
-                break;
-        }
+        Slip(stunTime);
+    }
+
+    public void Slip(float stunTime)
+    {
+        EnterRagdoll(stunTime);
+
+        Vector3 feetPosition = transform.position + Vector3.down * 0.5f;
+
+        rb.AddForce(Vector3.up * 120f, ForceMode.Impulse);
+        rb.AddForceAtPosition(transform.forward * 250f, feetPosition, ForceMode.Impulse);
     }
 }

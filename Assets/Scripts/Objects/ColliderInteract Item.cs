@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static ColliderDetector;
-using static UnityEditor.Progress;
 
 public class ColliderInteractItem : NetworkBehaviour
 {

@@ -230,8 +230,8 @@ GameObject:
   - component: {fileID: 7758830782004584291}
   - component: {fileID: -8457791925912253374}
   - component: {fileID: -7630602086959937717}
-  - component: {fileID: 9118996720704495959}
   - component: {fileID: 3386439851974111025}
+  - component: {fileID: 8737621880936660036}
   m_Layer: 6
   m_Name: Bloodbag
   m_TagString: Untagged
@@ -404,10 +404,19 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 100
+  isAttached:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   bloodLossQuantity: 1
   bloodLossRate: 1
   capacityText: {fileID: 5738582634344354292}
   velocityThreshold: 2
+  explosionLayers:
+    serializedVersion: 2
+    m_Bits: 3921
+  debugCollisions: 0
   puddleCount: 5
   puddleSpreadRadius: 3
   groundLayer:
@@ -476,20 +485,6 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
---- !u!114 &9118996720704495959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4467649564059008264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72366d9c28971d240b198b3c6f821aac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ToolItem
-  ShowTopMostFoldoutHeaderGroup: 1
-  holdPoint: {fileID: 0}
 --- !u!114 &3386439851974111025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,3 +501,18 @@ MonoBehaviour:
   itemType: 5
   isSnappable: 1
   isUnsnappable: 1
+--- !u!114 &8737621880936660036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4467649564059008264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d4260f9a111b04abc0e25a3ea1c31f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhysicalItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  holdPoint: {fileID: 0}
+  isTool: 0

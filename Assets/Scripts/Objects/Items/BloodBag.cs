@@ -7,20 +7,22 @@ public class BloodBag : NetworkBehaviour
 {
     [SerializeField] private float bloodBagMaxCapacity = 100f;
     [SerializeField] private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(100f);
+    [SerializeField] private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     [SerializeField] private float bloodLossQuantity = 1f;
     [SerializeField] private float bloodLossRate = 1f;
     [SerializeField] private TextMeshPro capacityText;
+    
     [Header("Collision Explosion Settings")]
-    [SerializeField] private float velocityThreshold = 1f;
+    [SerializeField] private float velocityThreshold = 5f;
+    [SerializeField] private LayerMask explosionLayers;
     [SerializeField] private bool debugCollisions = true;
     [SerializeField] private int puddleCount = 5;
     [SerializeField] private float puddleSpreadRadius = 3f;
     [SerializeField] private LayerMask groundLayer;
-    
 
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
-    private bool IsAttached = false;
+    private float collisionCooldown = 0f;
     private PhysicalItem toolItem;
 
     public override void OnNetworkSpawn()
@@ -34,6 +36,13 @@ public class BloodBag : NetworkBehaviour
         }
         EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
         EventBus.Subscribe<OnBloodBagDetached>(OnDetach);
+        
+        isAttached.OnValueChanged += (oldVal, newVal) =>
+        {
+            if (newVal != oldVal)
+                collisionCooldown = 0.5f;
+        };
+        
         bloodBagCurrentCapacity.OnValueChanged += (oldVal, newVal) =>
         {
             capacityText.text = newVal.ToString();
@@ -43,7 +52,11 @@ public class BloodBag : NetworkBehaviour
     void Update()
     {
         if (!IsServer) return;
-        if (!IsAttached) return;
+        if (!isAttached.Value) return;
+        
+        if (collisionCooldown > 0)
+            collisionCooldown -= Time.deltaTime;
+        
         HandleBloodLoss();
     }
 
@@ -70,13 +83,19 @@ public class BloodBag : NetworkBehaviour
     public void OnAttach(OnBloodBagSnapped e)
     {
         if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
-        IsAttached = true;
+        if (toolItem == null)
+            toolItem = GetComponent<PhysicalItem>();
+        
+        if (IsServer)
+            isAttached.Value = true;
     }
 
     public void OnDetach(OnBloodBagDetached e)
     {
         if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
-        IsAttached = false;
+        
+        if (IsServer)
+            isAttached.Value = false;
     }
 
     private void BloodBagEmpty()
@@ -84,11 +103,19 @@ public class BloodBag : NetworkBehaviour
         EventBus.Publish(new OnBloodBagEmpty { BloodBagID = GetComponentInParent<NetworkObject>().NetworkObjectId });
     }
 
-
     void OnCollisionEnter(Collision collision)
     {
-        if (!IsServer) return;
+        if (collisionCooldown > 0) return;
+        
+        if (toolItem == null) return;
         if (toolItem.grabbers.Count == 0) return;
+
+        if (!IsLayerInMask(collision.gameObject.layer, explosionLayers))
+        {
+            if (debugCollisions)
+                Debug.Log($"[{NetworkManager.Singleton.LocalClientId}] {collision.gameObject.name} (Layer: {LayerMask.LayerToName(collision.gameObject.layer)}) no puede explotar bloodbag");
+            return;
+        }
 
         float impactVelocity = Mathf.Max(
             GetComponent<Rigidbody>().linearVelocity.magnitude,
@@ -102,7 +129,20 @@ public class BloodBag : NetworkBehaviour
 
         if (impactVelocity < velocityThreshold) return;
 
-        SpawnBloodPuddles(collision.contacts[0].point);
+        HandleCollisionServerRpc(collision.contacts[0].point);
+    }
+
+    private bool IsLayerInMask(int layer, LayerMask mask)
+    {
+        return ((mask.value & (1 << layer)) > 0);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void HandleCollisionServerRpc(Vector3 impactPoint)
+    {
+        if (!IsServer) return;
+
+        SpawnBloodPuddles(impactPoint);
         DespawnBloodBag();
     }
 
