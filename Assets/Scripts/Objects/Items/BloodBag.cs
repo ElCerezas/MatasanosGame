@@ -14,7 +14,7 @@ public class BloodBag : NetworkBehaviour
     private float targetFillAmount = 1f;
     private float currentFillAmount = 1f;
     public float lerpSpeed = 2f;
-    
+
     [Header("Collision Explosion Settings")]
     [SerializeField] private float velocityThreshold = 5f;
     [SerializeField] private LayerMask explosionLayers;
@@ -39,17 +39,24 @@ public class BloodBag : NetworkBehaviour
         }
         EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
         EventBus.Subscribe<OnBloodBagDetached>(OnDetach);
-        
+
         isAttached.OnValueChanged += (oldVal, newVal) =>
         {
             if (newVal != oldVal)
                 collisionCooldown = 0.5f;
         };
-        
+
         bloodBagCurrentCapacity.OnValueChanged += (oldVal, newVal) =>
         {
             targetFillAmount = newVal / bloodBagMaxCapacity;
         };
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        EventBus.Unsubscribe<OnBloodBagSnapped>(OnAttach);
+        EventBus.Unsubscribe<OnBloodBagDetached>(OnDetach);
+        base.OnNetworkDespawn();
     }
 
     void Update()
@@ -59,11 +66,11 @@ public class BloodBag : NetworkBehaviour
 
         if (!IsServer) return;
         if (!isAttached.Value) return;
-        
-        
+
+
         if (collisionCooldown > 0)
             collisionCooldown -= Time.deltaTime;
-        
+
         HandleBloodLoss();
     }
 
@@ -92,7 +99,7 @@ public class BloodBag : NetworkBehaviour
         if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
         if (toolItem == null)
             toolItem = GetComponent<PhysicalItem>();
-        
+
         if (IsServer)
             isAttached.Value = true;
     }
@@ -100,7 +107,7 @@ public class BloodBag : NetworkBehaviour
     public void OnDetach(OnBloodBagDetached e)
     {
         if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
-        
+
         if (IsServer)
             isAttached.Value = false;
     }
@@ -112,9 +119,8 @@ public class BloodBag : NetworkBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        return;
         if (collisionCooldown > 0) return;
-        
+
         if (toolItem == null) return;
         if (toolItem.grabbers.Count == 0) return;
 
