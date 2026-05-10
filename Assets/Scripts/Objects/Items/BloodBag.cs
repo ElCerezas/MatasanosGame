@@ -6,11 +6,14 @@ using UnityEngine;
 public class BloodBag : NetworkBehaviour
 {
     [SerializeField] private float bloodBagMaxCapacity = 100f;
+    [SerializeField] protected Renderer BloodRenderer;
     [SerializeField] private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(100f);
     [SerializeField] private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     [SerializeField] private float bloodLossQuantity = 1f;
     [SerializeField] private float bloodLossRate = 1f;
-    [SerializeField] private TextMeshPro capacityText;
+    private float targetFillAmount = 1f;
+    private float currentFillAmount = 1f;
+    public float lerpSpeed = 2f;
     
     [Header("Collision Explosion Settings")]
     [SerializeField] private float velocityThreshold = 5f;
@@ -45,14 +48,18 @@ public class BloodBag : NetworkBehaviour
         
         bloodBagCurrentCapacity.OnValueChanged += (oldVal, newVal) =>
         {
-            capacityText.text = newVal.ToString();
+            targetFillAmount = newVal / bloodBagMaxCapacity;
         };
     }
 
     void Update()
     {
+        currentFillAmount = Mathf.Lerp(currentFillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
+        BloodRenderer.sharedMaterial.SetFloat("_FillAmount", currentFillAmount);
+
         if (!IsServer) return;
         if (!isAttached.Value) return;
+        
         
         if (collisionCooldown > 0)
             collisionCooldown -= Time.deltaTime;
@@ -105,6 +112,7 @@ public class BloodBag : NetworkBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        return;
         if (collisionCooldown > 0) return;
         
         if (toolItem == null) return;
