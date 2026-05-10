@@ -25,7 +25,6 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
 
     void FixedUpdate()
     {
-
         if (!IsOwner || grabbers.Count == 0) return;
 
         Vector3 netForce = Vector3.zero;
@@ -105,10 +104,11 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
         PlayerInteractor interactor = playerNetObj.GetComponent<PlayerInteractor>();
         if (interactor == null) return;
 
-        if (!grabbers.ContainsKey(clientId))
+        if (grabbers.ContainsKey(clientId))
         {
             if (TryGetComponent(out SnappableItem snappable))
             {
+                Debug.Log(snappable.isSnapped && snappable.currentZone != null);
                 if (snappable.isSnapped && snappable.currentZone != null)
                 {
                     snappable.currentZone.ReleaseItem();
