@@ -574,7 +574,7 @@ GameObject:
   - component: {fileID: 3989753504083344194}
   - component: {fileID: 4496925725958259524}
   - component: {fileID: -6061116476572478131}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PlayerPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3184265775
+  GlobalObjectIdHash: 2402241250
   InScenePlacedSourceGlobalObjectIdHash: 2402241250
   DeferredDespawnTick: 0
   Ownership: 1
@@ -794,7 +794,7 @@ MonoBehaviour:
   maxHoldPointAngleFromCamera: 25
   sensitivity: 0.2
   maxPitch: 50
-  minPitch: -50
+  minPitch: -60
 --- !u!114 &4496925725958259524
 MonoBehaviour:
   m_ObjectHideFlags: 0

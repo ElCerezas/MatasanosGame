@@ -23,6 +23,7 @@ public class AlienStateManager : NetworkBehaviour
     [Header("State Settings")]
     public float timeBetweenAttacks { get; private set; } = 3f;
     [SerializeField] private float DesangradoThreshold = 10f;
+    public Estornudo estornudoComponent;
 
     [Header("Calmant Settings")]
     [SerializeField] private float calmantDuration = 5f;
@@ -69,18 +70,25 @@ public class AlienStateManager : NetworkBehaviour
         EventBus.Subscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
         EventBus.Subscribe<OnBloodBagSnapped>(OnBloodBagConnected);
         EventBus.Subscribe<TaraHealedEvent>(OnTaraHealed);
+        EventBus.Subscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
+        EventBus.Subscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
     }
 
     public override void OnNetworkDespawn()
     {
         EventBus.Unsubscribe<OnInject>(OnInjectionReceived);
         EventBus.Unsubscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
+        EventBus.Unsubscribe<OnBloodBagSnapped>(OnBloodBagConnected);
+        EventBus.Unsubscribe<TaraHealedEvent>(OnTaraHealed);
+        EventBus.Unsubscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
+        EventBus.Unsubscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
         base.OnNetworkDespawn();
     }
 
     void Awake()
     {
         stateMachine = new StateMachine();
+        estornudoComponent = GetComponent<Estornudo>();
     }
 
     void Update()
@@ -141,12 +149,13 @@ public class AlienStateManager : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        float multiplier = isBloodbagFull ? criticalDamageMultiplier : 1f;
+        float multiplier = !isBloodbagFull ? criticalDamageMultiplier : 1f;
+        //Debug.Log($"Alien {NetworkObjectId} taking damage: {damage} with multiplier: {multiplier}");
         currentHealth.Value -= damage * multiplier;
 
         if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
         {
-            ChangeState(new DesangradoState(stateMachine));
+            ChangeState(new DesangradoState(stateMachine, this));
         }
 
         if (currentHealth.Value <= 0)
@@ -169,7 +178,7 @@ public class AlienStateManager : NetworkBehaviour
 
     public void ApplyInyeccion(InyeccionType type)
     {
-        if (!IsServer) return;
+        if (!IsServer || currentActiveState.Value == AlienStateEnum.Desangrado) return;
 
         switch (type)
         {
@@ -209,10 +218,26 @@ public class AlienStateManager : NetworkBehaviour
     {
         if (currentActiveState.Value == AlienStateEnum.Inquieto)
         {
+            Debug.Log("Alien state changed to Altered due to Tara healed");
             ChangeState(new AlteredState(this.stateMachine, this));
         }
     }
 
+    public void WoundCreated()
+    {
+        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
+        ChangeState(new AlteredState(this.stateMachine, this));
+    }
+    private void WoundIsBeingHealed(OnWoundFocoHealStarted started)
+    {
+        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
+        ChangeState(new QuejidoConstanteState(this.stateMachine));
+    }
+    private void WoundHealingEnded(OnWoundFocoHealEnded ended)
+    {
+        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
+        ChangeState(new CalmState(this.stateMachine));
+    }
     public void NotifyParasiteAttack()
     {
         if (!IsServer) return;

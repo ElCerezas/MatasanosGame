@@ -28,6 +28,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     [SerializeField] private float baselineNoise = 0.01f;
     [Header("Colores")]
     [SerializeField] private Color calmantColor = Color.blue;
+    [SerializeField] private Color desangradoColor = Color.red;
     [SerializeField] private Color defaultColor = Color.red;
 
     private int cyclesVisible = 2;
@@ -36,6 +37,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     {
         EventBus.Subscribe<OnAlienCalmantUsed>(CalmantApplied);
         EventBus.Subscribe<OnCalmantEnded>(CalmantEnded);
+        EventBus.Subscribe<OnAlienStateChanged>(AlienStateChanged);
 
         waveColor = defaultColor;
         lineRenderer = GetComponent<LineRenderer>();
@@ -55,6 +57,23 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
             planeTransform = transform;
     }
 
+    private void AlienStateChanged(OnAlienStateChanged changed)
+    {
+        switch (changed.NewState)
+        {
+            default:
+                SetWaveColor(defaultColor);
+                SetBPM(60f);
+                SetScrollSpeed(1f);
+                break;
+            case AlienStateEnum.Desangrado:
+                SetWaveColor(desangradoColor);
+                SetBPM(120f);
+                SetScrollSpeed(4f);
+                break;
+        }
+    }
+
     public override void OnNetworkDespawn()
     {
         EventBus.Unsubscribe<OnAlienCalmantUsed>(CalmantApplied);
@@ -69,6 +88,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
 
     private void CalmantEnded(OnCalmantEnded ended)
     {
+        if (waveColor == desangradoColor) return;
         waveColor = defaultColor;
     }
 

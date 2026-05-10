@@ -111,6 +111,7 @@ public class AlienWoundManager : NetworkBehaviour
 
         netObj.Spawn();
         netObj.TrySetParent(transform, worldPositionStays: true);
+
     }
     /*
     void OnDrawGizmos()

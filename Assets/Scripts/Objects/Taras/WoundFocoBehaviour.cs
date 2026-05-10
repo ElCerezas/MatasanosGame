@@ -8,6 +8,20 @@ public class WoundFocoBehaviour : TaraBase
 
     private NetworkVariable<bool> isBeingHealed = new NetworkVariable<bool>(false);
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        isBeingHealed.OnValueChanged += (oldVal, newVal) =>
+        {
+            if (newVal == true)
+            {
+                EventBus.Publish(new OnWoundFocoHealStarted
+                {
+                    TaraID = NetworkObjectId
+                });
+            }
+        };
+    }
     void Update()
     {
         if (!IsServer) return;
@@ -29,10 +43,27 @@ public class WoundFocoBehaviour : TaraBase
 
         isBeingHealed.Value = false;
     }
+    private void LateUpdate()
+    {
+        if (!IsServer) return;
+
+        Color rayColor = isBeingHealed.Value ? Color.green : Color.red;
+        Debug.DrawLine(transform.position,
+                      transform.position + Vector3.up * 2f,
+                      rayColor);
+    }
 
     public void ReceiveHealTick()
     {
         if (!IsServer) return;
         isBeingHealed.Value = true;
+    }
+    [ClientRpc]
+    public void NotifyHealEndedClientRpc()
+    {
+        EventBus.Publish(new OnWoundFocoHealEnded
+        {
+            TaraID = NetworkObjectId
+        });
     }
 }

@@ -19,7 +19,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     [SerializeField] float invulnerableTime = 3f;
     [SerializeField] float minimumForceToRagdoll;
     float invulnerableCountdown;
-    
+
 
     [Header("Slip Variables")]
     [SerializeField] float slipForce = 10f;
@@ -34,7 +34,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
     {
         if (!IsOwner) return;
         gameObject.GetComponent<PlayerInput>().OnJumpPressed += RecoverJump;
-        gameObject.GetComponent<PlayerInput>().OnSlipPressed += Slip;
+        //gameObject.GetComponent<PlayerInput>().OnSlipPressed += Slip;
         EventBus.Subscribe<OnInject>(OnPlayerInjected);
         EventBus.Subscribe<OnInsectExplosion>(OnInsectExplosion);
     }
@@ -51,11 +51,19 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         //Debug.Log($"Player {gameObject.name} injected with type {data.Type}");
         ApplyInyeccion(data.Type);
     }
-
-    public void Slip(/*float stunTime*/)
+    public void EnterRagdollPublic(float ragdollTime)
     {
-        EnterRagdoll(3f);
-        rb.AddTorque(transform.right * -1000);
+        EnterRagdoll(ragdollTime, true);
+    }
+    public void Slip(float stunTime)
+    {
+        EnterRagdoll(stunTime);
+
+        Vector3 feetPosition = transform.position + Vector3.down * 0.5f;
+
+        rb.AddForce(Vector3.up * 120f, ForceMode.Impulse);
+        rb.AddForceAtPosition(transform.forward * 250f, feetPosition, ForceMode.Impulse);
+       
     }
     private void Update()
     {
@@ -65,6 +73,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         if (invulnerableCountdown > 0f)
             invulnerableCountdown -= Time.deltaTime;
     }
+    
     void EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
     {
         if (!overrideInvulnerability)
@@ -125,7 +134,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         if (relativeVelocity.magnitude > minimumForceToRagdoll)
         {
             EnterRagdoll(3f);
-            rb.AddForce(relativeVelocity/2, ForceMode.Impulse);
+            rb.AddForce(relativeVelocity / 2, ForceMode.Impulse);
         }
     }
 
@@ -134,7 +143,7 @@ public class PlayerStateManager : NetworkBehaviour, IEffectable
         switch (effectType)
         {
             case "Blood":
-                EnterRagdoll(duration);
+                Slip(duration);
                 break;
         }
     }

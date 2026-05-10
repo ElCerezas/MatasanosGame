@@ -88,6 +88,7 @@ public class LuzBehaviour : NetworkBehaviour
             if (obj.TryGetComponent<AlienWoundManager>(out var alien))
             {
                 alien.GenerateWound(pos, norm);
+                GetComponent<AlienStateManager>().WoundCreated();
             }
         }
     }

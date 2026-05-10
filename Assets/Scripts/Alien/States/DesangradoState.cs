@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class DesangradoState : State
 {
-    public DesangradoState(StateMachine _StateMachine) : base(_StateMachine)
+    private AlienStateManager alienStateManager;
+
+    public DesangradoState(StateMachine _StateMachine, AlienStateManager _AlienStateManager) : base(_StateMachine)
     {
-        
+        alienStateManager = _AlienStateManager;
     }
     public override void OnEnter()
     {
        Debug.Log("Entrando en estado DESANGRADO");
+
     }
     public override void OnUpdate()
     {

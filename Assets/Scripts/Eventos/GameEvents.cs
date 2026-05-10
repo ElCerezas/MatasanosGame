@@ -107,3 +107,13 @@ public struct ColliderInteractableEvent : IEvent
 {
     public ulong ObjectID;
 }
+
+public struct OnWoundFocoHealStarted : IEvent
+{
+    public ulong TaraID;
+}
+
+public struct OnWoundFocoHealEnded : IEvent
+{
+    public ulong TaraID;
+}
