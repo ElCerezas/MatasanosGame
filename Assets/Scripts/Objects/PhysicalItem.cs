@@ -21,6 +21,9 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        GetComponent<NetworkObject>().SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable);
+        GetComponent<NetworkObject>().SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+        GetComponent<NetworkTransform>().AuthorityMode = NetworkTransform.AuthorityModes.Owner;
     }
 
     void FixedUpdate()
