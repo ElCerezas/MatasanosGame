@@ -87,7 +87,13 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             Debug.LogError("[PhysicalItem] RequestGrabServerRpc: PlayerInteractor no encontrado.");
             return;
         }
-
+        if (TryGetComponent(out SnappableItem snappable))
+        {
+            if (snappable.isSnapped && snappable.currentZone != null)
+            {
+                snappable.currentZone.ReleaseItem();
+            }
+        }
         if (!grabbers.ContainsKey(clientId))
             grabbers.Add(clientId, interactor.holdPoint);
 
@@ -116,7 +122,7 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
                 }
             }
 
-            grabbers.Add(clientId, interactor.holdPoint);
+            grabbers.TryAdd(clientId, interactor.holdPoint);
         }
     }
 
