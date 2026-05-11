@@ -104,7 +104,7 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
         PlayerInteractor interactor = playerNetObj.GetComponent<PlayerInteractor>();
         if (interactor == null) return;
 
-        if (grabbers.ContainsKey(clientId))
+        if (!grabbers.ContainsKey(clientId))
         {
             if (TryGetComponent(out SnappableItem snappable))
             {

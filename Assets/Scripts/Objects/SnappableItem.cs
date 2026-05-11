@@ -44,6 +44,7 @@ public class SnappableItem : NetworkBehaviour, ISnappable
         if (!IsServer || !isSnapped) return;
 
         isSnapped = false;
+        currentZone.ReleaseItem();
         Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), false);
         currentZone = null;
 
