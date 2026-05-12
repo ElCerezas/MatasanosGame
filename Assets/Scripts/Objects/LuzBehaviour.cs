@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class LuzBehaviour : NetworkBehaviour
+public class LuzBehaviour : PoweredItem
 {
     [Header("Raycast Settings")]
     public Transform originPoint;

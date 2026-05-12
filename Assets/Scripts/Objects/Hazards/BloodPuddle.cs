@@ -34,7 +34,7 @@ public class BloodPuddle : NetworkBehaviour
     {
         if (!IsServer) return;
         if (!isActive.Value) return;
-
+        Debug.Log("!isActive");
         isActive.Value = false;
         CleanPuddleClientRpc();
     }

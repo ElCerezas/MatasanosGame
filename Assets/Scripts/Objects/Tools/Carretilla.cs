@@ -11,6 +11,7 @@ public class Carretilla : PoweredItem
     public void Up()
     {
         elevation = elevationSpeed;
+        Debug.Log("UP");
     }
     public void Down()
     {
