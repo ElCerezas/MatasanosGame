@@ -29,13 +29,11 @@ public class SnappableItem : NetworkBehaviour, ISnappable
 
     public void SnapTo(SnapZone zone)
     {
-        //Debug.Log("PSPSPSP");
         if (!IsServer) return;
-        //Debug.Log("sap");
         isSnapped = true;
         currentZone = zone;
-
-        Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), true);
+        if (currentZone.gameObject.GetComponent<Collider>() != null) 
+            Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), true);
         rb.isKinematic = true;
     }
 

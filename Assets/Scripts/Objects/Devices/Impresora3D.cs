@@ -52,7 +52,6 @@ public class Impresora3D : PoweredDevice
                 printProgress.Value = localProgress;
                 syncTimer = 0f;
             }
-            Debug.Log($"Printing: {localProgress}/{duration}");
             yield return null;
         }
         printProgress.Value = 1f;
@@ -66,8 +65,7 @@ public class Impresora3D : PoweredDevice
         GameObject instance = Instantiate(prefab, printingAnchor.position, printingAnchor.rotation);
         instance.GetComponent<NetworkObject>().Spawn();
 
-        if (instance.TryGetComponent(out SnappableItem snappable))
-            anchorSnapZone.currentItem = snappable;
+        if (instance.TryGetComponent(out SnappableItem snappable)) snappable.SnapTo(anchorSnapZone);
 
         printProgress.Value = 0f;
     }
