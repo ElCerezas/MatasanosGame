@@ -2143,6 +2143,79 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033633838}
   m_Mesh: {fileID: 0}
+--- !u!4 &1033633843 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5588794048318906472, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+  m_PrefabInstance: {fileID: 1997042573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1033633844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033633838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkTransform
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &1033633845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033633838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 107518cdcc88a6a43b19770170538f70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnapZone
+  ShowTopMostFoldoutHeaderGroup: 1
+  acceptedType: -1
+  snapAnchor: {fileID: 0}
+  OnObjectSnapped:
+    m_PersistentCalls:
+      m_Calls: []
+  OnObjectUnsnapped:
+    m_PersistentCalls:
+      m_Calls: []
+  currentItem: {fileID: 0}
 --- !u!1 &1084080724
 GameObject:
   m_ObjectHideFlags: 0
@@ -3602,6 +3675,14 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: anchorSnapZone
+      value: 
+      objectReference: {fileID: 1033633845}
+    - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: printingAnchor
+      value: 
+      objectReference: {fileID: 1033633843}
+    - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
       propertyPath: hologramRenderer
       value: 
       objectReference: {fileID: 1033633838}
@@ -3633,8 +3714,10 @@ PrefabInstance:
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RequestPrint
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 3791827595540130126, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 6081945933864480334, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1613425571911900102, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
@@ -3643,6 +3726,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6834977321940939896, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1033633841}
+    - targetCorrespondingSourceObject: {fileID: 6834977321940939896, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1033633844}
+    - targetCorrespondingSourceObject: {fileID: 6834977321940939896, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1033633845}
     - targetCorrespondingSourceObject: {fileID: 2069959509598458923, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1712165022}

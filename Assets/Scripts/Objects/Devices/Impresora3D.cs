@@ -5,11 +5,9 @@ public class Impresora3D : PoweredDevice
 {
     [Header("Config")]
     [SerializeField] PrintingObject[] printableObjects;
-    [SerializeField] Transform printingAnchor;
-    [SerializeField] SnapZone anchorSnapZone;
+    [SerializeField] GameObject hologramRenderer;
 
     [Header("Visual")]
-    [SerializeField] GameObject hologramRenderer;
     NetworkVariable<int> selectedIndex = new NetworkVariable<int>(0);
     NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
 
@@ -62,13 +60,13 @@ public class Impresora3D : PoweredDevice
     {
         if (!IsServer) return;
         GameObject prefab = printableObjects[selectedIndex.Value].printingObject;
-        GameObject instance = Instantiate(prefab, printingAnchor.position, printingAnchor.rotation);
+        GameObject instance = Instantiate(prefab, hologramRenderer.transform.position, hologramRenderer.transform.rotation);
         instance.GetComponent<NetworkObject>().Spawn();
 
         if (instance.TryGetComponent(out SnappableItem snappable))
         {
-            snappable.SnapTo(anchorSnapZone);
-            anchorSnapZone.currentItem = snappable;
+            snappable.SnapTo(hologramRenderer.GetComponent<SnapZone>());
+            hologramRenderer.GetComponent<SnapZone>().currentItem = snappable;
         }
 
         printProgress.Value = 0f;
@@ -85,7 +83,7 @@ public class Impresora3D : PoweredDevice
 
         if (printProgress.Value > 0f) return;
         if (!hasPower.Value) return;
-        if (anchorSnapZone.currentItem != null) return;
+        if (hologramRenderer.GetComponent<SnapZone>().currentItem != null) return;
 
         Debug.Log("PrintStart");
         printProgress.Value = 0.001f;
