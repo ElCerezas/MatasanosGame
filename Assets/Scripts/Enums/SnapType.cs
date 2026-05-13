@@ -5,5 +5,6 @@
     Diente,
     Venda,
     Jeringuilla,
-    Bloodbag
+    Bloodbag,
+    PrinterOnly = -1,
 }
