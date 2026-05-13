@@ -43,7 +43,8 @@ public class SnappableItem : NetworkBehaviour, ISnappable
 
         isSnapped = false;
         currentZone.ReleaseItem();
-        Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), false);
+        if (currentZone.gameObject.GetComponent<Collider>() != null)
+            Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), false);
         currentZone = null;
 
         rb.isKinematic = false;

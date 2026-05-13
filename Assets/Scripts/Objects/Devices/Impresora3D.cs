@@ -65,7 +65,11 @@ public class Impresora3D : PoweredDevice
         GameObject instance = Instantiate(prefab, printingAnchor.position, printingAnchor.rotation);
         instance.GetComponent<NetworkObject>().Spawn();
 
-        if (instance.TryGetComponent(out SnappableItem snappable)) snappable.SnapTo(anchorSnapZone);
+        if (instance.TryGetComponent(out SnappableItem snappable))
+        {
+            snappable.SnapTo(anchorSnapZone);
+            anchorSnapZone.currentItem = snappable;
+        }
 
         printProgress.Value = 0f;
     }
