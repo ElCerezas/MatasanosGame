@@ -1,6 +1,6 @@
-﻿using Unity.Netcode;
+﻿using System.Data.Common;
+using Unity.Netcode;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class MangueraAspiradora : PoweredItem
 {
@@ -11,20 +11,6 @@ public class MangueraAspiradora : PoweredItem
     public float rayDistance = 20f;
     public LayerMask puddleLayer;
 
-
-    private PhysicalItem toolItem;
-    private void Awake()
-    {
-        toolItem = GetComponent<PhysicalItem>();
-    }
-    public override void Interact(ulong clientID)
-    {
-        isTurnedOn.Value = !isTurnedOn.Value;
-        if (isTurnedOn.Value )
-        {
-            Debug.Log("Aspiradora On");
-        }
-    }
     public virtual void Update()
     {
         if (!IsServer) return;
