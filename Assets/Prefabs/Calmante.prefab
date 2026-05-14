@@ -107,7 +107,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 3444320936525610741}
   - component: {fileID: 7714727616402936460}
   - component: {fileID: 5315502327179139065}
+  - component: {fileID: 2965414939099902580}
   m_Layer: 6
   m_Name: Calmante
   m_TagString: Untagged
@@ -161,8 +162,8 @@ Transform:
   m_GameObject: {fileID: 2508039921191908271}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.19776, y: 1.02, z: 3.0493}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 3.1978, y: 1.0107, z: 3.0473}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4827067283812526624}
@@ -208,7 +209,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CalmanteItem
   ShowTopMostFoldoutHeaderGroup: 1
   inyeccionType: 1
-  inyeccionCollider: {fileID: 0}
+  inyeccionCollider: {fileID: 223923678982548804}
+  animator: {fileID: 2965414939099902580}
+  Inyectado: {fileID: 7400000, guid: 38412cb39912c224ab716a35698a8fcd, type: 2}
+  Inyectando: {fileID: 7400000, guid: 21feeba94e402be40a04e5c36ff1a50d, type: 2}
+  NoInyectado: {fileID: 7400000, guid: 93eef784a5b054648a6c5107b7c40c67, type: 2}
 --- !u!65 &177076667709483176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -363,6 +368,25 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   holdPoint: {fileID: 0}
   isTool: 1
+--- !u!111 &2965414939099902580
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2508039921191908271}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 93eef784a5b054648a6c5107b7c40c67, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 21feeba94e402be40a04e5c36ff1a50d, type: 2}
+  - {fileID: 7400000, guid: 38412cb39912c224ab716a35698a8fcd, type: 2}
+  - {fileID: 7400000, guid: 93eef784a5b054648a6c5107b7c40c67, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1001 &5005620572767604171
 PrefabInstance:
   m_ObjectHideFlags: 0

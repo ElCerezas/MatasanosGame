@@ -8,9 +8,20 @@ public class InyeccionItem : NetworkBehaviour
 {
     [SerializeField] private InyeccionType inyeccionType;
     [SerializeField] private InyeccionCollider inyeccionCollider;
+    [SerializeField] private Animation animator;
+    [SerializeField] private AnimationClip Inyectado;
+    [SerializeField] private AnimationClip Inyectando;
+    [SerializeField] private AnimationClip NoInyectado;
+    private bool animPlayed = false;
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        animator.Play(NoInyectado.name);
+    }
     public void Inject(GameObject victim)
     {
+        if (inyeccionType == InyeccionType.Empty) return;
         if (victim.TryGetComponent<NetworkObject>(out var netObj))
         {
             InyeccionType tipoAInyectar = inyeccionType;
@@ -20,7 +31,16 @@ public class InyeccionItem : NetworkBehaviour
                 Type = tipoAInyectar
             });
             inyeccionType = InyeccionType.Empty;
+            animator.Play(Inyectando.name);
+            animPlayed = true;
         }
     }
 
+    public void Update()
+    {
+        if (!animator.IsPlaying(Inyectando.name) && animPlayed)
+        {
+            animator.Play(Inyectado.name);
+        } 
+    }
 }
