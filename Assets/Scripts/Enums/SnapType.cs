@@ -7,4 +7,5 @@
     Jeringuilla,
     Bloodbag,
     PrinterOnly = -1,
+    Aspiradora,
 }
