@@ -72,6 +72,15 @@ public class AlienStateManager : NetworkBehaviour
         EventBus.Subscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Subscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
         EventBus.Subscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
+        EventBus.Subscribe<OnDienteUnSnap>(OnDienteUnSnapped);
+    }
+
+    private void OnDienteUnSnapped(OnDienteUnSnap e)
+    {
+        if (e.UnSnappedTooth.CompareTag("GoodTeeth"))
+        {
+            estornudoComponent.ExecuteEstornudo();
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -82,6 +91,7 @@ public class AlienStateManager : NetworkBehaviour
         EventBus.Unsubscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Unsubscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
         EventBus.Unsubscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
+        EventBus.Unsubscribe<OnDienteUnSnap>(OnDienteUnSnapped);
         base.OnNetworkDespawn();
     }
 

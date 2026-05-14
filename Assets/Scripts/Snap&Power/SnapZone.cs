@@ -74,6 +74,10 @@ public class SnapZone : NetworkBehaviour
             {
                 EventBus.Publish(new OnBloodBagDetached { BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId });
             }
+            if (acceptedType == SnapType.Diente)
+            {
+                EventBus.Publish(new OnDienteUnSnap { DienteID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId, UnSnappedTooth = currentItem.gameObject });
+            }
             lastSnapTime = Time.time;
             currentItem.Unsnap();
             currentItem = null;

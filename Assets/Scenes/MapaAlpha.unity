@@ -2718,7 +2718,7 @@ MonoBehaviour:
   criticalDamageMultiplier: 2
   damageRate: 1
   DesangradoThreshold: 10
-  estornudoComponent: {fileID: 0}
+  estornudoComponent: {fileID: 128472694}
   calmantDuration: 5
   maxCalmant: 100
   currentCalmant:
@@ -2788,14 +2788,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Estornudo
   ShowTopMostFoldoutHeaderGroup: 1
   attackOrigin: {fileID: 1923347258}
-  coneRange: 5
-  coneAngle: 45
-  attackForce: 2000
+  coneRange: 8.2
+  coneAngle: 80
+  attackForce: 1000
   ragdollDuration: 3
-  rotationForce: 500
+  rotationForce: 25
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   showDebugCone: 1
 --- !u!1 &130402914 stripped
 GameObject:
@@ -150903,7 +150903,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1923347258}
   m_Layer: 8
-  m_Name: GameObject
+  m_Name: Boca
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

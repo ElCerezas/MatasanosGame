@@ -119,6 +119,7 @@ public class BloodBag : NetworkBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (isAttached.Value) return;
         if (collisionCooldown > 0) return;
 
         if (toolItem == null) return;

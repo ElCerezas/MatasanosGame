@@ -117,3 +117,9 @@ public struct OnWoundFocoHealEnded : IEvent
 {
     public ulong TaraID;
 }
+
+public struct OnDienteUnSnap : IEvent
+{
+    public ulong DienteID;
+    public GameObject UnSnappedTooth;
+}
