@@ -1883,6 +1883,79 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &897860327
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.126099
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.11
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -15.004637
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1029318137439392762, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 263b74ff68551ce4a90368507d55cc67, type: 2}
+    - target: {fileID: 919132149155446097, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: m_Name
+      value: alienTumbado
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555095598280357603, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 923d6752776e5c9488ba401457aafba9, type: 2}
+    - target: {fileID: 4555095598280357603, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3443a84f9a545b84582928bc2a544ce1, type: 2}
+    - target: {fileID: 4555095598280357603, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cafb722e7ef78a746b9f39a28ec378e3, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 13f88474250167843ae654ae6cf0ed38, type: 3}
 --- !u!1 &1084080724
 GameObject:
   m_ObjectHideFlags: 0
@@ -3482,6 +3555,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 742262713339546176, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1157222705
+      objectReference: {fileID: 0}
+    - target: {fileID: 742262713339546176, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 742262713339546176, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2773923472
+      objectReference: {fileID: 0}
     - target: {fileID: 768112211530667738, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.21
@@ -4895,3 +4980,4 @@ SceneRoots:
   - {fileID: 1997042573}
   - {fileID: 96619911}
   - {fileID: 1909574711}
+  - {fileID: 897860327}
