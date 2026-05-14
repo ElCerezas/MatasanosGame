@@ -120,6 +120,7 @@ public class PlayerStateManager : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (stunDuration > 0f) return;
         Vector3 relativeVelocity = collision.relativeVelocity;
         if (relativeVelocity.magnitude > minimumForceToRagdoll)
         {
@@ -136,6 +137,7 @@ public class PlayerStateManager : NetworkBehaviour
 
     public void Slip(float stunTime)
     {
+        if (stunDuration > 0f) return;
         EnterRagdoll(stunTime);
 
         Vector3 feetPosition = transform.position + Vector3.down * 0.5f;
