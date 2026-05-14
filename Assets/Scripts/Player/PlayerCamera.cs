@@ -7,6 +7,7 @@ public class PlayerCamera : NetworkBehaviour
     PlayerInput playerInput;
     [SerializeField] Transform playerCam;
     [SerializeField] Transform holdPoint;
+    [SerializeField] GameObject BodyVisual;
     [SerializeField] float holdPointDistance = 1.5f;
     [SerializeField] float holdPointHeight = 1.2f;
     [SerializeField] float maxHoldPointAngleFromCamera = 10f;
@@ -33,6 +34,11 @@ public class PlayerCamera : NetworkBehaviour
         {
             playerCam.GetComponentInChildren<Camera>().enabled = false;
             return;
+        }
+        if (IsLocalPlayer)
+        {
+            int hiddenLayer = LayerMask.NameToLayer("LocalPlayerLayer");
+            BodyVisual.layer = hiddenLayer;
         }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
