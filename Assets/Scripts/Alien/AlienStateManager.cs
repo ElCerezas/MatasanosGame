@@ -107,7 +107,9 @@ public class AlienStateManager : NetworkBehaviour
 
         if (stateMachine.CurrentState == null)
         {
-            stateMachine.Initialize(new InquietoState(stateMachine));
+            var initialState = new InquietoState(stateMachine);
+            stateMachine.Initialize(initialState);
+            currentActiveState.Value = AlienStateEnum.Inquieto;
         }
 
         HandleCalmant();
@@ -135,7 +137,6 @@ public class AlienStateManager : NetworkBehaviour
     {
         if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
         stateMachine.ChangeState(newState);
-
         if (newState is CalmState) currentActiveState.Value = AlienStateEnum.Calmado;
         else if (newState is AlteredState) currentActiveState.Value = AlienStateEnum.Alterado;
         else if (newState is CriticalState) currentActiveState.Value = AlienStateEnum.Critico;
