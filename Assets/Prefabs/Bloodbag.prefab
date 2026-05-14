@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BloodBag
   ShowTopMostFoldoutHeaderGroup: 1
-  bloodBagMaxCapacity: 100
+  bloodBagMaxCapacity: 150
   BloodRenderer: {fileID: 7555743351260848673}
   bloodBagCurrentCapacity:
     UpdateTraits:
@@ -94,12 +94,12 @@ MonoBehaviour:
   bloodLossQuantity: 1
   bloodLossRate: 1
   lerpSpeed: 2
-  velocityThreshold: 5
+  velocityThreshold: 6
   explosionLayers:
     serializedVersion: 2
     m_Bits: 3921
-  debugCollisions: 0
-  puddleCount: 5
+  debugCollisions: 1
+  puddleCount: 3
   puddleSpreadRadius: 3
   groundLayer:
     serializedVersion: 2

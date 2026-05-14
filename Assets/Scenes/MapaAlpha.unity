@@ -5960,6 +5960,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Foco
       objectReference: {fileID: 0}
+    - target: {fileID: 5874761024586817262, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -42200,6 +42204,63 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1247870173}
   m_SourcePrefab: {fileID: 100100000, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
+--- !u!1001 &325513929
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.8985763
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8996065
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -49.24099
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5219847
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000011408326
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.85295486
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000018641893
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -242.931
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
+      propertyPath: m_Name
+      value: Aspiradora
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 375f1214d98267d4bb2449988cfe9ec8, type: 3}
 --- !u!1 &328711797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
@@ -128137,6 +128198,14 @@ PrefabInstance:
       propertyPath: BloodRenderer
       value: 
       objectReference: {fileID: 984399353}
+    - target: {fileID: 7758830782004584291, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+      propertyPath: velocityThreshold
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7758830782004584291, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+      propertyPath: puddleSpreadRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8737621880936660036, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
       propertyPath: isTool
       value: 1
@@ -163631,3 +163700,4 @@ SceneRoots:
   - {fileID: 1324207758}
   - {fileID: 577104928}
   - {fileID: 4903386}
+  - {fileID: 325513929}
