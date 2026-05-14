@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Aspiradora : MonoBehaviour
+public class Aspiradora : PoweredItem
 {
     public NetworkVariable<float> fillAmount = new NetworkVariable<float>();
     public float maxCapacity = 5f;
