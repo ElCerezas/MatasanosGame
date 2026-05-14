@@ -525,7 +525,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6834977321940939896}
-  m_Mesh: {fileID: 1226723149311242300, guid: 2d7aad7b8cce69344b9e8e2ece79badf, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!114 &9180680880211986303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3613879865
+  GlobalObjectIdHash: 2773923472
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -679,7 +679,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Impresora3D
   ShowTopMostFoldoutHeaderGroup: 1
-  printableObjects: []
+  printableObjects:
+  - displayName: test
+    printingTime: 0
+    printingObject: {fileID: 4248157229398284091, guid: 2252cc2142df1f1458a6493f18b05396, type: 3}
   hologramRenderer: {fileID: 6834977321940939896}
   hologramVisualRenderer: {fileID: 1094700874276838671}
 --- !u!1 &9153973028155746288
