@@ -9,9 +9,18 @@ public class Impresora3D : PoweredDevice
 
     [Header("Visual")]
     NetworkVariable<int> selectedIndex = new NetworkVariable<int>(0);
-    NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
+    [Range(0f,1f)]NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
 
     Coroutine printCoroutine;
+
+    [SerializeField] Renderer hologramVisualRenderer;
+    [SerializeField] MaterialPropertyBlock mpb;
+
+    void Awake()
+    {
+        hologramVisualRenderer = hologramRenderer.GetComponent<Renderer>();
+        mpb = new MaterialPropertyBlock();
+    }
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -26,6 +35,8 @@ public class Impresora3D : PoweredDevice
     void LoadHolo(int index)
     {
         hologramRenderer.GetComponent<MeshFilter>().mesh = printableObjects[index].printingObject.GetComponent<MeshFilter>().sharedMesh;
+        hologramRenderer.GetComponent<Renderer>().enabled = hasPower.Value && hologramRenderer.GetComponent<SnapZone>().currentItem == null;
+        SetupMeshBounds();
     }
     IEnumerator PrintCoroutine()
     {
@@ -49,6 +60,7 @@ public class Impresora3D : PoweredDevice
             {
                 printProgress.Value = localProgress;
                 syncTimer = 0f;
+                UpdatePrintShader();
             }
             yield return null;
         }
@@ -70,6 +82,8 @@ public class Impresora3D : PoweredDevice
         }
 
         printProgress.Value = 0f;
+        UpdatePrintShader();
+        LoadHolo(selectedIndex.Value);
     }
     public void OnNextPrint(int i)
     {
@@ -87,12 +101,30 @@ public class Impresora3D : PoweredDevice
 
         Debug.Log("PrintStart");
         printProgress.Value = 0.001f;
+        UpdatePrintShader();
         printCoroutine = StartCoroutine(PrintCoroutine());
     }
-
     public override void Powered()
     {
+        LoadHolo(selectedIndex.Value);
     }
+
+    void UpdatePrintShader()
+    {
+        hologramVisualRenderer.GetPropertyBlock(mpb);
+        mpb.SetFloat("_PrintingPercent", printProgress.Value);
+        hologramVisualRenderer.SetPropertyBlock(mpb);
+    }
+    void SetupMeshBounds()
+    {
+        Mesh mesh = hologramRenderer.GetComponent<MeshFilter>().sharedMesh;
+        Bounds b = mesh.bounds;
+
+        hologramVisualRenderer.GetPropertyBlock(mpb);
+
+        hologramVisualRenderer.SetPropertyBlock(mpb);
+    }
+
 }
 [System.Serializable]
 public struct PrintingObject
