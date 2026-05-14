@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,10 +13,13 @@ public class Impresora3D : PoweredDevice
     NetworkVariable<int> selectedIndex = new NetworkVariable<int>(0);
     [Range(0f, 1f)]
     NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
+    [SerializeField] TextMeshProUGUI screenText;
 
     Coroutine printCoroutine;
 
     [SerializeField] Renderer hologramVisualRenderer;
+    MeshFilter meshFilter;
+    SnapZone snapZone;
     [SerializeField] MaterialPropertyBlock mpb;
 
     static readonly int ID_PrintingPercent = Shader.PropertyToID("_PrintingPercent");
@@ -24,6 +28,8 @@ public class Impresora3D : PoweredDevice
     void Awake()
     {
         hologramVisualRenderer = hologramRenderer.GetComponent<Renderer>();
+        meshFilter = hologramRenderer?.GetComponent<MeshFilter>();
+        snapZone = hologramRenderer?.GetComponent<SnapZone>();
         mpb = new MaterialPropertyBlock();
     }
 
@@ -40,12 +46,12 @@ public class Impresora3D : PoweredDevice
     void LoadHolo(int index)
     {
         GameObject sourcePrefab = printableObjects[index].printingObject;
-        MeshFilter mf = hologramRenderer.GetComponent<MeshFilter>();
         Renderer rend = hologramRenderer.GetComponent<Renderer>();
-        SnapZone snapZone = hologramRenderer.GetComponent<SnapZone>();
+        meshFilter.mesh = sourcePrefab.GetComponent<MeshFilter>().sharedMesh;
+        rend.enabled = hasPower.Value && gameObject.GetComponent<SnapZone>().currentItem == null;
 
-        mf.mesh = sourcePrefab.GetComponent<MeshFilter>().sharedMesh;
-        rend.enabled = hasPower.Value && snapZone.currentItem == null;
+        screenText.enabled = hasPower.Value;
+        screenText.text = printableObjects[index].displayName;
         PushSourceTexture(sourcePrefab);
     }
     void PushSourceTexture(GameObject sourcePrefab)
@@ -68,6 +74,7 @@ public class Impresora3D : PoweredDevice
         float localProgress = printProgress.Value;
         float syncTimer = 0f;
         const float syncInterval = 0.1f;
+        const int barLength = 10;
 
         while (localProgress < 1f)
         {
@@ -86,6 +93,10 @@ public class Impresora3D : PoweredDevice
             if (syncTimer >= syncInterval)
             {
                 printProgress.Value = localProgress;
+                int filledLength = Mathf.RoundToInt(localProgress * barLength);
+                string filledPart = new string('#', filledLength);
+                string emptyPart = new string('.', barLength - filledLength);
+                screenText.text = $"[{filledPart}{emptyPart}]\n{Mathf.FloorToInt(localProgress * 100)}%";
                 syncTimer = 0f;
             }
 
