@@ -36,22 +36,21 @@ public class Impresora3D : PoweredDevice
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        LoadHolo(selectedIndex.Value);
+        LoadHolo();
     }
 
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
     }
-    void LoadHolo(int index)
+    public void LoadHolo()
     {
-        GameObject sourcePrefab = printableObjects[index].printingObject;
-        Renderer rend = hologramRenderer.GetComponent<Renderer>();
+        GameObject sourcePrefab = printableObjects[selectedIndex.Value].printingObject;
         meshFilter.mesh = sourcePrefab.GetComponent<MeshFilter>().sharedMesh;
-        rend.enabled = hasPower.Value && gameObject.GetComponent<SnapZone>().currentItem == null;
+        hologramVisualRenderer.enabled = hasPower.Value && snapZone.currentItem == null;
 
         screenText.enabled = hasPower.Value;
-        screenText.text = printableObjects[index].displayName;
+        screenText.text = printableObjects[selectedIndex.Value].displayName;
         PushSourceTexture(sourcePrefab);
     }
     void PushSourceTexture(GameObject sourcePrefab)
@@ -95,7 +94,7 @@ public class Impresora3D : PoweredDevice
                 printProgress.Value = localProgress;
                 int filledLength = Mathf.RoundToInt(localProgress * barLength);
                 string filledPart = new string('#', filledLength);
-                string emptyPart = new string('.', barLength - filledLength);
+                string emptyPart = new string('_', barLength - filledLength);
                 screenText.text = $"[{filledPart}{emptyPart}]\n{Mathf.FloorToInt(localProgress * 100)}%";
                 syncTimer = 0f;
             }
@@ -127,13 +126,15 @@ public class Impresora3D : PoweredDevice
 
         printProgress.Value = 0f;
         UpdatePrintShader(0f);
-        LoadHolo(selectedIndex.Value);
+        LoadHolo();
     }
     public void OnNextPrint(int i)
     {
         if (printProgress.Value > 0f) return;
         selectedIndex.Value += i;
-        LoadHolo(selectedIndex.Value);
+        Debug.Log(selectedIndex.Value);
+        selectedIndex.Value = selectedIndex.Value % (printableObjects.Length-1);
+        LoadHolo();
     }
 
     public void RequestPrint()
@@ -153,7 +154,7 @@ public class Impresora3D : PoweredDevice
 
     public override void Powered()
     {
-        LoadHolo(selectedIndex.Value);
+        LoadHolo();
     }
     void UpdatePrintShader(float progress)
     {
