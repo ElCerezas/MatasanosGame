@@ -13,7 +13,7 @@ public class LightDevice : PoweredDevice
     }
     public override void Powered()
     {
-        light.enabled = (hasPower.Value && !isEmergencyLight);
+        light.enabled = isEmergencyLight ? !hasPower.Value : hasPower.Value;
     }
 
 }
