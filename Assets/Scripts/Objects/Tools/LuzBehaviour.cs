@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class LuzBehaviour : PoweredItem
@@ -12,14 +12,22 @@ public class LuzBehaviour : PoweredItem
     public float timeToCreateWound = 2f;
     public float timeToHeal = 1.5f;
 
+    [Header("Visuals")]
+    [SerializeField] Light Light;
+
     private float alienTimer = 0f;
     private WoundFocoBehaviour currentWoundTarget = null;
     private AlienWoundManager currentAlienTarget = null;
 
+    public override void Interact(ulong clientID)
+    {
+        base.Interact(clientID);
+        Light.enabled = (hasPower.Value && isTurnedOn.Value);
+    }
     void Update()
     {
         if (!IsOwner) return;
-
+        if (!isTurnedOn.Value) return;
         EmitLight();
     }
 

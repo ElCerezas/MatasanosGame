@@ -6786,6 +6786,26 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 984346356
       objectReference: {fileID: 0}
+    - target: {fileID: 1075371661351488630, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3041172211
+      objectReference: {fileID: 0}
+    - target: {fileID: 1075371661351488630, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 984346356
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550623073923886360, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1555742902
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550623073923886360, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550623073923886360, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 984346356
+      objectReference: {fileID: 0}
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.77766
@@ -6825,6 +6845,14 @@ PrefabInstance:
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5595781006817313004, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 678878880
+      objectReference: {fileID: 0}
+    - target: {fileID: 5595781006817313004, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 984346356
       objectReference: {fileID: 0}
     - target: {fileID: 5874761024586817262, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_Name
@@ -141525,7 +141553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GeneratorSystem
   ShowTopMostFoldoutHeaderGroup: 1
-  maxPowerLoad: 1
+  maxPowerLoad: 3
   currentLoad:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -144260,21 +144288,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 748180161}
     m_Modifications:
-    - target: {fileID: 595964244579292970, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+    - target: {fileID: 1075371661351488630, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1375676956
+      value: 1596905785
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550623073923886360, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2934367299
       objectReference: {fileID: 0}
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -37.42
+      value: 4.97
       objectReference: {fileID: 0}
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.51523757
+      value: 1.136
       objectReference: {fileID: 0}
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.168
+      value: 11.88
       objectReference: {fileID: 0}
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -144304,21 +144336,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5595781006817313004, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2858431916
+      objectReference: {fileID: 0}
     - target: {fileID: 5874761024586817262, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_Name
       value: Luz
-      objectReference: {fileID: 0}
-    - target: {fileID: 6996385494618333528, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
-      propertyPath: m_Color.b
-      value: 0.5707547
-      objectReference: {fileID: 0}
-    - target: {fileID: 6996385494618333528, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
-      propertyPath: m_Color.r
-      value: 0.9979665
-      objectReference: {fileID: 0}
-    - target: {fileID: 6996385494618333528, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
-      propertyPath: m_Intensity
-      value: 270
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
