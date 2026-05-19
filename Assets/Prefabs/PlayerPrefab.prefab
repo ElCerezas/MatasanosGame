@@ -251,12 +251,12 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 890652638432953525}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -564,7 +564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4096339185627178200}
   - component: {fileID: 1428951366589804453}
-  - component: {fileID: 7170051683180478904}
+  - component: {fileID: 7577833196114403828}
   m_Layer: 11
   m_Name: OverlayParasite
   m_TagString: Untagged
@@ -599,7 +599,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3973535591621104942}
   m_CullTransparentMesh: 1
---- !u!114 &7170051683180478904
+--- !u!114 &7577833196114403828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 6766601a3099c1840aabbfb746e36476, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 682d96f1a3ac2b544baeb8815b245de8, type: 3}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1112,10 +1112,12 @@ MonoBehaviour:
   sleepFadeDuration: 1
   flashedOverlay: {fileID: 2526276411111856357}
   flashedFadeOutDuration: 2
-  parasiteNoiseImage: {fileID: 7170051683180478904}
-  parasiteGrowthRate: 0.05
+  parasiteNoiseImage: {fileID: 7577833196114403828}
+  parasiteGrowthRate: 0.02
   parasiteIsPersistent: 1
-  maxParasiteIntensity: 1
+  maxParasiteIntensity: 5
+  maxParasiteFill: 1
+  parasiteColor: {r: 0.4433962, g: 0, b: 0.4433962, a: 1}
   mocoSettings:
     container: {fileID: 8390368507612492961}
     sprites:
@@ -1123,8 +1125,8 @@ MonoBehaviour:
     sizeRange: {x: 50, y: 150}
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0, b: 0, a: 0.44705883}
-      key1: {r: 0.7075472, g: 0, b: 0, a: 0.9019608}
+      key0: {r: 0.37248245, g: 1, b: 0.25943398, a: 0.44705883}
+      key1: {r: 0.17191337, g: 0.509434, b: 0, a: 0.9019608}
       key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1158,8 +1160,8 @@ MonoBehaviour:
     sizeRange: {x: 50, y: 150}
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.10523224, g: 1, b: 0, a: 0}
-      key1: {r: 0.17719087, g: 0.4433962, b: 0, a: 0.9019608}
+      key0: {r: 1, g: 0, b: 0, a: 0.44705883}
+      key1: {r: 0.7075472, g: 0, b: 0, a: 0.9019608}
       key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1175,7 +1177,7 @@ MonoBehaviour:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 26021
+      atime1: 33153
       atime2: 65535
       atime3: 0
       atime4: 0

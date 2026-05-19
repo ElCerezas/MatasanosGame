@@ -19,8 +19,7 @@ public class SplashSettings
 
 public class PlayerHUDEffects : NetworkBehaviour
 {
-    [Header("Setup Crítico Multijugador")]
-    [SerializeField] private GameObject localCanvasObject; // Arrastra AQUÍ el GameObject del Canvas
+    [SerializeField] private GameObject localCanvasObject;
 
     [Header("Sleep")]
     [SerializeField] CanvasGroup sleepOverlay;
@@ -35,8 +34,11 @@ public class PlayerHUDEffects : NetworkBehaviour
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] bool parasiteIsPersistent = true;
     [SerializeField] float maxParasiteIntensity = 1f;
+    [Range(0f, 2f)][SerializeField] float maxParasiteFill = 0.75f;
+    [SerializeField] Color parasiteColor = Color.violet;
     float parasiteIntensity = 0f;
     bool parasiteActive = false;
+    Material parasiteMaterial;
 
     [Header("Booger / Moco")]
     [SerializeField] SplashSettings mocoSettings;
@@ -51,7 +53,6 @@ public class PlayerHUDEffects : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // SI NO SOMOS EL DUEÑO: Apagamos SU canvas para que no tape nuestra pantalla
         if (!IsOwner)
         {
             if (localCanvasObject != null)
@@ -61,7 +62,6 @@ public class PlayerHUDEffects : NetworkBehaviour
             return;
         }
 
-        // Si somos el dueño, aseguramos que nuestro Canvas esté encendido
         if (localCanvasObject != null)
             localCanvasObject.SetActive(true);
 
@@ -115,7 +115,6 @@ public class PlayerHUDEffects : NetworkBehaviour
     #endregion
 
     #region Effects Logic
-
     public void TriggerSleep(float duration)
     {
         if (sleepCoroutine != null) StopCoroutine(sleepCoroutine);
@@ -153,25 +152,22 @@ public class PlayerHUDEffects : NetworkBehaviour
     public void TriggerParasite()
     {
         if (parasiteNoiseImage == null) return;
+        if (parasiteMaterial == null)  parasiteMaterial = new Material(parasiteNoiseImage.material);
+
+        parasiteNoiseImage.material = parasiteMaterial;
         parasiteActive = true;
         parasiteNoiseImage.enabled = true;
     }
-
     void ApplyParasiteVisual(float intensity)
     {
-        if (parasiteNoiseImage == null) return;
+        if (parasiteNoiseImage == null || parasiteMaterial == null) return;
 
-        float noise = Mathf.PerlinNoise(Time.time * 3f, 0f);
-        float scaleWobble = Mathf.Lerp(0.95f, 1.05f, noise);
+        float progress = Mathf.Clamp01(intensity / maxParasiteIntensity);
+        float currentThreshold = Mathf.Lerp(0f, maxParasiteFill, progress);
 
-        parasiteNoiseImage.rectTransform.localScale = Vector3.Lerp(Vector3.one * 0.1f, Vector3.one * 1.5f, intensity) * scaleWobble;
+        parasiteMaterial.SetFloat("_Threshold", currentThreshold);
 
-        Color c = parasiteNoiseImage.color;
-        c.a = Mathf.Lerp(0f, 1f, intensity);
-        parasiteNoiseImage.color = c;
-
-        float offset = Time.time * 0.05f;
-        parasiteNoiseImage.uvRect = new Rect(offset, offset, 1f, 1f);
+        parasiteMaterial.SetColor("_Color", parasiteColor.linear);
     }
 
     public void CleanParasite()
@@ -179,7 +175,11 @@ public class PlayerHUDEffects : NetworkBehaviour
         parasiteActive = false;
         parasiteIntensity = 0f;
         if (parasiteNoiseImage != null)
+        {
             parasiteNoiseImage.enabled = false;
+            if (parasiteMaterial != null)
+                parasiteMaterial.SetFloat("_Threshold", 0f);
+        }
     }
 
     void CreateSplash(SplashSettings settings, List<GameObject> activeList)
@@ -238,14 +238,13 @@ public class PlayerHUDEffects : NetworkBehaviour
     }
 }
 
-// --- INSPECTOR PERSONALIZADO PARA TESTEO ---
 #if UNITY_EDITOR
 [CustomEditor(typeof(PlayerHUDEffects))]
 public class PlayerHUDEffectsEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector(); // Dibuja las variables del script de forma normal
+        DrawDefaultInspector();
 
         PlayerHUDEffects script = (PlayerHUDEffects)target;
 
@@ -261,6 +260,8 @@ public class PlayerHUDEffectsEditor : Editor
         if (GUILayout.Button("🩸 Añadir Sangre", GUILayout.Height(30))) script.TriggerBlood();
         if (GUILayout.Button("🤢 Añadir Moco", GUILayout.Height(30))) script.TriggerMoco();
         if (GUILayout.Button("👾 Activar Parásito", GUILayout.Height(30))) script.TriggerParasite();
+        if (GUILayout.Button("😴 Sleep", GUILayout.Height(30))) script.TriggerSleep(5f);
+        if (GUILayout.Button("💡 Flash", GUILayout.Height(30))) script.TriggerFlash(2f);
 
         GUILayout.Space(10);
 
