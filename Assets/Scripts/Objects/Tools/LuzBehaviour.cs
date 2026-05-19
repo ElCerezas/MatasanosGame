@@ -46,7 +46,7 @@ public class LuzBehaviour : PoweredItem
                 currentWoundTarget = herida;
                 NotifyHealWoundServerRpc(herida.NetworkObjectId);
             }
-            else if (hit.collider.TryGetComponent<AlienWoundManager>(out var alien))
+            else if (hit.collider.transform.parent.TryGetComponent<AlienWoundManager>(out var alien))
             {
                 currentWoundTarget = null;
                 currentAlienTarget = alien;
