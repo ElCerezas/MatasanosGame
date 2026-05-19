@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public struct VictoryEvent : IEvent
 {
-    
+
 }
 public struct GeneratorEvent : IEvent
 {
@@ -25,9 +25,8 @@ public struct OnDienteSnap : IEvent
 /*
 ==============================================================================
                                 EVENTOS DE ALIEN
-==============================================================================
-*/
-public struct OnAlienHealthChanged : IEvent 
+==============================================================================*/
+public struct OnAlienHealthChanged : IEvent
 {
     public ulong AlienID;
     public float CurrentHealth;
@@ -69,10 +68,9 @@ public struct OnCalmantEnded : IEvent
 /*
 ==============================================================================
                                 EVENTOS DE INSECTO
-==============================================================================
-*/
+==============================================================================*/
 
-public struct OnInsectExplosion :IEvent
+public struct OnInsectExplosion : IEvent
 {
     public ulong VictimID;
 }
@@ -80,8 +78,7 @@ public struct OnInsectExplosion :IEvent
 /*
 ==============================================================================
                                 EVENTOS DE BLOODBAG
-==============================================================================
-*/
+==============================================================================*/
 
 public struct OnBloodBagEmpty : IEvent
 {
@@ -100,8 +97,7 @@ public struct OnBloodBagDetached : IEvent
 /*
 ==============================================================================
                                 EVENTOS DE HERIDAS
-==============================================================================
-*/
+==============================================================================*/
 [Serializable]
 public struct ColliderInteractableEvent : IEvent
 {
@@ -123,3 +119,26 @@ public struct OnDienteUnSnap : IEvent
     public ulong DienteID;
     public GameObject UnSnappedTooth;
 }
+
+#region PlayerHUDEffects
+public struct OnPlayerSlipped : IEvent
+{
+    public ulong VictimID;
+}
+public struct OnPlayerSneezes : IEvent
+{
+    public ulong VictimID;
+}
+public struct OnPlayerBlinded : IEvent
+{
+    public ulong VictimID;
+    public float Duration;
+}
+public struct OnHUDCleaned : IEvent
+{
+    public ulong VictimID;
+    public bool CleanMoco;
+    public bool CleanSangre;
+    public bool CleanParasito;
+}
+#endregion

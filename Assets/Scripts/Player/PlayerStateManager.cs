@@ -1,9 +1,5 @@
-﻿using System;
-using System.Globalization;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
-using UnityEngine.Rendering;
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerInteractor))]
 [RequireComponent(typeof(Rigidbody))]
