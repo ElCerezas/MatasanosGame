@@ -34,7 +34,7 @@ public class PlayerHUDEffects : NetworkBehaviour
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] bool parasiteIsPersistent = true;
     [SerializeField] float maxParasiteIntensity = 1f;
-    [Range(0f, 2f)][SerializeField] float maxParasiteFill = 0.75f;
+    [Range(0f, 1f)][SerializeField] float maxParasiteFill = 0.75f;
     [SerializeField] Color parasiteColor = Color.violet;
     float parasiteIntensity = 0f;
     bool parasiteActive = false;
