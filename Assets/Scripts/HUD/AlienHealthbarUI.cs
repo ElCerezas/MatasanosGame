@@ -1,10 +1,11 @@
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AlienHealthbarUI : NetworkBehaviour
 {
-    public Image fill;
+    public TextMeshProUGUI fill;
     private float targetFill;
     public override void OnNetworkSpawn()
     {
@@ -16,15 +17,11 @@ public class AlienHealthbarUI : NetworkBehaviour
     }
     private void UpdateUI(OnAlienHealthChanged e)
     {
-        targetFill = e.CurrentHealth / e.MaxHealth;
+        targetFill = e.CurrentHealth / e.MaxHealth * 100f;
     }
     void Update()
     {
-        fill.fillAmount = Mathf.Lerp(fill.fillAmount, targetFill, Time.deltaTime * 10f);
-    }
-    public void SetFill(float Pct, float MaxPct)
-    {
-        targetFill = (MaxPct > 0f) ? Pct / MaxPct : 0f;
+        fill.text = targetFill.ToString() + "%";
     }
     
 }

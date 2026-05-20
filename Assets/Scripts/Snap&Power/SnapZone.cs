@@ -76,7 +76,7 @@ public class SnapZone : NetworkBehaviour
             }
             if (acceptedType == SnapType.Diente)
             {
-                EventBus.Publish(new OnDienteUnSnap { DienteID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId, UnSnappedTooth = currentItem.gameObject });
+                EventBus.Publish(new OnDienteUnSnap { SnapZoneID = NetworkObjectId, DienteID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId, UnSnappedTooth = currentItem.gameObject });
             }
             lastSnapTime = Time.time;
             currentItem.Unsnap();

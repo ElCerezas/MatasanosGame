@@ -1,5 +1,7 @@
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlaneHeartbeatVisualizer : NetworkBehaviour
 {
@@ -7,6 +9,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
 
     [Header("Referencias")]
     [SerializeField] private Transform planeTransform;
+    [SerializeField] private TextMeshProUGUI bpmText;
 
     [Header("Parámetros de la onda")]
     [SerializeField] private float bpm = 75f;
@@ -38,6 +41,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
         EventBus.Subscribe<OnAlienCalmantUsed>(CalmantApplied);
         EventBus.Subscribe<OnCalmantEnded>(CalmantEnded);
         EventBus.Subscribe<OnAlienStateChanged>(AlienStateChanged);
+        EventBus.Subscribe<OnAlienDeath>(AlienDeath);
 
         waveColor = defaultColor;
         lineRenderer = GetComponent<LineRenderer>();
@@ -57,8 +61,14 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
             planeTransform = transform;
     }
 
+    private void AlienDeath(OnAlienDeath death)
+    {
+        flatline = true;
+    }
+
     private void AlienStateChanged(OnAlienStateChanged changed)
     {
+        if (flatline) return;
         switch (changed.NewState)
         {
             default:
@@ -78,11 +88,13 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     {
         EventBus.Unsubscribe<OnAlienCalmantUsed>(CalmantApplied);
         EventBus.Unsubscribe<OnCalmantEnded>(CalmantEnded);
+        EventBus.Unsubscribe<OnAlienDeath>(AlienDeath);
     }
     
 
     private void CalmantApplied(OnAlienCalmantUsed used)
     {
+        if (waveColor == desangradoColor) return;
         waveColor = calmantColor;
     }
 
@@ -97,9 +109,10 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
         if (lineRenderer == null) return;
         lineRenderer.startColor = waveColor;
         lineRenderer.endColor = waveColor;
+        bpmText.color = waveColor;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
-
+        bpmText.text = bpm.ToString() + "bpm";
         GenerateHeartbeatWave();
     }
 

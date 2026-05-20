@@ -11,6 +11,12 @@ public struct GeneratorEvent : IEvent
     public bool IsGeneratorOn;
 }
 
+public struct OnGeneratorChargeChanged : IEvent
+{
+    public float CurrentCharge;
+    public float MaxCharge;
+}
+
 public struct OnInject : IEvent
 {
     public ulong VictimID;
@@ -39,10 +45,6 @@ public struct OnAlienDeath : IEvent
 public struct OnAlienParasiteAttack : IEvent
 {
     public ulong AlienID;
-}
-public struct TaraHealedEvent : IEvent
-{
-    public ulong TaraID;
 }
 public struct OnAlienStateChanged : IEvent
 {
@@ -116,10 +118,33 @@ public struct OnWoundFocoHealEnded : IEvent
 
 public struct OnDienteUnSnap : IEvent
 {
+    public ulong SnapZoneID;
     public ulong DienteID;
     public GameObject UnSnappedTooth;
 }
 
+public struct TaraCreated : IEvent
+{
+    public ulong TaraID;
+    public WoundType Type;
+}
+public struct TaraHealedEvent : IEvent
+{
+    public ulong TaraID;
+    public WoundType Type;
+}
+public struct OnDientesCountChanged : IEvent
+{
+    public int value;
+}
+public struct OnWoundFocoCountChanged : IEvent
+{
+    public int value;
+}
+public struct OnWoundVendaCountChanged : IEvent
+{
+    public int value;
+}
 #region PlayerHUDEffects
 public struct OnPlayerSlipped : IEvent
 {

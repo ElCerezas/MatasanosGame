@@ -7,6 +7,11 @@ public class WoundVendaBehaviour : TaraBase
     private NetworkVariable<bool> isHealed = new NetworkVariable<bool>(false);
     private ColliderDetector colliderInteracttable;
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsServer) return;
+        EventBus.Publish(new TaraCreated { TaraID = NetworkObjectId, Type = type });
+    }
     private void Awake()
     {
         colliderInteracttable = gameObject.GetComponent<ColliderDetector>();

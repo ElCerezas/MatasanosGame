@@ -189,8 +189,9 @@ public class AlienStateManager : NetworkBehaviour
 
     public void ApplyInyeccion(InyeccionType type)
     {
+        Debug.Log("Hello");
         if (!IsServer || currentActiveState.Value == AlienStateEnum.Desangrado) return;
-
+        Debug.Log("Hello1");
         switch (type)
         {
             case InyeccionType.Calmante:

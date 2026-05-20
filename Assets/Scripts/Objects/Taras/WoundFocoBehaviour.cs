@@ -21,6 +21,8 @@ public class WoundFocoBehaviour : TaraBase
                 });
             }
         };
+        if (!IsServer) return;
+        EventBus.Publish(new TaraCreated { TaraID = NetworkObjectId, Type = type });
     }
     void Update()
     {

@@ -1,4 +1,3 @@
-// TeethBehaviour.cs
 using System;
 using UnityEngine;
 using Unity.Netcode;
@@ -7,33 +6,49 @@ public class TeethBehaviour : TaraBase
 {
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
         if (!IsServer) return;
-        EventBus.Subscribe<OnDienteSnap>(OnDienteSnapHandler);
 
         SnapZone snapZone = GetComponent<SnapZone>();
-        //Debug.Log($"TeethBehaviour {NetworkObjectId} - SnapZone: {snapZone != null}, currentItem: {snapZone?.currentItem != null}, tag: {snapZone?.currentItem?.gameObject.tag}");
+        bool preSnappedGood = snapZone?.currentItem != null &&
+                              snapZone.currentItem.gameObject.CompareTag("GoodTeeth");
 
-        if (snapZone != null && snapZone.currentItem != null)
+        if (preSnappedGood)
         {
-            OnDienteSnapHandler(new OnDienteSnap
-            {
-                ID = NetworkObjectId,
-                currentItem = snapZone.currentItem
-            });
+            MarkAsHealed();
+            EventBus.Subscribe<OnDienteUnSnap>(OnDienteUnSnapHandler);
+            return;
         }
+
+        EventBus.Subscribe<OnDienteSnap>(OnDienteSnapHandler);
     }
+
+
 
     public override void OnNetworkDespawn()
     {
         if (!IsServer) return;
         EventBus.Unsubscribe<OnDienteSnap>(OnDienteSnapHandler);
+        EventBus.Unsubscribe<OnDienteUnSnap>(OnDienteUnSnapHandler);
     }
 
     private void OnDienteSnapHandler(OnDienteSnap snap)
     {
         if (snap.ID != NetworkObjectId) return;
+        if (snap.currentItem == null) return;
+
         if (snap.currentItem.gameObject.CompareTag("GoodTeeth"))
+        {
             MarkAsHealed();
+            EventBus.Unsubscribe<OnDienteSnap>(OnDienteSnapHandler);
+            EventBus.Subscribe<OnDienteUnSnap>(OnDienteUnSnapHandler);
+        }
+    }
+
+    private void OnDienteUnSnapHandler(OnDienteUnSnap snap)
+    {
+        if (snap.SnapZoneID != NetworkObjectId) return;
+        UnmarkAsHealed();
+        EventBus.Unsubscribe<OnDienteUnSnap>(OnDienteUnSnapHandler);
+        EventBus.Subscribe<OnDienteSnap>(OnDienteSnapHandler);
     }
 }

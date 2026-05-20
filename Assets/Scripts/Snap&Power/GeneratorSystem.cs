@@ -13,15 +13,21 @@ public class GeneratorSystem : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        isGeneratorOn.OnValueChanged += (oldVal, newVal) =>
+           {
+               EventBus.Publish(new GeneratorEvent { IsGeneratorOn = newVal });
+           };
+        currentLoad.OnValueChanged += (oldVal, newVal) =>
+        {
+            EventBus.Publish(new OnGeneratorChargeChanged { CurrentCharge = newVal, MaxCharge = maxPowerLoad });
+
+        };
+        
         if (IsServer)
         {
             foreach (var emitter in mainEmitters)
                 emitter.SetEmitting(isGeneratorOn.Value);
-            
-            isGeneratorOn.OnValueChanged += (oldVal, newVal) =>
-            {
-                EventBus.Publish(new GeneratorEvent { IsGeneratorOn = newVal });
-            };
+
             EvaluateLoad();
         }
     }
@@ -43,7 +49,7 @@ public class GeneratorSystem : NetworkBehaviour
             {
                 emitter.SetEmitting(false);
             }
-            
+
             currentLoad.Value = 0;
         }
     }

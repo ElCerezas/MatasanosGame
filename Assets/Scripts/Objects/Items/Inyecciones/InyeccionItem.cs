@@ -22,7 +22,8 @@ public class InyeccionItem : NetworkBehaviour
     public void Inject(GameObject victim)
     {
         if (inyeccionType == InyeccionType.Empty) return;
-        if (victim.TryGetComponent<NetworkObject>(out var netObj))
+        var netObj = victim.GetComponentInParent<NetworkObject>();
+        if (netObj != null)
         {
             InyeccionType tipoAInyectar = inyeccionType;
             EventBus.Publish<OnInject>(new OnInject
