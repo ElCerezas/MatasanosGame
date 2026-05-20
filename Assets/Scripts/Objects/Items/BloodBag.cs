@@ -22,7 +22,7 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private int puddleCount = 5;
     [SerializeField] private float puddleSpreadRadius = 3f;
     [SerializeField] private LayerMask groundLayer;
-
+    [SerializeField] private ParticleSystem explosionParticles;
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
     private float collisionCooldown = 0f;
@@ -120,6 +120,7 @@ public class BloodBag : NetworkBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (isAttached.Value) return;
+        if (isEmptySent) return;
         if (collisionCooldown > 0) return;
 
         if (toolItem == null) return;
@@ -143,6 +144,7 @@ public class BloodBag : NetworkBehaviour
         }
 
         if (impactVelocity < velocityThreshold) return;
+        BloodbagVFXClientRpc();
 
         HandleCollisionServerRpc(collision.contacts[0].point);
     }
@@ -159,6 +161,14 @@ public class BloodBag : NetworkBehaviour
 
         SpawnBloodPuddles(impactPoint);
         DespawnBloodBag();
+    }
+    [ClientRpc]
+    private void BloodbagVFXClientRpc()
+    {
+        explosionParticles.transform.SetParent(null);
+        explosionParticles.gameObject.SetActive(true);
+        explosionParticles.Play();
+        Destroy(explosionParticles.gameObject, explosionParticles.main.duration + explosionParticles.main.startLifetime.constantMax);
     }
 
     private void SpawnBloodPuddles(Vector3 impactPoint)

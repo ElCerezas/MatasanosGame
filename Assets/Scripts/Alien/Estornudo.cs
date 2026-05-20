@@ -14,6 +14,7 @@ public class Estornudo : NetworkBehaviour
     [SerializeField] float rotationForce = 500f;
     [SerializeField] LayerMask targetLayer;
     [SerializeField] bool showDebugCone = true;
+    [SerializeField] private ParticleSystem estornudoParticles;
 
     private void Awake()
     {
@@ -102,12 +103,19 @@ public class Estornudo : NetworkBehaviour
 
         rb.AddForce(backwardDirection.normalized * attackForce, ForceMode.Impulse);
         rb.AddTorque(rb.transform.forward * rotationForce, ForceMode.Impulse);
+        EstornudoEndVFXClientRpc();
     }
 
     [ClientRpc]
     private void EstornudoVFXClientRpc()
     {
         // SFX y VFX aquí
+        estornudoParticles.gameObject.SetActive(true);
+    }
+    [ClientRpc] 
+    private void EstornudoEndVFXClientRpc()
+    {
+        estornudoParticles.gameObject.SetActive(false);
     }
 
     private void OnDrawGizmos()

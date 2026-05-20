@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerInteractor))]
@@ -14,6 +15,7 @@ public class PlayerStateManager : NetworkBehaviour
     [SerializeField] float stunDuration = 0f;
     [SerializeField] float invulnerableTime = 3f;
     [SerializeField] float minimumForceToRagdoll;
+    [SerializeField] private ParticleSystem bloodSlipParticles;
     float invulnerableCountdown;
 
 
@@ -140,5 +142,23 @@ public class PlayerStateManager : NetworkBehaviour
 
         rb.AddForce(Vector3.up * 120f, ForceMode.Impulse);
         rb.AddForceAtPosition(transform.forward * 250f, feetPosition, ForceMode.Impulse);
+        SlipVFXClientRpc();
+    }
+    [ClientRpc]
+    public void SlipVFXClientRpc()
+    {
+        StartCoroutine(PlaySlipParticles());
+    }
+
+    private IEnumerator PlaySlipParticles()
+    {
+        Transform originalParent = bloodSlipParticles.transform.parent;
+
+        bloodSlipParticles.transform.SetParent(null, worldPositionStays: true);
+        bloodSlipParticles.Play();
+
+        yield return new WaitForSeconds(bloodSlipParticles.main.duration + bloodSlipParticles.main.startLifetime.constantMax);
+
+        bloodSlipParticles.transform.SetParent(originalParent, worldPositionStays: false);
     }
 }
