@@ -16,7 +16,6 @@
         _CytoplasmAlpha ("Cytoplasm Transparency", Range(0, 1)) = 0.25
         _EdgeSoftness ("Growth Edge Softness", Range(0.01, 0.5)) = 0.1
 
-        // Requerido para el sistema de UI de Unity
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -94,12 +93,10 @@
             float _PerlinDistortion;
             float _AnimationSpeed;
             
-            // Nuevas variables de transparencia
             float _CoreDensity;
             float _CytoplasmAlpha;
             float _EdgeSoftness;
 
-            // --- FUNCIONES DE RUIDO ---
             float2 hash22(float2 p)
             {
                 p = float2(dot(p, float2(127.1, 311.7)), dot(p, float2(269.5, 183.3)));
@@ -142,7 +139,6 @@
                 }
                 return sqrt(minDist);
             }
-            // --- FIN RUIDO ---
 
             v2f vert(appdata_t v)
             {
@@ -161,44 +157,25 @@
                 float time = _Time.y * _AnimationSpeed;
                 float2 uv = IN.texcoord;
                 
-                // 1. Distorsión orgánica usando Perlin
                 float2 perlinUV = uv * (_NoiseScale * 0.4);
                 float pNoiseX = perlin_noise(perlinUV + time * 0.15);
                 float pNoiseY = perlin_noise(perlinUV - time * 0.15 + float2(2.3, 5.1));
                 float2 distortion = float2(pNoiseX, pNoiseY) * _PerlinDistortion;
-                
-                // 2. Cálculo de Voronoi
+
                 float2 voronoiUV = uv * _NoiseScale + distortion;
                 float vNoise = voronoi_noise(voronoiUV, time);
-                
-                // Invertimos el ruido para que el centro de la célula sea 1 y el borde sea 0
+
                 float cellCenter = saturate(1.0 - vNoise);
 
-                // ==========================================
-                // LÓGICA DE TRANSPARENCIA CELULAR (NUEVA)
-                // ==========================================
-                
-                // Capa A: El citoplasma (Cuerpo semitransparente de la célula)
                 float cytoplasm = smoothstep(0.05, 0.7, cellCenter) * _CytoplasmAlpha;
-                
-                // Capa B: El núcleo (Centro denso y opaco)
                 float nucleus = smoothstep(0.5, 0.95, cellCenter) * _CoreDensity;
-                
-                // Combinamos ambas estructuras biológicas
                 float cellStructure = saturate(cytoplasm + nucleus);
 
-                // 3. Crecimiento controlado por el script mediante _Threshold
-                // Invertimos el umbral para que la máscara barra la estructura de forma fluida
                 float currentCutoff = 1.0 - _Threshold;
                 float alphaMask = smoothstep(currentCutoff, currentCutoff + _EdgeSoftness, cellStructure);
-
-                // 4. Composición final aplicando las transparencias internas
                 fixed4 finalColor = _Color * IN.color;
-                
-                // Multiplicamos la máscara de crecimiento por el diseño interno de la célula
                 finalColor.a *= alphaMask * cellStructure;
 
-                // Soporte nativo de UI
                 #ifdef UNITY_UI_CLIP_RECT
                 finalColor.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
                 #endif
