@@ -924,7 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2402241250
+  GlobalObjectIdHash: 3184265775
   InScenePlacedSourceGlobalObjectIdHash: 2402241250
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1115,16 +1115,16 @@ MonoBehaviour:
   flashedOverlay: {fileID: 2526276411111856357}
   flashedFadeOutDuration: 2
   parasiteNoiseImage: {fileID: 7577833196114403828}
-  parasiteGrowthRate: 0.05
+  parasiteGrowthRate: 0.02
   parasiteIsPersistent: 1
-  maxParasiteIntensity: 1
+  maxParasiteIntensity: 5
   maxParasiteFill: 1
   parasiteColor: {r: 0.4433962, g: 0, b: 0.4433962, a: 1}
   mocoSettings:
     container: {fileID: 8390368507612492961}
     sprites:
     - {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-    sizeRange: {x: 100, y: 200}
+    sizeRange: {x: 50, y: 150}
     colorGradient:
       serializedVersion: 2
       key0: {r: 0.37248245, g: 1, b: 0.25943398, a: 0.44705883}
