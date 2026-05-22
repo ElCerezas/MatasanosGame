@@ -63338,7 +63338,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WinConditionManager
   ShowTopMostFoldoutHeaderGroup: 1
   tarasHealedCount: 0
-  activeTarasCount: 0
+  dienteCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  woundFocoCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  woundVendaCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!114 &603434923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66245,6 +66259,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3892401703171361170, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2916111830
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865608264316949507, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 883366667
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865608264316949507, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865608264316949507, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2916111830
       objectReference: {fileID: 0}
@@ -126782,6 +126808,18 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2916111830
       objectReference: {fileID: 0}
+    - target: {fileID: 4865608264316949507, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1202714387
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865608264316949507, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865608264316949507, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2916111830
+      objectReference: {fileID: 0}
     - target: {fileID: 5087690366978070766, guid: 272cf27a32e77cf4289d7fc8dd8c8e8a, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.41611782
@@ -165024,11 +165062,31 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2301045418
       objectReference: {fileID: 0}
+    - target: {fileID: 3853492815631537153, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
+      propertyPath: boostTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4615941905779444068, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1206177791
+      objectReference: {fileID: 0}
+    - target: {fileID: 4615941905779444068, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2301045418
+      objectReference: {fileID: 0}
     - target: {fileID: 6961543774506769552, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1980313407
       objectReference: {fileID: 0}
     - target: {fileID: 6961543774506769552, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2301045418
+      objectReference: {fileID: 0}
+    - target: {fileID: 7247124046322728763, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 302114264
+      objectReference: {fileID: 0}
+    - target: {fileID: 7247124046322728763, guid: 49cadee1730d8ae41986c4c2d867a4c4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2301045418
       objectReference: {fileID: 0}
