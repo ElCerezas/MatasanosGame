@@ -167,3 +167,9 @@ public struct OnHUDCleaned : IEvent
     public bool CleanParasito;
 }
 #endregion
+
+public class GuiaEvent : IEvent
+{
+    public GuiaAction Action { get; set; }
+    public int SelectedIndex { get; set; }
+}

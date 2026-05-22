@@ -1,0 +1,1 @@
+public enum GuiaAction { Open, Close, EntrySelected, ActiveEntryClosed }
