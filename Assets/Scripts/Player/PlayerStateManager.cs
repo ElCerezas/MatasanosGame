@@ -96,15 +96,15 @@ public class PlayerStateManager : NetworkBehaviour
         rb.freezeRotation = true;
     }
 
-    public void ApplyInyeccion(InyeccionType type)
+    public void ApplyInyeccion(LiquidType type)
     {
         //Debug.Log($"Applying inyeccion of type {type} to player");
         switch (type)
         {
-            case InyeccionType.Calmante:
+            case LiquidType.Calmante:
                 EnterRagdoll(5f, true);
                 break;
-            case InyeccionType.Estimulante:
+            case LiquidType.Estimulante:
 
                 break;
         }

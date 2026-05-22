@@ -20,7 +20,7 @@ public struct OnGeneratorChargeChanged : IEvent
 public struct OnInject : IEvent
 {
     public ulong VictimID;
-    public InyeccionType Type;
+    public LiquidType Type;
 }
 
 public struct OnDienteSnap : IEvent

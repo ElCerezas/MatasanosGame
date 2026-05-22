@@ -100,7 +100,7 @@ public class PlayerHUDEffects : NetworkBehaviour
     }
 
     #region EventReceivers
-    void OnPlayerInjected(OnInject data) { if (data.VictimID == NetworkObjectId && data.Type == InyeccionType.Calmante) TriggerSleep(5f); }
+    void OnPlayerInjected(OnInject data) { if (data.VictimID == NetworkObjectId && data.Type == LiquidType.Calmante) TriggerSleep(5f); }
     void OnPlayerSlipped(OnPlayerSlipped data) { if (data.VictimID == NetworkObjectId) TriggerBlood(); }
     void OnInsectExplosion(OnInsectExplosion data) { if (data.VictimID == NetworkObjectId) TriggerParasite(); }
     void OnPlayerSneezes(OnPlayerSneezes data) { if (data.VictimID == NetworkObjectId) TriggerMoco(); }

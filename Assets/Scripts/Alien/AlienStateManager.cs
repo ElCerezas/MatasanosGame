@@ -187,14 +187,14 @@ public class AlienStateManager : NetworkBehaviour
         ApplyInyeccion(inject.Type);
     }
 
-    public void ApplyInyeccion(InyeccionType type)
+    public void ApplyInyeccion(LiquidType type)
     {
         Debug.Log("Hello");
         if (!IsServer || currentActiveState.Value == AlienStateEnum.Desangrado) return;
         Debug.Log("Hello1");
         switch (type)
         {
-            case InyeccionType.Calmante:
+            case LiquidType.Calmante:
                 UpdateCalmantStatusClientRpc(true);
 
                 currentCalmant.Value = maxCalmant;

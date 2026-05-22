@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using Unity.VisualScripting;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class InyeccionItem : NetworkBehaviour
 {
-    [SerializeField] private InyeccionType inyeccionType;
+    [SerializeField] private LiquidType inyeccionType;
     [SerializeField] private InyeccionCollider inyeccionCollider;
     [SerializeField] private Animation animator;
     [SerializeField] private AnimationClip Inyectado;
@@ -21,17 +21,17 @@ public class InyeccionItem : NetworkBehaviour
     }
     public void Inject(GameObject victim)
     {
-        if (inyeccionType == InyeccionType.Empty) return;
+        if (inyeccionType == LiquidType.Empty) return;
         var netObj = victim.GetComponentInParent<NetworkObject>();
         if (netObj != null)
         {
-            InyeccionType tipoAInyectar = inyeccionType;
+            LiquidType tipoAInyectar = inyeccionType;
             EventBus.Publish<OnInject>(new OnInject
             {
                 VictimID = netObj.NetworkObjectId,
                 Type = tipoAInyectar
             });
-            inyeccionType = InyeccionType.Empty;
+            inyeccionType = LiquidType.Empty;
             animator.Play(Inyectando.name);
             animPlayed = true;
         }
