@@ -51,6 +51,7 @@ public class PlayerStateManager : NetworkBehaviour
     }
     public void EnterRagdollPublic(float ragdollTime)
     {
+        EventBus.Publish(new OnPlayerSneezes { VictimID = NetworkObjectId });
         EnterRagdoll(ragdollTime, true);
     }
     private void Update()
