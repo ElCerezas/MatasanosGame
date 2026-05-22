@@ -1,7 +1,8 @@
 public enum ColliderItemType
 {
     Algodon,
-    AlgodonEstirilizado
+    AlgodonEstirilizado,
+    Venda
 }
 
 public enum ColliderDetectorType

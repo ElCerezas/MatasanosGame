@@ -1,11 +1,14 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class WoundVendaBehaviour : TaraBase
 {
     private NetworkVariable<bool> isDesinfected = new NetworkVariable<bool>(false);
     private NetworkVariable<bool> isHealed = new NetworkVariable<bool>(false);
     private ColliderDetector colliderInteracttable;
+    public DecalProjector woundProjector;
+    public Material tiritaMaterial;
 
     public override void OnNetworkSpawn()
     {
@@ -31,8 +34,7 @@ public class WoundVendaBehaviour : TaraBase
         {
             isHealed.Value = true;
             MarkAsHealed();
-            GetComponent<NetworkObject>().Despawn();
-            Destroy(gameObject);
+            woundProjector.material = tiritaMaterial;
         }
     }
 }

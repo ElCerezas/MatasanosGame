@@ -156,6 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WoundVendaBehaviour
   ShowTopMostFoldoutHeaderGroup: 1
   type: 2
+  woundProjector: {fileID: 5919634607449616317}
+  tiritaMaterial: {fileID: 2100000, guid: a09472273c7ebc14993aa4ced9ce6c91, type: 2}
 --- !u!114 &3900322275607726082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +173,25 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   detectorType: 1
   collisionEntries:
+  - itemType: 2
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 510865694355661995}
+          m_TargetAssemblyTypeName: WoundVendaBehaviour, Assembly-CSharp
+          m_MethodName: HealedByBandage
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
   - itemType: 1
     onEnter:
       m_PersistentCalls:
