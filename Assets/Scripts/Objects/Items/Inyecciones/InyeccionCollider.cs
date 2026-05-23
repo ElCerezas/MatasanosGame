@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 
 public class InyeccionCollider : MonoBehaviour
 {
@@ -14,6 +12,12 @@ public class InyeccionCollider : MonoBehaviour
         else if (other.CompareTag("Alien"))
         {
             inyeccionItem.Inject(other.gameObject);
+        }
+        else if (other.CompareTag("MixerFlask"))
+        {
+            MixerFlask f = other.GetComponent<MixerFlask>();
+            f.Empty();
+            inyeccionItem.Fill(f.liquid.Value, f.color.Value);
         }
     }
 }

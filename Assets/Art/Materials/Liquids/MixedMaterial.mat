@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ComponentA
+  m_Name: MixedMaterial
   m_Shader: {fileID: -6465566751694194690, guid: 8e38ecbb43ab20847b3ed10713c71d82, type: 3}
   m_Parent: {fileID: 2100000, guid: 9aa2d66ae684c044ea5a6416274c1a0d, type: 2}
   m_ModifiedSerializedProperties: 16
@@ -39,12 +39,14 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _FillAmount: 0.2
+    - _AutoWobbleForce: 0.1
+    - _FillAmount: 0.459
     - _QueueOffset: 0
+    - _WobbleX: 0.1
     - _WobbleZ: 0.1
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.46207285, a: 1}
-    - _SideColor: {r: 0.4247953, g: 0.8113208, b: 0.5699422, a: 1}
-    - _TopColor: {r: 0.14324492, g: 0.8207547, b: 0.3973111, a: 1}
+    - _Color: {r: 0.9150943, g: 0.7208526, b: 0.7208526, a: 0}
+    - _SideColor: {r: 0.42352942, g: 0.71251774, b: 0.8117647, a: 1}
+    - _TopColor: {r: 0.14509803, g: 0.6335676, b: 0.81960785, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
