@@ -1,23 +1,21 @@
-﻿using System;
-using Unity.Netcode;
-using Unity.Netcode.Components;
-using Unity.VisualScripting;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class InyeccionItem : NetworkBehaviour
 {
     [SerializeField] private LiquidType inyeccionType;
+    [SerializeField] private Renderer liquidRenderer;
     [SerializeField] private InyeccionCollider inyeccionCollider;
     [SerializeField] private Animation animator;
-    [SerializeField] private AnimationClip Inyectado;
+    [SerializeField] private AnimationClip Vacio;
     [SerializeField] private AnimationClip Inyectando;
-    [SerializeField] private AnimationClip NoInyectado;
-    private bool animPlayed = false;
+    [SerializeField] private AnimationClip Lleno;
+    [SerializeField] private AnimationClip Rellenando;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        animator.Play(NoInyectado.name);
+        animator.Play(Vacio.name);
     }
     public void Inject(GameObject victim)
     {
@@ -33,15 +31,16 @@ public class InyeccionItem : NetworkBehaviour
             });
             inyeccionType = LiquidType.Empty;
             animator.Play(Inyectando.name);
-            animPlayed = true;
+            animator.PlayQueued(Vacio.name);
         }
     }
-
-    public void Update()
+    public void Fill(LiquidType t, Color color)
     {
-        if (!animator.IsPlaying(Inyectando.name) && animPlayed)
-        {
-            animator.Play(Inyectado.name);
-        } 
+        if (inyeccionType != LiquidType.Empty || t == LiquidType.Empty) return;
+        inyeccionType = t;
+        Material m = liquidRenderer.sharedMaterial;
+        m.SetColor("_Color", color);
+        animator.Play(Rellenando.name);
+        animator.PlayQueued(Lleno.name);
     }
 }

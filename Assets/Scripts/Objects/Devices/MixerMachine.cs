@@ -1,7 +1,5 @@
 ﻿using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
 
 [RequireComponent(typeof(NetworkObject))]
 public class MixerMachine : PoweredDevice
@@ -15,14 +13,13 @@ public class MixerMachine : PoweredDevice
 
     [Header("Liquids")]
     [SerializeField] Color tranquilizerColor;
-    NetworkVariable<Vector3Int> tranquilizerFormula = new NetworkVariable<Vector3Int>();
+    [SerializeField] NetworkVariable<Vector3Int> tranquilizerFormula = new NetworkVariable<Vector3Int>();
     [SerializeField] Color stimulantColor;
-    NetworkVariable<Vector3Int> stimulantFormula = new NetworkVariable<Vector3Int>();
+    [SerializeField] NetworkVariable<Vector3Int> stimulantFormula = new NetworkVariable<Vector3Int>();
     [SerializeField] Color sludgeColor;
 
     [Header("Liquid Flask")]
-    [SerializeField] NetworkObject bottlePrefab;
-    [SerializeField] private Transform bottleSpawnPoint;
+    [SerializeField] MixerFlask MixerFlask;
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -34,6 +31,13 @@ public class MixerMachine : PoweredDevice
         componentA.OnValueChanged += (_, val) => OnComponentChanged(0, val);
         componentB.OnValueChanged += (_, val) => OnComponentChanged(1, val);
         componentC.OnValueChanged += (_, val) => OnComponentChanged(2, val);
+
+        if (IsServer)
+        {
+            componentA.Value = 1;
+            componentB.Value = 1;
+            componentC.Value = 1;
+        }
         UpdateUI();
     }
     public override void OnNetworkDespawn()
@@ -81,6 +85,7 @@ public class MixerMachine : PoweredDevice
             liquidColor = sludgeColor;
         }
 
+        MixerFlask?.Fill(liquidType, liquidColor);
         componentA.Value = 1;
         componentB.Value = 1;
         componentC.Value = 1;

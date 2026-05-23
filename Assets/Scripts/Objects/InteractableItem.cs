@@ -10,7 +10,6 @@ public class InteractableItem : NetworkBehaviour, IInteractable
 
     public virtual void Interact(ulong clientID)
     {
-        Debug.LogWarning("Interacted");
         onInteract?.Invoke();
     }
     public virtual ulong GetNetworkObjectID()
