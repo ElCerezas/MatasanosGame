@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class FullScreenLogic : MonoBehaviour
 {
@@ -69,6 +70,11 @@ public class FullScreenLogic : MonoBehaviour
 
         Resolution resolucion = resoluciones[indiceResolucion];
         Screen.SetResolution(resolucion.width,resolucion.height, Screen.fullScreen);
+    }
+
+    public void SalirJuego ()
+    {
+        Application.Quit();
     }
 
 }
