@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(InteractableOutline))]
 [RequireComponent(typeof(NetworkObject))]
 public class InteractableItem : NetworkBehaviour, IInteractable
 {

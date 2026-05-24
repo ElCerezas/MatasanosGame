@@ -15,7 +15,7 @@ public class PlayerInteractor : NetworkBehaviour
     [SerializeField] LayerMask interactLayer;
 
     IGrabbable currentlyGrabbedItem;
-
+    InteractableOutline currentOutlined;
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -27,12 +27,29 @@ public class PlayerInteractor : NetworkBehaviour
         playerInput.OnInteractPressed += TryInteract;
         playerInput.OnPickUpPressed += TryGrabOrThrow;
     }
-
     public override void OnNetworkDespawn()
     {
         if (!IsOwner) return;
         playerInput.OnInteractPressed -= TryInteract;
         playerInput.OnPickUpPressed -= TryGrabOrThrow;
+    }
+
+    void Update()
+    {
+        if (!IsOwner || isRagdoll) return;
+        InteractableOutline newOutline = null;
+
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
+        {
+            newOutline = hit.collider.GetComponent<InteractableOutline>() ?? null;
+        }
+
+        if (newOutline == currentOutlined) return;
+
+        currentOutlined?.SetHighlight(false);
+        currentOutlined = newOutline;
+        currentOutlined?.SetHighlight(true);
     }
 
     void TryGrabOrThrow()
@@ -57,7 +74,6 @@ public class PlayerInteractor : NetworkBehaviour
             }
         }
     }
-
     void TryInteract()
     {
         if (isRagdoll) return;
@@ -68,7 +84,6 @@ public class PlayerInteractor : NetworkBehaviour
                 InteractServerRpc(interactable.GetNetworkObjectID());
         }
     }
-
     public void Ragdoll(bool active)
     {
         isRagdoll = active;
