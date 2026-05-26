@@ -59897,6 +59897,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParedVentana (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4050118460942018808, guid: 75d538557e4b33a419f75a219f5f0de7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd0a828308a512440bb7314d18e14dbc, type: 2}
     - target: {fileID: 4719908843176076771, guid: 75d538557e4b33a419f75a219f5f0de7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -61834,6 +61838,83 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 723500738}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &725048937
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.259188
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.8260093
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -73.62121
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8649852439497217788, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.019376755
+      objectReference: {fileID: 0}
+    - target: {fileID: -8649852439497217788, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.000623703
+      objectReference: {fileID: 0}
+    - target: {fileID: -8649852439497217788, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0043792725
+      objectReference: {fileID: 0}
+    - target: {fileID: -6747364492342396849, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae5fc076f02c56d47b94ec42497d6c5b, type: 2}
+    - target: {fileID: 919132149155446097, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: m_Name
+      value: "ParedVentanaPeque\xF1a"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145798965037909238, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae5fc076f02c56d47b94ec42497d6c5b, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
 --- !u!1 &728247446
 GameObject:
   m_ObjectHideFlags: 0
@@ -65169,6 +65250,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6747364492342396849, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae5fc076f02c56d47b94ec42497d6c5b, type: 2}
     - target: {fileID: 919132149155446097, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
       propertyPath: m_Name
       value: "ParedVentanaPeque\xF1a (1)"
@@ -103585,11 +103670,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 1026379818}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1029802129 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-  m_PrefabInstance: {fileID: 1602665098}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1031335420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -119198,6 +119278,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2201048951
       objectReference: {fileID: 0}
+    - target: {fileID: 8580702222094359898, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+      propertyPath: m_Intensity
+      value: 0.34
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -129148,67 +129232,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 1596406211}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1602665098
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1799980978}
-    m_Modifications:
-    - target: {fileID: 291939216677028137, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_Name
-      value: "ParedPeque\xF1a (2)"
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.851192
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.008171
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -16.179907
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2237674781004914940, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 9a620e282449b7c49a12c348cb22e4c7, type: 2}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
 --- !u!1001 &1610298274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131929,6 +131952,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParedVentana
       objectReference: {fileID: 0}
+    - target: {fileID: 4050118460942018808, guid: 75d538557e4b33a419f75a219f5f0de7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd0a828308a512440bb7314d18e14dbc, type: 2}
     - target: {fileID: 4719908843176076771, guid: 75d538557e4b33a419f75a219f5f0de7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -132135,6 +132162,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.033
       objectReference: {fileID: 0}
+    - target: {fileID: -6747364492342396849, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ae5fc076f02c56d47b94ec42497d6c5b, type: 2}
     - target: {fileID: 919132149155446097, guid: 4a04e81771b8d8c4abf5198b721c3fb9, type: 3}
       propertyPath: m_Name
       value: "ParedVentanaPeque\xF1a"
@@ -132917,7 +132948,6 @@ Transform:
   - {fileID: 325527697}
   - {fileID: 469726463}
   - {fileID: 1674187239}
-  - {fileID: 1029802129}
   - {fileID: 344794411}
   - {fileID: 78617686}
   - {fileID: 493384610}
@@ -147453,3 +147483,4 @@ SceneRoots:
   - {fileID: 744706423}
   - {fileID: 1315385820597299242}
   - {fileID: 1375768439}
+  - {fileID: 725048937}
