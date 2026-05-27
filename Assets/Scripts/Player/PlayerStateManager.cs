@@ -12,6 +12,7 @@ public class PlayerStateManager : NetworkBehaviour
     PlayerCamera playerCamera;
     Rigidbody rb;
     [Header("Ragdoll Settings")]
+    [SerializeField] PlayerRagdoll playerRagdoll;
     [SerializeField] float stunDuration = 0f;
     [SerializeField] float invulnerableTime = 3f;
     [SerializeField] float minimumForceToRagdoll;
@@ -32,7 +33,6 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (!IsOwner) return;
         gameObject.GetComponent<PlayerInput>().OnJumpPressed += RecoverJump;
-        //gameObject.GetComponent<PlayerInput>().OnSlipPressed += Slip;
         EventBus.Subscribe<OnInject>(OnPlayerInjected);
         EventBus.Subscribe<OnInsectExplosion>(OnInsectExplosion);
     }
@@ -46,7 +46,6 @@ public class PlayerStateManager : NetworkBehaviour
     private void OnPlayerInjected(OnInject data)
     {
         if (data.VictimID != NetworkObjectId) return;
-        //Debug.Log($"Player {gameObject.name} injected with type {data.Type}");
         ApplyInyeccion(data.Type);
     }
     public void EnterRagdollPublic(float ragdollTime)
@@ -73,6 +72,7 @@ public class PlayerStateManager : NetworkBehaviour
         playerCamera.Ragdoll(true);
         rb.constraints = RigidbodyConstraints.None;
         rb.freezeRotation = false;
+        playerRagdoll.SetRagdoll(true);
 
     }
     void RecoverJump()
@@ -82,8 +82,6 @@ public class PlayerStateManager : NetworkBehaviour
         rb.freezeRotation = true;
         invulnerableCountdown = invulnerableTime;
 
-        //Salto para recuperar stand
-
         ExitRagdoll();
     }
     void ExitRagdoll()
@@ -92,6 +90,7 @@ public class PlayerStateManager : NetworkBehaviour
         interactor.Ragdoll(false);
         playerCamera.Ragdoll(false);
 
+        playerRagdoll.SetRagdoll(false);
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.freezeRotation = true;
     }

@@ -1,5 +1,7 @@
-﻿using Unity.Netcode;
+﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInteractor : NetworkBehaviour
@@ -13,6 +15,10 @@ public class PlayerInteractor : NetworkBehaviour
     [Header("Interaction Settings")]
     [SerializeField] float interactRange = 3f;
     [SerializeField] LayerMask interactLayer;
+
+    [Header("Rigging")]
+    [SerializeField] TwoBoneIKConstraint leftHandIK;
+    [SerializeField] TwoBoneIKConstraint rightHandIK;
 
     IGrabbable currentlyGrabbedItem;
     InteractableOutline currentOutlined;
@@ -58,6 +64,7 @@ public class PlayerInteractor : NetworkBehaviour
 
         if (currentlyGrabbedItem != null)
         {
+            StartCoroutine(BlendIKWeight(0f));
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
             currentlyGrabbedItem = null;
         }
@@ -72,6 +79,20 @@ public class PlayerInteractor : NetworkBehaviour
                     GrabObjectServerRpc(grabbable.GetNetworkObjectID());
                 }
             }
+            StartCoroutine(BlendIKWeight(1f));
+        }
+    }
+    IEnumerator BlendIKWeight(float target)
+    {
+        float start = leftHandIK.weight;
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 4f;
+            float w = Mathf.Lerp(start, target, t);
+            leftHandIK.weight = w;
+            rightHandIK.weight = w;
+            yield return null;
         }
     }
     void TryInteract()
