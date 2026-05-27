@@ -23,6 +23,8 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private float puddleSpreadRadius = 3f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private ParticleSystem explosionParticles;
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private LayerMask explosionDamageLayers;
     private float bloodLossTimer = 0f;
     private bool isEmptySent = false;
     private float collisionCooldown = 0f;
@@ -144,6 +146,14 @@ public class BloodBag : NetworkBehaviour
         }
 
         if (impactVelocity < velocityThreshold) return;
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionDamageLayers);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.TryGetComponent(out PlayerInteractor affectedPlayer))
+            {
+                EventBus.Publish(new OnPlayerSlipped { VictimID = affectedPlayer.gameObject.GetComponent<NetworkObject>().NetworkObjectId });
+            }
+        }
         BloodbagVFXClientRpc();
 
         HandleCollisionServerRpc(collision.contacts[0].point);
@@ -197,5 +207,11 @@ public class BloodBag : NetworkBehaviour
         {
             parentNetObject.Despawn();
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

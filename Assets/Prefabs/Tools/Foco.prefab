@@ -263,6 +263,7 @@ GameObject:
   - component: {fileID: 379627643048786762}
   - component: {fileID: 7871997045295303694}
   - component: {fileID: 1880182720739199721}
+  - component: {fileID: 6185688638458950210}
   m_Layer: 6
   m_Name: Foco
   m_TagString: Untagged
@@ -402,8 +403,12 @@ MonoBehaviour:
   alienLayer:
     serializedVersion: 2
     m_Bits: 256
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   timeToCreateWound: 2
   timeToHeal: 1.5
+  playerBlindDuration: 2
   Light: {fileID: 6996385494618333528}
 --- !u!114 &136482907106349572
 MonoBehaviour:
@@ -531,6 +536,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.74, y: 0.74, z: 1.4862866}
   m_Center: {x: 0, y: 0.000000074505806, z: 0}
+--- !u!114 &6185688638458950210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5601527216414221540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42017b7f3c588c94fa0732f79bd12007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
+  targetRenderers: []
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0.02
+  isHighlighted: 0
 --- !u!1 &5874761024586817262
 GameObject:
   m_ObjectHideFlags: 0

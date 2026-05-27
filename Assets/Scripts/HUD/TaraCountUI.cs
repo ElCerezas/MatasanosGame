@@ -6,21 +6,22 @@ using UnityEngine;
 public class TaraCountUI : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI FocoCount;
-    [SerializeField] private TextMeshProUGUI VendaCount;
     [SerializeField] private TextMeshProUGUI DienteCount;
+    [SerializeField] private TextMeshProUGUI VendaCount;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         EventBus.Subscribe<OnDientesCountChanged>(DientesCountChanged);
         EventBus.Subscribe<OnWoundFocoCountChanged>(WoundFocoCountChanged);
         EventBus.Subscribe<OnWoundVendaCountChanged>(WoundVendaCountChanged);
-
+        
         var manager = FindFirstObjectByType<WinConditionManager>();
         if (manager != null)
         {
-            DienteCount.text = manager.dienteCount.Value + " Dientes";
-            FocoCount.text = manager.woundFocoCount.Value + " Foco";
-            VendaCount.text = manager.woundVendaCount.Value + " Venda";
+            UpdateDienteUI(manager.dienteCount.Value);
+            UpdateFocoUI(manager.woundFocoCount.Value);
+            UpdateVendaUI(manager.woundVendaCount.Value);
         }
     }
 
@@ -34,17 +35,34 @@ public class TaraCountUI : NetworkBehaviour
 
     private void WoundVendaCountChanged(OnWoundVendaCountChanged changed)
     {
-        VendaCount.text = changed.value.ToString() + "Venda";
+        UpdateVendaUI(changed.value);
     }
 
     private void WoundFocoCountChanged(OnWoundFocoCountChanged changed)
     {
-        FocoCount.text = changed.value.ToString() + "Foco";
+        UpdateFocoUI(changed.value);
     }
 
     private void DientesCountChanged(OnDientesCountChanged changed)
     {
-        DienteCount.text = changed.value.ToString() + "Dientes";
+        UpdateDienteUI(changed.value);
     }
 
+    private void UpdateFocoUI(int value)
+    {
+        FocoCount.text = value.ToString();
+        FocoCount.gameObject.SetActive(value > 0);
+    }
+
+    private void UpdateDienteUI(int value)
+    {
+        DienteCount.text = value.ToString();
+        DienteCount.gameObject.SetActive(value > 0);
+    }
+
+    private void UpdateVendaUI(int value)
+    {
+        VendaCount.text = value.ToString();
+        VendaCount.gameObject.SetActive(value > 0);
+    }
 }

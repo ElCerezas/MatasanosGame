@@ -7,10 +7,12 @@ public class LuzBehaviour : PoweredItem
     public Transform originPoint;
     public float rayDistance = 10f;
     public LayerMask alienLayer;
+    public LayerMask playerLayer;
 
     [Header("Timing Settings")]
     public float timeToCreateWound = 2f;
     public float timeToHeal = 1.5f;
+    public float playerBlindDuration = 2f;
 
     [Header("Visuals")]
     [SerializeField] Light Light;
@@ -18,12 +20,14 @@ public class LuzBehaviour : PoweredItem
     private float alienTimer = 0f;
     private WoundFocoBehaviour currentWoundTarget = null;
     private AlienWoundManager currentAlienTarget = null;
+    private ulong currentPlayerTarget = 0;
 
     public override void Interact(ulong clientID)
     {
         base.Interact(clientID);
         Light.enabled = (hasPower.Value && isTurnedOn.Value);
     }
+
     void Update()
     {
         if (!IsOwner) return;
@@ -36,21 +40,38 @@ public class LuzBehaviour : PoweredItem
         Ray ray = new Ray(originPoint.position, originPoint.forward);
         Debug.DrawRay(originPoint.position, originPoint.forward * rayDistance, Color.cyan);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, alienLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
+            if (IsLayerInMask(hit.collider.gameObject.layer, playerLayer))
+            {
+                if (hit.collider.TryGetComponent<NetworkObject>(out var playerNetObj))
+                {
+                    ResetAlienTargets();
+                    if (currentPlayerTarget != playerNetObj.NetworkObjectId)
+                    {
+                        currentPlayerTarget = playerNetObj.NetworkObjectId;
+                        EventBus.Publish(new OnPlayerBlinded
+                        {
+                            VictimID = playerNetObj.NetworkObjectId,
+                            Duration = playerBlindDuration
+                        });
+                    }
+                    return;
+                }
+            }
+
             if (hit.collider.TryGetComponent<WoundFocoBehaviour>(out var herida))
             {
-                currentAlienTarget = null;
-                alienTimer = 0f;
-
+                ResetAlienTargets();
+                currentPlayerTarget = 0;
                 currentWoundTarget = herida;
                 NotifyHealWoundServerRpc(herida.NetworkObjectId);
             }
             else if (hit.collider.transform.parent.TryGetComponent<AlienWoundManager>(out var alien))
             {
+                currentPlayerTarget = 0;
                 currentWoundTarget = null;
                 currentAlienTarget = alien;
-
                 alienTimer += Time.deltaTime;
                 if (alienTimer >= timeToCreateWound)
                 {
@@ -60,20 +81,31 @@ public class LuzBehaviour : PoweredItem
             }
             else
             {
-                ResetTargets();
+                ResetAllTargets();
             }
         }
         else
         {
-            ResetTargets();
+            ResetAllTargets();
         }
     }
 
-    void ResetTargets()
+    void ResetAlienTargets()
     {
         currentWoundTarget = null;
         currentAlienTarget = null;
         alienTimer = 0f;
+    }
+
+    void ResetAllTargets()
+    {
+        currentPlayerTarget = 0;
+        ResetAlienTargets();
+    }
+
+    private bool IsLayerInMask(int layer, LayerMask mask)
+    {
+        return ((mask.value & (1 << layer)) > 0);
     }
 
     [ServerRpc]

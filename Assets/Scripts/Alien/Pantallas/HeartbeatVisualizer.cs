@@ -64,6 +64,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     private void AlienDeath(OnAlienDeath death)
     {
         flatline = true;
+        SetBPM(0f);
     }
 
     private void AlienStateChanged(OnAlienStateChanged changed)
