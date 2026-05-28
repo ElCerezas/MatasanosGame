@@ -78,34 +78,35 @@ public class GuiaBehaviour : PoweredDevice
     public void NextEntry()
     {
         if (!IsServer) return;
-        if (!hasPower.Value || !isOpen.Value) return;
+        if (!hasPower.Value) return;
+        
+        if (!isOpen.Value && activeTargetIndex.Value == -1) return;
 
         highlightedIndex.Value = (highlightedIndex.Value + 1) % entries.Count;
+        ResetAutoCloseTimer();
     }
 
     public void PreviousEntry()
     {
         if (!IsServer) return;
-        if (!hasPower.Value || !isOpen.Value) return;
+        if (!hasPower.Value) return;
+        
+        if (!isOpen.Value && activeTargetIndex.Value == -1) return;
 
         highlightedIndex.Value = (highlightedIndex.Value - 1 + entries.Count) % entries.Count;
+        ResetAutoCloseTimer();
     }
 
     public void SelectEntry()
     {
         if (!IsServer) return;
-        if (!hasPower.Value || !isOpen.Value) return;
+        if (!hasPower.Value) return;
 
         activeTargetIndex.Value = highlightedIndex.Value;
         isOpen.Value = false;
 
         PublishGuiaEventClientRpc(GuiaAction.EntrySelected, highlightedIndex.Value);
-
-        if (autoCloseCoroutine != null)
-        {
-            StopCoroutine(autoCloseCoroutine);
-            autoCloseCoroutine = null;
-        }
+        ResetAutoCloseTimer();
     }
 
     public void CloseActiveEntry()
@@ -118,11 +119,7 @@ public class GuiaBehaviour : PoweredDevice
 
         PublishGuiaEventClientRpc(GuiaAction.ActiveEntryClosed, 0);
 
-        if (autoCloseTime > 0f)
-        {
-            if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
-            autoCloseCoroutine = StartCoroutine(AutoCloseRoutine());
-        }
+        ResetAutoCloseTimer();
     }
 
     public void CloseGuia()
@@ -131,13 +128,26 @@ public class GuiaBehaviour : PoweredDevice
 
         isOpen.Value = false;
         activeTargetIndex.Value = -1;
-
         PublishGuiaEventClientRpc(GuiaAction.Close, 0);
 
         if (autoCloseCoroutine != null)
         {
             StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = null;
+        }
+    }
+
+    private void ResetAutoCloseTimer()
+    {
+        if (autoCloseCoroutine != null)
+        {
+            StopCoroutine(autoCloseCoroutine);
+            autoCloseCoroutine = null;
+        }
+
+        if (autoCloseTime > 0f)
+        {
+            autoCloseCoroutine = StartCoroutine(AutoCloseRoutine());
         }
     }
 
@@ -191,7 +201,7 @@ public class GuiaBehaviour : PoweredDevice
         bool showCanvas = isOpen.Value || activeTargetIndex.Value != -1;
         guiaCanvas.SetActive(showCanvas);
 
-        listPanel.SetActive(isOpen.Value);
+        listPanel.SetActive(isOpen.Value || activeTargetIndex.Value != -1);
 
         if (isOpen.Value) RefreshHighlight();
     }
