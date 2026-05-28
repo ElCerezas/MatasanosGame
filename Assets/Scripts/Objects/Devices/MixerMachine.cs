@@ -10,6 +10,9 @@ public class MixerMachine : PoweredDevice
     NetworkVariable<int> componentA = new NetworkVariable<int>(1);
     NetworkVariable<int> componentB = new NetworkVariable<int>(1);
     NetworkVariable<int> componentC = new NetworkVariable<int>(1);
+    [SerializeField] private MixerIndicator componentAIndicator;
+    [SerializeField] private MixerIndicator componentBIndicator;
+    [SerializeField] private MixerIndicator componentCIndicator;
 
     [Header("Liquids")]
     [SerializeField] Color tranquilizerColor;
@@ -98,6 +101,8 @@ public class MixerMachine : PoweredDevice
     }
     private void UpdateUI()
     {
-        //TO DO
+        componentAIndicator.UpdateIndicator(componentA.Value);
+        componentBIndicator.UpdateIndicator(componentB.Value);
+        componentCIndicator.UpdateIndicator(componentC.Value);
     }
 }
