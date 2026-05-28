@@ -191,11 +191,12 @@ public class AlienStateManager : NetworkBehaviour
         if (currentHealth.Value <= 0)
         {
             currentHealth.Value = 0;
-            HandleDeath();
+            HandleDeathClientRpc();
         }
     }
 
-    private void HandleDeath()
+    [ClientRpc]
+    private void HandleDeathClientRpc()
     {
         EventBus.Publish(new OnAlienDeath { AlienID = NetworkObjectId });
     }
