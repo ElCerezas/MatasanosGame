@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 2980770648353901882}
   - component: {fileID: 6407492879032486130}
   m_Layer: 6
-  m_Name: GoodTeeth
+  m_Name: Colmillo
   m_TagString: GoodTeeth
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5260439023902170225}
-  m_Mesh: {fileID: 1448365469361611692, guid: 70bb566bb714bc9429dbf3d181c16c54, type: 3}
+  m_Mesh: {fileID: 7206476410231615054, guid: 56920c966cfc2f649b11bff0350857e0, type: 3}
 --- !u!23 &9043268328847706861
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -116,10 +116,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.17904395
+  m_Height: 0.90002996
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.061831877, y: -0.14618126, z: 0}
 --- !u!114 &2169436573184284509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4069341215
+  GlobalObjectIdHash: 117364179
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
