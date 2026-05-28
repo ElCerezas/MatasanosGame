@@ -17,6 +17,7 @@ public class PlayerInteractor : NetworkBehaviour
     [SerializeField] LayerMask interactLayer;
 
     [Header("Rigging")]
+    [SerializeField] Animator anim;
     [SerializeField] TwoBoneIKConstraint leftHandIK;
     [SerializeField] TwoBoneIKConstraint rightHandIK;
 
@@ -65,6 +66,7 @@ public class PlayerInteractor : NetworkBehaviour
         if (currentlyGrabbedItem != null)
         {
             StartCoroutine(BlendIKWeight(0f));
+            anim.SetBool("IsGrabbing", false);
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
             currentlyGrabbedItem = null;
         }
@@ -76,10 +78,11 @@ public class PlayerInteractor : NetworkBehaviour
                 if (hit.collider.TryGetComponent(out IGrabbable grabbable))
                 {
                     currentlyGrabbedItem = grabbable;
+                    StartCoroutine(BlendIKWeight(1f));
+                    anim.SetBool("IsGrabbing", true);
                     GrabObjectServerRpc(grabbable.GetNetworkObjectID());
                 }
             }
-            StartCoroutine(BlendIKWeight(1f));
         }
     }
     IEnumerator BlendIKWeight(float target)
