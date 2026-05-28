@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 using System.Collections;
 
@@ -6,6 +6,7 @@ using System.Collections;
 public class Estornudo : NetworkBehaviour
 {
     [Header("Settings")]
+    [SerializeField] Animator animator;
     [SerializeField] Transform attackOrigin;
     [SerializeField] float coneRange = 5f;
     [SerializeField] float coneAngle = 45f;
@@ -41,6 +42,7 @@ public class Estornudo : NetworkBehaviour
 
     private void PerformEstornudo()
     {
+        animator.SetTrigger("Estornudo");
         Vector3 origin = attackOrigin.position;
         Vector3 direction = attackOrigin.forward;
 

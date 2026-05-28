@@ -1178,7 +1178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 76025517
+  GlobalObjectIdHash: 2737232545
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1278,6 +1278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Estornudo
   ShowTopMostFoldoutHeaderGroup: 1
+  animator: {fileID: 5764516393186265494}
   attackOrigin: {fileID: 8308605799786603432}
   coneRange: 8.2
   coneAngle: 80
@@ -1288,7 +1289,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   showDebugCone: 1
-  estornudoParticles: {fileID: 0}
+  estornudoParticles: {fileID: 6594677743379149447}
 --- !u!1 &2247438682566615021
 GameObject:
   m_ObjectHideFlags: 0
@@ -5433,5 +5434,10 @@ PrefabInstance:
 --- !u!4 &1266396714977223182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4016445352694703920, guid: 8e959c9ff25770d418f259ec9a4efb3a, type: 3}
+  m_PrefabInstance: {fileID: 2751245132015764798}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6594677743379149447 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9055439954848217017, guid: 8e959c9ff25770d418f259ec9a4efb3a, type: 3}
   m_PrefabInstance: {fileID: 2751245132015764798}
   m_PrefabAsset: {fileID: 0}
