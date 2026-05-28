@@ -3,6 +3,8 @@
 public class InyeccionCollider : MonoBehaviour
 {
     [SerializeField] private InyeccionItem inyeccionItem;
+    private LiquidType liquidGot = LiquidType.Empty;
+    private Color colorGot = Color.white;
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -16,8 +18,10 @@ public class InyeccionCollider : MonoBehaviour
         else if (other.CompareTag("MixerFlask"))
         {
             MixerFlask f = other.GetComponent<MixerFlask>();
+            liquidGot = f.liquid.Value;
+            colorGot = f.color.Value;
+            inyeccionItem.Fill(liquidGot, colorGot);
             f.Empty();
-            inyeccionItem.Fill(f.liquid.Value, f.color.Value);
         }
     }
 }
