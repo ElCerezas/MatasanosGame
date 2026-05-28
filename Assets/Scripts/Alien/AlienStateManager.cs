@@ -29,7 +29,26 @@ public class AlienStateManager : NetworkBehaviour
     [SerializeField] private float calmantDuration = 5f;
     [SerializeField] private float maxCalmant = 100f;
     [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(0f);
-
+    
+    [Header("Animations")]
+    [SerializeField] public AnimationClip Estornudo;
+    [SerializeField] public AnimationClip Quejido;
+    [SerializeField] public AnimationClip Chupon;
+    [SerializeField] public AnimationClip Masticar;
+    [SerializeField] public AnimationClip Parasitador;
+    [SerializeField] public AnimationClip Inquieto;
+    [SerializeField] public AnimationClip Inquieto_IN;
+    [SerializeField] public AnimationClip Inquieto_OUT;
+    [SerializeField] public AnimationClip Calmado;
+    [SerializeField] public AnimationClip Calmado_IN;
+    [SerializeField] public AnimationClip Calmado_OUT;
+    [SerializeField] public AnimationClip Desangrado;
+    [SerializeField] public AnimationClip Desangrado_IN;
+    [SerializeField] public AnimationClip Desangrado_OUT;
+    [SerializeField] public AnimationClip QuejidoConstante;
+    [SerializeField] public AnimationClip QuejidoConstante_IN;
+    [SerializeField] public AnimationClip QuejidoConstante_OUT;
+    
 
     public override void OnNetworkSpawn()
     {
