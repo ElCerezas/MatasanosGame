@@ -16,7 +16,6 @@ public partial class Carretilla : PoweredItem
     {
         timer = boostTime;
         isTurnedOn.Value = true;
-        Debug.Log("resetedTimer");
     }
 
     void Update()

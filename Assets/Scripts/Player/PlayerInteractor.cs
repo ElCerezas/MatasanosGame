@@ -123,7 +123,7 @@ public class PlayerInteractor : NetworkBehaviour
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
             if (netObj.TryGetComponent(out IInteractable interact))
-                interact.Interact(rpcParams.Receive.SenderClientId);
+            interact.Interact(rpcParams.Receive.SenderClientId);
         }
     }
 
