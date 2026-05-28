@@ -24,6 +24,11 @@ public class MixerFlask : NetworkBehaviour
         liquid.Value = t;
         color.Value = c;
         fillAmount.Value = 1f;
+        if(t == LiquidType.Betadine)
+        {
+            ColliderDetector col = GetComponent<ColliderDetector>();
+            col.detectorType = ColliderDetectorType.Betadine;
+        }
     }
 
     public void Empty(float amount = 1f)

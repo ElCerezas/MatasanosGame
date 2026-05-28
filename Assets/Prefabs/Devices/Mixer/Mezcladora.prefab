@@ -140,7 +140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090020571703070698}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -29.60806, y: -0.015, z: 31.781778}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2643475310
-  InScenePlacedSourceGlobalObjectIdHash: 123377015
+  GlobalObjectIdHash: 3520666538
+  InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -213,6 +213,12 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: {x: 0, y: 0, z: 0}
+  betadineFormula:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  betadineColor: {r: 0, g: 0, b: 0, a: 0}
   sludgeColor: {r: 0.1509434, g: 0.074405685, b: 0.049127806, a: 1}
   MixerFlask: {fileID: 7313932567256243144}
 --- !u!1 &1332668644371968782
@@ -718,8 +724,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!114 &5319143305587016118
 MonoBehaviour:
@@ -733,8 +737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3052067854
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2147905056
+  InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -902,8 +906,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!114 &3340112063259639911
 MonoBehaviour:
@@ -917,8 +919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2075548799
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3737916892
+  InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -992,6 +994,7 @@ GameObject:
   - component: {fileID: 977459174987209345}
   - component: {fileID: 1198012978655915416}
   - component: {fileID: 7313932567256243144}
+  - component: {fileID: 4204044453301427640}
   m_Layer: 0
   m_Name: MixerLiquid (1)
   m_TagString: MixerFlask
@@ -1117,6 +1120,40 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &4204044453301427640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170546792516690892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1f911117c011c49ba5b0935886fb2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColliderDetector
+  ShowTopMostFoldoutHeaderGroup: 1
+  detectorType: 0
+  collisionEntries:
+  - itemType: 0
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7313932567256243144}
+          m_TargetAssemblyTypeName: MixerFlask, Assembly-CSharp
+          m_MethodName: Empty
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &5873166563540712028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,8 +1295,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!114 &3329843298878260265
 MonoBehaviour:
@@ -1273,8 +1308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2972577975
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3342228646
+  InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -1986,8 +2021,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!114 &6653354863878668288
 MonoBehaviour:
@@ -2001,8 +2034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4125959320
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 140349859
+  InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
