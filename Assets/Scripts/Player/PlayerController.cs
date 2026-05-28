@@ -13,9 +13,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] Transform cameraTransform;
     [SerializeField] Transform playerFeet;
 
+    [SerializeField] Animator animator;
+
     Rigidbody rigidBody;
-    Vector3 velocity;
-    bool isGrounded;
+    bool isGrounded = true;
     bool isRagdoll = false;
 
     private void Awake()
@@ -37,7 +38,11 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         if(!IsOwner) return;
-        isGrounded = IsGrounded();
+        if(isGrounded != IsGrounded())
+        {
+            isGrounded = IsGrounded();
+            animator.SetBool("Grounded", isGrounded);
+        }
         currentInput = playerInput.MovementInput;
     }
     void FixedUpdate()
@@ -65,6 +70,11 @@ public class PlayerController : NetworkBehaviour
         if (currentInput == Vector2.zero)
         {
             rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
+            animator.SetFloat("Speed", 0f);
+        }
+        else
+        {
+            animator.SetFloat("Speed", moveDir.magnitude);
         }
     }
     void Jump()
@@ -72,6 +82,7 @@ public class PlayerController : NetworkBehaviour
         if (isRagdoll) return;
         if (!isGrounded) return;
 
+        animator.SetTrigger("Jump");
         rigidBody.AddForce(Vector3.up * jumpForce * rigidBody.mass, ForceMode.Impulse);
     }
 
