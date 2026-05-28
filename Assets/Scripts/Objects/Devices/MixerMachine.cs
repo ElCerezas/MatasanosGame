@@ -13,6 +13,7 @@ public class MixerMachine : PoweredDevice
     [SerializeField] private MixerIndicator componentAIndicator;
     [SerializeField] private MixerIndicator componentBIndicator;
     [SerializeField] private MixerIndicator componentCIndicator;
+    
 
     [Header("Liquids")]
     [SerializeField] Color tranquilizerColor;
@@ -23,9 +24,14 @@ public class MixerMachine : PoweredDevice
 
     [Header("Liquid Flask")]
     [SerializeField] MixerFlask MixerFlask;
+
+    public Vector3Int CurrentTranquilizerFormula => tranquilizerFormula.Value;
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        
+        tranquilizerFormula.OnValueChanged += (_, newVal) => EventBus.Publish(new OnFormulaGenerated { tranquilizerFormula = newVal });
+        
         if (IsServer)
         {
             tranquilizerFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(1, max_Component), Random.Range(1, max_Component));
