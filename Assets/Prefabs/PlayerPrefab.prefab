@@ -1592,35 +1592,9 @@ MonoBehaviour:
   NetworkAnimatorExpanded: 0
   AuthorityMode: 1
   m_Animator: {fileID: 1001431274357964765}
-  TransitionStateInfoList:
-  - IsCrossFadeExit: 0
-    Layer: 0
-    OriginatingState: 2081823275
-    DestinationState: 2137999302
-    TransitionDuration: 0.25
-    TriggerNameHash: 125937960
-    TransitionIndex: 1
-  - IsCrossFadeExit: 0
-    Layer: 0
-    OriginatingState: -1945121844
-    DestinationState: 2137999302
-    TransitionDuration: 0.25
-    TriggerNameHash: 125937960
-    TransitionIndex: 1
+  TransitionStateInfoList: []
   AnimatorParameterEntries:
-    ParameterEntries:
-    - name: Speed
-      NameHash: -823668238
-      Synchronize: 1
-      ParameterType: 1
-    - name: Jump
-      NameHash: 125937960
-      Synchronize: 1
-      ParameterType: 9
-    - name: Grounded
-      NameHash: 862969536
-      Synchronize: 1
-      ParameterType: 4
+    ParameterEntries: []
   AnimatorParametersExpanded: 0
 --- !u!114 &4163252400654546705
 MonoBehaviour:
@@ -3918,7 +3892,7 @@ MonoBehaviour:
   mocoSettings:
     container: {fileID: 8390368507612492961}
     sprites:
-    - {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 21300000, guid: cef9ef0387cc02c4bb4e9024cfe6fe99, type: 3}
     sizeRange: {x: 50, y: 150}
     colorGradient:
       serializedVersion: 2
@@ -3953,7 +3927,7 @@ MonoBehaviour:
   bloodSettings:
     container: {fileID: 2294282415482365249}
     sprites:
-    - {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - {fileID: 21300000, guid: 123b37e56ea559f43b228f415f07e7a0, type: 3}
     sizeRange: {x: 50, y: 150}
     colorGradient:
       serializedVersion: 2
