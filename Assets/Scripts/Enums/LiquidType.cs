@@ -3,5 +3,6 @@
     Empty,
     Calmante,
     Estimulante,
-    Sludge
+    Sludge,
+    Betadine
 }
