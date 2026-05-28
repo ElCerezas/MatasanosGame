@@ -10,11 +10,13 @@ public class MangueraAspiradora : PoweredItem
     [SerializeField] private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     public float rayDistance = 20f;
     public LayerMask puddleLayer;
+    public GameObject particles;
 
     public virtual void Update()
     {
         if (!IsServer) return;
         if (!isTurnedOn.Value) return;
+        particles.SetActive(true);
         Ray ray = new Ray(originPoint.position, originPoint.forward);
         Debug.DrawRay(originPoint.position, originPoint.forward * rayDistance, Color.cyan);
 
@@ -29,5 +31,11 @@ public class MangueraAspiradora : PoweredItem
     void OnDrawGizmos()
     {
         Gizmos.DrawRay(originPoint.position, originPoint.forward);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        isTurnedOn.OnValueChanged += (_, newVal) => { if (!newVal) particles.SetActive(false); };
+        base.OnNetworkSpawn();
     }
 }
