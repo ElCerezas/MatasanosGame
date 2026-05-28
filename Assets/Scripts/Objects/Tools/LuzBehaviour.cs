@@ -16,6 +16,8 @@ public class LuzBehaviour : PoweredItem
 
     [Header("Visuals")]
     [SerializeField] Light Light;
+    [SerializeField] Light Light2;
+    [SerializeField] GameObject Textura;
 
     private float alienTimer = 0f;
     private WoundFocoBehaviour currentWoundTarget = null;
@@ -26,6 +28,8 @@ public class LuzBehaviour : PoweredItem
     {
         base.Interact(clientID);
         Light.enabled = (hasPower.Value && isTurnedOn.Value);
+        Light2.enabled = (hasPower.Value && isTurnedOn.Value);
+        Textura.SetActive(hasPower.Value && isTurnedOn.Value);
     }
 
     void Update()

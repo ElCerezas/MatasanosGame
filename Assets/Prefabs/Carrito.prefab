@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 5668942165478411916}
   - component: {fileID: 4320178705079937558}
   - component: {fileID: 3853492815631537153}
+  - component: {fileID: 8800475319318976965}
   m_Layer: 0
   m_Name: Carrito
   m_TagString: Untagged
@@ -194,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1980313407
+  GlobalObjectIdHash: 2301045418
   InScenePlacedSourceGlobalObjectIdHash: 2420942611
   DeferredDespawnTick: 0
   Ownership: 1
@@ -303,6 +304,22 @@ MonoBehaviour:
   boostTime: 0
   puntoSuperior: {fileID: 386968124078060190}
   puntoInferior: {fileID: 8945203939138350405}
+--- !u!114 &8800475319318976965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239295847988969504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42017b7f3c588c94fa0732f79bd12007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
+  targetRenderers: []
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0.02
+  isHighlighted: 0
 --- !u!1 &2028955376098311334
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,7 +826,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 239378781582670930, guid: ba9c2311c7f73a943a3ff3c00f4210bd, type: 3}
+  - {fileID: 2100000, guid: 5a3d04eda9cb68d4f8e0f77dca7e7794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -976,6 +993,7 @@ GameObject:
   - component: {fileID: 1971124895532242161}
   - component: {fileID: 1128062643784518627}
   - component: {fileID: 2449965101494028714}
+  - component: {fileID: 9035753678190890797}
   m_Layer: 6
   m_Name: BotonUp
   m_TagString: Untagged
@@ -1130,6 +1148,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9035753678190890797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940585771812352526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42017b7f3c588c94fa0732f79bd12007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
+  targetRenderers: []
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0.02
+  isHighlighted: 0
 --- !u!1 &3424854472685252503
 GameObject:
   m_ObjectHideFlags: 0
