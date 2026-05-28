@@ -3,55 +3,71 @@ using UnityEngine;
 
 public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
 {
-    [Header("Jaw Bone")]
-    [SerializeField] Transform jawBone;
-    [SerializeField] Vector3 jawClosedLocalRotation;
-    [SerializeField] Vector3 jawOpenLocalRotation;
-
     [Header("Drag Settings")]
-    [SerializeField] float dragSensitivity = 0.8f;
-    [SerializeField] float maxDragDistance = 1.5f;
+    [SerializeField] private float dragSensitivity = 0.8f;
+    [SerializeField] private float maxDragDistance = 1.5f;
 
     [Header("Feel")]
-    [SerializeField] float smoothSpeed = 8f;
-    [SerializeField] float resistanceSpeed = 3f;
+    [SerializeField] private float smoothSpeed = 8f;
+    [SerializeField] private float resistanceSpeed = 3f;
 
-    NetworkVariable<float> jawOpenAmount = new NetworkVariable<float>(0f);
+    [Header("Animation")]
+    // Asigna aquí el Animator del propio Alien/Mandíbula en el Inspector
+    [SerializeField] private Animator jawAnimator;
 
-    float localTargetAmount;
-    NetworkObject grabberNetObj;
-    ulong grabberClientId = ulong.MaxValue;
-    Vector3 grabStartPosition;
-    float grabStartJawAmount;
+    // Sincroniza el valor objetivo en red automáticamente sin usar RPCs problemáticos
+    private NetworkVariable<float> jawOpenAmount = new NetworkVariable<float>(0f);
+
+    // Variable local para el suavizado (Lerp) en cada cliente
+    private float currentVisualAmount;
+
+    private NetworkObject grabberNetObj;
+    private ulong grabberClientId = ulong.MaxValue;
+    private Vector3 grabStartPosition;
+    private float grabStartJawAmount;
 
     public override void OnNetworkSpawn()
     {
-        jawOpenAmount.OnValueChanged += (_, next) => localTargetAmount = next;
-        localTargetAmount = jawOpenAmount.Value;
+        // Evita saltos bruscos de animación al aparecer el objeto
+        currentVisualAmount = jawOpenAmount.Value;
     }
+
     void Update()
     {
+        // 1. EL SERVIDOR CALCULA LA FUERZA/DISTANCIA
         if (IsServer)
         {
-            float target;
+            float target = 0f;
 
             if (grabberNetObj != null)
             {
-                float delta = grabberNetObj.transform.position.y - grabStartPosition.y;
-                target = grabStartJawAmount + (delta * dragSensitivity / maxDragDistance);
+                // Cambiado a Vector3.Distance para medir el "tiro" o alejamiento del jugador en cualquier dirección
+                float distance = Vector3.Distance(grabberNetObj.transform.position, grabStartPosition);
+                target = grabStartJawAmount + (distance * dragSensitivity / maxDragDistance);
             }
             else
             {
                 target = 0f;
             }
-            float maxD = (grabberNetObj != null ? smoothSpeed : resistanceSpeed) * Time.deltaTime;
-            jawOpenAmount.Value = Mathf.MoveTowards(jawOpenAmount.Value, Mathf.Clamp01(target), maxD);
-        }
-        Quaternion closed = Quaternion.Euler(jawClosedLocalRotation);
-        Quaternion open = Quaternion.Euler(jawOpenLocalRotation);
 
-        jawBone.localRotation = Quaternion.Lerp( jawBone.localRotation, Quaternion.Lerp(closed, open, localTargetAmount), Time.deltaTime * smoothSpeed);
+            // El servidor actualiza el valor de red de forma constante
+            float speed = (grabberNetObj != null ? smoothSpeed : resistanceSpeed);
+            jawOpenAmount.Value = Mathf.MoveTowards(jawOpenAmount.Value, Mathf.Clamp01(target), speed * Time.deltaTime);
+        }
+
+        // 2. TODOS LOS CLIENTES REALIZAN EL LERP VISUAL
+        if (jawAnimator != null)
+        {
+            float lerpSpeed = (grabberNetObj != null ? smoothSpeed : resistanceSpeed);
+
+            // Aquí ocurre la magia del Lerp frame a frame
+            currentVisualAmount = Mathf.Lerp(currentVisualAmount, jawOpenAmount.Value, Time.deltaTime * lerpSpeed);
+
+            // Aplicamos el parámetro al Animator del objeto
+            jawAnimator.SetFloat("MouthOpenPercent", currentVisualAmount);
+        }
     }
+
     public ulong GetNetworkObjectID() => NetworkObjectId;
 
     public void AddGrabber(ulong clientId, NetworkObject playerNetObj)
