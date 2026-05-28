@@ -4,12 +4,8 @@ using UnityEngine;
 public class InteractableOutline : MonoBehaviour
 {
     [SerializeField] Renderer[] targetRenderers;
-
-    [SerializeField] Color outlineColor = Color.white;
-    [SerializeField] float outlineWidth = 0.02f;
     [SerializeField] bool isHighlighted;
 
-    static Shader outlineShader;
     Material outlineMaterial;
 
     void Awake()
@@ -17,10 +13,9 @@ public class InteractableOutline : MonoBehaviour
         if (targetRenderers == null || targetRenderers.Length == 0)
             targetRenderers = GetComponentsInChildren<Renderer>();
 
-        if (outlineShader  == null)
-            outlineShader = Shader.Find("Shader Graphs/OutlineShader");
-
-        outlineMaterial = new Material(outlineShader){ hideFlags = HideFlags.HideAndDontSave };
+        Material loadedMat = Resources.Load<Material>("OutlineMaterial");
+        if (loadedMat == null) return;
+        outlineMaterial = new Material(loadedMat) { hideFlags = HideFlags.HideAndDontSave };
     }
 
     public void SetHighlight(bool active)
