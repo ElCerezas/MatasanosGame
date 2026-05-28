@@ -12,7 +12,7 @@ public class PlayerStateManager : NetworkBehaviour
     PlayerCamera playerCamera;
     Rigidbody rb;
     [Header("Ragdoll Settings")]
-    [SerializeField] PlayerRagdoll playerRagdoll;
+    [SerializeField] Animator animator;
     [SerializeField] float stunDuration = 0f;
     [SerializeField] float invulnerableTime = 3f;
     [SerializeField] float minimumForceToRagdoll;
@@ -72,7 +72,7 @@ public class PlayerStateManager : NetworkBehaviour
         playerCamera.Ragdoll(true);
         rb.constraints = RigidbodyConstraints.None;
         rb.freezeRotation = false;
-        playerRagdoll.SetRagdoll(true);
+        animator.enabled = false;
 
     }
     void RecoverJump()
@@ -81,6 +81,7 @@ public class PlayerStateManager : NetworkBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.freezeRotation = true;
         invulnerableCountdown = invulnerableTime;
+        animator.enabled = false;
 
         ExitRagdoll();
     }
@@ -90,7 +91,7 @@ public class PlayerStateManager : NetworkBehaviour
         interactor.Ragdoll(false);
         playerCamera.Ragdoll(false);
 
-        playerRagdoll.SetRagdoll(false);
+        animator.enabled = true;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.freezeRotation = true;
     }
