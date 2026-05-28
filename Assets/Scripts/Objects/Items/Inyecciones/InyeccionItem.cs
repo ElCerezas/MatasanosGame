@@ -20,19 +20,14 @@ public class InyeccionItem : NetworkBehaviour
     public void Inject(GameObject victim)
     {
         if (inyeccionType == LiquidType.Empty) return;
-        var netObj = victim.GetComponentInParent<NetworkObject>();
-        if (netObj != null)
-        {
-            LiquidType tipoAInyectar = inyeccionType;
-            EventBus.Publish<OnInject>(new OnInject
-            {
-                VictimID = netObj.NetworkObjectId,
-                Type = tipoAInyectar
-            });
-            inyeccionType = LiquidType.Empty;
-            animator.Play(Inyectando.name);
-            animator.PlayQueued(Vacio.name);
-        }
+
+        var stateManager = victim.GetComponent<PlayerStateManager>();
+        if (stateManager == null) return;
+
+        stateManager.ReceiveInjectionServerRpc((int)inyeccionType);
+        inyeccionType = LiquidType.Empty;
+        animator.Play(Inyectando.name);
+        animator.PlayQueued(Vacio.name);
     }
     public void Fill(LiquidType t, Color color)
     {

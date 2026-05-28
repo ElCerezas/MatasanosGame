@@ -102,12 +102,25 @@ public class PlayerStateManager : NetworkBehaviour
         switch (type)
         {
             case LiquidType.Calmante:
+                GetComponent<PlayerHUDEffects>().TriggerSleep(5f);
                 EnterRagdoll(5f, true);
                 break;
             case LiquidType.Estimulante:
 
                 break;
         }
+    }
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void ReceiveInjectionServerRpc(int liquidTypeInt)
+    {
+        ReceiveInjectionClientRpc(liquidTypeInt);
+    }
+
+    [ClientRpc]
+    private void ReceiveInjectionClientRpc(int liquidTypeInt)
+    {
+        if (!IsOwner) return;
+        ApplyInyeccion((LiquidType)liquidTypeInt);
     }
 
     public void OnInsectExplosion(OnInsectExplosion data)
