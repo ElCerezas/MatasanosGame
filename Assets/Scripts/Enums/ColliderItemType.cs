@@ -7,7 +7,8 @@ public enum ColliderItemType
 
 public enum ColliderDetectorType
 {
-    AguaEsterilizada,
+    Null,
+    Betadine,
     Herida,
     HeridaDesinfectada,
     HeridaVendada

@@ -90,6 +90,10 @@ public class MixerMachine : PoweredDevice
         {
             liquidType = LiquidType.Estimulante;
             liquidColor = stimulantColor;
+        } if (current == betadineFormula.Value)
+        {
+            liquidType = LiquidType.Betadine;
+            liquidColor = betadineColor;
         }
         else
         {
