@@ -32,7 +32,7 @@ public class SnappableItem : NetworkBehaviour, ISnappable
         if (!IsServer) return;
         isSnapped = true;
         currentZone = zone;
-        if (currentZone.gameObject.GetComponent<Collider>() == null) 
+        if (currentZone.gameObject.GetComponent<Collider>() != null) 
             Physics.IgnoreCollision(col, currentZone.transform.parent.GetComponent<Collider>(), true);
         rb.isKinematic = true;
     }
