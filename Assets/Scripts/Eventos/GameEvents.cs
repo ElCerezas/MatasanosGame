@@ -168,8 +168,13 @@ public struct OnHUDCleaned : IEvent
 }
 #endregion
 
-public class GuiaEvent : IEvent
+public struct GuiaEvent : IEvent
 {
     public GuiaAction Action { get; set; }
     public int SelectedIndex { get; set; }
+}
+
+public struct OnFormulaGenerated : IEvent
+{
+   public Vector3Int tranquilizerFormula;
 }
