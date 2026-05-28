@@ -69,7 +69,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
 
     private void AlienStateChanged(OnAlienStateChanged changed)
     {
-        if (flatline) return;
+        if (flatline)  return;
         switch (changed.NewState)
         {
             default:
@@ -108,6 +108,10 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     void Update()
     {
         if (lineRenderer == null) return;
+        if (flatline)
+        {
+            SetBPM(0f);
+        }
         lineRenderer.startColor = waveColor;
         lineRenderer.endColor = waveColor;
         bpmText.color = waveColor;
@@ -165,7 +169,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
 
     public void SetBPM(float newBPM)
     {
-        bpm = Mathf.Clamp(newBPM, 30, 300);
+        bpm =newBPM;
     }
 
     public void SetWaveColor(Color newColor)
