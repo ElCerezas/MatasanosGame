@@ -20,6 +20,8 @@ public class MixerMachine : PoweredDevice
     [SerializeField] NetworkVariable<Vector3Int> tranquilizerFormula = new NetworkVariable<Vector3Int>();
     [SerializeField] Color stimulantColor;
     [SerializeField] NetworkVariable<Vector3Int> stimulantFormula = new NetworkVariable<Vector3Int>();
+    [SerializeField] NetworkVariable<Vector3Int> betadineFormula = new NetworkVariable<Vector3Int>();
+    [SerializeField] Color betadineColor;
     [SerializeField] Color sludgeColor;
 
     [Header("Liquid Flask")]
@@ -34,8 +36,9 @@ public class MixerMachine : PoweredDevice
         
         if (IsServer)
         {
-            tranquilizerFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(1, max_Component), Random.Range(1, max_Component));
-            stimulantFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(1, max_Component), Random.Range(1, max_Component));
+            tranquilizerFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(2, max_Component), Random.Range(1, max_Component));
+            stimulantFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(2, max_Component), Random.Range(1, max_Component));
+            betadineFormula.Value = new Vector3Int(1, 1, 1);
         }
         componentA.OnValueChanged += (_, val) => OnComponentChanged(0, val);
         componentB.OnValueChanged += (_, val) => OnComponentChanged(1, val);
