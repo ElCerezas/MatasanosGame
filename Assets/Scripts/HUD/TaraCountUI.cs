@@ -2,12 +2,13 @@ using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TaraCountUI : NetworkBehaviour
 {
-    [SerializeField] private TextMeshProUGUI FocoCount;
-    [SerializeField] private TextMeshProUGUI DienteCount;
-    [SerializeField] private TextMeshProUGUI VendaCount;
+    [SerializeField] private RawImage FocoCount;
+    [SerializeField] private RawImage DienteCount;
+    [SerializeField] private RawImage VendaCount;
 
     public override void OnNetworkSpawn()
     {
@@ -50,19 +51,19 @@ public class TaraCountUI : NetworkBehaviour
 
     private void UpdateFocoUI(int value)
     {
-        FocoCount.text = value.ToString();
+       // FocoCount.text = value.ToString();
         FocoCount.gameObject.SetActive(value > 0);
     }
 
     private void UpdateDienteUI(int value)
     {
-        DienteCount.text = value.ToString();
+       // DienteCount.text = value.ToString();
         DienteCount.gameObject.SetActive(value > 0);
     }
 
     private void UpdateVendaUI(int value)
     {
-        VendaCount.text = value.ToString();
+        //VendaCount.text = value.ToString();
         VendaCount.gameObject.SetActive(value > 0);
     }
 }
