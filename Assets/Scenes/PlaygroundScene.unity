@@ -1836,7 +1836,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.663744
+      value: 5.38
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1874,10 +1874,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3340360684641975257, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 64f243c91827a7648ab2c4a03b4c8348, type: 2}
     - target: {fileID: 919132149155446097, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
       propertyPath: m_Name
       value: alien_animacionsSenseAcabar
       objectReference: {fileID: 0}
+    - target: {fileID: 3884807924902769073, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e6ae457cb6f077442ab5d75de211ac7d, type: 2}
+    - target: {fileID: 5447389531557325435, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 64f243c91827a7648ab2c4a03b4c8348, type: 2}
     - target: {fileID: 8761800193350834361, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2885,6 +2897,23 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  Estornudo: {fileID: 0}
+  Quejido: {fileID: 0}
+  Chupon: {fileID: 0}
+  Masticar: {fileID: 0}
+  Parasitador: {fileID: 0}
+  Inquieto: {fileID: 0}
+  Inquieto_IN: {fileID: 0}
+  Inquieto_OUT: {fileID: 0}
+  Calmado: {fileID: 0}
+  Calmado_IN: {fileID: 0}
+  Calmado_OUT: {fileID: 0}
+  Desangrado: {fileID: 0}
+  Desangrado_IN: {fileID: 0}
+  Desangrado_OUT: {fileID: 0}
+  QuejidoConstante: {fileID: 0}
+  QuejidoConstante_IN: {fileID: 0}
+  QuejidoConstante_OUT: {fileID: 0}
 --- !u!65 &1652859274
 BoxCollider:
   m_ObjectHideFlags: 0
