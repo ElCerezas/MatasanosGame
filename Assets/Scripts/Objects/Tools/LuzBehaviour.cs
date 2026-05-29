@@ -48,7 +48,8 @@ public class LuzBehaviour : PoweredItem
         {
             if (IsLayerInMask(hit.collider.gameObject.layer, playerLayer))
             {
-                if (hit.collider.TryGetComponent<NetworkObject>(out var playerNetObj))
+                var playerNetObj = hit.collider.GetComponentInParent<NetworkObject>();
+                if (playerNetObj != null)
                 {
                     ResetAlienTargets();
                     if (currentPlayerTarget != playerNetObj.NetworkObjectId)
@@ -67,7 +68,7 @@ public class LuzBehaviour : PoweredItem
                 currentWoundTarget = herida;
                 NotifyHealWoundServerRpc(herida.NetworkObjectId);
             }
-            else if (hit.collider.transform.parent.TryGetComponent<AlienWoundManager>(out var alien))
+            else if (hit.collider.GetComponentInParent<AlienWoundManager>() is AlienWoundManager alien)
             {
                 currentPlayerTarget = 0;
                 currentWoundTarget = null;
@@ -76,7 +77,9 @@ public class LuzBehaviour : PoweredItem
                 if (alienTimer >= timeToCreateWound)
                 {
                     alienTimer = 0f;
-                    RequestNewWoundServerRpc(hit.point, hit.normal, alien.NetworkObjectId);
+                    var netObj = alien.GetComponent<NetworkObject>();
+                    if (netObj != null)
+                        RequestNewWoundServerRpc(hit.point, hit.normal, netObj.NetworkObjectId);
                 }
             }
             else
@@ -89,6 +92,7 @@ public class LuzBehaviour : PoweredItem
             ResetAllTargets();
         }
     }
+
     [ClientRpc]
     void BlindPlayerClientRpc(ulong victimNetObjId, float duration)
     {
@@ -134,10 +138,13 @@ public class LuzBehaviour : PoweredItem
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(alienId, out var obj))
         {
-            if (obj.TryGetComponent<AlienWoundManager>(out var alien))
+            AlienWoundManager alien = obj.GetComponent<AlienWoundManager>();
+            if (alien == null) alien = obj.GetComponentInChildren<AlienWoundManager>();
+
+            if (alien != null)
             {
                 alien.GenerateWound(pos, norm);
-                GetComponent<AlienStateManager>().WoundCreated();
+                alien.GetComponent<AlienStateManager>()?.WoundCreated();
             }
         }
     }
