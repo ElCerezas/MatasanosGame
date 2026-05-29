@@ -12,6 +12,7 @@ public class WoundVendaBehaviour : TaraBase
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         if (!IsServer) return;
         EventBus.Publish(new TaraCreated { TaraID = NetworkObjectId, Type = type });
     }

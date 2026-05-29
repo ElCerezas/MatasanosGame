@@ -14,12 +14,7 @@ public class WoundFocoBehaviour : TaraBase
         isBeingHealed.OnValueChanged += (oldVal, newVal) =>
         {
             if (newVal == true)
-            {
-                EventBus.Publish(new OnWoundFocoHealStarted
-                {
-                    TaraID = NetworkObjectId
-                });
-            }
+                EventBus.Publish(new OnWoundFocoHealStarted { TaraID = NetworkObjectId });
         };
         if (!IsServer) return;
         EventBus.Publish(new TaraCreated { TaraID = NetworkObjectId, Type = type });

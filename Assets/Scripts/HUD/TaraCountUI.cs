@@ -10,15 +10,16 @@ public class TaraCountUI : NetworkBehaviour
     [SerializeField] private RawImage DienteCount;
     [SerializeField] private RawImage VendaCount;
 
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         EventBus.Subscribe<OnDientesCountChanged>(DientesCountChanged);
         EventBus.Subscribe<OnWoundFocoCountChanged>(WoundFocoCountChanged);
         EventBus.Subscribe<OnWoundVendaCountChanged>(WoundVendaCountChanged);
-        
+
         var manager = FindFirstObjectByType<WinConditionManager>();
-        if (manager != null)
+        if (manager != null && manager.IsSpawned)
         {
             UpdateDienteUI(manager.dienteCount.Value);
             UpdateFocoUI(manager.woundFocoCount.Value);
@@ -51,13 +52,13 @@ public class TaraCountUI : NetworkBehaviour
 
     private void UpdateFocoUI(int value)
     {
-       // FocoCount.text = value.ToString();
+        // FocoCount.text = value.ToString();
         FocoCount.gameObject.SetActive(value > 0);
     }
 
     private void UpdateDienteUI(int value)
     {
-       // DienteCount.text = value.ToString();
+        // DienteCount.text = value.ToString();
         DienteCount.gameObject.SetActive(value > 0);
     }
 

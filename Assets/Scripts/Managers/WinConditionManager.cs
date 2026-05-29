@@ -14,18 +14,15 @@ public class WinConditionManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         dienteCount.OnValueChanged += (_, newVal) =>
-        {
             EventBus.Publish(new OnDientesCountChanged { value = newVal });
-        };
-
         woundFocoCount.OnValueChanged += (_, newVal) =>
-        {
             EventBus.Publish(new OnWoundFocoCountChanged { value = newVal });
-        };
         woundVendaCount.OnValueChanged += (_, newVal) =>
-        {
             EventBus.Publish(new OnWoundVendaCountChanged { value = newVal });
-        };
+
+        EventBus.Publish(new OnDientesCountChanged { value = dienteCount.Value });
+        EventBus.Publish(new OnWoundFocoCountChanged { value = woundFocoCount.Value });
+        EventBus.Publish(new OnWoundVendaCountChanged { value = woundVendaCount.Value });
 
         if (!IsServer) return;
 
@@ -61,13 +58,17 @@ public class WinConditionManager : NetworkBehaviour
     private IEnumerator CountExistingTarasNextFrame()
     {
         yield return null;
+
+        dienteCount.Value = 0;
+        woundFocoCount.Value = 0;
+        woundVendaCount.Value = 0;
+
         foreach (var tara in FindObjectsByType<TaraBase>(FindObjectsSortMode.None))
         {
             if (!tara.IsSpawned || tara.WasHealed) continue;
-            switch (tara.type)
-            {
-                case WoundType.Diente: dienteCount.Value++; break;
-            }
+
+            if (tara.type == WoundType.Diente)
+                dienteCount.Value++;
         }
     }
     private void OnTaraHealed(TaraHealedEvent e)
