@@ -42,9 +42,9 @@ public class GuiaBehaviour : PoweredDevice
     {
         base.OnNetworkSpawn();
 
-        isOpen.OnValueChanged += (_, newVal) => RefreshUI();
-        highlightedIndex.OnValueChanged += (_, __) => HandleHighlightChanged();
-        activeTargetIndex.OnValueChanged += (_, newVal) => HandleTargetChanged(newVal);
+        isOpen.OnValueChanged += (_, __) => RefreshUI();
+        highlightedIndex.OnValueChanged += (_, __) => { RefreshHighlight(); ScrollToEntry(highlightedIndex.Value); };
+        activeTargetIndex.OnValueChanged += (_, __) => RefreshUI();
 
         BuildList();
         RefreshUI();
@@ -79,7 +79,7 @@ public class GuiaBehaviour : PoweredDevice
     {
         if (!IsServer) return;
         if (!hasPower.Value) return;
-        
+
         if (!isOpen.Value && activeTargetIndex.Value == -1) return;
 
         highlightedIndex.Value = (highlightedIndex.Value + 1) % entries.Count;
@@ -90,7 +90,7 @@ public class GuiaBehaviour : PoweredDevice
     {
         if (!IsServer) return;
         if (!hasPower.Value) return;
-        
+
         if (!isOpen.Value && activeTargetIndex.Value == -1) return;
 
         highlightedIndex.Value = (highlightedIndex.Value - 1 + entries.Count) % entries.Count;
@@ -198,10 +198,19 @@ public class GuiaBehaviour : PoweredDevice
 
     private void RefreshUI()
     {
-        bool showCanvas = isOpen.Value || activeTargetIndex.Value != -1;
-        guiaCanvas.SetActive(showCanvas);
+        bool hasActiveTarget = activeTargetIndex.Value != -1;
+        bool showList = isOpen.Value || hasActiveTarget;
 
-        listPanel.SetActive(isOpen.Value || activeTargetIndex.Value != -1);
+        guiaCanvas.SetActive(showList);
+        listPanel.SetActive(showList);
+
+        foreach (var entry in entries)
+            if (entry.target != null)
+                entry.target.SetActive(false);
+
+        if (hasActiveTarget && activeTargetIndex.Value < entries.Count)
+            if (entries[activeTargetIndex.Value].target != null)
+                entries[activeTargetIndex.Value].target.SetActive(true);
 
         if (isOpen.Value) RefreshHighlight();
     }

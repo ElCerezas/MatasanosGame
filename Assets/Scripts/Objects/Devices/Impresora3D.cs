@@ -13,6 +13,7 @@ public class Impresora3D : PoweredDevice
     NetworkVariable<int> selectedIndex = new NetworkVariable<int>(0);
     [Range(0f, 1f)]
     NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
+    NetworkVariable<bool> snapZoneOccupied = new NetworkVariable<bool>(false);
     [SerializeField] TextMeshProUGUI screenText;
 
     Coroutine printCoroutine;
@@ -31,28 +32,62 @@ public class Impresora3D : PoweredDevice
         meshFilter = hologramRenderer?.GetComponent<MeshFilter>();
         snapZone = hologramRenderer?.GetComponent<SnapZone>();
         mpb = new MaterialPropertyBlock();
+
+        snapZone.OnObjectSnapped.AddListener(OnItemSnapped);
+        snapZone.OnObjectUnsnapped.AddListener(OnItemUnsnapped);
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        selectedIndex.OnValueChanged += OnSelectedIndexChanged;
+        printProgress.OnValueChanged += OnPrintProgressChanged;
+        snapZoneOccupied.OnValueChanged += OnSnapZoneOccupiedChanged;
+        hasPower.OnValueChanged += OnHasPowerChanged;
+
         LoadHolo();
     }
 
     public override void OnNetworkDespawn()
     {
+        selectedIndex.OnValueChanged -= OnSelectedIndexChanged;
+        printProgress.OnValueChanged -= OnPrintProgressChanged;
+        snapZoneOccupied.OnValueChanged -= OnSnapZoneOccupiedChanged;
+        hasPower.OnValueChanged -= OnHasPowerChanged;
+
+        snapZone.OnObjectSnapped.RemoveListener(OnItemSnapped);
+        snapZone.OnObjectUnsnapped.RemoveListener(OnItemUnsnapped);
+
         base.OnNetworkDespawn();
     }
+
+    void OnSelectedIndexChanged(int old, int next) => LoadHolo();
+    void OnPrintProgressChanged(float old, float next) { UpdatePrintShader(next); UpdateScreenText(next); }
+    void OnSnapZoneOccupiedChanged(bool old, bool next) => LoadHolo();
+    void OnHasPowerChanged(bool old, bool next) => LoadHolo();
+
+    void OnItemSnapped()
+    {
+        if (IsServer) snapZoneOccupied.Value = true;
+    }
+
+    void OnItemUnsnapped()
+    {
+        if (IsServer) snapZoneOccupied.Value = false;
+    }
+
     public void LoadHolo()
     {
         GameObject sourcePrefab = printableObjects[selectedIndex.Value].printingObject;
         meshFilter.mesh = sourcePrefab.GetComponent<MeshFilter>().sharedMesh;
-        hologramVisualRenderer.enabled = hasPower.Value && snapZone.currentItem == null;
+        hologramVisualRenderer.enabled = hasPower.Value && !snapZoneOccupied.Value;
 
         screenText.enabled = hasPower.Value;
         screenText.text = printableObjects[selectedIndex.Value].displayName;
         PushSourceTexture(sourcePrefab);
     }
+
     void PushSourceTexture(GameObject sourcePrefab)
     {
         MeshRenderer sourceRenderer = sourcePrefab.GetComponent<MeshRenderer>();
@@ -67,13 +102,13 @@ public class Impresora3D : PoweredDevice
 
         hologramVisualRenderer.SetPropertyBlock(mpb);
     }
+
     IEnumerator PrintCoroutine()
     {
         float duration = printableObjects[selectedIndex.Value].printingTime;
         float localProgress = printProgress.Value;
         float syncTimer = 0f;
         const float syncInterval = 0.1f;
-        const int barLength = 10;
 
         while (localProgress < 1f)
         {
@@ -92,10 +127,6 @@ public class Impresora3D : PoweredDevice
             if (syncTimer >= syncInterval)
             {
                 printProgress.Value = localProgress;
-                int filledLength = Mathf.RoundToInt(localProgress * barLength);
-                string filledPart = new string('#', filledLength);
-                string emptyPart = new string('_', barLength - filledLength);
-                screenText.text = $"[{filledPart}{emptyPart}]\n{Mathf.FloorToInt(localProgress * 100)}%";
                 syncTimer = 0f;
             }
 
@@ -125,30 +156,36 @@ public class Impresora3D : PoweredDevice
         }
 
         printProgress.Value = 0f;
+        snapZoneOccupied.Value = true;
         UpdatePrintShader(0f);
         LoadHolo();
     }
+
     public void OnNextPrint(int i)
     {
+        OnNextPrintServerRpc(i);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void OnNextPrintServerRpc(int i)
+    {
         if (printProgress.Value > 0f) return;
-        selectedIndex.Value += i;
-        Debug.Log(selectedIndex.Value);
-        selectedIndex.Value = selectedIndex.Value % (printableObjects.Length-1);
-        LoadHolo();
+        selectedIndex.Value = (selectedIndex.Value + i + printableObjects.Length) % printableObjects.Length;
     }
 
     public void RequestPrint()
     {
-        if (!IsServer) return;
+        RequestPrintServerRpc();
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void RequestPrintServerRpc()
+    {
         if (printProgress.Value > 0f) return;
         if (!hasPower.Value) return;
-        if (hologramRenderer.GetComponent<SnapZone>().currentItem != null) return;
-
-        Debug.Log("PrintStart");
-        PushSourceTexture(printableObjects[selectedIndex.Value].printingObject);
+        if (snapZoneOccupied.Value) return;
 
         printProgress.Value = 0.001f;
-        UpdatePrintShader(0.001f);
         printCoroutine = StartCoroutine(PrintCoroutine());
     }
 
@@ -156,11 +193,20 @@ public class Impresora3D : PoweredDevice
     {
         LoadHolo();
     }
+
     void UpdatePrintShader(float progress)
     {
         hologramVisualRenderer.GetPropertyBlock(mpb);
         mpb.SetFloat(ID_PrintingPercent, progress);
         hologramVisualRenderer.SetPropertyBlock(mpb);
+    }
+
+    void UpdateScreenText(float progress)
+    {
+        if (!screenText.enabled) return;
+        const int barLength = 10;
+        int filled = Mathf.RoundToInt(progress * barLength);
+        screenText.text = $"[{new string('#', filled)}{new string('_', barLength - filled)}]\n{Mathf.FloorToInt(progress * 100)}%";
     }
 }
 
