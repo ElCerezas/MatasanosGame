@@ -11,18 +11,23 @@ public class MangueraAspiradora : PoweredItem
     public float rayDistance = 20f;
     public LayerMask puddleLayer;
     public GameObject particles;
+    public override void OnNetworkSpawn()
+    {
+        isTurnedOn.OnValueChanged += (_, newVal) => ArpiradoraParticlesClientRpc(newVal);
+        particles.SetActive(isTurnedOn.Value);
+        base.OnNetworkSpawn();
+    }
 
     public virtual void Update()
     {
         if (!IsServer) return;
         if (!isTurnedOn.Value) return;
-        particles.SetActive(true);
         Ray ray = new Ray(originPoint.position, originPoint.forward);
         Debug.DrawRay(originPoint.position, originPoint.forward * rayDistance, Color.cyan);
 
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, puddleLayer))
         {
-            if(hit.transform.TryGetComponent<BloodPuddle>(out  BloodPuddle puddle))
+            if (hit.transform.TryGetComponent<BloodPuddle>(out BloodPuddle puddle))
             {
                 mainAspiradora.TryAddCapacity(puddle);
             }
@@ -33,9 +38,9 @@ public class MangueraAspiradora : PoweredItem
         Gizmos.DrawRay(originPoint.position, originPoint.forward);
     }
 
-    public override void OnNetworkSpawn()
+    [ClientRpc]
+    public void ArpiradoraParticlesClientRpc(bool isActive)
     {
-        isTurnedOn.OnValueChanged += (_, newVal) => { if (!newVal) particles.SetActive(false); };
-        base.OnNetworkSpawn();
+        particles.SetActive(isActive);
     }
 }
