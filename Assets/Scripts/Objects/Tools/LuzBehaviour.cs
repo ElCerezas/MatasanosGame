@@ -54,11 +54,7 @@ public class LuzBehaviour : PoweredItem
                     if (currentPlayerTarget != playerNetObj.NetworkObjectId)
                     {
                         currentPlayerTarget = playerNetObj.NetworkObjectId;
-                        EventBus.Publish(new OnPlayerBlinded
-                        {
-                            VictimID = playerNetObj.NetworkObjectId,
-                            Duration = playerBlindDuration
-                        });
+                        BlindPlayerClientRpc(playerNetObj.NetworkObjectId, playerBlindDuration);
                     }
                     return;
                 }
@@ -92,6 +88,15 @@ public class LuzBehaviour : PoweredItem
         {
             ResetAllTargets();
         }
+    }
+    [ClientRpc]
+    void BlindPlayerClientRpc(ulong victimNetObjId, float duration)
+    {
+        EventBus.Publish(new OnPlayerBlinded
+        {
+            VictimID = victimNetObjId,
+            Duration = duration
+        });
     }
 
     void ResetAlienTargets()

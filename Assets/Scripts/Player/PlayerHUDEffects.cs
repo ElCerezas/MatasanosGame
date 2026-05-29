@@ -104,7 +104,7 @@ public class PlayerHUDEffects : NetworkBehaviour
     void OnPlayerSlipped(OnPlayerSlipped data) { if (data.VictimID == NetworkObjectId) TriggerBlood(); }
     void OnInsectExplosion(OnInsectExplosion data) { if (data.VictimID == NetworkObjectId) TriggerParasite(); }
     void OnPlayerSneezes(OnPlayerSneezes data) { if (data.VictimID == NetworkObjectId) TriggerMoco(); }
-    void OnPlayerBlinded(OnPlayerBlinded data) { if (data.VictimID == NetworkObjectId) TriggerFlash(data.Duration); }
+    void OnPlayerBlinded(OnPlayerBlinded data) {     Debug.Log($"VictimID: {data.VictimID} | NetworkObjectId: {NetworkObjectId} | IsOwner: {IsOwner}"); if (data.VictimID == NetworkObjectId) TriggerFlash(data.Duration); }
     void OnHUDCleaned(OnHUDCleaned data)
     {
         if (data.VictimID != NetworkObjectId) return;
