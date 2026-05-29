@@ -5025,6 +5025,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 6170386817174051875, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+      propertyPath: gen
+      value: 
+      objectReference: {fileID: 1570301912}
+    - target: {fileID: 6170386817174051875, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+      propertyPath: otherFuse
+      value: 
+      objectReference: {fileID: 498188371}
     - target: {fileID: 8202756894583828225, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2209606453
@@ -8311,6 +8319,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 229423859}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &230580607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6170386817174051875, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+  m_PrefabInstance: {fileID: 167698491}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c4a7feca254a7a4bbab43d5be44c6d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fuse
 --- !u!1001 &231125405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49622,6 +49641,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1100845915750144915, guid: b69519270a1c4d2478732c5aa7dd6c51, type: 3}
   m_PrefabInstance: {fileID: 13481897}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &498188371 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6170386817174051875, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+  m_PrefabInstance: {fileID: 1230809073}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c4a7feca254a7a4bbab43d5be44c6d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fuse
 --- !u!1 &500738296
 GameObject:
   m_ObjectHideFlags: 0
@@ -110631,6 +110661,22 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6beae13e161994e4abe8f8cbc6fa8332, type: 2}
+    - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: printableObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: printableObjects.Array.data[3].displayName
+      value: Tirita
+      objectReference: {fileID: 0}
+    - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: printableObjects.Array.data[3].printingTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5401009841237092439, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
+      propertyPath: printableObjects.Array.data[3].printingObject
+      value: 
+      objectReference: {fileID: 2936683440790408191, guid: 35459d6fdea86ba46a7dcd492dc70a7c, type: 3}
     - target: {fileID: 5925459181513881587, guid: 0f15cdaab377fe6469b6d7c9cdf681e6, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2470446982
@@ -127679,6 +127725,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 6170386817174051875, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+      propertyPath: gen
+      value: 
+      objectReference: {fileID: 1570301912}
+    - target: {fileID: 6170386817174051875, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
+      propertyPath: otherFuse
+      value: 
+      objectReference: {fileID: 230580607}
     - target: {fileID: 8202756894583828225, guid: db7b7e13030726c42816e799c96e47c4, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2201048951
@@ -139444,7 +139498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GeneratorSystem
   ShowTopMostFoldoutHeaderGroup: 1
-  maxPowerLoad: 3
+  maxPowerLoad: 2
   currentLoad:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0

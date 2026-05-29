@@ -21,13 +21,44 @@ public class InyeccionItem : NetworkBehaviour
     {
         if (inyeccionType == LiquidType.Empty) return;
 
-        var stateManager = victim.GetComponent<PlayerStateManager>();
-        if (stateManager == null) return;
+        // Intenta player primero
+        var playerState = victim.GetComponent<PlayerStateManager>();
+        if (playerState != null)
+        {
+            playerState.ReceiveInjectionServerRpc((int)inyeccionType);
+            PlayInjectAnimation();
+            return;
+        }
 
-        stateManager.ReceiveInjectionServerRpc((int)inyeccionType);
+        // Intenta alien
+        var alienState = victim.GetComponentInParent<AlienStateManager>();
+        if (alienState != null)
+        {
+            var netObj = alienState.GetComponent<NetworkObject>();
+            if (netObj != null)
+            {
+                InjectAlienServerRpc(netObj.NetworkObjectId, (int)inyeccionType);
+                PlayInjectAnimation();
+            }
+            return;
+        }
+    }
+
+    void PlayInjectAnimation()
+    {
         inyeccionType = LiquidType.Empty;
         animator.Play(Inyectando.name);
         animator.PlayQueued(Vacio.name);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void InjectAlienServerRpc(ulong alienNetObjId, int liquidType)
+    {
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(alienNetObjId, out var obj))
+        {
+            if (obj.TryGetComponent<AlienStateManager>(out var alien))
+                alien.ApplyInyeccion((LiquidType)liquidType);
+        }
     }
     public void Fill(LiquidType t, Color color)
     {
