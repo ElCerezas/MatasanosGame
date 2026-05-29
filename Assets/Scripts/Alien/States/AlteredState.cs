@@ -14,8 +14,8 @@ public class AlteredState : State
     public override void OnEnter()
     {
         Debug.Log("Entrando en estado ALTERADO");
-        animation.clip = alien.Parasitador;
-        animation.Play();
+        //animation.clip = alien.Parasitador;
+        //animation.Play();
         parasiteTimer = 0f;
     }
 

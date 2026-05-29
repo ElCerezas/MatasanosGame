@@ -17,6 +17,8 @@ public class AlienWoundManager : NetworkBehaviour
     public float minHeightBias = 0.2f;
     public int maxRaycastAttempts = 10;
 
+    [Header("Debug")]
+    [SerializeField] bool drawDebugRays = false;
     private List<(Vector3 origin, Vector3 direction, bool hit)> _debugRays = new();
     private Vector3 _debugSphereCenter;
     private float _debugSphereRadius = 10f;
@@ -47,7 +49,7 @@ public class AlienWoundManager : NetworkBehaviour
         _debugSphereCenter = transform.position;
         for (int attempt = 0; attempt < maxRaycastAttempts; attempt++)
         {
-            Vector3 randomDir = UnityEngine.Random.onUnitSphere*10;
+            Vector3 randomDir = UnityEngine.Random.onUnitSphere * 10;
 
 
             bool didHit = false;
@@ -112,30 +114,53 @@ public class AlienWoundManager : NetworkBehaviour
         netObj.Spawn();
         netObj.TrySetParent(transform, worldPositionStays: true);
 
+        Transform closestBone = GetClosestBone(position);
+        if (closestBone != null)
+        {
+            WoundBoneFollower follower = woundObj.GetComponent<WoundBoneFollower>();
+            if (follower != null) follower.AttachToBone(closestBone);
+        }
     }
-    /*
+
+    Transform GetClosestBone(Vector3 worldPos)
+    {
+        SkinnedMeshRenderer smr = GetComponentInChildren<SkinnedMeshRenderer>();
+        if (smr == null) return null;
+
+        Transform closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (Transform bone in smr.bones)
+        {
+            if (bone == null) continue;
+            float dist = Vector3.Distance(worldPos, bone.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = bone;
+            }
+        }
+        return closest;
+    }
     void OnDrawGizmos()
     {
-        // Dibuja la esfera de muestreo
+        if (!drawDebugRays) return;
+
         Gizmos.color = new Color(0f, 1f, 1f, 0.1f);
         Gizmos.DrawSphere(_debugSphereCenter, _debugSphereRadius);
 
         Gizmos.color = new Color(0f, 1f, 1f, 0.4f);
         Gizmos.DrawWireSphere(_debugSphereCenter, _debugSphereRadius);
 
-        // Dibuja cada raycast
         foreach (var (origin, direction, wasHit) in _debugRays)
         {
-            // Punto de origen del rayo
             Gizmos.color = wasHit ? Color.green : Color.red;
             Gizmos.DrawSphere(origin, 0.05f);
 
-            // L�nea del rayo
             Gizmos.color = wasHit
                 ? new Color(0f, 1f, 0f, 0.8f)
                 : new Color(1f, 0f, 0f, 0.4f);
             Gizmos.DrawRay(origin, direction * 6f);
         }
     }
-    */
 }
