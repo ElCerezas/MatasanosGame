@@ -12,11 +12,11 @@ public class FormulaHandlerUI : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         EventBus.Subscribe<OnFormulaGenerated>(UpdateFormula);
-
+        /*
         if (mixerMachine != null)
         {
             ForceFormulaVisuals(mixerMachine.CurrentTranquilizerFormula);
-        }
+        }*/
     }
 
     private void UpdateFormula(OnFormulaGenerated onFormulaGenerated)

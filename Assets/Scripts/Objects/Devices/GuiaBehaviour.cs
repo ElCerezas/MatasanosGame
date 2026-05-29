@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -47,6 +48,9 @@ public class GuiaBehaviour : PoweredDevice
         activeTargetIndex.OnValueChanged += (_, __) => RefreshUI();
 
         BuildList();
+        var providers = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IGuiaEntryProvider>();
+        foreach (var provider in providers)
+            provider.RegisterEntries(this);
         RefreshUI();
     }
 
@@ -259,16 +263,10 @@ public class GuiaBehaviour : PoweredDevice
             yield return null;
         }
     }
-
-    private void HandleTargetChanged(int index)
+    public void AddEntry(string nombre, GameObject target)
     {
-        foreach (var entry in entries)
-            if (entry.target != null)
-                entry.target.SetActive(false);
-
-        if (index >= 0 && index < entries.Count)
-            if (entries[index].target != null)
-                entries[index].target.SetActive(true);
+        entries.Add(new GuiaEntry { nombre = nombre, target = target });
+        BuildList();
     }
 
     private IEnumerator AutoCloseRoutine()
@@ -276,4 +274,9 @@ public class GuiaBehaviour : PoweredDevice
         yield return new WaitForSeconds(autoCloseTime);
         CloseGuia();
     }
+}
+
+public interface IGuiaEntryProvider
+{
+    void RegisterEntries(GuiaBehaviour guia);
 }

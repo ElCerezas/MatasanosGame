@@ -1,11 +1,24 @@
-﻿using Unity.Netcode;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(NetworkObject))]
-public class MixerMachine : PoweredDevice
+public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 {
+    [Serializable]
+    public class FormulaConfig
+    {
+        public string displayName;
+        public LiquidType liquidType;
+        public Color color;
+        public bool isRandom;
+        public Vector3Int fixedValue;
+    }
+
     [Header("Settings")]
-    [SerializeField]int max_Component = 5;
+    [SerializeField] int max_Component = 5;
     [SerializeField] MeshRenderer[] tubes;
     NetworkVariable<int> componentA = new NetworkVariable<int>(1);
     NetworkVariable<int> componentB = new NetworkVariable<int>(1);
@@ -13,33 +26,46 @@ public class MixerMachine : PoweredDevice
     [SerializeField] private MixerIndicator componentAIndicator;
     [SerializeField] private MixerIndicator componentBIndicator;
     [SerializeField] private MixerIndicator componentCIndicator;
-    
+
+    [Header("Formulas")]
+    [SerializeField] private List<FormulaConfig> formulaConfigs = new();
+    [SerializeField] private GameObject formulaEntryPrefab;
+    [SerializeField] private Transform formulaEntrySpawnRoot;
+    private NetworkList<Vector3Int> resolvedFormulas;
+    private List<FormulaEntryUI> spawnedEntryUIs = new();
 
     [Header("Liquids")]
-    [SerializeField] Color tranquilizerColor;
-    [SerializeField] NetworkVariable<Vector3Int> tranquilizerFormula = new NetworkVariable<Vector3Int>();
-    [SerializeField] Color stimulantColor;
-    [SerializeField] NetworkVariable<Vector3Int> stimulantFormula = new NetworkVariable<Vector3Int>();
-    [SerializeField] NetworkVariable<Vector3Int> betadineFormula = new NetworkVariable<Vector3Int>();
-    [SerializeField] Color betadineColor;
     [SerializeField] Color sludgeColor;
 
     [Header("Liquid Flask")]
     [SerializeField] MixerFlask MixerFlask;
 
-    public Vector3Int CurrentTranquilizerFormula => tranquilizerFormula.Value;
+    void Awake()
+    {
+        resolvedFormulas = new NetworkList<Vector3Int>();
+    }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
-        tranquilizerFormula.OnValueChanged += (_, newVal) => EventBus.Publish(new OnFormulaGenerated { tranquilizerFormula = newVal });
-        
+
         if (IsServer)
         {
-            tranquilizerFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(2, max_Component), Random.Range(1, max_Component));
-            stimulantFormula.Value = new Vector3Int(Random.Range(1,max_Component), Random.Range(2, max_Component), Random.Range(1, max_Component));
-            betadineFormula.Value = new Vector3Int(1, 1, 1);
+            resolvedFormulas.Clear();
+            foreach (var config in formulaConfigs)
+            {
+                Vector3Int value = config.isRandom
+                    ? new Vector3Int(
+                        UnityEngine.Random.Range(1, max_Component),
+                        UnityEngine.Random.Range(1, max_Component),
+                        UnityEngine.Random.Range(1, max_Component))
+                    : config.fixedValue;
+                resolvedFormulas.Add(value);
+            }
         }
+
+        resolvedFormulas.OnListChanged += OnResolvedFormulasChanged;
+
         componentA.OnValueChanged += (_, val) => OnComponentChanged(0, val);
         componentB.OnValueChanged += (_, val) => OnComponentChanged(1, val);
         componentC.OnValueChanged += (_, val) => OnComponentChanged(2, val);
@@ -50,19 +76,56 @@ public class MixerMachine : PoweredDevice
             componentB.Value = 1;
             componentC.Value = 1;
         }
+
         UpdateUI();
     }
+
     public override void OnNetworkDespawn()
     {
+        resolvedFormulas.OnListChanged -= OnResolvedFormulasChanged;
         componentA.OnValueChanged -= (_, val) => OnComponentChanged(0, val);
         componentB.OnValueChanged -= (_, val) => OnComponentChanged(1, val);
         componentC.OnValueChanged -= (_, val) => OnComponentChanged(2, val);
         base.OnNetworkDespawn();
     }
-    public override void Powered()
+
+    void OnResolvedFormulasChanged(NetworkListEvent<Vector3Int> e)
     {
-        UpdateUI();
+        if (e.Index < spawnedEntryUIs.Count && spawnedEntryUIs[e.Index] != null)
+            spawnedEntryUIs[e.Index].Setup(e.Value);
     }
+
+    public void RegisterEntries(GuiaBehaviour guia)
+    {
+        for (int i = 0; i < formulaConfigs.Count; i++)
+        {
+            var config = formulaConfigs[i];
+            var go = Instantiate(formulaEntryPrefab, formulaEntrySpawnRoot);
+            go.SetActive(false);
+
+            var entryUI = go.GetComponent<FormulaEntryUI>();
+            spawnedEntryUIs.Add(entryUI);
+
+            if (i < resolvedFormulas.Count)
+                entryUI.Setup(resolvedFormulas[i]);
+
+            guia.AddEntry(config.displayName, go);
+        }
+
+        if (resolvedFormulas.Count < formulaConfigs.Count)
+            StartCoroutine(WaitForFormulas());
+    }
+
+    IEnumerator WaitForFormulas()
+    {
+        while (resolvedFormulas.Count < formulaConfigs.Count)
+            yield return null;
+
+        for (int i = 0; i < spawnedEntryUIs.Count; i++)
+            if (spawnedEntryUIs[i] != null)
+                spawnedEntryUIs[i].Setup(resolvedFormulas[i]);
+    }
+    public override void Powered() => UpdateUI();
 
     public void IncrementComponent(int index)
     {
@@ -74,31 +137,23 @@ public class MixerMachine : PoweredDevice
             case 2: componentC.Value = componentC.Value >= max_Component ? 1 : componentC.Value + 1; break;
         }
     }
+
     public void ConfirmMix()
     {
         if (!hasPower.Value) return;
 
         Vector3Int current = new Vector3Int(componentA.Value, componentB.Value, componentC.Value);
-        LiquidType liquidType;
-        Color liquidColor;
-        if (current == tranquilizerFormula.Value)
+        LiquidType liquidType = LiquidType.Sludge;
+        Color liquidColor = sludgeColor;
+
+        for (int i = 0; i < resolvedFormulas.Count; i++)
         {
-            liquidType = LiquidType.Calmante;
-            liquidColor = tranquilizerColor;
-        }  
-        else if (current == stimulantFormula.Value)
-        {
-            liquidType = LiquidType.Estimulante;
-            liquidColor = stimulantColor;
-        } if (current == betadineFormula.Value)
-        {
-            liquidType = LiquidType.Betadine;
-            liquidColor = betadineColor;
-        }
-        else
-        {
-            liquidType = LiquidType.Sludge;
-            liquidColor = sludgeColor;
+            if (current == resolvedFormulas[i])
+            {
+                liquidType = formulaConfigs[i].liquidType;
+                liquidColor = formulaConfigs[i].color;
+                break;
+            }
         }
 
         MixerFlask?.Fill(liquidType, liquidColor);
@@ -112,6 +167,7 @@ public class MixerMachine : PoweredDevice
         tubes[index].sharedMaterial.SetFloat("_FillAmount", (float)newValue / max_Component);
         UpdateUI();
     }
+
     private void UpdateUI()
     {
         componentAIndicator.UpdateIndicator(componentA.Value);
