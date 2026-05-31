@@ -1402,9 +1402,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c55e0eec0b843ec4e89855fba3fa6bbb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3146016282703558411}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c55e0eec0b843ec4e89855fba3fa6bbb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2178498865477350938}
   m_SourcePrefab: {fileID: 100100000, guid: c55e0eec0b843ec4e89855fba3fa6bbb, type: 3}
 --- !u!1 &5120389003123130701 stripped
 GameObject:
@@ -1599,20 +1596,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4365898703709280500, guid: 5e85409141d4311468726b60c5722945, type: 3}
---- !u!114 &2178498865477350938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5120389003123130701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42017b7f3c588c94fa0732f79bd12007, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
-  targetRenderers: []
-  isHighlighted: 0
 --- !u!4 &5495682405333785591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c55e0eec0b843ec4e89855fba3fa6bbb, type: 3}
