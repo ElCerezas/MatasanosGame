@@ -39,10 +39,13 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
     [Header("Liquid Flask")]
     [SerializeField] MixerFlask MixerFlask;
+    Coroutine[] tubeLerpCoroutines;
+
 
     void Awake()
     {
         resolvedFormulas = new NetworkList<Vector3Int>();
+        tubeLerpCoroutines = new Coroutine[tubes.Length];
     }
 
     public override void OnNetworkSpawn()
@@ -52,14 +55,45 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
         if (IsServer)
         {
             resolvedFormulas.Clear();
-            foreach (var config in formulaConfigs)
+            Vector3Int[] finalValues = new Vector3Int[formulaConfigs.Count];
+            HashSet<Vector3Int> existingValues = new HashSet<Vector3Int>();
+            for (int i = 0; i < formulaConfigs.Count; i++)
             {
-                Vector3Int value = config.isRandom
-                    ? new Vector3Int(
-                        UnityEngine.Random.Range(1, max_Component),
-                        UnityEngine.Random.Range(1, max_Component),
-                        UnityEngine.Random.Range(1, max_Component))
-                    : config.fixedValue;
+                if (!formulaConfigs[i].isRandom)
+                {
+                    finalValues[i] = formulaConfigs[i].fixedValue;
+                    existingValues.Add(formulaConfigs[i].fixedValue);
+                }
+            }
+            for (int i = 0; i < formulaConfigs.Count; i++)
+            {
+                if (formulaConfigs[i].isRandom)
+                {
+                    Vector3Int randValue = Vector3Int.zero;
+                    bool isValid = false;
+                    int safetyCounter = 0;
+
+                    while (!isValid && safetyCounter < 100)
+                    {
+                        safetyCounter++;
+
+                        int x = UnityEngine.Random.Range(1, max_Component + 1);
+                        int y = UnityEngine.Random.Range(1, max_Component + 1);
+                        int z = UnityEngine.Random.Range(1, max_Component + 1);
+                        randValue = new Vector3Int(x, y, z);
+
+                        if (x == y && y == z) continue;
+                        if (existingValues.Contains(randValue)) continue;
+
+                        isValid = true;
+                    }
+
+                    finalValues[i] = randValue;
+                    existingValues.Add(randValue);
+                }
+            }
+            foreach (var value in finalValues)
+            {
                 resolvedFormulas.Add(value);
             }
         }
@@ -125,6 +159,7 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
             if (spawnedEntryUIs[i] != null)
                 spawnedEntryUIs[i].Setup(resolvedFormulas[i]);
     }
+
     public override void Powered() => UpdateUI();
 
     public void IncrementComponent(int index)
@@ -164,8 +199,33 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
     void OnComponentChanged(int index, int newValue)
     {
-        tubes[index].sharedMaterial.SetFloat("_FillAmount", (float)newValue / max_Component);
+        if (tubeLerpCoroutines[index] != null)
+        {
+            StopCoroutine(tubeLerpCoroutines[index]);
+        }
+
+        float targetFill = (float)newValue / max_Component;
+        tubeLerpCoroutines[index] = StartCoroutine(LerpTubeFill(index, targetFill, 0.4f));
+
         UpdateUI();
+    }
+
+    IEnumerator LerpTubeFill(int index, float targetFill, float duration)
+    {
+        Material mat = tubes[index].sharedMaterial;
+        float initialFill = mat.GetFloat("_FillAmount");
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float currentFill = Mathf.Lerp(initialFill, targetFill, elapsed / duration);
+            mat.SetFloat("_FillAmount", currentFill);
+            yield return null;
+        }
+
+        mat.SetFloat("_FillAmount", targetFill);
+        tubeLerpCoroutines[index] = null;
     }
 
     private void UpdateUI()
