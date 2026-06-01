@@ -1177,7 +1177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2220461249
+  GlobalObjectIdHash: 2737232545
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1226,7 +1226,6 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  _debugStatus: No iniciado
   Estornudo: {fileID: 0}
   Quejido: {fileID: 0}
   Chupon: {fileID: 0}
@@ -1265,7 +1264,6 @@ MonoBehaviour:
     m_Bits: 256
   minHeightBias: 0.2
   maxRaycastAttempts: 10
-  drawDebugRays: 0
 --- !u!114 &3469632940275907254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3856,7 +3854,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7756608342776132523}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
