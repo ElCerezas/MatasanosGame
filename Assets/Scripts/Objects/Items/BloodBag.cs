@@ -151,7 +151,7 @@ public class BloodBag : NetworkBehaviour
         {
             if (hitCollider.TryGetComponent(out PlayerInteractor affectedPlayer))
             {
-                EventBus.Publish(new OnPlayerSlipped { VictimID = affectedPlayer.gameObject.GetComponent<NetworkObject>().NetworkObjectId });
+                BloodStainsServerRpc(affectedPlayer.NetworkObjectId);
             }
         }
         BloodbagVFXClientRpc();
@@ -171,6 +171,16 @@ public class BloodBag : NetworkBehaviour
 
         SpawnBloodPuddles(impactPoint);
         DespawnBloodBag();
+    }
+    [ServerRpc]
+    private void BloodStainsServerRpc(ulong affectedPlayerNetObjId)
+    {
+        BloodStainsClientRpc(affectedPlayerNetObjId);
+    }
+    [ClientRpc] 
+    private void BloodStainsClientRpc(ulong affectedPlayerNetObjId)
+    {
+        EventBus.Publish(new OnPlayerSlipped { VictimID = affectedPlayerNetObjId });
     }
     [ClientRpc]
     private void BloodbagVFXClientRpc()

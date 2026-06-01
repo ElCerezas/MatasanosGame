@@ -12,7 +12,6 @@ public class LuzBehaviour : PoweredItem
 
     [Header("Timing Settings")]
     public float timeToCreateWound = 2f;
-    public float timeToHeal = 1.5f;
     public float playerBlindDuration = 2f;
 
     [Header("Visuals")]
@@ -24,23 +23,27 @@ public class LuzBehaviour : PoweredItem
     private WoundFocoBehaviour currentWoundTarget = null;
     private AlienWoundManager currentAlienTarget = null;
     private ulong currentPlayerTarget = 0;
+
     public override void OnNetworkSpawn()
     {
         isTurnedOn.OnValueChanged += (_, newVal) => UpdateLightState();
+        UpdateLightState();
         base.OnNetworkSpawn();
     }
 
     private void UpdateLightState()
     {
-        Light.enabled = (hasPower.Value && isTurnedOn.Value);
-        Light2.enabled = (hasPower.Value && isTurnedOn.Value);
+        bool active = hasPower.Value && isTurnedOn.Value;
+        Light.enabled = active;
+        Light2.enabled = active;
+        Textura.SetActive(active);
+
+        if (!active) StopCurrentHealing();
     }
 
     public override void Interact(ulong clientID)
     {
         base.Interact(clientID);
-        
-        Textura.SetActive(hasPower.Value && isTurnedOn.Value);
     }
 
     void Update()
@@ -62,11 +65,12 @@ public class LuzBehaviour : PoweredItem
                 var playerNetObj = hit.collider.GetComponentInParent<NetworkObject>();
                 if (playerNetObj != null)
                 {
+                    StopCurrentHealing();
                     ResetAlienTargets();
                     if (currentPlayerTarget != playerNetObj.NetworkObjectId)
                     {
                         currentPlayerTarget = playerNetObj.NetworkObjectId;
-                        BlindPlayerClientRpc(playerNetObj.NetworkObjectId, playerBlindDuration);
+                        BlindPlayerServerRpc(playerNetObj.NetworkObjectId, playerBlindDuration); // ← primero al server
                     }
                     return;
                 }
@@ -76,13 +80,18 @@ public class LuzBehaviour : PoweredItem
             {
                 ResetAlienTargets();
                 currentPlayerTarget = 0;
-                currentWoundTarget = herida;
-                NotifyHealWoundServerRpc(herida.NetworkObjectId);
+
+                if (currentWoundTarget != herida)
+                {
+                    StopCurrentHealing();
+                    currentWoundTarget = herida;
+                    StartHealingServerRpc(herida.NetworkObjectId);
+                }
             }
             else if (hit.collider.GetComponentInParent<AlienWoundManager>() is AlienWoundManager alien)
             {
+                StopCurrentHealing();
                 currentPlayerTarget = 0;
-                currentWoundTarget = null;
                 currentAlienTarget = alien;
                 alienTimer += Time.deltaTime;
                 if (alienTimer >= timeToCreateWound)
@@ -95,13 +104,30 @@ public class LuzBehaviour : PoweredItem
             }
             else
             {
+                StopCurrentHealing();
                 ResetAllTargets();
             }
         }
         else
         {
+            StopCurrentHealing();
             ResetAllTargets();
         }
+    }
+
+    void StopCurrentHealing()
+    {
+        if (currentWoundTarget != null)
+        {
+            StopHealingServerRpc(currentWoundTarget.NetworkObjectId);
+            currentWoundTarget = null;
+        }
+    }
+
+    [ServerRpc]
+    void BlindPlayerServerRpc(ulong victimNetObjId, float duration)
+    {
+        BlindPlayerClientRpc(victimNetObjId, duration);
     }
 
     [ClientRpc]
@@ -116,7 +142,6 @@ public class LuzBehaviour : PoweredItem
 
     void ResetAlienTargets()
     {
-        currentWoundTarget = null;
         currentAlienTarget = null;
         alienTimer = 0f;
     }
@@ -133,15 +158,17 @@ public class LuzBehaviour : PoweredItem
     }
 
     [ServerRpc]
-    void NotifyHealWoundServerRpc(ulong woundNetId)
+    void StartHealingServerRpc(ulong woundNetId)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(woundNetId, out var obj))
-        {
-            if (obj.TryGetComponent<WoundFocoBehaviour>(out var wound))
-            {
-                wound.ReceiveHealTick();
-            }
-        }
+            obj.GetComponent<WoundFocoBehaviour>()?.StartHealing();
+    }
+
+    [ServerRpc]
+    void StopHealingServerRpc(ulong woundNetId)
+    {
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(woundNetId, out var obj))
+            obj.GetComponent<WoundFocoBehaviour>()?.StopHealing();
     }
 
     [ServerRpc]
