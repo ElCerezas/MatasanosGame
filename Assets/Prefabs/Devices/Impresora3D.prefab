@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3271390882
+  GlobalObjectIdHash: 2184023519
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 482412033
+  GlobalObjectIdHash: 2045625163
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 395954937
+  GlobalObjectIdHash: 1951401359
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -917,7 +917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1437786263
+  GlobalObjectIdHash: 2008937726
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1220,7 +1220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 55645180
+  GlobalObjectIdHash: 1396539777
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1351,7 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2651654367
+  GlobalObjectIdHash: 3988880022
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1723,7 +1723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3257044347
+  GlobalObjectIdHash: 106009485
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1982,7 +1982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1556732367
+  GlobalObjectIdHash: 580551833
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2112,13 +2112,14 @@ GameObject:
   - component: {fileID: 8794959756073889291}
   - component: {fileID: 4428412333118755159}
   - component: {fileID: 6505643691618696130}
+  - component: {fileID: 2639744742222480101}
   m_Layer: 0
   m_Name: GlassPannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7464174050668583976
 Transform:
   m_ObjectHideFlags: 0
@@ -2128,7 +2129,7 @@ Transform:
   m_GameObject: {fileID: 5855980080148985520}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.085, y: 2.178, z: -0.329}
+  m_LocalPosition: {x: 0.14, y: 2.362, z: -0.329}
   m_LocalScale: {x: 1.6399999, y: 1.6399999, z: 1.6399999}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2203,7 +2204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2401830824
+  GlobalObjectIdHash: 3656356615
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2216,6 +2217,29 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!136 &2639744742222480101
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855980080148985520}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2.69
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &5904844967611550082
 GameObject:
   m_ObjectHideFlags: 0
@@ -2492,7 +2516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 183064752
+  GlobalObjectIdHash: 3694925713
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2534,6 +2558,10 @@ MonoBehaviour:
   hologramRenderer: {fileID: 6834977321940939896}
   screenText: {fileID: 7119280993892102608}
   hologramVisualRenderer: {fileID: 1094700874276838671}
+  transformTubo: {fileID: 7464174050668583976}
+  posicionTuboArriba: {x: 0.14, y: 5.47, z: -0.329}
+  posicionTuboAbajo: {x: 0.14, y: 2.362, z: -0.329}
+  velocidadTubo: 5
 --- !u!1 &7348310567201661570
 GameObject:
   m_ObjectHideFlags: 0
@@ -2684,7 +2712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2470446982
+  GlobalObjectIdHash: 200232352
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2878,7 +2906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3109176888
+  GlobalObjectIdHash: 1138041499
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3047,7 +3075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4178073176
+  GlobalObjectIdHash: 607027965
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3163,7 +3191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2007236891
+  GlobalObjectIdHash: 92130856
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3317,7 +3345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 69451346
+  GlobalObjectIdHash: 4253569189
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3486,7 +3514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3758578606
+  GlobalObjectIdHash: 616391713
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3630,7 +3658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4121394790
+  GlobalObjectIdHash: 3990913702
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3798,7 +3826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3385122199
+  GlobalObjectIdHash: 1264181024
   InScenePlacedSourceGlobalObjectIdHash: 2773923472
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3966,7 +3994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1901604025
+  GlobalObjectIdHash: 2614789146
   InScenePlacedSourceGlobalObjectIdHash: 2405159854
   DeferredDespawnTick: 0
   Ownership: 1

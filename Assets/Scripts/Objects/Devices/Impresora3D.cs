@@ -11,18 +11,23 @@ public class Impresora3D : PoweredDevice
 
     [Header("Visual")]
     NetworkVariable<int> selectedIndex = new NetworkVariable<int>(0);
-    [Range(0f, 1f)]
-    NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
+    [Range(0f, 1f)]NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
     NetworkVariable<bool> snapZoneOccupied = new NetworkVariable<bool>(false);
     [SerializeField] TextMeshProUGUI screenText;
 
-    Coroutine printCoroutine;
-
+    [Header("HologramRenderer")]
     [SerializeField] Renderer hologramVisualRenderer;
     MeshFilter meshFilter;
     SnapZone snapZone;
     [SerializeField] MaterialPropertyBlock mpb;
 
+    [Header("Animación del Tubo")]
+    [SerializeField] Transform transformTubo;
+    [SerializeField] Vector3 posicionTuboArriba;
+    [SerializeField] Vector3 posicionTuboAbajo;
+    [SerializeField] float velocidadTubo = 5f;
+
+    Coroutine printCoroutine;
     static readonly int ID_PrintingPercent = Shader.PropertyToID("_PrintingPercent");
     static readonly int ID_MainTexture = Shader.PropertyToID("_MainTexture");
 
@@ -36,7 +41,6 @@ public class Impresora3D : PoweredDevice
         snapZone.OnObjectSnapped.AddListener(OnItemSnapped);
         snapZone.OnObjectUnsnapped.AddListener(OnItemUnsnapped);
     }
-
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -48,7 +52,6 @@ public class Impresora3D : PoweredDevice
 
         LoadHolo();
     }
-
     public override void OnNetworkDespawn()
     {
         selectedIndex.OnValueChanged -= OnSelectedIndexChanged;
@@ -60,6 +63,15 @@ public class Impresora3D : PoweredDevice
         snapZone.OnObjectUnsnapped.RemoveListener(OnItemUnsnapped);
 
         base.OnNetworkDespawn();
+    }
+
+    void Update()
+    {
+        if (transformTubo == null) return;
+
+        bool estaImprimiendo = printProgress.Value > 0f;
+        Vector3 posicionObjetivo = estaImprimiendo ? posicionTuboAbajo : posicionTuboArriba;
+        transformTubo.localPosition = Vector3.Lerp(transformTubo.localPosition, posicionObjetivo, Time.deltaTime * velocidadTubo);
     }
 
     void OnSelectedIndexChanged(int old, int next) => LoadHolo();
