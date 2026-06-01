@@ -1,8 +1,5 @@
-
 using System.Collections.Generic;
-using Unity.Mathematics;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
 
 public class AlienWoundManager : NetworkBehaviour
@@ -22,7 +19,6 @@ public class AlienWoundManager : NetworkBehaviour
     private List<(Vector3 origin, Vector3 direction, bool hit)> _debugRays = new();
     private Vector3 _debugSphereCenter;
     private float _debugSphereRadius = 10f;
-
 
     public override void OnNetworkSpawn()
     {
@@ -50,12 +46,8 @@ public class AlienWoundManager : NetworkBehaviour
         for (int attempt = 0; attempt < maxRaycastAttempts; attempt++)
         {
             Vector3 randomDir = UnityEngine.Random.onUnitSphere * 10;
-
-
             bool didHit = false;
 
-            //randomDir.y = Mathf.Abs(randomDir.y) * (1f - minHeightBias) + minHeightBias;
-            //randomDir.Normalize();
             Vector3 origin = transform.position + randomDir;
             Vector3 direction = (transform.position - origin).normalized;
 
@@ -64,7 +56,6 @@ public class AlienWoundManager : NetworkBehaviour
                 Debug.DrawRay(origin, direction);
                 if (hit.collider.transform.IsChildOf(transform) || hit.collider.transform == transform)
                 {
-                    //Debug.Log(hit.collider.transform == transform);
                     if (Vector3.Dot(hit.normal, Vector3.down) < minHeightBias)
                     {
                         didHit = true;
@@ -84,29 +75,24 @@ public class AlienWoundManager : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        if (woundFocoPrefab == null || woundFocoPrefab == null)
+        if (woundFocoPrefab == null || woundBandagePrefab == null)
         {
             Debug.LogError("WoundPrefab no asignado", this);
             return;
         }
 
         Quaternion baseRotation = Quaternion.LookRotation(-normal);
-
         Quaternion correctedRotation = baseRotation * Quaternion.Euler(-90f, 0f, 0f);
+
         GameObject woundObj;
         int random = UnityEngine.Random.Range(0, 2);
-        //Debug.Log(random);
-        if (random == 0)
-        {
-            woundObj = Instantiate(woundFocoPrefab, position, correctedRotation);
-        }
-        else woundObj = Instantiate(woundBandagePrefab, position, correctedRotation);
-
+        woundObj = random == 0
+            ? Instantiate(woundFocoPrefab, position, correctedRotation)
+            : Instantiate(woundBandagePrefab, position, correctedRotation);
 
         NetworkObject netObj = woundObj.GetComponent<NetworkObject>();
         if (netObj == null)
         {
-            //Debug.LogError("El woundPrefab no tiene NetworkObject", woundObj);
             Destroy(woundObj);
             return;
         }
@@ -118,7 +104,11 @@ public class AlienWoundManager : NetworkBehaviour
         if (closestBone != null)
         {
             WoundBoneFollower follower = woundObj.GetComponent<WoundBoneFollower>();
-            if (follower != null) follower.AttachToBone(closestBone);
+            if (follower != null)
+            {
+                follower.AttachToBone(closestBone);
+                follower.boneName.Value = closestBone.name;
+            }
         }
     }
 
@@ -142,6 +132,7 @@ public class AlienWoundManager : NetworkBehaviour
         }
         return closest;
     }
+
     void OnDrawGizmos()
     {
         if (!drawDebugRays) return;

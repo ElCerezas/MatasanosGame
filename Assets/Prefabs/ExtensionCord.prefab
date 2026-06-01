@@ -183,11 +183,11 @@ GameObject:
   - component: {fileID: 883073605127102389}
   - component: {fileID: 3145123917313551231}
   - component: {fileID: 6309771777160115328}
-  - component: {fileID: 2259686878405884677}
   - component: {fileID: 1585099235542014675}
   - component: {fileID: 4738503181857025632}
   - component: {fileID: 1757731534171377148}
   - component: {fileID: 1117901281237650941}
+  - component: {fileID: 3409356332796770139}
   m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
@@ -296,28 +296,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!64 &2259686878405884677
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3505284826039093930}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2180269932544803207, guid: 8446e75b1f2b3e144bae3a77bc9d21f7, type: 3}
 --- !u!114 &1585099235542014675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +399,27 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!65 &3409356332796770139
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3505284826039093930}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9687525, y: 0.5812516, z: 0.573137}
+  m_Center: {x: 0.000000014901168, y: 0.000000029802337, z: 0.0040572286}
 --- !u!1 &4847913821199252172
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,7 +694,6 @@ GameObject:
   - component: {fileID: 7657700732005904960}
   - component: {fileID: 5593868175170406026}
   - component: {fileID: 1920480282773134570}
-  - component: {fileID: 7665653084018749230}
   - component: {fileID: 7308961430463548878}
   - component: {fileID: 1914278136254718676}
   - component: {fileID: 4744112106365351679}
@@ -703,6 +701,7 @@ GameObject:
   - component: {fileID: 3401682090614247884}
   - component: {fileID: 1435482672238786206}
   - component: {fileID: 3020956419207898041}
+  - component: {fileID: 5786750021112074286}
   m_Layer: 6
   m_Name: EnchufeDock
   m_TagString: Untagged
@@ -809,28 +808,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!64 &7665653084018749230
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6242434418154841951}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4365898703709280500, guid: 5e85409141d4311468726b60c5722945, type: 3}
 --- !u!114 &7308961430463548878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -986,6 +963,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
   isHighlighted: 0
+--- !u!65 &5786750021112074286
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6242434418154841951}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 21.00001, y: 18.186546, z: 30.889133}
+  m_Center: {x: -0.0000014305118, y: 0.0000014305111, z: 11.330433}
 --- !u!1 &6296340683519817051
 GameObject:
   m_ObjectHideFlags: 0

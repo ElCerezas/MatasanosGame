@@ -317,8 +317,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!1 &2028955376098311334
 GameObject:
@@ -497,7 +495,7 @@ GameObject:
   - component: {fileID: 4433893714969835974}
   - component: {fileID: 190330902058847783}
   - component: {fileID: 1287747801369323321}
-  - component: {fileID: 6334360115234396250}
+  - component: {fileID: 5893757339915561686}
   m_Layer: 6
   m_Name: EnchufeMacho
   m_TagString: Untagged
@@ -743,8 +741,8 @@ MonoBehaviour:
     m_InternalValue: 0
   wiredEmiters: []
   toolToPower: {fileID: 3853492815631537153}
---- !u!64 &6334360115234396250
-MeshCollider:
+--- !u!65 &5893757339915561686
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -761,10 +759,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4365898703709280500, guid: 5e85409141d4311468726b60c5722945, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 21.000017, y: 18.186558, z: 30.889149}
+  m_Center: {x: -0.000016688311, y: 0.000012870275, z: 11.3305}
 --- !u!1 &2680899061591362958
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,8 +1158,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!1 &3424854472685252503
 GameObject:
