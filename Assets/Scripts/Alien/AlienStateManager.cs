@@ -29,7 +29,11 @@ public class AlienStateManager : NetworkBehaviour
     [SerializeField] private float calmantDuration = 5f;
     [SerializeField] private float maxCalmant = 100f;
     [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(0f);
-    
+
+    [Header("Debug")]
+    [TextArea(6, 12)]
+    [SerializeField] private string _debugStatus = "No iniciado";
+
     [Header("Animations")]
     [SerializeField] public AnimationClip Estornudo;
     [SerializeField] public AnimationClip Quejido;
@@ -48,7 +52,19 @@ public class AlienStateManager : NetworkBehaviour
     [SerializeField] public AnimationClip QuejidoConstante;
     [SerializeField] public AnimationClip QuejidoConstante_IN;
     [SerializeField] public AnimationClip QuejidoConstante_OUT;
-    
+
+    private void UpdateDebugStatus()
+    {
+        _debugStatus =
+            $"=== ALIEN {NetworkObjectId} ===\n" +
+            $"Rol:           {(IsServer ? "SERVER" : "CLIENT")}\n" +
+            $"Estado:        {currentActiveState.Value}\n" +
+            $"HP:            {currentHealth.Value:F1} / {maxHealth}\n" +
+            $"Calmant:       {currentCalmant.Value:F1} / {maxCalmant}\n" +
+            $"BloodBag:      {(isBloodbagFull ? $"Conectada (ID {bloodBagID})" : "Sin bloodbag")}\n" +
+            $"Multiplicador: {(!isBloodbagFull ? $"{criticalDamageMultiplier}x (crítico)" : "1x (normal)")}\n" +
+            $"DmgTimer:      {damageTimer:F2} / {damageRate}";
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -88,10 +104,13 @@ public class AlienStateManager : NetworkBehaviour
 
         EventBus.Subscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
         EventBus.Subscribe<OnBloodBagSnapped>(OnBloodBagConnected);
+        EventBus.Subscribe<OnBloodBagDetached>(OnBloodBagDetachedReceived);
         EventBus.Subscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Subscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
         EventBus.Subscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
         EventBus.Subscribe<OnDienteUnSnap>(OnDienteUnSnapped);
+
+        UpdateDebugStatus();
     }
 
     private void OnDienteUnSnapped(OnDienteUnSnap e)
@@ -107,6 +126,7 @@ public class AlienStateManager : NetworkBehaviour
         EventBus.Unsubscribe<OnInject>(OnInjectionReceived);
         EventBus.Unsubscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
         EventBus.Unsubscribe<OnBloodBagSnapped>(OnBloodBagConnected);
+        EventBus.Unsubscribe<OnBloodBagDetached>(OnBloodBagDetachedReceived);
         EventBus.Unsubscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Unsubscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
         EventBus.Unsubscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
@@ -134,6 +154,7 @@ public class AlienStateManager : NetworkBehaviour
         HandleCalmant();
         HandleDamageOverTime();
         stateMachine.Update();
+        UpdateDebugStatus();
     }
 
     private void HandleCalmant()
@@ -154,7 +175,10 @@ public class AlienStateManager : NetworkBehaviour
 
     private void ChangeState(State newState)
     {
-        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
+        if (currentActiveState.Value == AlienStateEnum.Desangrado)
+        {
+            return;
+        }
         stateMachine.ChangeState(newState);
         if (newState is CalmState) currentActiveState.Value = AlienStateEnum.Calmado;
         else if (newState is AlteredState) currentActiveState.Value = AlienStateEnum.Alterado;
@@ -180,7 +204,6 @@ public class AlienStateManager : NetworkBehaviour
         if (!IsServer) return;
 
         float multiplier = !isBloodbagFull ? criticalDamageMultiplier : 1f;
-        //Debug.Log($"Alien {NetworkObjectId} taking damage: {damage} with multiplier: {multiplier}");
         currentHealth.Value -= damage * multiplier;
 
         if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
@@ -214,13 +237,9 @@ public class AlienStateManager : NetworkBehaviour
         {
             case LiquidType.Calmante:
                 UpdateCalmantStatusClientRpc(true);
-
                 currentCalmant.Value = maxCalmant;
-
                 if (!(stateMachine.CurrentState is CalmState))
-                {
                     ChangeState(new CalmState(this.stateMachine));
-                }
                 break;
             default:
                 ChangeState(new AlteredState(this.stateMachine, this));
@@ -232,6 +251,13 @@ public class AlienStateManager : NetworkBehaviour
     {
         bloodBagID = e.BloodBagID;
         isBloodbagFull = true;
+    }
+    private void OnBloodBagDetachedReceived(OnBloodBagDetached e)
+    {
+        if (e.BloodBagID != bloodBagID) return;
+        if (!IsServer) return;
+        isBloodbagFull = false;
+        bloodBagID = 0;
     }
 
     private void OnBloodBagEmptyReceived(OnBloodBagEmpty e)
@@ -248,7 +274,6 @@ public class AlienStateManager : NetworkBehaviour
     {
         if (currentActiveState.Value == AlienStateEnum.Inquieto)
         {
-            Debug.Log("Alien state changed to Altered due to Tara healed");
             ChangeState(new AlteredState(this.stateMachine, this));
         }
     }
@@ -268,6 +293,7 @@ public class AlienStateManager : NetworkBehaviour
         if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
         ChangeState(new CalmState(this.stateMachine));
     }
+
     public void NotifyParasiteAttack()
     {
         if (!IsServer) return;

@@ -4,16 +4,16 @@
 public class LightDevice : PoweredDevice
 {
     [SerializeField] bool isEmergencyLight;
-    [SerializeField] Light light;
+    [SerializeField] Light Light;
 
     private void Start()
     {
-        if (light == null)
-            light = GetComponent<Light>();
+        if (Light == null)
+            Light = GetComponent<Light>();
     }
     public override void Powered()
     {
-        light.enabled = isEmergencyLight ? !hasPower.Value : hasPower.Value;
+        Light.enabled = isEmergencyLight ? !hasPower.Value : hasPower.Value;
     }
 
 }

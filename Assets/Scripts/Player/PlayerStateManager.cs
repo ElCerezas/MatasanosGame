@@ -18,10 +18,6 @@ public class PlayerStateManager : NetworkBehaviour
     [SerializeField] float minimumForceToRagdoll;
     [SerializeField] private ParticleSystem bloodSlipParticles;
     float invulnerableCountdown;
-
-
-    [Header("Slip Variables")]
-    [SerializeField] float slipForce = 10f;
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
