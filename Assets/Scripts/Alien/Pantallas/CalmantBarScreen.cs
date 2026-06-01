@@ -8,7 +8,7 @@ public class CalmantBarScreen : NetworkBehaviour
     [SerializeField] private Image fill;
     [SerializeField] private GameObject CalmantBarUI;
     [SerializeField] private float lerpSpeed = 10f;
-    
+    [SerializeField] private GameObject CalmantIndicator;
     private float targetFill;
 
     public override void OnNetworkSpawn()
@@ -26,6 +26,7 @@ public class CalmantBarScreen : NetworkBehaviour
     private void Activate(OnAlienCalmantUsed used)
     {
         CalmantBarUI.SetActive(true);
+        CalmantIndicator.SetActive(false);
     }
 
     private void UpdateUI(OnCalmantChanged e)
@@ -35,6 +36,7 @@ public class CalmantBarScreen : NetworkBehaviour
         if (e.CurrentCalmant <= 0f)
         {
             CalmantBarUI.SetActive(false);
+            CalmantIndicator.SetActive(true);
         }
     }
 

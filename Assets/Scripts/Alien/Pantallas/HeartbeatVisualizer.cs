@@ -73,12 +73,12 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
         switch (changed.NewState)
         {
             default:
-                SetWaveColor(defaultColor);
+                SetWaveColorClientRpc(defaultColor);
                 SetBPM(60f);
                 SetScrollSpeed(1f);
                 break;
             case AlienStateEnum.Desangrado:
-                SetWaveColor(desangradoColor);
+                SetWaveColorClientRpc(desangradoColor);
                 SetBPM(120f);
                 SetScrollSpeed(4f);
                 break;
@@ -96,13 +96,13 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     private void CalmantApplied(OnAlienCalmantUsed used)
     {
         if (waveColor == desangradoColor) return;
-        waveColor = calmantColor;
+        SetWaveColorClientRpc(calmantColor);
     }
 
     private void CalmantEnded(OnCalmantEnded ended)
     {
         if (waveColor == desangradoColor) return;
-        waveColor = defaultColor;
+        SetWaveColorClientRpc(defaultColor);
     }
 
     void Update()
@@ -172,7 +172,8 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
         bpm =newBPM;
     }
 
-    public void SetWaveColor(Color newColor)
+    [ClientRpc]
+    public void SetWaveColorClientRpc(Color newColor)
     {
         waveColor = newColor;
     }

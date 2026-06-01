@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class LuzBehaviour : PoweredItem
@@ -23,12 +24,22 @@ public class LuzBehaviour : PoweredItem
     private WoundFocoBehaviour currentWoundTarget = null;
     private AlienWoundManager currentAlienTarget = null;
     private ulong currentPlayerTarget = 0;
+    public override void OnNetworkSpawn()
+    {
+        isTurnedOn.OnValueChanged += (_, newVal) => UpdateLightState();
+        base.OnNetworkSpawn();
+    }
+
+    private void UpdateLightState()
+    {
+        Light.enabled = (hasPower.Value && isTurnedOn.Value);
+        Light2.enabled = (hasPower.Value && isTurnedOn.Value);
+    }
 
     public override void Interact(ulong clientID)
     {
         base.Interact(clientID);
-        Light.enabled = (hasPower.Value && isTurnedOn.Value);
-        Light2.enabled = (hasPower.Value && isTurnedOn.Value);
+        
         Textura.SetActive(hasPower.Value && isTurnedOn.Value);
     }
 
