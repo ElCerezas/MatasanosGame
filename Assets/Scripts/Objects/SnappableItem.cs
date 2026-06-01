@@ -63,7 +63,7 @@ public class SnappableItem : NetworkBehaviour, ISnappable
             Physics.IgnoreCollision(col, zone.transform.parent.GetComponent<Collider>(), false);
         zone?.ReleaseItem();
         rb.isKinematic = false;
-        UnsnapClientRpc();
+        UnsnapClientRpc(); 
     }
 
     [ClientRpc]
