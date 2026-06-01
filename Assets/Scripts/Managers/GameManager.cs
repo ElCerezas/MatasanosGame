@@ -13,48 +13,78 @@ public class GameManager : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
-        NetworkManager.OnClientConnectedCallback += SpawnPlayer;
+        NetworkManager.OnClientConnectedCallback += SpawnPlayerWithDefaultLogic;
         NetworkManager.SceneManager.OnLoadEventCompleted += HandleSceneLoadCompleted;
     }
     private void HandleSceneLoadCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        int spawnIndex = 0;
+
         foreach (ulong clientId in clientsCompleted)
         {
-            SpawnPlayer(clientId);
+            Vector3 spawnPos = Vector3.zero;
+            Quaternion spawnRot = Quaternion.identity;
+
+            if (spawnPoints != null && spawnPoints.Length > 0)
+            {
+                Transform selectedPoint = spawnPoints[spawnIndex % spawnPoints.Length].transform;
+                spawnPos = selectedPoint.position;
+                spawnRot = selectedPoint.rotation;
+                spawnIndex++;
+            }
+            SpawnPlayer(clientId, spawnPos, spawnRot);
         }
     }
-    private void SpawnPlayer(ulong clientID)
+
+    private void SpawnPlayerWithDefaultLogic(ulong clientID)
+    {
+        Vector3 spawnPos = Vector3.zero;
+        Quaternion spawnRot = Quaternion.identity;
+
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        if (spawnPoints != null && spawnPoints.Length > 0)
+        {
+            Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform;
+            spawnPos = randomPoint.position;
+            spawnRot = randomPoint.rotation;
+        }
+
+        SpawnPlayer(clientID, spawnPos, spawnRot);
+    }
+    private void SpawnPlayer(ulong clientID, Vector3 position, Quaternion rotation)
     {
         if (NetworkManager.ConnectedClients[clientID].PlayerObject != null) return;
-        {
-            GameObject player = Instantiate(playerPrefab);
-            player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true); //Se destruye el player al hacer reload de la escena.
-        }
+
+        GameObject player = Instantiate(playerPrefab, position, rotation);
+        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
     }
+
     public override void OnNetworkDespawn()
     {
         if (IsServer)
         {
-            NetworkManager.OnClientConnectedCallback -= SpawnPlayer;
+            NetworkManager.OnClientConnectedCallback -= SpawnPlayerWithDefaultLogic;
             NetworkManager.SceneManager.OnLoadEventCompleted -= HandleSceneLoadCompleted;
         }
         base.OnNetworkDespawn();
     }
+
     public void DisconnectClient()
     {
         NetworkManager.Shutdown();
-        //Debug.Log("Player Disconnected");
     }
+
     public void StartClient()
     {
         NetworkManager.StartClient();
-        //Debug.Log("Player Joined");
     }
+
     public void StartHost()
     {
         NetworkManager.StartHost();
-        //Debug.Log("Player Hosting");
     }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
