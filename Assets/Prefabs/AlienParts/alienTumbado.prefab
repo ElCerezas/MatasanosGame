@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5806785262103472460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.R.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -41,10 +41,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6799194507697622422}
-  m_Layer: 0
+  - component: {fileID: 8536022917611365231}
+  - component: {fileID: 4121772112933137036}
+  m_Layer: 8
   m_Name: front_thigh.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -56,14 +58,58 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105909914355609369}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011022504, y: -0.06467119, z: 0.3370683, w: 0.93919176}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.009297903, y: 0.015511491, z: 0.010796843}
   m_LocalScale: {x: 1, y: 0.9999999, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6771236042066025551}
   m_Father: {fileID: 8162040994182405776}
-  m_LocalEulerAnglesHint: {x: 1.3117712, y: -7.408443, z: 39.40037}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &8536022917611365231
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105909914355609369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.008433471
+  m_Height: 0.03533335
+  m_Direction: 1
+  m_Center: {x: 0.0017033321, y: 0.011650394, z: -0.0012177445}
+--- !u!135 &4121772112933137036
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105909914355609369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.015
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &173264934143019512
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,10 +119,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1990396763392347736}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongueMid.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -104,10 +150,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3826113671612480159}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: eyeball.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -135,10 +181,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5027340213164474183}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tweak-MastTongue.mid.005
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -169,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1062109774966714083}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: thigh.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,10 +247,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273852928913566267}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.R.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -232,10 +278,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3581976594549331057}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.R.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -263,10 +309,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7659821046654977269}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: shoulder.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -295,10 +341,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5091727676167641026}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -328,10 +374,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6472487654003202835}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ass.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -359,10 +405,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2212591261936451378}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.008
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -395,7 +441,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1828634363574592350}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: shin.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,10 +473,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4405863746064791041}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MCH-Switch-Tongue.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -460,10 +506,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7013884438957919716}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -493,10 +539,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8924977373177478670}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.mid.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -525,10 +571,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2570840721751299542}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.L.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -556,10 +602,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3562298284821556310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MCH-Switch-Tongue.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -587,10 +633,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7822217367719906525}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -618,10 +664,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6182896692615500233}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Mast-Tongue
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -649,10 +695,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5349324367971071770}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.mid
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -681,10 +727,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3486640131201424378}
-  m_Layer: 0
+  - component: {fileID: 4347242824042857609}
+  m_Layer: 8
   m_Name: metarig
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -707,6 +754,29 @@ Transform:
   - {fileID: 5308631961532941962}
   m_Father: {fileID: 2031123181492723988}
   m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
+--- !u!136 &4347242824042857609
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368986415412160538}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.021123305
+  m_Height: 0.07342156
+  m_Direction: 1
+  m_Center: {x: -0.00086099893, y: 0.004216144, z: 0.018940542}
 --- !u!1 &1399483096018733919
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,10 +786,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3864931727076045782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -749,7 +819,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8928632878876854773}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: thigh.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -781,10 +851,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6617615277180807645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongueMid.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -812,10 +882,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5624941828393863376}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.007
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -844,10 +914,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3402086288278083872}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: nose.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -875,10 +945,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7802895967215332742}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -907,10 +977,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5953102876198556756}
-  m_Layer: 0
+  - component: {fileID: 6932349532552131178}
+  m_Layer: 8
   m_Name: front_toe.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -929,6 +1000,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 505596406215763241}
   m_LocalEulerAnglesHint: {x: 1.5339571, y: -100.05988, z: 28.995605}
+--- !u!136 &6932349532552131178
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809190682255733486}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0066529997
+  m_Height: 0.025043568
+  m_Direction: 1
+  m_Center: {x: 0.00053991325, y: -0.0017969185, z: 0.0013850667}
 --- !u!1 &1822442724161621001
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,10 +1032,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5966660004372715873}
-  m_Layer: 0
+  - component: {fileID: 1759837774554230897}
+  - component: {fileID: 782226897486911625}
+  m_Layer: 8
   m_Name: front_thigh.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -953,14 +1049,58 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822442724161621001}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.013721521, y: -0.2200096, z: 0.017175341, w: 0.97525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.009297907, y: 0.015511491, z: 0.010796847}
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 505596406215763241}
   m_Father: {fileID: 7659821046654977269}
-  m_LocalEulerAnglesHint: {x: 1.966852, y: -25.398407, z: 1.5746262}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1759837774554230897
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822442724161621001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.007516561
+  m_Height: 0.04257898
+  m_Direction: 1
+  m_Center: {x: -0.00035254948, y: 0.008027536, z: -0.0010251628}
+--- !u!135 &782226897486911625
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822442724161621001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.015
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1889566343346533668
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,10 +1110,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 843103676176929733}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MCH-Switch-Tongue
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1003,10 +1143,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9125292814251959381}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: topEyelid.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1034,10 +1174,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4566064399729578566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ass.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1065,10 +1205,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5084596789158619083}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tweak-MastTongue.mid.007
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1099,10 +1239,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5599695297745278704}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tweak-MastTongue.mid.008
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1177,7 +1317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 76025517
+  GlobalObjectIdHash: 2737232545
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1284,10 +1424,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1209313670349449715}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: breast.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1315,10 +1455,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5505781539822797346}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: topEyelid.R.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1346,10 +1486,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5003099114100283737}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MHC-FK-Loc-Tongue-Mid
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1377,10 +1517,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4813945958057890018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: eyeball.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1408,10 +1548,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1656531339192296658}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: mandibulaIKtarget
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1439,10 +1579,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5017961131680691414}
-  m_Layer: 0
+  - component: {fileID: 1168115724337283966}
+  m_Layer: 8
   m_Name: ear.L.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1462,6 +1603,29 @@ Transform:
   - {fileID: 5590531411821316267}
   m_Father: {fileID: 3811278461985240830}
   m_LocalEulerAnglesHint: {x: 8.157202, y: -16.048449, z: -12.664519}
+--- !u!136 &1168115724337283966
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511986790623176598}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0044403984
+  m_Height: 0.0184597
+  m_Direction: 1
+  m_Center: {x: 0.00020989805, y: 0.0057518343, z: 0.000000002562777}
 --- !u!1 &2925667653554309198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,10 +1635,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 175257131855881142}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1502,10 +1666,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6910041554940973960}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: topEyelid.L.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1533,10 +1697,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1500498741800316918}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bottomEyelid.R.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1564,10 +1728,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7375019532978931658}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.L.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1596,10 +1760,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2137982395212532190}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: look@.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1627,10 +1791,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3811278461985240830}
-  m_Layer: 0
+  - component: {fileID: 9066191423310709063}
+  m_Layer: 8
   m_Name: ear.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1650,6 +1815,29 @@ Transform:
   - {fileID: 5017961131680691414}
   m_Father: {fileID: 7678576247191853737}
   m_LocalEulerAnglesHint: {x: -57.54607, y: 116.05846, z: -76.422646}
+--- !u!136 &9066191423310709063
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3513499685349074682}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0074470527
+  m_Height: 0.023554964
+  m_Direction: 1
+  m_Center: {x: 0.00017268393, y: 0.0017774513, z: 0.0010831455}
 --- !u!1 &3533404280320741458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,10 +1847,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7684742433783761283}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MCH-Switch-Tongue.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1692,10 +1880,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8891567874430471457}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.mid.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1724,10 +1912,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8049226057556496542}
-  m_Layer: 0
+  - component: {fileID: 7466665130407502765}
+  m_Layer: 8
   m_Name: ear.R.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1746,6 +1935,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7280268638555203897}
   m_LocalEulerAnglesHint: {x: 2.4695387, y: 5.8697844, z: 4.931542}
+--- !u!136 &7466665130407502765
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642241408193935164}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0063264538
+  m_Height: 0.018950025
+  m_Direction: 1
+  m_Center: {x: -0.00013389421, y: 0.0070253694, z: 0.000000002361553}
 --- !u!1 &3662604099701496273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,10 +1967,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3695082195365691983}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: nose.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1786,10 +1998,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5392261424198868181}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.L.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1818,10 +2030,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 79585020075550140}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.005
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1885,10 +2097,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2491615373056281010}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: breast.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1916,10 +2128,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7005332373551581183}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: nose@.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1947,10 +2159,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5408807669186497131}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.mid.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1979,10 +2191,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7495358135263112926}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.L.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2010,10 +2222,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1648574771827791273}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: topEyelid.L.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2041,10 +2253,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855847704387248118}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MHC-FK-Loc-Tongue-Base
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2072,10 +2284,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2123889152986689003}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.R.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2103,10 +2315,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2891321055417500145}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue-TMid
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2134,10 +2346,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 987446084003913857}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: topEyelid.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2165,10 +2377,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2209636245125110171}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: look@.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2196,10 +2408,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4608238614432881744}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.L.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2228,10 +2440,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7910120453018005437}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.mid.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2260,10 +2472,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7235765202774165007}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MHC-FK-Loc-Tongue
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2293,10 +2505,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9012661621864967803}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bottomEyelid.R.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2324,10 +2536,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5590531411821316267}
-  m_Layer: 0
+  - component: {fileID: 873913253291112194}
+  m_Layer: 8
   m_Name: ear.L.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2346,6 +2559,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5017961131680691414}
   m_LocalEulerAnglesHint: {x: 2.4695387, y: -5.8697844, z: -4.931542}
+--- !u!136 &873913253291112194
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4817985026008735981}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0063264538
+  m_Height: 0.018950025
+  m_Direction: 1
+  m_Center: {x: -0.00013389421, y: 0.0070253694, z: 0.000000002361553}
 --- !u!1 &4821060669291681715
 GameObject:
   m_ObjectHideFlags: 0
@@ -2355,10 +2591,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3952565624341271598}
-  m_Layer: 0
+  - component: {fileID: 9052002657747736169}
+  m_Layer: 8
   m_Name: front_toe.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2377,6 +2614,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6771236042066025551}
   m_LocalEulerAnglesHint: {x: 6.7093954, y: 119.798004, z: -24.687786}
+--- !u!136 &9052002657747736169
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4821060669291681715}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.006329011
+  m_Height: 0.020696832
+  m_Direction: 1
+  m_Center: {x: -0.0010168584, y: 0.0015068215, z: -0.0000000020735942}
 --- !u!1 &4893537557567167202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,10 +2951,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8162040994182405776}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: shoulder.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2723,10 +2983,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 505596406215763241}
-  m_Layer: 0
+  - component: {fileID: 51112287077296532}
+  m_Layer: 8
   m_Name: front_shin.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2746,6 +3007,29 @@ Transform:
   - {fileID: 5953102876198556756}
   m_Father: {fileID: 5966660004372715873}
   m_LocalEulerAnglesHint: {x: -31.271053, y: -50.487175, z: 98.3926}
+--- !u!136 &51112287077296532
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5260582094928392711}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.006700459
+  m_Height: 0.019294083
+  m_Direction: 1
+  m_Center: {x: 0.0000000027122382, y: 0.005540393, z: 0.002001213}
 --- !u!1 &5362293473170798909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2755,10 +3039,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5431112659968496802}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-Tongue-Base
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2788,10 +3072,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6771236042066025551}
-  m_Layer: 0
+  - component: {fileID: 6033539789064636976}
+  m_Layer: 8
   m_Name: front_shin.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2811,6 +3096,29 @@ Transform:
   - {fileID: 3952565624341271598}
   m_Father: {fileID: 6799194507697622422}
   m_LocalEulerAnglesHint: {x: -44.96098, y: 22.64462, z: -79.060844}
+--- !u!136 &6033539789064636976
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374991089039254308}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0062301774
+  m_Height: 0.02253246
+  m_Direction: 1
+  m_Center: {x: 0.0031505753, y: 0.007159591, z: 0.0020012003}
 --- !u!1 &5575739176737384534
 GameObject:
   m_ObjectHideFlags: 0
@@ -2820,10 +3128,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8243638922726375586}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.L.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2851,10 +3159,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7089670653662001236}
-  m_Layer: 0
+  - component: {fileID: 8407786808046668242}
+  m_Layer: 8
   m_Name: mandibula.inf
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2874,6 +3183,29 @@ Transform:
   - {fileID: 5295700675760380096}
   m_Father: {fileID: 7678576247191853737}
   m_LocalEulerAnglesHint: {x: 50.61443, y: 2.325708e-13, z: 1.491386e-13}
+--- !u!136 &8407786808046668242
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5754308834188577461}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.017927175
+  m_Height: 0.06428147
+  m_Direction: 0
+  m_Center: {x: -0.00023731441, y: -0.001230807, z: -0.0055476287}
 --- !u!1 &5854827436055417491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2883,10 +3215,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 808624573540354410}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bottomEyelid.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2914,10 +3246,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5653446330749290812}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2946,10 +3278,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7280268638555203897}
-  m_Layer: 0
+  - component: {fileID: 6188491795390504160}
+  m_Layer: 8
   m_Name: ear.R.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2969,6 +3302,29 @@ Transform:
   - {fileID: 8049226057556496542}
   m_Father: {fileID: 9123943180554825007}
   m_LocalEulerAnglesHint: {x: 8.157202, y: 16.048449, z: 12.664519}
+--- !u!136 &6188491795390504160
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5937594358388231737}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0044403984
+  m_Height: 0.0184597
+  m_Direction: 1
+  m_Center: {x: 0.00020989805, y: 0.0057518343, z: 0.000000002562777}
 --- !u!1 &5949757427905341670
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,10 +3334,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3316703791395975850}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.006
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3010,10 +3366,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6473427736880825551}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3041,10 +3397,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1731153686002745325}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bottomEyelid.L.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3072,10 +3428,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5295700675760380096}
-  m_Layer: 0
+  - component: {fileID: 8463164007349153114}
+  m_Layer: 8
   m_Name: mandibula.inf.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3094,6 +3451,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7089670653662001236}
   m_LocalEulerAnglesHint: {x: -58.949715, y: 0.000016867849, z: -0.0000143141915}
+--- !u!136 &8463164007349153114
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6263250551342031354}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.01086538
+  m_Height: 0.03987222
+  m_Direction: 0
+  m_Center: {x: 0.00002919128, y: -0.0044504446, z: -0.0026946587}
 --- !u!1 &6281930909052624794
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,10 +3483,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6680308705205597454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bottomEyelid.L.002
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3134,10 +3514,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1750337637680238558}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.R.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3166,10 +3546,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6399722938636047645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3198,10 +3578,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 926060424897691036}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CTRL-FK-Tongue-Tip
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3229,10 +3609,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4225982688110532276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.L.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3260,10 +3640,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4441252510385119690}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: topEyelid.R.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3291,10 +3671,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8043790243414521771}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bottomEyelid.L
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3322,10 +3702,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 402662575843709462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MCH-Switch-Tongue.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3354,10 +3734,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8147601905409609142}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongue.R.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3385,10 +3765,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5308631961532941962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3417,10 +3797,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4953700410108915398}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongueMid
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3448,10 +3828,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3527442030881830078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.009
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3480,7 +3860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3382631930918474626}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: shin.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3515,7 +3895,6 @@ GameObject:
   - component: {fileID: 4090397240042789055}
   - component: {fileID: 1485745311754108689}
   - component: {fileID: 2221681090695812722}
-  - component: {fileID: 3062944953322678945}
   m_Layer: 8
   m_Name: alien_low
   m_TagString: Alien
@@ -3740,29 +4119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   updateInterval: 0.1
---- !u!136 &3062944953322678945
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7571219774904702227}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 2.2823286
-  m_Height: 8.345899
-  m_Direction: 1
-  m_Center: {x: 0.00000030829943, y: -0.64208376, z: 1.0279408}
 --- !u!1 &7664353673932690771
 GameObject:
   m_ObjectHideFlags: 0
@@ -3772,10 +4128,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6295060519602785882}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongueMid.004
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3803,10 +4159,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9123943180554825007}
-  m_Layer: 0
+  - component: {fileID: 5858994110793798722}
+  m_Layer: 8
   m_Name: ear.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3826,6 +4183,29 @@ Transform:
   - {fileID: 7280268638555203897}
   m_Father: {fileID: 7678576247191853737}
   m_LocalEulerAnglesHint: {x: -57.546062, y: -116.05843, z: 76.42264}
+--- !u!136 &5858994110793798722
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7733764752287885155}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0074470527
+  m_Height: 0.023554964
+  m_Direction: 1
+  m_Center: {x: 0.00017268393, y: 0.0017774513, z: 0.0010831455}
 --- !u!1 &7756608342776132523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3992,10 +4372,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 233600918327325874}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tweak-MastTongue.mid.006
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4026,7 +4406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3744963198742482660}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: foot.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4057,10 +4437,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3154906140219316258}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spine.010
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4089,10 +4469,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 963483147194402421}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongueMid.001
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4120,10 +4500,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7678576247191853737}
-  m_Layer: 0
+  - component: {fileID: 3740245382051162288}
+  m_Layer: 8
   m_Name: head
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4167,6 +4548,29 @@ Transform:
   - {fileID: 5349324367971071770}
   m_Father: {fileID: 3154906140219316258}
   m_LocalEulerAnglesHint: {x: -14.651033, y: -1.3396548e-13, z: -2.3189312e-14}
+--- !u!136 &3740245382051162288
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8121174806769530240}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.020254983
+  m_Height: 0.06787676
+  m_Direction: 0
+  m_Center: {x: 0.00068459014, y: 0.019609911, z: 0.004067348}
 --- !u!1 &8141868088822342772
 GameObject:
   m_ObjectHideFlags: 0
@@ -4301,10 +4705,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1955658666541665803}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: nose@.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4332,10 +4736,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3560453153093784750}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.R.003
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4364,7 +4768,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622092528645130975}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: foot.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4395,10 +4799,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5457291394411998698}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tweakTongue.R
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4427,10 +4831,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8956957890269343202}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: mainEyeCNTR
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4659,10 +5063,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8799279549606937697}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tongueBase
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
