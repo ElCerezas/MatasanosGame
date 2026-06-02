@@ -4,30 +4,30 @@ using UnityEngine;
 public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
 {
     [Header("Force Settings")]
-    [SerializeField] float springForce = 100f;
-    [SerializeField] float forceToFullyOpen = 150f;
-    [SerializeField] float breakDistance = 5f;
+    [SerializeField] private float springForce = 100f;
+    [SerializeField] private float forceToFullyOpen = 150f;
+    [SerializeField] private float breakDistance = 5f;
 
     [Header("Feel")]
-    [SerializeField] float smoothSpeed = 8f;
-    [SerializeField] float resistanceSpeed = 3f;
+    [SerializeField] private float smoothSpeed = 8f;
+    [SerializeField] private float resistanceSpeed = 3f;
 
     [Header("Animation")]
-    [SerializeField] Animator jawAnimator;
+    [SerializeField] private Animator jawAnimator;
 
-    [SerializeField] NetworkVariable<float> jawOpenAmount = new NetworkVariable<float>(0f);
+    [SerializeField] private NetworkVariable<float> jawOpenAmount = new NetworkVariable<float>(0f);
 
-    float currentVisualAmount;
-    Transform grabberHoldPoint;
-    ulong grabberClientId = ulong.MaxValue;
-    float initialGrabDistance;
+    private float currentVisualAmount;
+    private Transform grabberHoldPoint;
+    private ulong grabberClientId = ulong.MaxValue;
+    private float initialGrabDistance;
 
     public override void OnNetworkSpawn()
     {
         currentVisualAmount = jawOpenAmount.Value;
     }
 
-    void Update()
+    private void Update()
     {
         if (IsServer)
         {
@@ -51,14 +51,22 @@ public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
             float speed = grabberHoldPoint != null ? smoothSpeed : resistanceSpeed;
             jawOpenAmount.Value = Mathf.MoveTowards(jawOpenAmount.Value, targetOpenAmount, speed * Time.deltaTime);
         }
+
         if (jawAnimator != null)
         {
             float lerpSpeed = grabberHoldPoint != null ? smoothSpeed : resistanceSpeed;
             currentVisualAmount = Mathf.Lerp(currentVisualAmount, jawOpenAmount.Value, Time.deltaTime * lerpSpeed);
             jawAnimator.SetFloat("MouthOpenPercent", currentVisualAmount);
+            int layerIndex = jawAnimator.GetLayerIndex("MouthOpener");
+            if (layerIndex != -1)
+            {
+                jawAnimator.SetLayerWeight(layerIndex, currentVisualAmount);
+            }
         }
     }
+
     public ulong GetNetworkObjectID() => NetworkObjectId;
+
     public void AddGrabber(ulong clientId, NetworkObject playerNetObj)
     {
         if (grabberHoldPoint != null) return;

@@ -247,7 +247,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Masticat
+  - m_Name: Masticar
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -293,8 +293,16 @@ BlendTree:
   m_Name: Tranquilized
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7761710479391648366, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
+    m_Motion: {fileID: -1191135688526038706, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
     m_Threshold: 0
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Health
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7761710479391648366, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
+    m_Threshold: 0.02
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -312,7 +320,7 @@ BlendTree:
   m_BlendParameterY: Health
   m_MinThreshold: 0
   m_MaxThreshold: 1
-  m_UseAutomaticThresholds: 1
+  m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
 --- !u!1102 &1127755715998240320
@@ -563,7 +571,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Masticat
+    m_ConditionEvent: Masticar
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5116526997951227961}

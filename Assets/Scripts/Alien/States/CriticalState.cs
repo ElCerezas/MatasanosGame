@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CriticalState : State
 {
@@ -13,8 +13,6 @@ public class CriticalState : State
     public override void OnEnter()
     {
         Debug.Log("Entrando en estado CRÍTICO");
-        animation.clip = alien.Desangrado;
-        animation.Play();
     }
     public override void OnUpdate()
     {

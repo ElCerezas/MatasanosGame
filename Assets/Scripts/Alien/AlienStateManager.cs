@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class AlienStateManager : NetworkBehaviour
 {
-    StateMachine stateMachine;
-    State currentState;
+    private StateMachine stateMachine;
     public NetworkVariable<AlienStateEnum> currentActiveState = new NetworkVariable<AlienStateEnum>();
 
     [Header("Health Settings")]
@@ -35,23 +34,7 @@ public class AlienStateManager : NetworkBehaviour
     [SerializeField] private string _debugStatus = "No iniciado";
 
     [Header("Animations")]
-    [SerializeField] public AnimationClip Estornudo;
-    [SerializeField] public AnimationClip Quejido;
-    [SerializeField] public AnimationClip Chupon;
-    [SerializeField] public AnimationClip Masticar;
-    [SerializeField] public AnimationClip Parasitador;
-    [SerializeField] public AnimationClip Inquieto;
-    [SerializeField] public AnimationClip Inquieto_IN;
-    [SerializeField] public AnimationClip Inquieto_OUT;
-    [SerializeField] public AnimationClip Calmado;
-    [SerializeField] public AnimationClip Calmado_IN;
-    [SerializeField] public AnimationClip Calmado_OUT;
-    [SerializeField] public AnimationClip Desangrado;
-    [SerializeField] public AnimationClip Desangrado_IN;
-    [SerializeField] public AnimationClip Desangrado_OUT;
-    [SerializeField] public AnimationClip QuejidoConstante;
-    [SerializeField] public AnimationClip QuejidoConstante_IN;
-    [SerializeField] public AnimationClip QuejidoConstante_OUT;
+    [SerializeField] private Animator alienAnimator;
 
     private void UpdateDebugStatus()
     {
@@ -134,14 +117,23 @@ public class AlienStateManager : NetworkBehaviour
         base.OnNetworkDespawn();
     }
 
-    void Awake()
+    private void Awake()
     {
         stateMachine = new StateMachine();
         estornudoComponent = GetComponent<Estornudo>();
     }
 
-    void Update()
+    private void Update()
     {
+        if (alienAnimator != null)
+        {
+            float healthPercent = maxHealth > 0 ? currentHealth.Value / maxHealth : 0f;
+            float calmantPercent = maxCalmant > 0 ? currentCalmant.Value / maxCalmant : 0f;
+
+            alienAnimator.SetFloat("Sleep%", calmantPercent);
+            alienAnimator.SetFloat("Health", healthPercent);
+        }
+
         if (!IsServer || stateMachine == null) return;
 
         if (stateMachine.CurrentState == null)
@@ -175,10 +167,8 @@ public class AlienStateManager : NetworkBehaviour
 
     private void ChangeState(State newState)
     {
-        if (currentActiveState.Value == AlienStateEnum.Desangrado)
-        {
-            return;
-        }
+        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
+
         stateMachine.ChangeState(newState);
         if (newState is CalmState) currentActiveState.Value = AlienStateEnum.Calmado;
         else if (newState is AlteredState) currentActiveState.Value = AlienStateEnum.Alterado;
@@ -252,6 +242,7 @@ public class AlienStateManager : NetworkBehaviour
         bloodBagID = e.BloodBagID;
         isBloodbagFull = true;
     }
+
     private void OnBloodBagDetachedReceived(OnBloodBagDetached e)
     {
         if (e.BloodBagID != bloodBagID) return;
@@ -283,11 +274,13 @@ public class AlienStateManager : NetworkBehaviour
         if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
         ChangeState(new AlteredState(this.stateMachine, this));
     }
+
     private void WoundIsBeingHealed(OnWoundFocoHealStarted started)
     {
         if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
         ChangeState(new QuejidoConstanteState(this.stateMachine));
     }
+
     private void WoundHealingEnded(OnWoundFocoHealEnded ended)
     {
         if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
