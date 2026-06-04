@@ -289,7 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 1
-  light: {fileID: 31556789}
+  Light: {fileID: 0}
 --- !u!114 &31556787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37698,8 +37698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 0.02
   isHighlighted: 0
 --- !u!135 &428563247
 SphereCollider:
@@ -37810,6 +37808,7 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
+  m_GameSceneName: MapaBeta
 --- !u!43 &466038889
 Mesh:
   m_ObjectHideFlags: 0
@@ -49807,7 +49806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 563738284}
+  Light: {fileID: 0}
 --- !u!114 &563738282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51371,7 +51370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 711813863}
+  Light: {fileID: 0}
 --- !u!114 &711813861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51672,7 +51671,7 @@ Transform:
   m_GameObject: {fileID: 764170333}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5850601, y: 0, z: -53.22178}
+  m_LocalPosition: {x: 1.5850601, y: 0, z: -49.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -53878,7 +53877,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 874382311}
+  Light: {fileID: 0}
 --- !u!114 &874382309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54184,7 +54183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 971718941}
+  Light: {fileID: 0}
 --- !u!114 &971718939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88538,7 +88537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 1061035205}
+  Light: {fileID: 0}
 --- !u!114 &1061035203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88712,7 +88711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 1075753517}
+  Light: {fileID: 0}
 --- !u!114 &1075753515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101710,7 +101709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 1410934537}
+  Light: {fileID: 0}
 --- !u!114 &1410934535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104230,7 +104229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 1
-  light: {fileID: 1616391142}
+  Light: {fileID: 0}
 --- !u!114 &1616391140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104894,7 +104893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 1683489658}
+  Light: {fileID: 0}
 --- !u!43 &1703553885
 Mesh:
   m_ObjectHideFlags: 0
@@ -106292,18 +106291,9 @@ MonoBehaviour:
   componentAIndicator: {fileID: 0}
   componentBIndicator: {fileID: 0}
   componentCIndicator: {fileID: 0}
-  tranquilizerColor: {r: 0.32807827, g: 0, b: 0.5, a: 1}
-  tranquilizerFormula:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  stimulantColor: {r: 0.9622642, g: 0.8397012, b: 0, a: 1}
-  stimulantFormula:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: {x: 0, y: 0, z: 0}
+  formulaConfigs: []
+  formulaEntryPrefab: {fileID: 0}
+  formulaEntrySpawnRoot: {fileID: 0}
   sludgeColor: {r: 0.1509434, g: 0.074405685, b: 0.049127806, a: 1}
   MixerFlask: {fileID: 0}
 --- !u!1 &1930512314
@@ -108179,7 +108169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Lights
   ShowTopMostFoldoutHeaderGroup: 1
   isEmergencyLight: 0
-  light: {fileID: 2108310129}
+  Light: {fileID: 0}
 --- !u!114 &2108310127
 MonoBehaviour:
   m_ObjectHideFlags: 0

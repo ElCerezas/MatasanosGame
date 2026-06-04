@@ -577,7 +577,7 @@ namespace FMODUnity
         {
             if (!Settings.IsInitialized() || Settings.Instance.LoggingLevel >= FMOD.DEBUG_FLAGS.WARNING)
             {
-                Debug.LogWarning(message);
+//                Debug.LogWarning(message);
             }
         }
 

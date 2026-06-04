@@ -21,8 +21,11 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        GetComponent<NetworkObject>().SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable);
-        GetComponent<NetworkObject>().SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+
+        var no = GetComponent<NetworkObject>();
+        no.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable);
+        no.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+
         GetComponent<NetworkTransform>().AuthorityMode = NetworkTransform.AuthorityModes.Owner;
     }
 
@@ -68,12 +71,14 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
             if (isTool && grabbers.Count == 1 && singleGrabTransform != null)
             {
                 Quaternion targetRotation = singleGrabTransform.rotation;
-                rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * toolRotationSpeed));
+                rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation,
+                    Time.fixedDeltaTime * toolRotationSpeed));
             }
         }
     }
 
     #region Grab
+
     public virtual void AddGrabber(ulong clientId, NetworkObject playerNetObj)
     {
         RequestGrabServerRpc(clientId, playerNetObj);
@@ -87,21 +92,20 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
         PlayerInteractor interactor = playerNetObj.GetComponent<PlayerInteractor>();
         if (interactor == null)
         {
-            Debug.LogError("[PhysicalItem] RequestGrabServerRpc: PlayerInteractor no encontrado.");
+            Debug.LogError("[PhysicalItem] PlayerInteractor no encontrado.");
             return;
         }
-        if (TryGetComponent(out SnappableItem snappable))
-        {
-            if (snappable.isSnapped && snappable.currentZone != null)
-            {
-                snappable.currentZone.ReleaseItem();
-            }
-        }
+
         if (!grabbers.ContainsKey(clientId))
             grabbers.Add(clientId, interactor.holdPoint);
 
-        UpdateOwnership();
+        if (TryGetComponent(out SnappableItem snappable))
+        {
+            if (snappable.isSnapped && snappable.currentZone != null)
+                snappable.currentZone.ReleaseItem();
+        }
 
+        UpdateOwnership();
         ConfirmGrabClientRpc(clientId, playerNetObjRef);
     }
 
@@ -115,17 +119,16 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
 
         if (!grabbers.ContainsKey(clientId))
         {
+            grabbers.TryAdd(clientId, interactor.holdPoint);
+
             if (TryGetComponent(out SnappableItem snappable))
             {
-                Debug.Log(snappable.isSnapped && snappable.currentZone != null);
                 if (snappable.isSnapped && snappable.currentZone != null)
                 {
                     snappable.currentZone.ReleaseItem();
                     rb.isKinematic = false;
                 }
             }
-
-            grabbers.TryAdd(clientId, interactor.holdPoint);
         }
     }
 
@@ -153,21 +156,42 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     }
 
     #endregion
+
     void UpdateOwnership()
     {
+        ulong newOwner;
+
         if (grabbers.Count == 1)
         {
-            ulong onlyClient = grabbers.Keys.First();
-            NetworkObject.ChangeOwnership(onlyClient);
+            newOwner = grabbers.Keys.First();
+            NetworkObject.ChangeOwnership(newOwner);
         }
         else
         {
+            newOwner = NetworkManager.ServerClientId;
             NetworkObject.RemoveOwnership();
+        }
+
+        PropagateOwnershipToSnapZones(newOwner);
+    }
+
+    void PropagateOwnershipToSnapZones(ulong newOwner)
+    {
+        foreach (var zone in GetComponentsInChildren<SnapZone>(includeInactive: true))
+        {
+            if (!zone.NetworkObject.IsSpawned) continue;
+
+            if (zone.NetworkObject.OwnerClientId != newOwner)
+                zone.NetworkObject.ChangeOwnership(newOwner);
+
+            if (zone.currentItem != null &&
+                zone.currentItem.NetworkObject.IsSpawned &&
+                zone.currentItem.NetworkObject.OwnerClientId != newOwner)
+            {
+                zone.currentItem.NetworkObject.ChangeOwnership(newOwner);
+            }
         }
     }
 
-    public ulong GetNetworkObjectID()
-    {
-        return NetworkObjectId;
-    }
+    public ulong GetNetworkObjectID() => NetworkObjectId;
 }

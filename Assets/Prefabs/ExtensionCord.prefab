@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1822246467
+  GlobalObjectIdHash: 2209072200
   InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
@@ -700,7 +700,6 @@ GameObject:
   - component: {fileID: 8372143259553210712}
   - component: {fileID: 3401682090614247884}
   - component: {fileID: 1435482672238786206}
-  - component: {fileID: 3020956419207898041}
   - component: {fileID: 5786750021112074286}
   m_Layer: 6
   m_Name: EnchufeDock
@@ -949,20 +948,6 @@ MonoBehaviour:
   - {fileID: 83918300467687557}
   - {fileID: 6630227419677722611}
   toolToPower: {fileID: 0}
---- !u!114 &3020956419207898041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6242434418154841951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42017b7f3c588c94fa0732f79bd12007, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
-  targetRenderers: []
-  isHighlighted: 0
 --- !u!65 &5786750021112074286
 BoxCollider:
   m_ObjectHideFlags: 0
