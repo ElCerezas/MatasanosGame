@@ -213,7 +213,31 @@ public class PlayerHUDEffects : NetworkBehaviour
     public void CleanBlood() { foreach (var b in activeBloods) if (b != null) Destroy(b); activeBloods.Clear(); }
 
     #endregion
+    public void CleanProgressive()
+    {
+        if (activeBloods.Count > 0)
+        {
+            int lastIdx = activeBloods.Count - 1;
+            if (activeBloods[lastIdx] != null) Destroy(activeBloods[lastIdx]);
+            activeBloods.RemoveAt(lastIdx);
+            return;
+        }
+        if (activeMocos.Count > 0)
+        {
+            int lastIdx = activeMocos.Count - 1;
+            if (activeMocos[lastIdx] != null) Destroy(activeMocos[lastIdx]);
+            activeMocos.RemoveAt(lastIdx);
+            return;
+        }
+        if (parasiteActive || parasiteIntensity > 0f)
+        {
+            parasiteIntensity = Mathf.Clamp(parasiteIntensity - parasiteGrowthRate * 3f, 0f, maxParasiteIntensity);
+            ApplyParasiteVisual(parasiteIntensity);
 
+            if (parasiteIntensity <= 0f)
+                CleanParasite();
+        }
+    }
     IEnumerator FadeCanvasGroup(CanvasGroup cg, float from, float to, float duration)
     {
         if (cg == null) yield break;

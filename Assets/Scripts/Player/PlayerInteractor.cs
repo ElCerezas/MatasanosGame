@@ -111,10 +111,20 @@ public class PlayerInteractor : NetworkBehaviour
     public void Ragdoll(bool active)
     {
         isRagdoll = active;
+
         if (active && currentlyGrabbedItem != null)
         {
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
             currentlyGrabbedItem = null;
+            anim.SetBool("IsGrabbing", false);
+            StopAllCoroutines();
+            StartCoroutine(BlendIKWeight(0f));
+        }
+        else if (!active)
+        {
+            anim.SetBool("IsGrabbing", false);
+            leftHandIK.weight = 0f;
+            rightHandIK.weight = 0f;
         }
     }
 
