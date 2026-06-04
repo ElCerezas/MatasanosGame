@@ -154,7 +154,7 @@ public class BloodBag : NetworkBehaviour
                 BloodStainsServerRpc(affectedPlayer.NetworkObjectId);
             }
         }
-        BloodbagVFXClientRpc();
+        BloodbagVFXServerRpc();
 
         HandleCollisionServerRpc(collision.contacts[0].point);
     }
@@ -182,6 +182,12 @@ public class BloodBag : NetworkBehaviour
     {
         EventBus.Publish(new OnPlayerSlipped { VictimID = affectedPlayerNetObjId });
     }
+    [ServerRpc]
+    private void BloodbagVFXServerRpc()
+    {
+        BloodbagVFXClientRpc();
+    }
+
     [ClientRpc]
     private void BloodbagVFXClientRpc()
     {
