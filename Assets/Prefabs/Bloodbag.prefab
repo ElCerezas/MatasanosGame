@@ -100,13 +100,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 3921
   debugCollisions: 1
-  puddleCount: 3
-  puddleSpreadRadius: 3
+  puddleCount: 5
+  puddleSpreadRadius: 5
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
   explosionParticles: {fileID: 4645617527091262609}
-  explosionRadius: 5
+  explosionRadius: 4
   explosionDamageLayers:
     serializedVersion: 2
     m_Bits: 2048
@@ -126,6 +126,7 @@ MonoBehaviour:
   itemType: 5
   isSnappable: 1
   isUnsnappable: 1
+  snapCooldownDuration: 1
 --- !u!54 &4957130960534998900
 Rigidbody:
   m_ObjectHideFlags: 0
