@@ -11,6 +11,9 @@ public class GeneratorSystem : NetworkBehaviour
     [Header("PowerLoad System")]
     [SerializeField] PowerEmitter[] mainEmitters;
 
+    [Header("Effects")]
+    [SerializeField]ParticleSystem[] particleSystemsOnFailure;
+
     public override void OnNetworkSpawn()
     {
         isGeneratorOn.OnValueChanged += (oldVal, newVal) =>
@@ -49,6 +52,10 @@ public class GeneratorSystem : NetworkBehaviour
             {
                 emitter.SetEmitting(false);
             }
+            foreach (var pS in particleSystemsOnFailure)
+            {
+                pS.Play();
+            }
 
             currentLoad.Value = 0;
         }
@@ -60,6 +67,10 @@ public class GeneratorSystem : NetworkBehaviour
         foreach (var emitter in mainEmitters)
         {
             emitter.SetEmitting(true);
+        }
+        foreach (var pS in particleSystemsOnFailure)
+        {
+            pS.Stop();
         }
         EvaluateLoad();
     }
