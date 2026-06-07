@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,6 +22,7 @@ public class SplashSettings
 public class PlayerHUDEffects : NetworkBehaviour
 {
     [SerializeField] private GameObject localCanvasObject;
+    PlayerVisual visual;
 
     [Header("Sleep")]
     [SerializeField] CanvasGroup sleepOverlay;
@@ -51,6 +54,10 @@ public class PlayerHUDEffects : NetworkBehaviour
     Coroutine sleepCoroutine;
     Coroutine flashedCoroutine;
 
+    private void Awake()
+    {
+        visual = GetComponent<PlayerVisual>();
+    }
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
@@ -73,7 +80,6 @@ public class PlayerHUDEffects : NetworkBehaviour
         EventBus.Subscribe<OnHUDCleaned>(OnHUDCleaned);
         ResetAllEffects();
     }
-
     public override void OnNetworkDespawn()
     {
         if (!IsOwner) return;
@@ -87,7 +93,6 @@ public class PlayerHUDEffects : NetworkBehaviour
 
         base.OnNetworkDespawn();
     }
-
     private void Update()
     {
         if (!parasiteActive) return;
@@ -113,63 +118,42 @@ public class PlayerHUDEffects : NetworkBehaviour
         if (data.CleanParasito) CleanParasite();
     }
     #endregion
-
-    #region Effects Logic
-    public void TriggerSleep(float duration)
+    #region Triggers
+    public void TriggerMoco()
     {
-        if (sleepCoroutine != null) StopCoroutine(sleepCoroutine);
-        sleepCoroutine = StartCoroutine(SleepRoutine(duration));
+        CreateSplash(mocoSettings, activeMocos);
+        if (visual != null && IsOwner) visual.mocoSplashes.Value = activeMocos.Count;
     }
-    IEnumerator SleepRoutine(float duration)
+    public void CleanMoco()
     {
-        yield return FadeCanvasGroup(sleepOverlay, 0f, 0.85f, sleepFadeDuration * 0.3f);
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            float blink = Mathf.PingPong(elapsed * 0.8f, 1f);
-            sleepOverlay.alpha = Mathf.Lerp(0.5f, 0.95f, blink);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        yield return FadeCanvasGroup(sleepOverlay, sleepOverlay.alpha, 0f, sleepFadeDuration);
-        sleepCoroutine = null;
+        foreach (var m in activeMocos) if (m != null) Destroy(m);
+        activeMocos.Clear();
+        if (visual != null && IsOwner) visual.mocoSplashes.Value = 0;
     }
 
-    public void TriggerFlash(float duration)
+    public void TriggerBlood()
     {
-        if (flashedCoroutine != null) StopCoroutine(flashedCoroutine);
-        flashedCoroutine = StartCoroutine(FlashRoutine(duration));
+        CreateSplash(bloodSettings, activeBloods);
+        if (visual != null && IsOwner) visual.bloodSplashes.Value = activeBloods.Count;
     }
-    IEnumerator FlashRoutine(float duration)
+    public void CleanBlood()
     {
-        float targetAlpha = Mathf.Clamp01(duration / 10f);
-        yield return FadeCanvasGroup(flashedOverlay, 0f, targetAlpha, 0.1f);
-        yield return new WaitForSeconds(duration * 0.5f);
-        yield return FadeCanvasGroup(flashedOverlay, targetAlpha, 0f, flashedFadeOutDuration + duration * 0.5f);
-        flashedCoroutine = null;
+        foreach (var b in activeBloods) if (b != null) Destroy(b);
+        activeBloods.Clear();
+        if (visual != null && IsOwner) visual.bloodSplashes.Value = 0;
     }
 
     public void TriggerParasite()
     {
         if (parasiteNoiseImage == null) return;
-        if (parasiteMaterial == null)  parasiteMaterial = new Material(parasiteNoiseImage.material);
+        if (parasiteMaterial == null) parasiteMaterial = new Material(parasiteNoiseImage.material);
 
         parasiteNoiseImage.material = parasiteMaterial;
         parasiteActive = true;
         parasiteNoiseImage.enabled = true;
+
+        parasiteNoiseImage.enabled = true;
     }
-    void ApplyParasiteVisual(float intensity)
-    {
-        if (parasiteNoiseImage == null || parasiteMaterial == null) return;
-
-        float progress = Mathf.Clamp01(intensity / maxParasiteIntensity);
-        float currentThreshold = Mathf.Lerp(0f, maxParasiteFill, progress);
-
-        parasiteMaterial.SetFloat("_Threshold", currentThreshold);
-
-        parasiteMaterial.SetColor("_Color", parasiteColor.linear);
-    }
-
     public void CleanParasite()
     {
         parasiteActive = false;
@@ -180,39 +164,21 @@ public class PlayerHUDEffects : NetworkBehaviour
             if (parasiteMaterial != null)
                 parasiteMaterial.SetFloat("_Threshold", 0f);
         }
+        if (parasiteMaterial != null) parasiteMaterial.SetFloat("_Threshold", 0f);
+        if (visual != null && IsOwner) 
+            visual.networkParasiteIntensity.Value = 0f;
     }
 
-    void CreateSplash(SplashSettings settings, List<GameObject> activeList)
+    public void TriggerFlash(float duration)
     {
-        if (settings.container == null || settings.sprites == null || settings.sprites.Length == 0) return;
-
-        GameObject splashObj = new GameObject("Splash_Instance");
-        splashObj.transform.SetParent(settings.container, false);
-
-        Image img = splashObj.AddComponent<Image>();
-        img.sprite = settings.sprites[Random.Range(0, settings.sprites.Length)];
-        img.color = settings.colorGradient.Evaluate(Random.value);
-        img.raycastTarget = false;
-
-        RectTransform rect = img.rectTransform;
-        float size = Random.Range(settings.sizeRange.x, settings.sizeRange.y);
-        rect.sizeDelta = new Vector2(size, size);
-        rect.localRotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
-
-        float x = Random.Range(settings.container.rect.xMin, settings.container.rect.xMax);
-        float y = Random.Range(settings.container.rect.yMin, settings.container.rect.yMax);
-        rect.anchoredPosition = new Vector2(x, y);
-
-        activeList.Add(splashObj);
+        if (flashedCoroutine != null) StopCoroutine(flashedCoroutine);
+        flashedCoroutine = StartCoroutine(FlashRoutine(duration));
     }
-
-    public void TriggerMoco() => CreateSplash(mocoSettings, activeMocos);
-    public void CleanMoco() { foreach (var m in activeMocos) if (m != null) Destroy(m); activeMocos.Clear(); }
-
-    public void TriggerBlood() => CreateSplash(bloodSettings, activeBloods);
-    public void CleanBlood() { foreach (var b in activeBloods) if (b != null) Destroy(b); activeBloods.Clear(); }
-
-    #endregion
+    public void TriggerSleep(float duration)
+    {
+        if (sleepCoroutine != null) StopCoroutine(sleepCoroutine);
+        sleepCoroutine = StartCoroutine(SleepRoutine(duration));
+    }
     public void CleanProgressive()
     {
         if (activeBloods.Count > 0)
@@ -238,6 +204,74 @@ public class PlayerHUDEffects : NetworkBehaviour
                 CleanParasite();
         }
     }
+    public void ResetAllEffects()
+    {
+        if (sleepOverlay != null) sleepOverlay.alpha = 0f;
+        if (flashedOverlay != null) flashedOverlay.alpha = 0f;
+        CleanMoco();
+        CleanBlood();
+        CleanParasite();
+    }
+    #endregion
+    #region Effects Logic
+    void ApplyParasiteVisual(float intensity)
+    {
+        if (parasiteNoiseImage == null || parasiteMaterial == null) return;
+
+        float progress = Mathf.Clamp01(intensity / maxParasiteIntensity);
+        float currentThreshold = Mathf.Lerp(0f, maxParasiteFill, progress);
+
+        parasiteMaterial.SetFloat("_Threshold", currentThreshold);
+        parasiteMaterial.SetColor("_Color", parasiteColor.linear);
+
+        if (visual != null && IsOwner)
+            visual.networkParasiteIntensity.Value = progress;
+    }
+    void CreateSplash(SplashSettings settings, List<GameObject> activeList)
+    {
+        if (settings.container == null || settings.sprites == null || settings.sprites.Length == 0) return;
+
+        GameObject splashObj = new GameObject("Splash_Instance");
+        splashObj.transform.SetParent(settings.container, false);
+
+        Image img = splashObj.AddComponent<Image>();
+        img.sprite = settings.sprites[Random.Range(0, settings.sprites.Length)];
+        img.color = settings.colorGradient.Evaluate(Random.value);
+        img.raycastTarget = false;
+
+        RectTransform rect = img.rectTransform;
+        float size = Random.Range(settings.sizeRange.x, settings.sizeRange.y);
+        rect.sizeDelta = new Vector2(size, size);
+        rect.localRotation = Quaternion.Euler(0, 0, Random.Range(0f, 360f));
+
+        float x = Random.Range(settings.container.rect.xMin, settings.container.rect.xMax);
+        float y = Random.Range(settings.container.rect.yMin, settings.container.rect.yMax);
+        rect.anchoredPosition = new Vector2(x, y);
+
+        activeList.Add(splashObj);
+    }
+    IEnumerator SleepRoutine(float duration)
+    {
+        yield return FadeCanvasGroup(sleepOverlay, 0f, 0.85f, sleepFadeDuration * 0.3f);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            float blink = Mathf.PingPong(elapsed * 0.8f, 1f);
+            sleepOverlay.alpha = Mathf.Lerp(0.5f, 0.95f, blink);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        yield return FadeCanvasGroup(sleepOverlay, sleepOverlay.alpha, 0f, sleepFadeDuration);
+        sleepCoroutine = null;
+    }
+    IEnumerator FlashRoutine(float duration)
+    {
+        float targetAlpha = Mathf.Clamp01(duration / 10f);
+        yield return FadeCanvasGroup(flashedOverlay, 0f, targetAlpha, 0.1f);
+        yield return new WaitForSeconds(duration * 0.5f);
+        yield return FadeCanvasGroup(flashedOverlay, targetAlpha, 0f, flashedFadeOutDuration + duration * 0.5f);
+        flashedCoroutine = null;
+    }
     IEnumerator FadeCanvasGroup(CanvasGroup cg, float from, float to, float duration)
     {
         if (cg == null) yield break;
@@ -251,15 +285,7 @@ public class PlayerHUDEffects : NetworkBehaviour
         }
         cg.alpha = to;
     }
-
-    public void ResetAllEffects()
-    {
-        if (sleepOverlay != null) sleepOverlay.alpha = 0f;
-        if (flashedOverlay != null) flashedOverlay.alpha = 0f;
-        CleanMoco();
-        CleanBlood();
-        CleanParasite();
-    }
+    #endregion
 }
 
 #if UNITY_EDITOR

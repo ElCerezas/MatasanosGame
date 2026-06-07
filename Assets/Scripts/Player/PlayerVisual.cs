@@ -1,0 +1,51 @@
+﻿using Unity.Netcode;
+using UnityEngine;
+
+public class PlayerVisual : NetworkBehaviour
+{
+    [Header("Visuals")]
+    [SerializeField] Renderer playerRenderer;
+    private Material playerMaterial;
+
+    [Header("Dirt Settings")]
+    [SerializeField] float parasiteGrowthRate = 0.05f;
+    [SerializeField] float maxSplashes = 5f;
+    public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(0);
+    public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(0);
+    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f);
+    float currentParasiteIntensity = 0f;
+
+    public override void OnNetworkSpawn()
+    {
+        bloodSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();
+        mocoSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();
+
+        UpdateMaterialSplashes();
+    }
+
+    private void Update()
+    {
+        if (Mathf.Abs(currentParasiteIntensity - networkParasiteIntensity.Value) > 0.001f)
+        {
+            currentParasiteIntensity = Mathf.Lerp(currentParasiteIntensity, networkParasiteIntensity.Value, Time.deltaTime * 10f);
+            UpdateParasiteMaterial();
+        }
+    }
+
+    void UpdateMaterialSplashes()
+    {
+        if (playerMaterial == null) return;
+
+        float bloodAmount = Mathf.Clamp01(bloodSplashes.Value / maxSplashes);
+        float mocoAmount = Mathf.Clamp01(mocoSplashes.Value / maxSplashes);
+
+        playerMaterial.SetFloat("_BloodAmount", bloodAmount);
+        playerMaterial.SetFloat("_MocoAmount", mocoAmount);
+    }
+
+    void UpdateParasiteMaterial()
+    {
+        if (playerMaterial == null) return;
+        playerMaterial.SetFloat("_ParasiteAmount", currentParasiteIntensity);
+    }
+}
