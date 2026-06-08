@@ -13,7 +13,7 @@ public class PlayerVisual : NetworkBehaviour
     public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(0);
     public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(0);
     public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f);
-    float currentParasiteIntensity = 0f;
+    [SerializeField]float currentParasiteIntensity = 0f;
 
     private void Awake()
     {
@@ -29,20 +29,27 @@ public class PlayerVisual : NetworkBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(currentParasiteIntensity - networkParasiteIntensity.Value) > 0.001f)
+        if (!IsOwner)
         {
-            currentParasiteIntensity = Mathf.Lerp(currentParasiteIntensity, networkParasiteIntensity.Value, Time.deltaTime * 10f);
-            UpdateParasiteMaterial();
+            if (Mathf.Abs(currentParasiteIntensity - networkParasiteIntensity.Value) > 0.001f)
+            {
+                currentParasiteIntensity = networkParasiteIntensity.Value;
+                UpdateParasiteMaterial();
+            }
         }
+    }
+
+    public void SetParasiteIntensityLocal(float value)
+    {
+        currentParasiteIntensity = value;
+        UpdateParasiteMaterial();
     }
 
     void UpdateMaterialSplashes()
     {
         if (playerMaterial == null) return;
-
         float bloodAmount = Mathf.Clamp01(bloodSplashes.Value / maxSplashes);
         float mocoAmount = Mathf.Clamp01(mocoSplashes.Value / maxSplashes);
-
         playerMaterial.SetFloat("_BloodAmount", bloodAmount);
         playerMaterial.SetFloat("_MocoAmount", mocoAmount);
     }

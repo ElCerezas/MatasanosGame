@@ -164,8 +164,12 @@ public class PlayerHUDEffects : NetworkBehaviour
                 parasiteMaterial.SetFloat("_Threshold", 0f);
         }
         if (parasiteMaterial != null) parasiteMaterial.SetFloat("_Threshold", 0f);
-        if (visual != null && IsOwner) 
+
+        if (visual != null && IsOwner)
+        {
             visual.networkParasiteIntensity.Value = 0f;
+            visual.SetParasiteIntensityLocal(0f);
+        }
     }
 
     public void TriggerFlash(float duration)
@@ -224,7 +228,10 @@ public class PlayerHUDEffects : NetworkBehaviour
         parasiteMaterial.SetColor("_Color", parasiteColor.linear);
 
         if (visual != null && IsOwner)
+        {
             visual.networkParasiteIntensity.Value = progress;
+            visual.SetParasiteIntensityLocal(progress);
+        }
     }
     void CreateSplash(SplashSettings settings, List<GameObject> activeList)
     {
