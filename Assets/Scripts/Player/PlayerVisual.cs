@@ -5,7 +5,7 @@ public class PlayerVisual : NetworkBehaviour
 {
     [Header("Visuals")]
     [SerializeField] Renderer playerRenderer;
-    private Material playerMaterial;
+    [SerializeField] Material playerMaterial;
 
     [Header("Dirt Settings")]
     [SerializeField] float parasiteGrowthRate = 0.05f;
@@ -15,6 +15,10 @@ public class PlayerVisual : NetworkBehaviour
     public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f);
     float currentParasiteIntensity = 0f;
 
+    private void Awake()
+    {
+        playerMaterial = playerRenderer.material;
+    }
     public override void OnNetworkSpawn()
     {
         bloodSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();

@@ -3322,6 +3322,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc03c137012e6b41acc26ed4b9d5c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
+  playerRenderer: {fileID: 2279603360459552096}
+  playerMaterial: {fileID: 0}
+  parasiteGrowthRate: 0.05
+  maxSplashes: 10
+  bloodSplashes:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  mocoSplashes:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  networkParasiteIntensity:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!1 &8311142569605080729
 GameObject:
   m_ObjectHideFlags: 0
