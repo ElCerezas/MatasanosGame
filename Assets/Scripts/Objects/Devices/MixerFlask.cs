@@ -43,6 +43,6 @@ public class MixerFlask : NetworkBehaviour
     {
         if (m == null) return;
         m.SetColor("_Color", color.Value);
-        m.SetFloat("_FillAmount", newVal);
+        m.SetFloat("_FillAmount", Mathf.Min(newVal, 0.95f));
     }
 }
