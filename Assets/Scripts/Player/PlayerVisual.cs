@@ -59,4 +59,9 @@ public class PlayerVisual : NetworkBehaviour
         if (playerMaterial == null) return;
         playerMaterial.SetFloat("_ParasiteAmount", currentParasiteIntensity);
     }
+
+    public void ChangeColor(Color colr)
+    {
+        playerMaterial.color = colr;
+    }
 }
