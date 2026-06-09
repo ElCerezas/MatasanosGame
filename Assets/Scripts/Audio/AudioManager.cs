@@ -19,6 +19,7 @@ public class AudioManager : MonoBehaviour
 
 
     [Header("SFX")]
+    public EventReference Enchufe;
  
 
     [Header("Cinematicas")]
