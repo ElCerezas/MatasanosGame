@@ -62,6 +62,6 @@ public class PlayerVisual : NetworkBehaviour
 
     public void ChangeColor(Color colr)
     {
-        playerMaterial.color = colr;
+        playerMaterial.SetColor("_PlayerColor", colr);
     }
 }

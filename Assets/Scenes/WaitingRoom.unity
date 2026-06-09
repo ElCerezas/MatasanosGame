@@ -109997,6 +109997,7 @@ GameObject:
   - component: {fileID: 5984213024773606304}
   - component: {fileID: 3729618073709876804}
   - component: {fileID: 8295763234372312052}
+  - component: {fileID: 8295763234372312053}
   m_Layer: 6
   m_Name: BotonDown
   m_TagString: Untagged
@@ -110376,19 +110377,9 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   onInteract:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7417137090391871649}
-        m_TargetAssemblyTypeName: CharacterCustomitationMachine, Assembly-CSharp
-        m_MethodName: NextColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  CCM: {fileID: 7417137090391871649}
+  nextColor: 0
 --- !u!114 &5984213024773606304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110655,11 +110646,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCustomitationMachine
   ShowTopMostFoldoutHeaderGroup: 1
   colores:
-  - {r: 1, g: 1, b: 1, a: 0}
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 1, g: 0.99777603, b: 0, a: 0}
-  - {r: 0.08435953, g: 1, b: 0, a: 0}
-  - {r: 0, g: 0.97178245, b: 1, a: 0}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.99777603, b: 0, a: 1}
+  - {r: 0.08435953, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0.97178245, b: 1, a: 1}
 --- !u!65 &7423124549274648475
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -110718,6 +110709,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableOutline
   targetRenderers: []
   isHighlighted: 0
+--- !u!114 &8295763234372312053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438841979709336138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af9888e2a1473a46a0f4c0580a006d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorButton
+  ShowTopMostFoldoutHeaderGroup: 1
+  onInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  CCM: {fileID: 7417137090391871649}
+  nextColor: 1
 --- !u!222 &8738305529890688869
 CanvasRenderer:
   m_ObjectHideFlags: 0

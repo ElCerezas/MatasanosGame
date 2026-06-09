@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,9 +8,14 @@ using UnityEngine.Events;
 public class ColorButton : InteractableItem
 {
     UnityEvent<String> onInteractButton;
+    [SerializeField]CharacterCustomitationMachine CCM;
+    [SerializeField]bool nextColor = false;
     public override void Interact(ulong clientID)
     {
-        string clientString = clientID.ToString();
-        onInteractButton.Invoke(clientString);
+        base.Interact(clientID);
+        if (nextColor)
+            CCM.NextColor(clientID);
+        else
+            CCM.PrevColor(clientID);
     }
 }

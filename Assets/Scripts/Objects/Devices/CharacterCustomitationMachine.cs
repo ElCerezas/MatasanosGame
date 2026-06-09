@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +16,8 @@ public class CharacterCustomitationMachine : NetworkBehaviour
 
     private Dictionary<ulong, int> playerColorIndex = new Dictionary<ulong, int>();
 
-    public void NextColor(string plyr)
+    public void NextColor(ulong player)
     {
-        ulong.TryParse(plyr, out ulong player); 
         if (!playerColorIndex.ContainsKey(player))
             playerColorIndex.TryAdd(player, 0);
 
@@ -32,9 +31,8 @@ public class CharacterCustomitationMachine : NetworkBehaviour
 
     }
 
-    public void PrevColor(string plyr)
+    public void PrevColor(ulong player)
     {
-        ulong.TryParse(plyr, out ulong player);
         if (!playerColorIndex.ContainsKey(player))
             playerColorIndex.TryAdd(player, 0);
 
