@@ -9,11 +9,13 @@ public class PlayerController : NetworkBehaviour
     PlayerInput playerInput;
     Vector2 currentInput;
     [SerializeField] float speed = 5f;
-    [SerializeField] float jumpForce = 1.5f;
     [SerializeField] Transform cameraTransform;
     [SerializeField] Transform playerFeet;
-
     [SerializeField] Animator animator;
+    [Header("Jump feel")]
+    [SerializeField] float jumpForce = 5f;
+    [SerializeField] float fallMultiplier = 2.5f;
+    [SerializeField] float risingMultiplier = 1.5f;
 
     Rigidbody rigidBody;
     bool isGrounded = true;
@@ -37,17 +39,36 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        if(!IsOwner) return;
-        if(isGrounded != IsGrounded())
+        if (!IsOwner) return;
+        bool grounded = IsGrounded();
+        if (isGrounded != grounded)
         {
-            isGrounded = IsGrounded();
+            isGrounded = grounded;
             animator.SetBool("Grounded", isGrounded);
         }
         currentInput = playerInput.MovementInput;
     }
+    void ApplyJumpGravity()
+    {
+        if (rigidBody.linearVelocity.y < 0f)
+        {
+            rigidBody.linearVelocity += Vector3.up
+                * Physics.gravity.y
+                * (fallMultiplier - 1f)
+                * Time.fixedDeltaTime;
+        }
+        else if (rigidBody.linearVelocity.y > 0f)
+        {
+            rigidBody.linearVelocity += Vector3.up
+                * Physics.gravity.y
+                * (risingMultiplier - 1f)
+                * Time.fixedDeltaTime;
+        }
+    }
     void FixedUpdate()
     {
         if (!IsOwner) return;
+        ApplyJumpGravity();
         Move();
     }
     void Move()

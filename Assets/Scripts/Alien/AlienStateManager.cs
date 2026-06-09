@@ -284,7 +284,14 @@ public class AlienStateManager : NetworkBehaviour
     private void WoundHealingEnded(OnWoundFocoHealEnded ended)
     {
         if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
-        ChangeState(new CalmState(this.stateMachine));
+        if (currentCalmant.Value > 0)
+        {
+            ChangeState(new CalmState(this.stateMachine));
+        }
+        else
+        {
+            ChangeState(new AlteredState(this.stateMachine, this));
+        }
     }
 
     public void NotifyParasiteAttack()
