@@ -257,7 +257,7 @@ public class AudioManager : MonoBehaviour
     {
         if (mode == LoadSceneMode.Additive) return;
 
-        if (scene.name == "MainMenu" || scene.name == "MapaBeta")
+        if (scene.name == "MainMenu" || scene.name == "WaitingRoom" || scene.name == "MapaBeta")
         {
             ApplyShopLowcut(true);
         }
@@ -298,6 +298,11 @@ public class AudioManager : MonoBehaviour
         {
             case "MainMenu":
                 return menuMusic;
+
+            case "MapaBeta":
+                return gameplayMusic;
+
+
 
             default:
                 return default;

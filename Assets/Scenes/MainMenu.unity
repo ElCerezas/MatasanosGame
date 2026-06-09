@@ -4380,7 +4380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &828369971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4393,24 +4393,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de76de741533ed54eb1554c263affd76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  masterVolume: 0.055
+  masterVolume: 1
   musicVolume: 1
   ambienceVolume: 1
   SFXVolume: 1
   menuMusic:
     Guid:
-      Data1: -1817317203
-      Data2: 1308744324
-      Data3: -797134419
-      Data4: 1253263046
-    Path: event:/Music/test
+      Data1: 1377470156
+      Data2: 1109772439
+      Data3: -1425969735
+      Data4: 1616756148
+    Path: event:/Music/Menu Music
   gameplayMusic:
     Guid:
       Data1: -1817317203
       Data2: 1308744324
       Data3: -797134419
       Data4: 1253263046
-    Path: event:/Music/test
+    Path: event:/Music/Main Music
+  Enchufe:
+    Guid:
+      Data1: 304945929
+      Data2: 1081160475
+      Data3: -1839183991
+      Data4: 168214997
+    Path: event:/Sfx/Enchufe
 --- !u!4 &828369972
 Transform:
   m_ObjectHideFlags: 0
