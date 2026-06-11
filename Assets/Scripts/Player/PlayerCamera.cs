@@ -5,6 +5,7 @@ using Unity.Netcode;
 public class PlayerCamera : NetworkBehaviour
 {
     PlayerInput playerInput;
+    PauseHandler pauseHandler;
     [SerializeField] Transform playerCam;
     [SerializeField] Transform holdPoint;
     [SerializeField] GameObject BodyVisual;
@@ -25,6 +26,7 @@ public class PlayerCamera : NetworkBehaviour
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        pauseHandler = GetComponent<PauseHandler>();
         currentMinPitch = minPitch;
     }
 
@@ -56,6 +58,7 @@ public class PlayerCamera : NetworkBehaviour
     void Update()
     {
         if (!IsOwner) return;
+        if (pauseHandler.IsPaused) return;
         Vector2 lookInput = playerInput.LookInput * sensitivity;
         yawRotation += lookInput.x;
         pitchRotation -= lookInput.y;

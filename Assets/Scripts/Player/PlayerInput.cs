@@ -11,6 +11,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] InputActionReference pickReference;
     [SerializeField] InputActionReference jumpReference;
     [SerializeField] InputActionReference lookReference;
+    [SerializeField] InputActionReference pauseReference;
 
     [SerializeField] InputActionReference TestSlipReference;
 
@@ -24,6 +25,7 @@ public class PlayerInput : NetworkBehaviour
     public event Action OnJumpPressed;
     public event Action OnPickUpPressed;
     public event Action OnInteractPressed;
+    public event Action OnPausePressed;
 
     public event Action OnSlipPressed;
 
@@ -46,6 +48,9 @@ public class PlayerInput : NetworkBehaviour
         //TEST SLip
         TestSlipReference.action.performed += OnSlip;
         TestSlipReference.action.Enable();
+        //Pause event
+        pauseReference.action.performed += OnPause;
+        pauseReference.action.Enable();
     }
     void OnDisable()
     {
@@ -62,6 +67,10 @@ public class PlayerInput : NetworkBehaviour
         //Pick event
         interactReference.action.performed -= OnInteract;
         interactReference.action.Disable();
+
+        //Pause event
+        pauseReference.action.performed -= OnPause;
+        pauseReference.action.Disable();
     }
 
     void Update()
@@ -92,5 +101,11 @@ public class PlayerInput : NetworkBehaviour
     {
         if (!IsOwner) return;
         OnSlipPressed?.Invoke();
+    }
+    void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (!IsOwner) return;
+
+        GetComponent<PauseHandler>().TogglePause();
     }
 }

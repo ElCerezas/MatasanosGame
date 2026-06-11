@@ -87,20 +87,6 @@ public class GameManager : NetworkBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            if (isCursorLocked)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                isCursorLocked = false;
-            }
-            else
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                isCursorLocked = true;
-            }
-        }
+       
     }
 }

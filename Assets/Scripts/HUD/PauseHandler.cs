@@ -1,0 +1,82 @@
+using Unity.Netcode;
+using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI;
+
+public class PauseHandler : NetworkBehaviour
+{
+    [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject menuVisual;
+    [SerializeField] RawImage pauseRawImage;
+    [SerializeField] List<Texture2D> pauseMenuTextures;
+
+    private NetworkVariable<bool> isPlayerPaused = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<int> selectedTextureIndex = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public bool IsPaused => isPlayerPaused.Value;
+
+    public override void OnNetworkSpawn()
+    {
+        isPlayerPaused.OnValueChanged += OnPauseStateChanged;
+        selectedTextureIndex.OnValueChanged += OnTextureChanged;
+
+        if (IsOwner)
+        {
+            if (pauseMenu != null) pauseMenu.SetActive(false);
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            if (pauseMenu != null) pauseMenu.SetActive(false);
+
+            if (menuVisual != null) menuVisual.SetActive(isPlayerPaused.Value);
+        }
+
+        if (selectedTextureIndex.Value >= 0 && selectedTextureIndex.Value < pauseMenuTextures.Count)
+        {
+            pauseRawImage.texture = pauseMenuTextures[selectedTextureIndex.Value];
+        }
+    }
+    public void TogglePause()
+    {
+        if (!IsOwner) return;
+        bool newPauseState = !isPlayerPaused.Value;
+        isPlayerPaused.Value = newPauseState;
+
+        if (newPauseState)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        if (isPlayerPaused.Value && pauseMenuTextures.Count > 0)
+        {
+            selectedTextureIndex.Value = Random.Range(0, pauseMenuTextures.Count);
+        }
+
+        PauseManager.Instance?.SetPaused(isPlayerPaused.Value);
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(isPlayerPaused.Value);
+        }
+
+    }
+    private void OnTextureChanged(int oldValue, int newValue)
+    {
+        if (newValue >= 0 && newValue < pauseMenuTextures.Count)
+        {
+            pauseRawImage.texture = pauseMenuTextures[newValue];
+        }
+    }
+
+    private void OnPauseStateChanged(bool previousValue, bool newValue)
+    {
+        if (!IsOwner && menuVisual != null) { menuVisual.SetActive(newValue); }
+    }
+}
