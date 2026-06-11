@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] Transform cameraTransform;
     [SerializeField] Transform playerFeet;
     [SerializeField] Animator animator;
+    private PauseHandler pauseHandler;
     [Header("Jump feel")]
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float fallMultiplier = 2.5f;
@@ -25,6 +26,7 @@ public class PlayerController : NetworkBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         rigidBody = GetComponent<Rigidbody>();
+        pauseHandler = GetComponent<PauseHandler>();
     }
     public override void OnNetworkSpawn()
     {
@@ -40,6 +42,10 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         if (!IsOwner) return;
+        if (pauseHandler.IsPaused)
+        {
+            return;
+        }
         bool grounded = IsGrounded();
         if (isGrounded != grounded)
         {

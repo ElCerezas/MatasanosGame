@@ -28,6 +28,11 @@ public struct OnDienteSnap : IEvent
     public ulong ID;
     public SnappableItem currentItem;
 }
+
+public struct OnPlayerPaused : IEvent
+{
+    public ulong playerID;
+}
 /*
 ==============================================================================
                                 EVENTOS DE ALIEN

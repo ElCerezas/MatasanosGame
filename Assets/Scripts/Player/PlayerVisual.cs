@@ -10,9 +10,23 @@ public class PlayerVisual : NetworkBehaviour
     [Header("Dirt Settings")]
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] float maxSplashes = 5f;
-    public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(0);
-    public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(0);
-    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f);
+    public NetworkVariable<int> bloodSplashes = 
+    new NetworkVariable<int>(
+        0, 
+        NetworkVariableReadPermission.Everyone, 
+        NetworkVariableWritePermission.Owner
+    );
+    public NetworkVariable<int> mocoSplashes = 
+    new NetworkVariable<int>(
+        0, 
+        NetworkVariableReadPermission.Everyone, 
+        NetworkVariableWritePermission.Owner
+    );
+    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(
+        0f,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner
+    );
     [SerializeField]float currentParasiteIntensity = 0f;
 
     private void Awake()
