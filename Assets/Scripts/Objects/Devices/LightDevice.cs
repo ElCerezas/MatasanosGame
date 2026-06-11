@@ -6,10 +6,12 @@ public class LightDevice : PoweredDevice
     [SerializeField] bool isEmergencyLight;
     [SerializeField] Light Light;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
         if (Light == null)
+        {
             Light = GetComponent<Light>();
+        }
     }
     public override void Powered()
     {
