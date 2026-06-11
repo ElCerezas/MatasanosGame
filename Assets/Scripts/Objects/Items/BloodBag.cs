@@ -14,6 +14,8 @@ public class BloodBag : NetworkBehaviour
     private float targetFillAmount = 1f;
     private float currentFillAmount = 1f;
     public float lerpSpeed = 2f;
+    public bool IsFull => bloodBagCurrentCapacity.Value >= bloodBagMaxCapacity;
+    public bool IsEmpty => bloodBagCurrentCapacity.Value <= 0f;
 
     [Header("Collision Explosion Settings")]
     [SerializeField] private float velocityThreshold = 5f;
@@ -75,7 +77,18 @@ public class BloodBag : NetworkBehaviour
 
         HandleBloodLoss();
     }
+    public void AddBlood(float amount)
+    {
+        if (!IsServer) return;
+        if (IsFull) return;
 
+        bloodBagCurrentCapacity.Value = Mathf.Min(
+            bloodBagCurrentCapacity.Value + amount,
+            bloodBagMaxCapacity
+        );
+        if (bloodBagCurrentCapacity.Value > 0f)
+            isEmptySent = false;
+    }
     void HandleBloodLoss()
     {
         if (bloodBagCurrentCapacity.Value <= 0f) return;
