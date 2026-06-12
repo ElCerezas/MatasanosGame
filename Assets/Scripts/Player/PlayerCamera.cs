@@ -37,6 +37,10 @@ public class PlayerCamera : NetworkBehaviour
             playerCam.GetComponentInChildren<Camera>().enabled = false;
             return;
         }
+
+        sensitivity = SettingsManager.Instance.GetSetting("Mouse Sensitivity");
+        SettingsManager.Instance.OnSettingChanged += OnSettingChanged;
+
         if (IsLocalPlayer)
         {
             int hiddenLayer = LayerMask.NameToLayer("LocalPlayerLayer");
@@ -81,4 +85,10 @@ public class PlayerCamera : NetworkBehaviour
         holdPoint.position = transform.position + Vector3.up * holdPointHeight + holdDirection * holdPointDistance;
         holdPoint.rotation = Quaternion.Euler(clampedPitch, yawRotation, 0f);
     }
+    private void OnSettingChanged(string key, float value)
+    {
+        if (key == "Mouse Sensitivity")
+            sensitivity = value;
+    }
+    
 }
