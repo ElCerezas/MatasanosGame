@@ -5,71 +5,84 @@ using UnityEngine;
 
 public class BloodBag : NetworkBehaviour
 {
+    [Header("Blood Settings")]
+    [SerializeField][Range(0f, 1f)] float initialFillPercentage = 1f;
     [SerializeField] private float bloodBagMaxCapacity = 100f;
-    [SerializeField] protected Renderer BloodRenderer;
-    [SerializeField] private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(100f);
-    [SerializeField] private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     [SerializeField] private float bloodLossQuantity = 1f;
     [SerializeField] private float bloodLossRate = 1f;
-    [Range(0f,1f)][SerializeField] float currentFillAmount = 1f;
-    private float targetFillAmount = 1f;
     public float lerpSpeed = 2f;
-    public bool IsFull => bloodBagCurrentCapacity.Value >= bloodBagMaxCapacity;
-    public bool IsEmpty => bloodBagCurrentCapacity.Value <= 0f;
+
+    [Header("References")]
+    [SerializeField] protected Renderer bloodRenderer;
 
     [Header("Collision Explosion Settings")]
     [SerializeField] private float velocityThreshold = 5f;
+    [SerializeField] private float emptyVelocityThreshold = -1f;
+    [SerializeField] private float explosionRadius = 5f;
     [SerializeField] private LayerMask explosionLayers;
-    [SerializeField] private bool debugCollisions = true;
+    [SerializeField] private LayerMask explosionDamageLayers;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private int puddleCount = 5;
     [SerializeField] private float puddleSpreadRadius = 3f;
-    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private ParticleSystem explosionParticles;
-    [SerializeField] private float explosionRadius = 5f;
-    [SerializeField] private LayerMask explosionDamageLayers;
-    private float bloodLossTimer = 0f;
-    private bool isEmptySent = false;
-    private float collisionCooldown = 0f;
-    private PhysicalItem toolItem;
+    [SerializeField] private bool debugCollisions = true;
 
-    Material cachedBloodMaterial;
+    // Network Variables
+    private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(-1f);
+    private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
+
+    float currentFillAmount = 1f;
+    private float bloodLossTimer = 0f;
+    private float collisionCooldown = 0f;
+    private bool isEmptySent = false;
+    private bool hasInitializedFill = false;
+    private ulong parentNetworkObjectId;
+
+    private Material cachedBloodMaterial;
+    private PhysicalItem toolItem;
+    private Rigidbody rb;
+    private int fillAmountParamID;
+
+    public float BloodBagMaxCapacity => bloodBagMaxCapacity;
+    public bool IsFull => bloodBagCurrentCapacity.Value >= 0f && bloodBagCurrentCapacity.Value >= bloodBagMaxCapacity;
+    public bool IsEmpty => bloodBagCurrentCapacity.Value >= 0f && bloodBagCurrentCapacity.Value <= 0f;
 
     private void Awake()
     {
-        if (BloodRenderer != null)
+        rb = GetComponent<Rigidbody>();
+        toolItem = GetComponent<PhysicalItem>();
+        fillAmountParamID = Shader.PropertyToID("_FillAmount");
+
+        if (bloodRenderer != null)
         {
-            cachedBloodMaterial = BloodRenderer.material;
+            cachedBloodMaterial = bloodRenderer.material;
         }
     }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        toolItem = GetComponent<PhysicalItem>();
+
+        var parentNetObj = GetComponentInParent<NetworkObject>();
+        if (parentNetObj != null)
+            parentNetworkObjectId = parentNetObj.NetworkObjectId;
 
         if (IsServer)
         {
-            bloodBagCurrentCapacity.Value = bloodBagMaxCapacity*currentFillAmount;
-            isEmptySent = currentFillAmount > 0f;
+            bloodBagCurrentCapacity.Value = bloodBagMaxCapacity * initialFillPercentage;
+            isEmptySent = bloodBagCurrentCapacity.Value <= 0f;
         }
-
-        targetFillAmount = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
-        currentFillAmount = targetFillAmount;
+        currentFillAmount = initialFillPercentage;
 
         if (cachedBloodMaterial != null)
-            cachedBloodMaterial.SetFloat("_FillAmount", currentFillAmount);
+            cachedBloodMaterial.SetFloat(fillAmountParamID, currentFillAmount);
 
         EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
         EventBus.Subscribe<OnBloodBagDetached>(OnDetach);
 
         isAttached.OnValueChanged += (oldVal, newVal) =>
         {
-            if (newVal != oldVal)
-                collisionCooldown = 0.5f;
-        };
-
-        bloodBagCurrentCapacity.OnValueChanged += (oldVal, newVal) =>
-        {
-            targetFillAmount = newVal / bloodBagMaxCapacity;
+            if (newVal != oldVal) collisionCooldown = 0.5f;
         };
     }
 
@@ -79,46 +92,61 @@ public class BloodBag : NetworkBehaviour
         EventBus.Unsubscribe<OnBloodBagDetached>(OnDetach);
         base.OnNetworkDespawn();
     }
+
     void Update()
     {
-        currentFillAmount = Mathf.Lerp(currentFillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
-        if (cachedBloodMaterial != null)
-            cachedBloodMaterial.SetFloat("_FillAmount", currentFillAmount);
+        if (bloodBagCurrentCapacity.Value < 0f) return;
 
-        if (!IsServer) return;
-        if (!isAttached.Value) return;
+        float target = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
 
-        if (collisionCooldown > 0)
-            collisionCooldown -= Time.deltaTime;
+        if (!hasInitializedFill)
+        {
+            currentFillAmount = target;
+            if (cachedBloodMaterial != null)
+                cachedBloodMaterial.SetFloat(fillAmountParamID, currentFillAmount);
+            hasInitializedFill = true;
+        }
+        else if (Mathf.Abs(currentFillAmount - target) > 0.001f)
+        {
+            currentFillAmount = Mathf.Lerp(currentFillAmount, target, lerpSpeed * Time.deltaTime);
+            if (cachedBloodMaterial != null)
+            {
+                cachedBloodMaterial.SetFloat(fillAmountParamID, currentFillAmount);
+            }
+        }
+
+        if (!IsServer || !isAttached.Value) return;
+
+        if (collisionCooldown > 0) collisionCooldown -= Time.deltaTime;
 
         HandleBloodLoss();
     }
+
     public void AddBlood(float amount)
     {
-        if (!IsServer) return;
-        if (IsFull) return;
+        if (!IsServer || IsFull) return;
 
-        bloodBagCurrentCapacity.Value = Mathf.Min(
-            bloodBagCurrentCapacity.Value + amount,
-            bloodBagMaxCapacity
-        );
-        if (bloodBagCurrentCapacity.Value > 0f)
-            isEmptySent = false;
+        bloodBagCurrentCapacity.Value = Mathf.Min(bloodBagCurrentCapacity.Value + amount, bloodBagMaxCapacity);
+
+        if (bloodBagCurrentCapacity.Value > 0f) isEmptySent = false;
     }
-    void HandleBloodLoss()
+
+    private void HandleBloodLoss()
     {
         if (bloodBagCurrentCapacity.Value <= 0f) return;
+
         bloodLossTimer += Time.deltaTime;
         if (bloodLossTimer >= bloodLossRate)
         {
             bloodLossTimer -= bloodLossRate;
             bloodBagCurrentCapacity.Value -= bloodLossQuantity;
+
             if (bloodBagCurrentCapacity.Value <= 0f)
             {
                 bloodBagCurrentCapacity.Value = 0f;
                 if (!isEmptySent)
                 {
-                    BloodBagEmpty();
+                    EventBus.Publish(new OnBloodBagEmpty { BloodBagID = parentNetworkObjectId });
                     isEmptySent = true;
                 }
             }
@@ -127,54 +155,28 @@ public class BloodBag : NetworkBehaviour
 
     public void OnAttach(OnBloodBagSnapped e)
     {
-        if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
-        if (toolItem == null)
-            toolItem = GetComponent<PhysicalItem>();
-
-        if (IsServer)
-            isAttached.Value = true;
+        if (e.BloodBagID != parentNetworkObjectId) return;
+        if (IsServer) isAttached.Value = true;
     }
 
     public void OnDetach(OnBloodBagDetached e)
     {
-        if (e.BloodBagID != GetComponentInParent<NetworkObject>().NetworkObjectId) return;
-
-        if (IsServer)
-            isAttached.Value = false;
+        if (e.BloodBagID != parentNetworkObjectId) return;
+        if (IsServer) isAttached.Value = false;
     }
 
-    private void BloodBagEmpty()
+    private void OnCollisionEnter(Collision collision)
     {
-        EventBus.Publish(new OnBloodBagEmpty { BloodBagID = GetComponentInParent<NetworkObject>().NetworkObjectId });
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (isAttached.Value) return;
-        if (isEmptySent) return;
-        if (collisionCooldown > 0) return;
-
-        if (toolItem == null) return;
-        if (toolItem.grabbers.Count == 0) return;
-
-        if (!IsLayerInMask(collision.gameObject.layer, explosionLayers))
-        {
-            if (debugCollisions)
-                Debug.Log($"[{NetworkManager.Singleton.LocalClientId}] {collision.gameObject.name} (Layer: {LayerMask.LayerToName(collision.gameObject.layer)}) no puede explotar bloodbag");
+        if (isAttached.Value || isEmptySent || collisionCooldown > 0 || toolItem == null || toolItem.grabbers.Count == 0)
             return;
-        }
 
-        float impactVelocity = Mathf.Max(
-            GetComponent<Rigidbody>().linearVelocity.magnitude,
-            collision.relativeVelocity.magnitude
-        );
+        float impactVelocity = Mathf.Max(rb.linearVelocity.magnitude, collision.relativeVelocity.magnitude);
 
-        if (debugCollisions)
-        {
-            Debug.Log($"[{NetworkManager.Singleton.LocalClientId}] Impact: {impactVelocity} vs Threshold: {velocityThreshold}");
-        }
+        float fill = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
+        float currentThreshold = GetCurrentVelocityThreshold(fill);
 
-        if (impactVelocity < velocityThreshold) return;
+        if (currentThreshold < 0f || impactVelocity < currentThreshold) return;
+
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius, explosionDamageLayers);
         foreach (var hitCollider in hitColliders)
         {
@@ -183,14 +185,21 @@ public class BloodBag : NetworkBehaviour
                 BloodStainsServerRpc(affectedPlayer.NetworkObjectId);
             }
         }
-        BloodbagVFXServerRpc();
 
+        BloodbagVFXServerRpc();
         HandleCollisionServerRpc(collision.contacts[0].point);
     }
 
     private bool IsLayerInMask(int layer, LayerMask mask)
     {
-        return ((mask.value & (1 << layer)) > 0);
+        return (mask.value & (1 << layer)) > 0;
+    }
+    private float GetCurrentVelocityThreshold(float fill)
+    {
+        if (emptyVelocityThreshold < 0f && fill <= 0f)
+            return -1f;
+
+        return Mathf.Lerp(emptyVelocityThreshold, velocityThreshold, fill);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -199,18 +208,23 @@ public class BloodBag : NetworkBehaviour
         if (!IsServer) return;
 
         SpawnBloodPuddles(impactPoint);
-        DespawnBloodBag();
+
+        if (NetworkObject != null && IsSpawned)
+            NetworkObject.Despawn();
     }
+
     [ServerRpc]
     private void BloodStainsServerRpc(ulong affectedPlayerNetObjId)
     {
         BloodStainsClientRpc(affectedPlayerNetObjId);
     }
-    [ClientRpc] 
+
+    [ClientRpc]
     private void BloodStainsClientRpc(ulong affectedPlayerNetObjId)
     {
         EventBus.Publish(new OnPlayerSlipped { VictimID = affectedPlayerNetObjId });
     }
+
     [ServerRpc]
     private void BloodbagVFXServerRpc()
     {
@@ -220,6 +234,8 @@ public class BloodBag : NetworkBehaviour
     [ClientRpc]
     private void BloodbagVFXClientRpc()
     {
+        if (explosionParticles == null) return;
+
         explosionParticles.transform.SetParent(null);
         explosionParticles.gameObject.SetActive(true);
         explosionParticles.Play();
@@ -243,20 +259,5 @@ public class BloodBag : NetworkBehaviour
                 PuddleSpawner.Instance.SpawnPuddleServerRpc(hit.point, hit.normal);
             }
         }
-    }
-
-    private void DespawnBloodBag()
-    {
-        NetworkObject parentNetObject = GetComponent<NetworkObject>();
-        if (parentNetObject != null && parentNetObject.IsSpawned)
-        {
-            parentNetObject.Despawn();
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

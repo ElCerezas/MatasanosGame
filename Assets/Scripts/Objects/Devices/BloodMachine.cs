@@ -4,8 +4,6 @@ using UnityEngine;
 public class BloodMachine : PoweredDevice
 {
     [Header("Machine Settings")]
-    [SerializeField] private float fillRate = 1f;
-    [SerializeField] private float fillQuantity = 1f;
     [SerializeField] private float maxBloodbagFillTime = 90f;
 
     [Header("BloodBags")]
@@ -17,7 +15,6 @@ public class BloodMachine : PoweredDevice
     [SerializeField] float pinRaiseHeight;
     [SerializeField] private float pinMoveSpeed = 2f;
 
-    private float[] fillTimers;
     private float[] pinProgress;
     private Vector3[] pinBaseLocalPositions;
 
@@ -26,7 +23,6 @@ public class BloodMachine : PoweredDevice
     }
     void Start()
     {
-        fillTimers = new float[snapZones.Length];
         pinProgress = new float[snapZones.Length];
 
         pinBaseLocalPositions = new Vector3[injectionPins.Length];
@@ -58,12 +54,8 @@ public class BloodMachine : PoweredDevice
 
             if (bag.IsFull) continue;
 
-            fillTimers[i] += Time.deltaTime;
-            if (fillTimers[i] >= fillRate)
-            {
-                fillTimers[i] -= fillRate;
-                bag.AddBlood(fillQuantity);
-            }
+            float amountPerSecond = bag.BloodBagMaxCapacity / maxBloodbagFillTime;
+            bag.AddBlood(amountPerSecond * Time.deltaTime);
         }
     }
 

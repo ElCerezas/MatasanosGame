@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4011483445
+  GlobalObjectIdHash: 4081500721
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -81,37 +81,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BloodBag
   ShowTopMostFoldoutHeaderGroup: 1
+  initialFillPercentage: 1
   bloodBagMaxCapacity: 150
-  BloodRenderer: {fileID: 7555743351260848673}
-  bloodBagCurrentCapacity:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 100
-  isAttached:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
   bloodLossQuantity: 1
   bloodLossRate: 1
-  currentFillAmount: 1
   lerpSpeed: 2
+  bloodRenderer: {fileID: 7555743351260848673}
   velocityThreshold: 6
+  emptyVelocityThreshold: -1
+  explosionRadius: 4
   explosionLayers:
     serializedVersion: 2
     m_Bits: 3921
-  debugCollisions: 1
-  puddleCount: 5
-  puddleSpreadRadius: 5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  explosionParticles: {fileID: 4645617527091262609}
-  explosionRadius: 4
   explosionDamageLayers:
     serializedVersion: 2
     m_Bits: 2048
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  puddleCount: 5
+  puddleSpreadRadius: 5
+  explosionParticles: {fileID: 4645617527091262609}
+  debugCollisions: 1
 --- !u!114 &3386439851974111025
 MonoBehaviour:
   m_ObjectHideFlags: 0
