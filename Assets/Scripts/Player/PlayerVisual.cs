@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -13,24 +14,27 @@ public class PlayerVisual : NetworkBehaviour
     [SerializeField] DecalProjector mouthDecalRenderer;
     [SerializeField] int sheetColumns = 1;
     [SerializeField] int sheetRows = 1;
-    NetworkVariable<int> eyeFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [NonSerialized] public NetworkVariable<int> eyeFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [NonSerialized] public NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     int totalFaces = 1;
 
     [Header("Dirt Settings")]
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] float maxSplashes = 5f;
-    NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(
+    [NonSerialized]
+    public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(
         0,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
     );
-    NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(
+    [NonSerialized]
+    public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(
         0,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
     );
-    NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(
+    [NonSerialized]
+    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(
         0f,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
