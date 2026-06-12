@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8737621880936660036}
   - component: {fileID: 9210147826842437750}
   - component: {fileID: 3653550655160236334}
+  - component: {fileID: 3623567317940901353}
   m_Layer: 6
   m_Name: Bloodbag
   m_TagString: Untagged
@@ -34,8 +35,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.050848, y: 5.2, z: -35.276215}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 349164185274039913}
   - {fileID: 8687523221541738830}
@@ -54,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4081500721
+  GlobalObjectIdHash: 4011483445
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -94,6 +95,7 @@ MonoBehaviour:
     m_InternalValue: 0
   bloodLossQuantity: 1
   bloodLossRate: 1
+  currentFillAmount: 1
   lerpSpeed: 2
   velocityThreshold: 6
   explosionLayers:
@@ -234,8 +236,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4832294, y: 0.5960171, z: 0.186306}
-  m_Center: {x: 0.0074955225, y: -0.115538955, z: -0.0010890961}
+  m_Size: {x: 0.9403248, y: 1.2804751, z: 0.39}
+  m_Center: {x: 0.023, y: -0.5, z: 0}
 --- !u!114 &3653550655160236334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +255,14 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!33 &3623567317940901353
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4467649564059008264}
+  m_Mesh: {fileID: 3508882566646745819, guid: f359a6c3ea72ecb458eafa4a80cc7843, type: 3}
 --- !u!1001 &19610688912301059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -287,15 +297,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6032556772500303819, guid: 7d79beed8dd5ff344a0574912225987e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6032556772500303819, guid: 7d79beed8dd5ff344a0574912225987e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6032556772500303819, guid: 7d79beed8dd5ff344a0574912225987e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6032556772500303819, guid: 7d79beed8dd5ff344a0574912225987e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -303,7 +313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6032556772500303819, guid: 7d79beed8dd5ff344a0574912225987e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.137
+      value: -0.513
       objectReference: {fileID: 0}
     - target: {fileID: 6032556772500303819, guid: 7d79beed8dd5ff344a0574912225987e, type: 3}
       propertyPath: m_LocalPosition.z

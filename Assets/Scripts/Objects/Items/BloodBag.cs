@@ -11,8 +11,8 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     [SerializeField] private float bloodLossQuantity = 1f;
     [SerializeField] private float bloodLossRate = 1f;
+    [Range(0f,1f)][SerializeField] float currentFillAmount = 1f;
     private float targetFillAmount = 1f;
-    private float currentFillAmount = 1f;
     public float lerpSpeed = 2f;
     public bool IsFull => bloodBagCurrentCapacity.Value >= bloodBagMaxCapacity;
     public bool IsEmpty => bloodBagCurrentCapacity.Value <= 0f;
@@ -32,15 +32,32 @@ public class BloodBag : NetworkBehaviour
     private float collisionCooldown = 0f;
     private PhysicalItem toolItem;
 
+    Material cachedBloodMaterial;
+
+    private void Awake()
+    {
+        if (BloodRenderer != null)
+        {
+            cachedBloodMaterial = BloodRenderer.material;
+        }
+    }
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         toolItem = GetComponent<PhysicalItem>();
+
         if (IsServer)
         {
-            bloodBagCurrentCapacity.Value = bloodBagMaxCapacity;
-            isEmptySent = false;
+            bloodBagCurrentCapacity.Value = bloodBagMaxCapacity*currentFillAmount;
+            isEmptySent = currentFillAmount > 0f;
         }
+
+        targetFillAmount = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
+        currentFillAmount = targetFillAmount;
+
+        if (cachedBloodMaterial != null)
+            cachedBloodMaterial.SetFloat("_FillAmount", currentFillAmount);
+
         EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
         EventBus.Subscribe<OnBloodBagDetached>(OnDetach);
 
@@ -62,15 +79,14 @@ public class BloodBag : NetworkBehaviour
         EventBus.Unsubscribe<OnBloodBagDetached>(OnDetach);
         base.OnNetworkDespawn();
     }
-
     void Update()
     {
         currentFillAmount = Mathf.Lerp(currentFillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
-        BloodRenderer.sharedMaterial.SetFloat("_FillAmount", currentFillAmount);
+        if (cachedBloodMaterial != null)
+            cachedBloodMaterial.SetFloat("_FillAmount", currentFillAmount);
 
         if (!IsServer) return;
         if (!isAttached.Value) return;
-
 
         if (collisionCooldown > 0)
             collisionCooldown -= Time.deltaTime;
