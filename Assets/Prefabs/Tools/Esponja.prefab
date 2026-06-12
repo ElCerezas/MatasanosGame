@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8258731017200298402}
   - component: {fileID: 3932549347248097257}
   - component: {fileID: 1416390433482535200}
-  - component: {fileID: 1905434790773373397}
+  - component: {fileID: 5576657529238673515}
   m_Layer: 6
   m_Name: Esponja
   m_TagString: Untagged
@@ -252,8 +252,8 @@ MonoBehaviour:
     m_ColorSpace: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
---- !u!64 &1905434790773373397
-MeshCollider:
+--- !u!65 &5576657529238673515
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -270,10 +270,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -612376834313925032, guid: 21cb1e8e9fc437349a20b54b86168fdc, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.41018692, y: 0.19790745, z: 0.07081797}
+  m_Center: {x: -0.0016905516, y: -0.00044190884, z: -0.0150875775}
 --- !u!1 &7510763028642685827
 GameObject:
   m_ObjectHideFlags: 0
