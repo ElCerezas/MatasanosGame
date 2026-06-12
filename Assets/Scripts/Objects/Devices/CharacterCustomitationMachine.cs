@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+
 public class CharacterCustomitationMachine : NetworkBehaviour
 {
-    [Serializable] public struct Hat : INetworkSerializeByMemcpy
+    [Serializable]
+    public struct Hat
     {
         public Mesh mesh;
         public Material mat;
@@ -22,87 +24,108 @@ public class CharacterCustomitationMachine : NetworkBehaviour
 
     public void ChangeColor(ulong player, int v)
     {
-        if (IsServer) return;
-
-        colorID += v;
-        if (colorID >= colores.Count)
-            colorID = 0;
-        else if (colorID < 0)
-            colorID = colores.Count - 1;
-
-        ApplyColorClientRpc(player, colores[colorID]);
+        ChangeColorServerRpc(player, v);
     }
     public void ChangEyes(ulong player, int v)
     {
-        if (IsServer) return;
-        eyeID += v;
-        if (eyeID >= maxFaces)
-            eyeID = 0;
-        else if (eyeID < 0)
-            eyeID = maxFaces - 1;
-        ApplyEyesClientRpc(player, eyeID);
+        ChangEyesServerRpc(player, v);
     }
     public void ChangMouth(ulong player, int v)
     {
-        if (IsServer) return;
-        mouthID += v;
-        if (mouthID >= maxFaces)
-            mouthID = 0;
-        else if (mouthID < 0)
-            mouthID = maxFaces - 1;
-        ApplyMouthClientRpc(player, mouthID);
+        ChangMouthServerRpc(player, v);
     }
     public void ChangeHat(ulong player, int v)
     {
-        if (IsServer) return;
+        ChangeHatServerRpc(player, v);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeColorServerRpc(ulong player, int v)
+    {
+        colorID += v;
+        if (colorID >= colores.Count) colorID = 0;
+        else if (colorID < 0) colorID = colores.Count - 1;
+
+        ApplyColorClientRpc(player, colores[colorID]);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangEyesServerRpc(ulong player, int v)
+    {
+        eyeID += v;
+        if (eyeID >= maxFaces) eyeID = 0;
+        else if (eyeID < 0) eyeID = maxFaces - 1;
+
+        ApplyEyesClientRpc(player, eyeID);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangMouthServerRpc(ulong player, int v)
+    {
+        mouthID += v;
+        if (mouthID >= maxFaces) mouthID = 0;
+        else if (mouthID < 0) mouthID = maxFaces - 1;
+
+        ApplyMouthClientRpc(player, mouthID);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeHatServerRpc(ulong player, int v)
+    {
         hatID += v;
-        if (hatID >= hats.Count)
-            hatID = 0;
-        else if (hatID < 0)
-            hatID = hats.Count - 1;
-        ApplyHatClientRpc(player, hats[hatID]);
+        if (hatID >= hats.Count) hatID = 0;
+        else if (hatID < 0) hatID = hats.Count - 1;
+        ApplyHatClientRpc(player, hatID);
     }
 
     [ClientRpc]
     void ApplyColorClientRpc(ulong player, Color color)
     {
         var visual = GetVisual(player);
-        if (visual == null || !visual.IsOwner) return;
+        if (visual == null) return;
 
         visual.ChangeColor(color);
     }
+
     [ClientRpc]
     void ApplyEyesClientRpc(ulong player, int eyesIndex)
     {
         var visual = GetVisual(player);
-        if (visual == null || !visual.IsOwner) return;
+        if (visual == null) return;
+        if (visual.IsOwner)
             visual.SetEyeFaceIndex(eyesIndex);
     }
+
     [ClientRpc]
     void ApplyMouthClientRpc(ulong player, int mouthIndex)
     {
         var visual = GetVisual(player);
-        if (visual == null || !visual.IsOwner) return;
-        visual.SetMouthFaceIndex(mouthIndex);
+        if (visual == null) return;
 
+        if (visual.IsOwner)
+            visual.SetMouthFaceIndex(mouthIndex);
     }
+
     [ClientRpc]
-    void ApplyHatClientRpc(ulong player, Hat hat)
+    void ApplyHatClientRpc(ulong player, int hatIndex)
     {
         var visual = GetVisual(player);
-        if (visual == null || !visual.IsOwner) return;
+        if (visual == null) return;
 
-        visual.ChangeHat(hat.mesh, hat.mat);
+        if (hatIndex >= 0 && hatIndex < hats.Count)
+        {
+            Hat selectedHat = hats[hatIndex];
+            visual.ChangeHat(selectedHat.mesh, selectedHat.mat);
+        }
     }
 
-    PlayerVisual GetVisual(ulong player)
+    PlayerVisual GetVisual(ulong playerClientId)
     {
-        if (!NetworkManager.Singleton.ConnectedClients.ContainsKey(player))
-            return null;
-
-        var playerObject = NetworkManager.Singleton.ConnectedClients[player].PlayerObject;
-        if (playerObject == null) return null;
-
-        return playerObject.GetComponent<PlayerVisual>();
+        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(playerClientId);
+        if (playerObject != null)
+        {
+            return playerObject.GetComponent<PlayerVisual>();
+        }
+        return null;
     }
 }

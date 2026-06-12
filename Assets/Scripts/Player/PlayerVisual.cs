@@ -18,35 +18,27 @@ public class PlayerVisual : NetworkBehaviour
     [NonSerialized] public NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     int totalFaces = 1;
 
+    [Header("Hat Visuals")]
+    [SerializeField] MeshFilter hatMeshFilter;
+    [SerializeField] MeshRenderer hatRenderer;
+
     [Header("Dirt Settings")]
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] float maxSplashes = 5f;
     [NonSerialized]
-    public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(
-        0,
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner
-    );
+    public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [NonSerialized]
-    public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(
-        0,
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner
-    );
+    public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [NonSerialized]
-    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(
-        0f,
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner
-    );
+    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] float currentParasiteIntensity = 0f;
-
 
     private void Awake()
     {
         playerMaterial = playerRenderer.material;
         totalFaces = sheetRows * sheetColumns;
     }
+
     public override void OnNetworkSpawn()
     {
         bloodSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();
@@ -55,15 +47,15 @@ public class PlayerVisual : NetworkBehaviour
         eyeFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateEyeDecal();
         mouthFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateMouthDecal();
 
-        Vector2 s = new Vector2(1f/sheetColumns, 1f/sheetRows);
+        Vector2 s = new Vector2(1f / sheetColumns, 1f / sheetRows);
         eyeDecalRenderer.uvScale = s;
         mouthDecalRenderer.uvScale = s;
 
         UpdateMaterialSplashes();
-
         UpdateEyeDecal();
         UpdateMouthDecal();
     }
+
     private void Update()
     {
         if (!IsOwner)
@@ -96,6 +88,7 @@ public class PlayerVisual : NetworkBehaviour
         playerMaterial.SetFloat("_ParasiteAmount", currentParasiteIntensity);
     }
     #endregion
+
     #region Customitzation
     public void ChangeColor(Color colr)
     {
@@ -103,12 +96,20 @@ public class PlayerVisual : NetworkBehaviour
     }
     public void ChangeHat(Mesh hatMesh, Material hatMaterial)
     {
-
+        if (hatMeshFilter != null && hatRenderer != null)
+        {
+            hatMeshFilter.mesh = hatMesh;
+            hatRenderer.material = hatMaterial;
+        }
+        else
+        {
+            Debug.LogWarning("Falta asignar el Hat Mesh Filter o el Hat Renderer en el Inspector del PlayerVisual.");
+        }
     }
+
     Vector2 GetSpriteSheetCoords(int index)
     {
         index = ((index % totalFaces) + totalFaces) % totalFaces;
-
         float tileW = 1f / sheetColumns;
         float tileH = 1f / sheetRows;
 
@@ -127,13 +128,14 @@ public class PlayerVisual : NetworkBehaviour
         if (mouthDecalRenderer == null) return;
         mouthDecalRenderer.uvBias = GetSpriteSheetCoords(mouthFaceIndex.Value);
     }
+
     public void SetEyeFaceIndex(int index)
     {
         eyeFaceIndex.Value = ((index % totalFaces) + totalFaces) % totalFaces;
     }
     public void SetMouthFaceIndex(int index)
     {
-        mouthFaceIndex.Value = ((index%totalFaces) + totalFaces) % totalFaces;
+        mouthFaceIndex.Value = ((index % totalFaces) + totalFaces) % totalFaces;
     }
     #endregion
 }
