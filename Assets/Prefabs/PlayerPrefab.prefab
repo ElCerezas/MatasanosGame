@@ -10612,7 +10612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2402241250
+  GlobalObjectIdHash: 3184265775
   InScenePlacedSourceGlobalObjectIdHash: 2402241250
   DeferredDespawnTick: 0
   Ownership: 1
@@ -10900,6 +10900,20 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerRenderer: {fileID: 8603796408482962090}
   playerMaterial: {fileID: 0}
+  eyeDecalRenderer: {fileID: 2354941459339632500}
+  mouthDecalRenderer: {fileID: 3114993212632813356}
+  sheetColumns: 6
+  sheetRows: 4
+  eyeFaceIndex:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  mouthFaceIndex:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   parasiteGrowthRate: 0.05
   maxSplashes: 10
   bloodSplashes:
