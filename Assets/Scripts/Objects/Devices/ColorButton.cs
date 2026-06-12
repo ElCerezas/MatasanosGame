@@ -13,9 +13,5 @@ public class ColorButton : InteractableItem
     public override void Interact(ulong clientID)
     {
         base.Interact(clientID);
-        if (nextColor)
-            CCM.NextColor(clientID);
-        else
-            CCM.PrevColor(clientID);
     }
 }
