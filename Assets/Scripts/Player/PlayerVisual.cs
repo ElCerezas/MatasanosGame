@@ -78,4 +78,9 @@ public class PlayerVisual : NetworkBehaviour
     {
         playerMaterial.SetColor("_PlayerColor", colr);
     }
+
+    public void ChangeHat(Mesh hatMesh, Material hatMaterial)
+    {
+
+    }
 }
