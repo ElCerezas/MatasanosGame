@@ -29,6 +29,10 @@ public class SnapZone : NetworkBehaviour
             nt.AuthorityMode = NetworkTransform.AuthorityModes.Owner;
             nt.InLocalSpace = true;
         }
+        if (snapAnchor == null)
+        {
+            snapAnchor = gameObject.transform;
+        }
     }
 
     public override void OnNetworkSpawn()
