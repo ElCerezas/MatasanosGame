@@ -46,7 +46,10 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         if (colorID >= colores.Count) colorID = 0;
         else if (colorID < 0) colorID = colores.Count - 1;
 
-        ApplyColorClientRpc(player, colores[colorID]);
+        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player); // OK aquí, es server
+        if (playerObject == null) return;
+
+        ApplyColorClientRpc(playerObject.NetworkObjectId, colores[colorID]);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -79,11 +82,10 @@ public class CharacterCustomitationMachine : NetworkBehaviour
     }
 
     [ClientRpc]
-    void ApplyColorClientRpc(ulong player, Color color)
+    void ApplyColorClientRpc(ulong playerNetworkObjectId, Color color)
     {
-        var visual = GetVisual(player);
+        var visual = GetVisual(playerNetworkObjectId);
         if (visual == null) return;
-
         visual.ChangeColor(color);
     }
 
@@ -119,12 +121,11 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         }
     }
 
-    PlayerVisual GetVisual(ulong playerClientId)
+    PlayerVisual GetVisual(ulong networkObjectId)
     {
-        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(playerClientId);
-        if (playerObject != null)
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out var netObj))
         {
-            return playerObject.GetComponent<PlayerVisual>();
+            return netObj.GetComponent<PlayerVisual>();
         }
         return null;
     }

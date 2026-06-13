@@ -33,12 +33,11 @@ public class PlayerVisual : NetworkBehaviour
     public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] float currentParasiteIntensity = 0f;
 
-    private void Awake()
+    void Awake()
     {
         playerMaterial = playerRenderer.material;
         totalFaces = sheetRows * sheetColumns;
     }
-
     public override void OnNetworkSpawn()
     {
         bloodSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();
@@ -55,8 +54,7 @@ public class PlayerVisual : NetworkBehaviour
         UpdateEyeDecal();
         UpdateMouthDecal();
     }
-
-    private void Update()
+    void Update()
     {
         if (!IsOwner)
         {
@@ -92,6 +90,9 @@ public class PlayerVisual : NetworkBehaviour
     #region Customitzation
     public void ChangeColor(Color colr)
     {
+        if (playerMaterial == null)
+            playerMaterial = playerRenderer.material;
+
         playerMaterial.SetColor("_PlayerColor", colr);
     }
     public void ChangeHat(Mesh hatMesh, Material hatMaterial)
