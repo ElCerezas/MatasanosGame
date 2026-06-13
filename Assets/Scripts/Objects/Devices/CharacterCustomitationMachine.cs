@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using TMPro;
 
 public class CharacterCustomitationMachine : NetworkBehaviour
 {
@@ -17,10 +18,11 @@ public class CharacterCustomitationMachine : NetworkBehaviour
     [SerializeField] public List<Hat> hats;
     [SerializeField] public int maxFaces;
 
-    private int colorID = 0;
-    private int eyeID = 0;
-    private int mouthID = 0;
-    private int hatID = 0;
+    [Header("UI")]
+    [SerializeField] TMP_Text colorIndexText;
+    [SerializeField] TMP_Text eyeIndexText;
+    [SerializeField] TMP_Text mouthIndexText;
+    [SerializeField] TMP_Text hatIndexText;
 
     public void ChangeColor(ulong player, int v)
     {
@@ -39,60 +41,85 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         ChangeHatServerRpc(player, v);
     }
 
-    #region Server RPC
     [ServerRpc(RequireOwnership = false)]
     void ChangeColorServerRpc(ulong player, int v)
     {
-        colorID += v;
-        if (colorID >= colores.Count) colorID = 0;
-        else if (colorID < 0) colorID = colores.Count - 1;
-
-        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player); // OK aquí, es server
+        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
         if (playerObject == null) return;
+        var visual = playerObject.GetComponent<PlayerVisual>();
 
-        ApplyColorClientRpc(playerObject.NetworkObjectId, colores[colorID]);
+        int newId = visual.colorIndex.Value + v;
+        if (newId >= colores.Count) newId = 0;
+        else if (newId < 0) newId = colores.Count - 1;
+        visual.colorIndex.Value = newId;
+
+        ApplyColorClientRpc(playerObject.NetworkObjectId, colores[newId]);
+        UpdateUIClientRpc(player, newId, visual.eyeFaceIndex.Value, visual.mouthFaceIndex.Value, visual.hatIndex.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
     void ChangEyesServerRpc(ulong player, int v)
     {
-        eyeID += v;
-        if (eyeID >= maxFaces) eyeID = 0;
-        else if (eyeID < 0) eyeID = maxFaces - 1;
-
         var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
         if (playerObject == null) return;
+        var visual = playerObject.GetComponent<PlayerVisual>();
 
-        ApplyEyesClientRpc(playerObject.NetworkObjectId, eyeID);
+        int newId = visual.eyeFaceIndex.Value + v;
+        if (newId >= maxFaces) newId = 0;
+        else if (newId < 0) newId = maxFaces - 1;
+        visual.eyeFaceIndex.Value = newId;
+
+        UpdateUIClientRpc(player, visual.colorIndex.Value, newId, visual.mouthFaceIndex.Value, visual.hatIndex.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
     void ChangMouthServerRpc(ulong player, int v)
     {
-        mouthID += v;
-        if (mouthID >= maxFaces) mouthID = 0;
-        else if (mouthID < 0) mouthID = maxFaces - 1;
-
         var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
         if (playerObject == null) return;
+        var visual = playerObject.GetComponent<PlayerVisual>();
 
-        ApplyMouthClientRpc(playerObject.NetworkObjectId, mouthID);
+        int newId = visual.mouthFaceIndex.Value + v;
+        if (newId >= maxFaces) newId = 0;
+        else if (newId < 0) newId = maxFaces - 1;
+        visual.mouthFaceIndex.Value = newId;
+
+        UpdateUIClientRpc(player, visual.colorIndex.Value, visual.eyeFaceIndex.Value, newId, visual.hatIndex.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
     void ChangeHatServerRpc(ulong player, int v)
     {
-        hatID += v;
-        if (hatID >= hats.Count) hatID = 0;
-        else if (hatID < 0) hatID = hats.Count - 1;
-
         var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
         if (playerObject == null) return;
+        var visual = playerObject.GetComponent<PlayerVisual>();
 
-        ApplyHatClientRpc(playerObject.NetworkObjectId, hatID);
+        int newId = visual.hatIndex.Value + v;
+        if (newId >= hats.Count) newId = 0;
+        else if (newId < 0) newId = hats.Count - 1;
+        visual.hatIndex.Value = newId;
+
+        ApplyHatClientRpc(playerObject.NetworkObjectId, newId);
+        UpdateUIClientRpc(player, visual.colorIndex.Value, visual.eyeFaceIndex.Value, visual.mouthFaceIndex.Value, newId);
     }
-    #endregion
-    #region Client RPC
+
+    [ClientRpc]
+    void UpdateUIClientRpc(ulong player, int colorIdx, int eyeIdx, int mouthIdx, int hatIdx)
+    {
+        if (NetworkManager.Singleton.LocalClientId != player) return;
+
+        UpdateText(colorIndexText, colorIdx);
+        UpdateText(eyeIndexText, eyeIdx);
+        UpdateText(mouthIndexText, mouthIdx);
+        UpdateText(hatIndexText, hatIdx);
+    }
+
+    void UpdateText(TMP_Text text, int value)
+    {
+        if (text == null) return;
+        text.text = (value + 1).ToString("D2");
+    }
+
     [ClientRpc]
     void ApplyColorClientRpc(ulong playerNetworkObjectId, Color color)
     {
@@ -102,28 +129,9 @@ public class CharacterCustomitationMachine : NetworkBehaviour
     }
 
     [ClientRpc]
-    void ApplyEyesClientRpc(ulong player, int eyesIndex)
+    void ApplyHatClientRpc(ulong playerNetworkObjectId, int hatIndex)
     {
-        var visual = GetVisual(player);
-        if (visual == null) return;
-        if (visual.IsOwner)
-            visual.SetEyeFaceIndex(eyesIndex);
-    }
-
-    [ClientRpc]
-    void ApplyMouthClientRpc(ulong player, int mouthIndex)
-    {
-        var visual = GetVisual(player);
-        if (visual == null) return;
-
-        if (visual.IsOwner)
-            visual.SetMouthFaceIndex(mouthIndex);
-    }
-
-    [ClientRpc]
-    void ApplyHatClientRpc(ulong player, int hatIndex)
-    {
-        var visual = GetVisual(player);
+        var visual = GetVisual(playerNetworkObjectId);
         if (visual == null) return;
 
         if (hatIndex >= 0 && hatIndex < hats.Count)
@@ -132,7 +140,7 @@ public class CharacterCustomitationMachine : NetworkBehaviour
             visual.ChangeHat(selectedHat.mesh, selectedHat.mat);
         }
     }
-    #endregion
+
     PlayerVisual GetVisual(ulong networkObjectId)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out var netObj))

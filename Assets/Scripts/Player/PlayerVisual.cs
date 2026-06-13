@@ -14,8 +14,6 @@ public class PlayerVisual : NetworkBehaviour
     [SerializeField] DecalProjector mouthDecalRenderer;
     [SerializeField] int sheetColumns = 1;
     [SerializeField] int sheetRows = 1;
-    [NonSerialized] public NetworkVariable<int> eyeFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    [NonSerialized] public NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     int totalFaces = 1;
 
     [Header("Hat Visuals")]
@@ -33,6 +31,11 @@ public class PlayerVisual : NetworkBehaviour
     public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] float currentParasiteIntensity = 0f;
 
+
+    [NonSerialized] public NetworkVariable<int> eyeFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    [NonSerialized] public NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    [NonSerialized] public NetworkVariable<int> colorIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    [NonSerialized] public NetworkVariable<int> hatIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     void Awake()
     {
         playerMaterial = playerRenderer.material;
