@@ -41,7 +41,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            FMODUnity.StudioListener fmodListener = GetComponentInChildren<FMODUnity.StudioListener>();
+            FMODUnity.StudioListener fmodListener = GetComponentInChildren<FMODUnity.StudioListener>(true);
             if (fmodListener != null)
             {
                 fmodListener.enabled = false;
