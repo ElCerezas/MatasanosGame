@@ -2,7 +2,8 @@ public enum ColliderItemType
 {
     Algodon,
     AlgodonEstirilizado,
-    Venda
+    Venda,
+    Esponja
 }
 
 public enum ColliderDetectorType
@@ -11,5 +12,6 @@ public enum ColliderDetectorType
     Betadine,
     Herida,
     HeridaDesinfectada,
-    HeridaVendada
+    HeridaVendada,
+    Pote
 }

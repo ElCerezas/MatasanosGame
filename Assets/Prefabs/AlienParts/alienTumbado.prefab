@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2737232545
+  GlobalObjectIdHash: 1193138775
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -860,7 +860,7 @@ PrefabInstance:
     - target: {fileID: 6250045865214014622, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: BoneParent
       value: 
-      objectReference: {fileID: 7372780504200867769}
+      objectReference: {fileID: 8766676840175659585}
     - target: {fileID: 6545675781818091137, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.002
@@ -1381,11 +1381,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
   m_PrefabInstance: {fileID: 6575476681894429277}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7372780504200867769 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4822886833069232668, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
-  m_PrefabInstance: {fileID: 6575476681894429277}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7685625886177687515 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3596156402420446598, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
@@ -1526,3 +1521,8 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.013450772
   m_Center: {x: -3.4033762e-10, y: 0.0034507762, z: -4.5655826e-10}
+--- !u!4 &8766676840175659585 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2515743177525094428, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
+  m_PrefabInstance: {fileID: 6575476681894429277}
+  m_PrefabAsset: {fileID: 0}

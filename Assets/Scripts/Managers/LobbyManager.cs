@@ -37,9 +37,6 @@ public class LobbyManager : InteractableItem
 
         if(numberOfPlayers != numberOfPlayersText) UpdateTextClientRpc(playersReady.Value.Count, numberOfPlayers);
 
-        m_TextMeshProUGUI.transform.LookAt(localCamera.transform.position - new Vector3(0,-1,0));
-        transform.Rotate(0, 180f, 0);
-
         numberOfPlayersText = numberOfPlayers;
     }
     public override void Interact(ulong clientID)
