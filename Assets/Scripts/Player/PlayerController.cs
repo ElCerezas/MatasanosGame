@@ -109,7 +109,7 @@ public class PlayerController : NetworkBehaviour
 
     void PlayFootstepSound()
     {
-        if (AudioManager.instance != null && playerFeet != null)
+        if (AudioManager.instance != null && playerFeet != null && !isRagdoll && !pauseHandler.IsPaused)
         {
             AudioManager.instance.PlayOneShotAtPosition(footstepSound, playerFeet.position);
         }
