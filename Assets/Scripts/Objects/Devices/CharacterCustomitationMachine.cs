@@ -39,6 +39,7 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         ChangeHatServerRpc(player, v);
     }
 
+    #region Server RPC
     [ServerRpc(RequireOwnership = false)]
     void ChangeColorServerRpc(ulong player, int v)
     {
@@ -59,7 +60,10 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         if (eyeID >= maxFaces) eyeID = 0;
         else if (eyeID < 0) eyeID = maxFaces - 1;
 
-        ApplyEyesClientRpc(player, eyeID);
+        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
+        if (playerObject == null) return;
+
+        ApplyEyesClientRpc(playerObject.NetworkObjectId, eyeID);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -69,7 +73,10 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         if (mouthID >= maxFaces) mouthID = 0;
         else if (mouthID < 0) mouthID = maxFaces - 1;
 
-        ApplyMouthClientRpc(player, mouthID);
+        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
+        if (playerObject == null) return;
+
+        ApplyMouthClientRpc(playerObject.NetworkObjectId, mouthID);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -78,9 +85,14 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         hatID += v;
         if (hatID >= hats.Count) hatID = 0;
         else if (hatID < 0) hatID = hats.Count - 1;
-        ApplyHatClientRpc(player, hatID);
-    }
 
+        var playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(player);
+        if (playerObject == null) return;
+
+        ApplyHatClientRpc(playerObject.NetworkObjectId, hatID);
+    }
+    #endregion
+    #region Client RPC
     [ClientRpc]
     void ApplyColorClientRpc(ulong playerNetworkObjectId, Color color)
     {
@@ -120,7 +132,7 @@ public class CharacterCustomitationMachine : NetworkBehaviour
             visual.ChangeHat(selectedHat.mesh, selectedHat.mat);
         }
     }
-
+    #endregion
     PlayerVisual GetVisual(ulong networkObjectId)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out var netObj))

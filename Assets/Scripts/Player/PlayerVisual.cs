@@ -46,7 +46,7 @@ public class PlayerVisual : NetworkBehaviour
         eyeFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateEyeDecal();
         mouthFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateMouthDecal();
 
-        Vector2 s = new Vector2(1f / sheetColumns, 1f / sheetRows);
+        Vector2 s = new Vector2(1f / sheetColumns, 1f / (sheetRows * 2f));
         eyeDecalRenderer.uvScale = s;
         mouthDecalRenderer.uvScale = s;
 
@@ -108,26 +108,31 @@ public class PlayerVisual : NetworkBehaviour
         }
     }
 
-    Vector2 GetSpriteSheetCoords(int index)
+    Vector2 GetSpriteSheetCoords(int index, bool isMouth)
     {
-        index = ((index % totalFaces) + totalFaces) % totalFaces;
         float tileW = 1f / sheetColumns;
-        float tileH = 1f / sheetRows;
+        float tileH = 1f / (sheetRows * 2f);
 
-        float offsetX = (index % sheetColumns) * tileW;
-        float offsetY = 1f - tileH - ((index / sheetColumns) * tileH);
+        int col = index % sheetColumns;
+        int row = index / sheetColumns;
+
+        float offsetX = col * tileW;
+        float offsetY = 1f - tileH - (row * tileH * 2f);
+
+        if (isMouth)
+            offsetY -= tileH;
 
         return new Vector2(offsetX, offsetY);
     }
     void UpdateEyeDecal()
     {
         if (eyeDecalRenderer == null) return;
-        eyeDecalRenderer.uvBias = GetSpriteSheetCoords(eyeFaceIndex.Value);
+        eyeDecalRenderer.uvBias = GetSpriteSheetCoords(eyeFaceIndex.Value, false);
     }
     void UpdateMouthDecal()
     {
         if (mouthDecalRenderer == null) return;
-        mouthDecalRenderer.uvBias = GetSpriteSheetCoords(mouthFaceIndex.Value);
+        mouthDecalRenderer.uvBias = GetSpriteSheetCoords(mouthFaceIndex.Value, true);
     }
 
     public void SetEyeFaceIndex(int index)
