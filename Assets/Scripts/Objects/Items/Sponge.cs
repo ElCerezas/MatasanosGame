@@ -144,4 +144,10 @@ public class Sponge : NetworkBehaviour
             }
         }
     }
+    public void FullyCleanSponge()
+    {
+        if (!IsServer) return;
+        
+        dirtynes.Value = 0f;
+    }
 }
