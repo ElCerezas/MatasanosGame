@@ -10,7 +10,7 @@ public class PowerEmitter : NetworkBehaviour
     SnapZone zone;
 
     PowerReceiver connectedReceiver;
-
+    public GameObject soundEmitter;
     [Header("PowerLoad System")]
     [SerializeField] GeneratorSystem generator;
     [SerializeField] PowerReceiver powerProvider;

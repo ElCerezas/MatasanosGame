@@ -52,7 +52,7 @@ public class GeneratorSystem : NetworkBehaviour
             {
                 foreach (var emitter in mainEmitters) { 
                     emitter.SetEmitting(false); 
-                    AudioManager.instance.PlayOneShotAtPosition(generatorFailureSound, emitter.transform.position);
+                    emitter.soundEmitter.SetActive(true);
                 }
                 foreach (var pS in particleSystemsOnFailure) pS.Play();
 
@@ -70,7 +70,10 @@ public class GeneratorSystem : NetworkBehaviour
             }
             else
             {
-                foreach (var emitter in mainEmitters) emitter.SetEmitting(true);
+                foreach (var emitter in mainEmitters) { 
+                    emitter.SetEmitting(true); 
+                    emitter.soundEmitter.SetActive(false);
+                }
                 foreach (var pS in particleSystemsOnFailure) pS.Stop();
 
                 LightmapSettings.lightmaps = originalLightmaps;
