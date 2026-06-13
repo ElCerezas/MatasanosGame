@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using FMODUnity;
+using Unity.Netcode;
 using UnityEngine;
 
 public class GeneratorSystem : NetworkBehaviour
@@ -14,13 +15,12 @@ public class GeneratorSystem : NetworkBehaviour
 
     [Header("Effects")]
     [SerializeField] ParticleSystem[] particleSystemsOnFailure;
+    [SerializeField] EventReference generatorFailureSound;
 
     [Header("Objetos Emisivos (Pantallas, Focos, LEDs, etc.)")]
     [SerializeField] private Renderer[] objetosEmisivos;
-
-    // --- VARIABLES PARA EL TRUCO SUCIO CORREGIDO ---
     private LightmapData[] originalLightmaps;
-    private LightmapData[] darkLightmaps; // <-- Guardaremos aquí el "falso bake" negro
+    private LightmapData[] darkLightmaps;
     private float originalAmbientIntensity;
     private Color originalAmbientColor;
     private MaterialPropertyBlock apagadorEmision;
@@ -50,7 +50,10 @@ public class GeneratorSystem : NetworkBehaviour
 
             if (newVal == false)
             {
-                foreach (var emitter in mainEmitters) emitter.SetEmitting(false);
+                foreach (var emitter in mainEmitters) { 
+                    emitter.SetEmitting(false); 
+                    emitter.soundEmitter.SetActive(true);
+                }
                 foreach (var pS in particleSystemsOnFailure) pS.Play();
 
                 LightmapSettings.lightmaps = darkLightmaps;
@@ -67,7 +70,10 @@ public class GeneratorSystem : NetworkBehaviour
             }
             else
             {
-                foreach (var emitter in mainEmitters) emitter.SetEmitting(true);
+                foreach (var emitter in mainEmitters) { 
+                    emitter.SetEmitting(true); 
+                    emitter.soundEmitter.SetActive(false);
+                }
                 foreach (var pS in particleSystemsOnFailure) pS.Stop();
 
                 LightmapSettings.lightmaps = originalLightmaps;
