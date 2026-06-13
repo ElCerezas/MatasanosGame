@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
     [Header("Music Events")]
     public EventReference menuMusic;
     public EventReference gameplayMusic;
+    public EventReference waitingRoomMusic;
 
 
     [Header("SFX")]
@@ -304,7 +305,8 @@ public class AudioManager : MonoBehaviour
             case "MapaBeta":
                 return gameplayMusic;
 
-
+            case "WaitingRoom":
+                return waitingRoomMusic;
 
             default:
                 return default;
