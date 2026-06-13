@@ -14,6 +14,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] Transform playerFeet;
     [SerializeField] Animator animator;
     private PauseHandler pauseHandler;
+    [Header("Footsteps (Timer-Based)")]
+    [SerializeField] private EventReference footstepSound;
+    [SerializeField] float stepInterval = 0.35f;
+    private float stepTimer = 0f;
     [Header("Jump feel")]
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float fallMultiplier = 2.5f;
@@ -54,6 +58,7 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
+        CheckFootstepsTimer();
         if (!IsOwner) return;
         if (pauseHandler.IsPaused)
         {
@@ -80,10 +85,39 @@ public class PlayerController : NetworkBehaviour
         wasGroundedLastFrame = isGrounded;
         currentInput = playerInput.MovementInput;
     }
+    void CheckFootstepsTimer()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isWalking = stateInfo.IsName("Caminar");
+
+        if (isWalking)
+        {
+            stepTimer -= Time.deltaTime;
+
+            if (stepTimer <= 0f)
+            {
+                PlayFootstepSound();
+                stepTimer = stepInterval;
+            }
+        }
+        else
+        {
+            stepTimer = 0f;
+        }
+    }
+
+    void PlayFootstepSound()
+    {
+        if (AudioManager.instance != null && playerFeet != null)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(footstepSound, playerFeet.position);
+        }
+    }
     [ClientRpc]
     void OnLandingClientRPC(Vector3 landingPosition)
     {
-        RuntimeManager.PlayOneShot(landingSound, landingPosition);
+        AudioManager.instance.PlayOneShotAtPosition(landingSound, landingPosition);
     }
     [ServerRpc]
     void OnLandingServerRPC(Vector3 landingPosition)

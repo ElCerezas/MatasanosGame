@@ -6928,16 +6928,25 @@ MonoBehaviour:
   cameraTransform: {fileID: 6989549590732685741}
   playerFeet: {fileID: 3781846337060893651}
   animator: {fileID: 3443630820277550147}
+  footstepSound:
+    Guid:
+      Data1: 1372363409
+      Data2: 1325169156
+      Data3: 1902435996
+      Data4: -1293242594
+    Path: event:/Sfx/Pasos
+  stepTime1: 0.12
+  stepTime2: 0.26
   jumpForce: 8
   fallMultiplier: 2.5
   risingMultiplier: 1.5
   landingSoundCooldown: 0.3
   landingSound:
     Guid:
-      Data1: 579417840
-      Data2: 1168049537
-      Data3: 1032303513
-      Data4: -715327128
+      Data1: 490951541
+      Data2: 1207904663
+      Data3: -664687176
+      Data4: 78303343
     Path: event:/Sfx/Saltar
 --- !u!114 &3681749492721520958
 MonoBehaviour:
@@ -6954,7 +6963,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerCam: {fileID: 6989549590732685741}
   holdPoint: {fileID: 2381189921952055796}
-  BodyVisual: {fileID: 0}
+  BodyVisual: {fileID: 2064404067503222298}
   holdPointDistance: 2
   holdPointHeight: -0.03
   maxHoldPointAngleFromCamera: 25
