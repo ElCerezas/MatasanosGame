@@ -4,6 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
@@ -70,6 +71,12 @@ public class AudioManager : MonoBehaviour
         RuntimeManager.LoadBank("Master.strings");
         RuntimeManager.LoadBank("Music");
 
+        masterVolume = SettingsManager.Instance.GetSetting("Master Volume");
+        SFXVolume = SettingsManager.Instance.GetSetting("SFX Volume");
+        musicVolume = SettingsManager.Instance.GetSetting("Music Volume");
+        ambienceVolume = SettingsManager.Instance.GetSetting("Ambience Volume");
+        SettingsManager.Instance.OnSettingChanged += OnSettingChanged;
+
         StartCoroutine(InitAudioWhenReady());
     }
 
@@ -105,6 +112,24 @@ public class AudioManager : MonoBehaviour
         musicBus.setVolume(musicVolume);
         sfxBus.setVolume(SFXVolume);
         ambienceBus.setVolume(ambienceVolume);
+    }
+    private void OnSettingChanged(string key, float value)
+    {
+        switch (key)
+        {
+            case "Master Volume":
+                masterVolume = value;
+                break;
+            case "Music Volume":
+                musicVolume = value;
+                break;
+            case "Ambience Volume":
+                ambienceVolume = value;
+                break;
+            case "SFX Volume":
+                SFXVolume = value;
+                break;
+        }
     }
 
     #region Musica

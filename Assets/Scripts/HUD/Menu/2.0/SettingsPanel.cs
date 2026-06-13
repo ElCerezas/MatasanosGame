@@ -6,6 +6,7 @@ public class SettingsPanel : MonoBehaviour
 {
     [SerializeField] private Transform settingsContainer;
     [SerializeField] private GameObject sliderPrefab;
+    [SerializeField] private string PanelName;
 
     private void Start()
     {
@@ -16,9 +17,12 @@ public class SettingsPanel : MonoBehaviour
     {
         foreach (var setting in SettingsManager.Instance.GetAllSettings())
         {
-            var sliderGO = Instantiate(sliderPrefab, settingsContainer);
-            var group = sliderGO.GetComponent<SettingSlider>();
-            group.Initialize(setting);
+            if (setting.isOnScene == false && PanelName == setting.panelName)
+            {
+                var sliderGO = Instantiate(sliderPrefab, settingsContainer);
+                var group = sliderGO.GetComponent<SettingSlider>();
+                group.Initialize(setting);
+            }
         }
     }
 }

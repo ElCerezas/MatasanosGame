@@ -3,10 +3,12 @@ using UnityEngine;
 [System.Serializable]
 public class GameSetting
 {
+    public bool isOnScene;
     public string key;
     public float defaultValue;
     public float minValue = 0f;
     public float maxValue = 10f;
+    public string panelName;
     [TextArea] public string description;
 }
 
