@@ -84605,6 +84605,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 960599329}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &962676289 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8766676840175659585, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+  m_PrefabInstance: {fileID: 1100740734}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &963014666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -123454,9 +123459,17 @@ PrefabInstance:
       value: 3270929468
       objectReference: {fileID: 0}
     - target: {fileID: 4613182773464745388, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: offset.x
+      value: -1.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613182773464745388, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: offset.y
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613182773464745388, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: BoneParent
       value: 
-      objectReference: {fileID: 1100740735}
+      objectReference: {fileID: 962676289}
     - target: {fileID: 7291596107634800603, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: maxHealth
       value: 200
@@ -123512,11 +123525,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
---- !u!4 &1100740735 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8682782392323897871, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
-  m_PrefabInstance: {fileID: 1100740734}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1104659994
 GameObject:
   m_ObjectHideFlags: 0
@@ -162272,6 +162280,13 @@ MonoBehaviour:
       Data4: 0
     Path: 
   waitingRoomMusic:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  defaultAmbience:
     Guid:
       Data1: 0
       Data2: 0
