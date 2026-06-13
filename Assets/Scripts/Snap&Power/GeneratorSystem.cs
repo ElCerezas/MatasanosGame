@@ -15,9 +15,8 @@ public class GeneratorSystem : NetworkBehaviour
 
     [Header("Effects")]
     [SerializeField] ParticleSystem[] particleSystemsOnFailure;
-    [SerializeField] EventReference generatorFailureSound;
 
-    [Header("Objetos Emisivos (Pantallas, Focos, LEDs, etc.)")]
+    [Header("Objetos Emisivos")]
     [SerializeField] private Renderer[] objetosEmisivos;
     private LightmapData[] originalLightmaps;
     private LightmapData[] darkLightmaps;
