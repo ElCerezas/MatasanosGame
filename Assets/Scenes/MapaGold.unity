@@ -47442,32 +47442,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 335282195}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &339548492 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8910187952428194181, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
-  m_PrefabInstance: {fileID: 1275228252}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &339548497
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339548492}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 7.6910925, y: 1.8460222, z: 3.1859267}
-  m_Center: {x: 0.039678704, y: 0.6323883, z: 1.4187257}
 --- !u!1001 &342046442
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142456,11 +142430,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8600335657824012201, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
       propertyPath: EventPlayTrigger
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8600335657824012201, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
       propertyPath: EventStopTrigger
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8600335657824012201, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
       propertyPath: OverrideMaxDistance
@@ -142485,12 +142459,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4138443785889157896, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
     - {fileID: 287099134938031041, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
+    - {fileID: 8600335657824012201, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8910187952428194181, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 339548497}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
 --- !u!4 &1275228253 stripped
 Transform:
@@ -154392,6 +154364,13 @@ MonoBehaviour:
   - {fileID: 1701141880}
   - {fileID: 1074034867}
   - {fileID: 1421565687}
+  generatorFailureSound:
+    Guid:
+      Data1: 304945929
+      Data2: 1081160475
+      Data3: -1839183991
+      Data4: 168214997
+    Path: event:/Sfx/Enchufe
   objetosEmisivos:
   - {fileID: 1696816313}
   - {fileID: 1844753578}
