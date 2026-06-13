@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using FMODUnity;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +18,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float fallMultiplier = 2.5f;
     [SerializeField] float risingMultiplier = 1.5f;
+    [SerializeField] float landingSoundCooldown = 0.3f;
+    [SerializeField] EventReference landingSound;
+    float landingSoundCooldownTimer = 0f;
+    bool wasGroundedLastFrame = true;
 
     Rigidbody rigidBody;
     bool isGrounded = true;
@@ -46,13 +51,36 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
+
+        if (landingSoundCooldownTimer > 0f)
+        {
+            landingSoundCooldownTimer -= Time.deltaTime;
+        }
+
         bool grounded = IsGrounded();
         if (isGrounded != grounded)
         {
             isGrounded = grounded;
             animator.SetBool("Grounded", isGrounded);
         }
+
+        if (isGrounded && !wasGroundedLastFrame && landingSoundCooldownTimer <= 0f)
+        {
+            OnLandingServerRPC(playerFeet.position);
+            landingSoundCooldownTimer = landingSoundCooldown;
+        }
+        wasGroundedLastFrame = isGrounded;
         currentInput = playerInput.MovementInput;
+    }
+    [ClientRpc]
+    void OnLandingClientRPC(Vector3 landingPosition)
+    {
+        AudioManager.instance.PlayOneShotAtPosition(landingSound, landingPosition);
+    }
+    [ServerRpc] 
+    void OnLandingServerRPC(Vector3 landingPosition)
+    {
+        OnLandingClientRPC(landingPosition);
     }
     void ApplyJumpGravity()
     {

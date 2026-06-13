@@ -21,7 +21,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("SFX")]
     public EventReference Enchufe;
- 
+
 
     [Header("Cinematicas")]
 
@@ -113,7 +113,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Intento de reproducir música con EventReference nula");
+            Debug.LogWarning("Intento de reproducir mï¿½sica con EventReference nula");
         }
     }
 
@@ -250,6 +250,11 @@ public class AudioManager : MonoBehaviour
     {
         if (!sound.IsNull)
             RuntimeManager.PlayOneShot(sound);
+    }
+    public void PlayOneShotAtPosition(EventReference sound, Vector3 position)
+    {
+        if (!sound.IsNull)
+            RuntimeManager.PlayOneShot(sound, position);
     }
 
     #endregion
