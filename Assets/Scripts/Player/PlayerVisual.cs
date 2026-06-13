@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -20,6 +21,9 @@ public class PlayerVisual : NetworkBehaviour
     [SerializeField] MeshFilter hatMeshFilter;
     [SerializeField] MeshRenderer hatRenderer;
 
+    [Header("PlarNumber")]
+    [SerializeField] TMP_Text ridText;
+
     [Header("Dirt Settings")]
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] float maxSplashes = 5f;
@@ -36,6 +40,8 @@ public class PlayerVisual : NetworkBehaviour
     [NonSerialized] public NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     [NonSerialized] public NetworkVariable<int> colorIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     [NonSerialized] public NetworkVariable<int> hatIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    [NonSerialized] public NetworkVariable<int> playerRID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     void Awake()
     {
         playerMaterial = playerRenderer.material;
@@ -49,6 +55,8 @@ public class PlayerVisual : NetworkBehaviour
         eyeFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateEyeDecal();
         mouthFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateMouthDecal();
 
+        playerRID.OnValueChanged += (oldVal, newVal) => UpdateRIDText();
+
         Vector2 s = new Vector2(1f / sheetColumns, 1f / (sheetRows * 2f));
         eyeDecalRenderer.uvScale = s;
         mouthDecalRenderer.uvScale = s;
@@ -56,6 +64,15 @@ public class PlayerVisual : NetworkBehaviour
         UpdateMaterialSplashes();
         UpdateEyeDecal();
         UpdateMouthDecal();
+
+        if (IsServer)
+        {
+            if (playerRID.Value == 0)
+            {
+                playerRID.Value = UnityEngine.Random.Range(100, 1000);
+            }
+        }
+        UpdateRIDText();
     }
     void Update()
     {
@@ -145,6 +162,14 @@ public class PlayerVisual : NetworkBehaviour
     public void SetMouthFaceIndex(int index)
     {
         mouthFaceIndex.Value = ((index % totalFaces) + totalFaces) % totalFaces;
+    }
+
+    void UpdateRIDText()
+    {
+        if (ridText != null && playerRID.Value != 0)
+        {
+            ridText.text = playerRID.Value.ToString();
+        }
     }
     #endregion
 }
