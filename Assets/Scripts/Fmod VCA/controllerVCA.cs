@@ -1,33 +1,41 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.UI;
-
 public class controllerVCA : MonoBehaviour
 {
     private FMOD.Studio.VCA Vca;
     public string VCAName;
 
-    private Slider slider;
-
     void Start()
     {
         Vca = FMODUnity.RuntimeManager.GetVCA("vca:/" + VCAName);
-        slider = GetComponent<Slider>();
-    }
-
-    void Update()
-    {
         
+        string key = VCAName == "Master" ? "Master Volume" : VCAName + " Volume";
+        
+        float currentVolume = SettingsManager.Instance.GetSetting(key);
+        SetVolume(currentVolume);
+
+        SettingsManager.Instance.OnSettingChanged += HandleSettingChanged;
     }
 
-
-    public void SetVolume (float volume)
+    private void HandleSettingChanged(string changedKey, float value)
     {
-
-        Vca.setVolume(volume);
-
+        string expectedKey = VCAName == "Master" ? "Master Volume" : VCAName + " Volume";
+        
+        if (changedKey == expectedKey)
+        {
+            SetVolume(value);
+        }
     }
 
+    public void SetVolume(float volume)
+    {
+        Vca.setVolume(volume);
+    }
 
-
+    private void OnDestroy()
+    {
+        if (SettingsManager.Instance != null)
+        {
+            SettingsManager.Instance.OnSettingChanged -= HandleSettingChanged;
+        }
+    }
 }

@@ -13,8 +13,31 @@ MonoBehaviour:
   m_Name: GameSettingsConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameSettingsConfig
   settings:
-  - key: Mouse Sensitivity
-    defaultValue: 2
+  - isOnScene: 0
+    key: Mouse Sensitivity
+    defaultValue: 0.5
     minValue: 0.1
     maxValue: 10
-    description: How fast your camera moves
+    panelName: Controles
+    description: 'How fast your camera moves '
+  - isOnScene: 1
+    key: Master Volume
+    defaultValue: 0.5
+    minValue: 0
+    maxValue: 1
+    panelName: Audio
+    description: 
+  - isOnScene: 1
+    key: Music Volume
+    defaultValue: 1
+    minValue: 0
+    maxValue: 1
+    panelName: Audio
+    description: 
+  - isOnScene: 1
+    key: SFX Volume
+    defaultValue: 1
+    minValue: 0
+    maxValue: 1
+    panelName: Audio
+    description: 
