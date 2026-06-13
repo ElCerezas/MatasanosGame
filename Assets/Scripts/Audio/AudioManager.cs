@@ -19,6 +19,9 @@ public class AudioManager : MonoBehaviour
     public EventReference waitingRoomMusic;
 
 
+    [Header("Ambiences")]
+    public EventReference defaultAmbience;
+
     [Header("SFX")]
     public EventReference Enchufe;
 
@@ -31,9 +34,15 @@ public class AudioManager : MonoBehaviour
     private Bus ambienceBus;
     private Bus sfxBus;
 
+    //MUSIC
     private EventInstance currentMusic;
     private EventInstance nextMusic;
     private bool isTransitioning = false;
+
+    //AMBIENCE
+    private EventInstance currentAmbience;
+    private EventInstance nextAmbience;
+    private bool isAmbienceTransitioning = false;
 
     private Dictionary<string, EventInstance> cinematicInstances = new Dictionary<string, EventInstance>();
     private Coroutine musicParameterCoroutine;
@@ -81,6 +90,9 @@ public class AudioManager : MonoBehaviour
         try { sfxBus = RuntimeManager.GetBus("bus:/SFX"); }
         catch { }
 
+        try { ambienceBus = RuntimeManager.GetBus("bus:/Ambience"); }
+        catch { ambienceBus = masterBus; }
+
         currentMusic = RuntimeManager.CreateInstance(menuMusic);
         currentMusic.start();
         currentMusic.setVolume(musicVolume);
@@ -115,6 +127,8 @@ public class AudioManager : MonoBehaviour
         {
             Debug.LogWarning("Intento de reproducir m�sica con EventReference nula");
         }
+
+
     }
 
     public void PlayMusicImmediate(EventReference musicEvent)
@@ -360,6 +374,139 @@ public class AudioManager : MonoBehaviour
             PLAYBACK_STATE playbackState;
             currentMusic.getPlaybackState(out playbackState);
             return playbackState == PLAYBACK_STATE.PLAYING && !isTransitioning;
+        }
+    }
+
+    #endregion
+
+    #region Ambientes
+    public void PlayAmbience(EventReference ambienceEvent, bool fadeIn = true, float fadeTime = 2f)
+    {
+        if (ambienceEvent.IsNull) return;
+
+        if (IsPlayingAmbience(ambienceEvent) && !isAmbienceTransitioning)
+            return;
+
+        if (fadeIn && currentAmbience.isValid())
+        {
+            CrossfadeAmbience(ambienceEvent, fadeTime);
+        }
+        else
+        {
+            if (currentAmbience.isValid())
+            {
+                currentAmbience.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                currentAmbience.release();
+            }
+            currentAmbience = RuntimeManager.CreateInstance(ambienceEvent);
+            currentAmbience.start();
+            currentAmbience.setVolume(ambienceVolume);
+        }
+    }
+
+    public void StopAmbience(bool fadeOut = true, float fadeTime = 2f)
+    {
+        if (!currentAmbience.isValid()) return;
+
+        if (fadeOut)
+        {
+            StartCoroutine(FadeOutAmbience(fadeTime));
+        }
+        else
+        {
+            currentAmbience.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            currentAmbience.release();
+        }
+    }
+
+ 
+    public void CrossfadeAmbience(EventReference newAmbience, float fadeTime = 2f)
+    {
+        if (newAmbience.IsNull || isAmbienceTransitioning) return;
+        StartCoroutine(SmoothCrossfadeAmbience(newAmbience, fadeTime));
+    }
+
+
+    public void SetAmbienceParameter(string parameterName, float value)
+    {
+        if (currentAmbience.isValid())
+            currentAmbience.setParameterByName(parameterName, value);
+    }
+
+
+    private IEnumerator SmoothCrossfadeAmbience(EventReference newAmbience, float fadeTime)
+    {
+        isAmbienceTransitioning = true;
+
+        float startVolume = ambienceVolume;
+
+        nextAmbience = RuntimeManager.CreateInstance(newAmbience);
+        nextAmbience.start();
+        nextAmbience.setVolume(0f);
+
+        float timer = 0f;
+        while (timer < fadeTime)
+        {
+            timer += Time.deltaTime;
+            float t = Mathf.Clamp01(timer / fadeTime);
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
+
+            if (currentAmbience.isValid())
+                currentAmbience.setVolume(Mathf.Lerp(startVolume, 0f, smoothT));
+
+            nextAmbience.setVolume(Mathf.Lerp(0f, startVolume, smoothT));
+            yield return null;
+        }
+
+        if (currentAmbience.isValid())
+        {
+            currentAmbience.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            currentAmbience.release();
+        }
+
+        currentAmbience = nextAmbience;
+        nextAmbience.clearHandle();
+        isAmbienceTransitioning = false;
+    }
+
+    private IEnumerator FadeOutAmbience(float fadeTime)
+    {
+        if (!currentAmbience.isValid()) yield break;
+
+        float startVolume = ambienceVolume;
+        float timer = 0f;
+        while (timer < fadeTime)
+        {
+            timer += Time.deltaTime;
+            float t = Mathf.Clamp01(timer / fadeTime);
+            currentAmbience.setVolume(Mathf.Lerp(startVolume, 0f, t));
+            yield return null;
+        }
+        currentAmbience.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        currentAmbience.release();
+    }
+
+    private bool IsPlayingAmbience(EventReference ambienceEvent)
+    {
+        if (!currentAmbience.isValid() || ambienceEvent.IsNull) return false;
+        if (isAmbienceTransitioning) return false;
+
+        try
+        {
+            currentAmbience.getDescription(out EventDescription currentDesc);
+            currentDesc.getPath(out string currentPath);
+
+            EventInstance temp = RuntimeManager.CreateInstance(ambienceEvent);
+            temp.getDescription(out EventDescription targetDesc);
+            targetDesc.getPath(out string targetPath);
+            temp.release();
+
+            return currentPath == targetPath;
+        }
+        catch
+        {
+            currentAmbience.getPlaybackState(out PLAYBACK_STATE state);
+            return state == PLAYBACK_STATE.PLAYING && !isAmbienceTransitioning;
         }
     }
 
