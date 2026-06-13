@@ -35,7 +35,15 @@ public class PlayerController : NetworkBehaviour
     }
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) return;
+        if (!IsOwner)
+        {
+            FMODUnity.StudioListener fmodListener = GetComponentInChildren<FMODUnity.StudioListener>();
+            if (fmodListener != null)
+            {
+                fmodListener.enabled = false;
+            }
+            return;
+        }
         playerInput.OnJumpPressed += Jump;
     }
 
@@ -75,9 +83,9 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void OnLandingClientRPC(Vector3 landingPosition)
     {
-        AudioManager.instance.PlayOneShotAtPosition(landingSound, landingPosition);
+        RuntimeManager.PlayOneShot(landingSound, landingPosition);
     }
-    [ServerRpc] 
+    [ServerRpc]
     void OnLandingServerRPC(Vector3 landingPosition)
     {
         OnLandingClientRPC(landingPosition);
