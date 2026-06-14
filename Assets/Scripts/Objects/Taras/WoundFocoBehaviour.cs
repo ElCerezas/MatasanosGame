@@ -1,15 +1,22 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class WoundFocoBehaviour : TaraBase
 {
     public float healingTimeRequired = 3f;
     private float healTimer = 0f;
-    private bool isBeingHealed = false;
+    NetworkVariable<bool> isBeingHealed = new NetworkVariable<bool>(false);
+    [SerializeField] ParticleSystem healingEffect;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        isBeingHealed.OnValueChanged += (oldVal, newVal) => {
+            if (newVal)
+                healingEffect.Play();
+            else
+                healingEffect.Stop();
+        };
         if (!IsServer) return;
         EventBus.Publish(new TaraCreated { TaraID = NetworkObjectId, Type = type });
     }
@@ -18,7 +25,7 @@ public class WoundFocoBehaviour : TaraBase
     {
         if (!IsServer) return;
 
-        if (isBeingHealed)
+        if (isBeingHealed.Value)
         {
             healTimer += Time.deltaTime;
             if (healTimer >= healingTimeRequired)
@@ -32,13 +39,13 @@ public class WoundFocoBehaviour : TaraBase
 
         Debug.DrawLine(transform.position,
                        transform.position + Vector3.up * 2f,
-                       isBeingHealed ? Color.green : Color.red);
+                       isBeingHealed.Value ? Color.green : Color.red);
     }
 
     public void StartHealing()
     {
         if (!IsServer) return;
-        isBeingHealed = true;
+        isBeingHealed.Value = true;
         healTimer = 0f;
         NotifyHealStartedClientRpc();
     }
@@ -46,7 +53,7 @@ public class WoundFocoBehaviour : TaraBase
     public void StopHealing()
     {
         if (!IsServer) return;
-        isBeingHealed = false;
+        isBeingHealed.Value = false;
         healTimer = 0f;
     }
 

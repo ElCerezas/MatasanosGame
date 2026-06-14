@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -9,6 +9,7 @@ public class WoundVendaBehaviour : TaraBase
     private ColliderDetector colliderInteracttable;
     public DecalProjector woundProjector;
     public Material tiritaMaterial;
+    [SerializeField] ParticleSystem healingEffect;
 
     public override void OnNetworkSpawn()
     {

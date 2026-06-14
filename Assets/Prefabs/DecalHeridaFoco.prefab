@@ -94,6 +94,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 634975288884437072}
+  - {fileID: 7484198286774882919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &5787871562101081002
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4218988949
+  GlobalObjectIdHash: 1401379029
   InScenePlacedSourceGlobalObjectIdHash: 3243092559
   DeferredDespawnTick: 0
   Ownership: 1
@@ -157,6 +158,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   type: 1
   healingTimeRequired: 3
+  healingEffect: {fileID: 5172459125876660562}
 --- !u!114 &-5635660252547734136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,3 +171,143 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461101ca2c1b54f4bb1301faa9c5b4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoundBoneFollower
+  ShowTopMostFoldoutHeaderGroup: 1
+  boneName:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue:
+      utf8LengthInBytes: 0
+      bytes:
+        offset0000:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        offset0016:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        offset0032:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0048: 0
+        byte0049: 0
+        byte0050: 0
+        byte0051: 0
+        byte0052: 0
+        byte0053: 0
+        byte0054: 0
+        byte0055: 0
+        byte0056: 0
+        byte0057: 0
+        byte0058: 0
+        byte0059: 0
+        byte0060: 0
+        byte0061: 0
+--- !u!1001 &5323874248778236047
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5919159743083488166}
+    m_Modifications:
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097790469984481303, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_Name
+      value: Curasao
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+--- !u!198 &5172459125876660562 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1020759415036172765, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+  m_PrefabInstance: {fileID: 5323874248778236047}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7484198286774882919 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3332388692878365416, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+  m_PrefabInstance: {fileID: 5323874248778236047}
+  m_PrefabAsset: {fileID: 0}
