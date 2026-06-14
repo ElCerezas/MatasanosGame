@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 634975288884437072}
   - component: {fileID: 5919634607449616317}
-  m_Layer: 8
+  m_Layer: 16
   m_Name: DecalProjector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 510865694355661995}
   - component: {fileID: 3900322275607726082}
   - component: {fileID: 5306232543144024980}
-  m_Layer: 8
+  m_Layer: 16
   m_Name: DecalHeridaVenda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2456385189
+  GlobalObjectIdHash: 3332195338
   InScenePlacedSourceGlobalObjectIdHash: 3243092559
   DeferredDespawnTick: 0
   Ownership: 1
@@ -356,6 +356,10 @@ PrefabInstance:
     - target: {fileID: 4097790469984481303, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
       propertyPath: m_Name
       value: Curasao
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097790469984481303, guid: 6e646bae5c2aa1b4c8a3ac95e75d01a1, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -14,16 +14,24 @@ public class AlienWoundManager : NetworkBehaviour
     public float minHeightBias = 0.2f;
     public int maxRaycastAttempts = 10;
 
+    [Header("Wound Collision Prevention")]
+    [Tooltip("Distancia mínima entre heridas")]
+    public float minWoundDistance = 0.65f;
+
     [Header("Debug")]
     [SerializeField] bool drawDebugRays = false;
     private List<(Vector3 origin, Vector3 direction, bool hit)> _debugRays = new();
     private Vector3 _debugSphereCenter;
     private float _debugSphereRadius = 10f;
+    private List<Vector3> _spawnedWoundPositions = new();
 
     public override void OnNetworkSpawn()
     {
         if (IsServer)
+        {
+            _spawnedWoundPositions.Clear();
             StartCoroutine(SpawnWoundsNextFrame());
+        }
     }
 
     System.Collections.IEnumerator SpawnWoundsNextFrame()
@@ -58,10 +66,13 @@ public class AlienWoundManager : NetworkBehaviour
                 {
                     if (Vector3.Dot(hit.normal, Vector3.down) < minHeightBias)
                     {
-                        didHit = true;
-                        _debugRays.Add((origin, direction, true));
-                        GenerateWound(hit.point, hit.normal);
-                        return;
+                        if (!IsOverlappingWithExistingWounds(hit.point))
+                        {
+                            didHit = true;
+                            _debugRays.Add((origin, direction, true));
+                            GenerateWound(hit.point, hit.normal);
+                            return;
+                        }
                     }
                 }
             }
@@ -69,6 +80,21 @@ public class AlienWoundManager : NetworkBehaviour
             if (!didHit)
                 _debugRays.Add((origin, direction, false));
         }
+
+        if (drawDebugRays)
+            Debug.LogWarning($"No se pudo colocar herida en intento. Espacio insuficiente en el cuerpo.", this);
+    }
+    bool IsOverlappingWithExistingWounds(Vector3 position)
+    {
+        foreach (Vector3 woundPos in _spawnedWoundPositions)
+        {
+            float distance = Vector3.Distance(position, woundPos);
+            if (distance < minWoundDistance)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void GenerateWound(Vector3 position, Vector3 normal)
@@ -100,6 +126,8 @@ public class AlienWoundManager : NetworkBehaviour
         netObj.Spawn();
         netObj.TrySetParent(transform, worldPositionStays: true);
 
+        _spawnedWoundPositions.Add(position);
+
         Transform closestBone = GetClosestBone(position);
         if (closestBone != null)
         {
@@ -110,6 +138,8 @@ public class AlienWoundManager : NetworkBehaviour
                 follower.boneName.Value = closestBone.name;
             }
         }
+        if (drawDebugRays)
+            Debug.Log($"Herida generada en {position}. Total heridas: {_spawnedWoundPositions.Count}", this);
     }
 
     Transform GetClosestBone(Vector3 worldPos)
@@ -152,6 +182,14 @@ public class AlienWoundManager : NetworkBehaviour
                 ? new Color(0f, 1f, 0f, 0.8f)
                 : new Color(1f, 0f, 0f, 0.4f);
             Gizmos.DrawRay(origin, direction * 6f);
+        }
+        if (_spawnedWoundPositions.Count > 0)
+        {
+            Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+            foreach (Vector3 woundPos in _spawnedWoundPositions)
+            {
+                Gizmos.DrawSphere(woundPos, minWoundDistance);
+            }
         }
     }
 }
