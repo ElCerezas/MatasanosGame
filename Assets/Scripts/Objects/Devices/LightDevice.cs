@@ -1,21 +1,34 @@
 ﻿using UnityEngine;
 
-[RequireComponent (typeof(Light))]
+[RequireComponent(typeof(Light))]
 public class LightDevice : PoweredDevice
 {
     [SerializeField] bool isEmergencyLight;
     [SerializeField] Light Light;
-
-    public override void OnNetworkSpawn()
+    private void Awake()
     {
         if (Light == null)
         {
             Light = GetComponent<Light>();
         }
     }
-    public override void Powered()
+
+    public override void OnNetworkSpawn()
     {
-        Light.enabled = isEmergencyLight ? !hasPower.Value : hasPower.Value;
+        base.OnNetworkSpawn(); 
     }
 
+    public override void Powered()
+    {
+        if (Light == null) return;
+
+        if (isEmergencyLight)
+        {
+            Light.enabled = !hasPower.Value;
+        }
+        else
+        {
+            Light.enabled = hasPower.Value;
+        }
+    }
 }

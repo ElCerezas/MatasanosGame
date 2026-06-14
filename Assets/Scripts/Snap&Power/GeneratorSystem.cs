@@ -20,6 +20,7 @@ public class GeneratorSystem : NetworkBehaviour
 
     [Header("Objetos Emisivos")]
     [SerializeField] private Renderer[] objetosEmisivos;
+    [SerializeField] private GameObject[] disableItems;
     private LightmapData[] originalLightmaps;
     private LightmapData[] darkLightmaps;
     private float originalAmbientIntensity;
@@ -62,6 +63,7 @@ public class GeneratorSystem : NetworkBehaviour
                     }
                 }
                 foreach (var pS in particleSystemsOnFailure) pS.Play();
+                foreach (GameObject go in disableItems) go.SetActive(false);
 
                 LightmapSettings.lightmaps = darkLightmaps;
 
@@ -87,6 +89,7 @@ public class GeneratorSystem : NetworkBehaviour
                     }
                 }
                 foreach (var pS in particleSystemsOnFailure) pS.Stop();
+                foreach (GameObject go in disableItems) go.SetActive(true);
 
                 LightmapSettings.lightmaps = originalLightmaps;
                 RenderSettings.ambientIntensity = originalAmbientIntensity;
