@@ -11,6 +11,14 @@ public class SnapZone : NetworkBehaviour
     public UnityEvent OnObjectSnapped;
     public UnityEvent OnObjectUnsnapped;
     public SnappableItem currentItem;
+    [SerializeField] FMODUnity.EventReference bloodBagSnapSound;
+    [SerializeField] FMODUnity.EventReference bloodBagUnsnapSound;
+    [SerializeField] FMODUnity.EventReference dienteSnapSound;
+    [SerializeField] FMODUnity.EventReference dienteUnsnapSound;
+    [SerializeField] FMODUnity.EventReference enchufeSnapSound;
+    [SerializeField] FMODUnity.EventReference enchufeUnsnapSound;
+    [SerializeField] FMODUnity.EventReference defaultSnapSound;
+    [SerializeField] FMODUnity.EventReference defaultUnsnapSound;
 
     bool firstActivation = true;
 
@@ -70,7 +78,7 @@ public class SnapZone : NetworkBehaviour
 
         currentItem = snappable;
         currentItem.SnapTo(this);
-
+        PlaySnapSoundClientRpc(true);
         if (acceptedType == SnapType.Bloodbag)
             EventBus.Publish(new OnBloodBagSnapped
             {
@@ -89,7 +97,7 @@ public class SnapZone : NetworkBehaviour
 
         var item = currentItem;
         currentItem = null;
-
+        PlaySnapSoundClientRpc(false);
         if (acceptedType == SnapType.Bloodbag)
             EventBus.Publish(new OnBloodBagDetached
             {
@@ -105,5 +113,31 @@ public class SnapZone : NetworkBehaviour
 
         item.Unsnap();
         OnObjectUnsnapped?.Invoke();
+    }
+
+    [ClientRpc]
+    private void PlaySnapSoundClientRpc(bool isSnap)
+    {
+        FMODUnity.EventReference soundToPlay;
+        switch (acceptedType)
+        {
+            case SnapType.Bloodbag:
+                soundToPlay = isSnap ? bloodBagSnapSound : bloodBagUnsnapSound;
+                break;
+            case SnapType.Diente:
+                soundToPlay = isSnap ? dienteSnapSound : dienteUnsnapSound;
+                break;
+            case SnapType.Enchufe:
+                soundToPlay = isSnap ? enchufeSnapSound : enchufeUnsnapSound;
+                break;
+            default:
+                soundToPlay = isSnap ? defaultSnapSound : defaultUnsnapSound;
+                break;
+        }
+
+        if (!soundToPlay.IsNull)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(soundToPlay, snapAnchor.position);
+        }
     }
 }

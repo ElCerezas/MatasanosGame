@@ -20,6 +20,8 @@ public class PlayerInteractor : NetworkBehaviour
     [SerializeField] Animator anim;
     [SerializeField] TwoBoneIKConstraint leftHandIK;
     [SerializeField] TwoBoneIKConstraint rightHandIK;
+    [Header("SoundEvents")]
+    [SerializeField] FMODUnity.EventReference grabSound;
 
     IGrabbable currentlyGrabbedItem;
     InteractableOutline currentOutlined;
@@ -77,6 +79,7 @@ public class PlayerInteractor : NetworkBehaviour
             {
                 if (hit.collider.TryGetComponent(out IGrabbable grabbable))
                 {
+                    AudioManager.instance.PlayOneShotAtPosition(grabSound, holdPoint.position );
                     currentlyGrabbedItem = grabbable;
                     StartCoroutine(BlendIKWeight(1f));
                     anim.SetBool("IsGrabbing", true);
@@ -105,6 +108,7 @@ public class PlayerInteractor : NetworkBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
         {
             if (hit.collider.TryGetComponent(out IInteractable interactable))
+
                 InteractServerRpc(interactable.GetNetworkObjectID());
         }
     }

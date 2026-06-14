@@ -84,6 +84,62 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   currentItem: {fileID: 0}
+  bloodBagSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  bloodBagUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  dienteSnapSound:
+    Guid:
+      Data1: 1296476054
+      Data2: 1225579064
+      Data3: 488527000
+      Data4: 1973832627
+    Path: event:/Sfx/Colocar Diente
+  dienteUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  enchufeSnapSound:
+    Guid:
+      Data1: -1936402746
+      Data2: 1131167731
+      Data3: -1775401555
+      Data4: 1755581561
+    Path: event:/Sfx/Conectar Enchufes
+  enchufeUnsnapSound:
+    Guid:
+      Data1: 264349498
+      Data2: 1215903403
+      Data3: -1870344540
+      Data4: 521417848
+    Path: event:/Sfx/Desconectar Enchufes
+  defaultSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  defaultUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &6630227419677722611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +158,7 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  soundEmitter: {fileID: 0}
   generator: {fileID: 0}
   powerProvider: {fileID: 0}
 --- !u!114 &961247178668132080
@@ -610,6 +667,62 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   currentItem: {fileID: 0}
+  bloodBagSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  bloodBagUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  dienteSnapSound:
+    Guid:
+      Data1: 1296476054
+      Data2: 1225579064
+      Data3: 488527000
+      Data4: 1973832627
+    Path: event:/Sfx/Colocar Diente
+  dienteUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  enchufeSnapSound:
+    Guid:
+      Data1: -1936402746
+      Data2: 1131167731
+      Data3: -1775401555
+      Data4: 1755581561
+    Path: event:/Sfx/Conectar Enchufes
+  enchufeUnsnapSound:
+    Guid:
+      Data1: 264349498
+      Data2: 1215903403
+      Data3: -1870344540
+      Data4: 521417848
+    Path: event:/Sfx/Desconectar Enchufes
+  defaultSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  defaultUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &83918300467687557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,6 +741,7 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  soundEmitter: {fileID: 0}
   generator: {fileID: 0}
   powerProvider: {fileID: 0}
 --- !u!135 &2239819066109277086
@@ -926,6 +1040,7 @@ MonoBehaviour:
   itemType: 0
   isSnappable: 1
   isUnsnappable: 1
+  snapCooldownDuration: 1
 --- !u!114 &1435482672238786206
 MonoBehaviour:
   m_ObjectHideFlags: 0

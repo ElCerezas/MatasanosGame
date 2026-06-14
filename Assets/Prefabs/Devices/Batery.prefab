@@ -166,6 +166,62 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   currentItem: {fileID: 0}
+  bloodBagSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  bloodBagUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  dienteSnapSound:
+    Guid:
+      Data1: 1296476054
+      Data2: 1225579064
+      Data3: 488527000
+      Data4: 1973832627
+    Path: event:/Sfx/Colocar Diente
+  dienteUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  enchufeSnapSound:
+    Guid:
+      Data1: -1936402746
+      Data2: 1131167731
+      Data3: -1775401555
+      Data4: 1755581561
+    Path: event:/Sfx/Conectar Enchufes
+  enchufeUnsnapSound:
+    Guid:
+      Data1: 264349498
+      Data2: 1215903403
+      Data3: -1870344540
+      Data4: 521417848
+    Path: event:/Sfx/Desconectar Enchufes
+  defaultSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  defaultUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &5594611455993998158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,10 +367,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 304945929
-      Data2: 1081160475
-      Data3: -1839183991
-      Data4: 168214997
+      Data1: 1679652412
+      Data2: 1304423131
+      Data3: 104288425
+      Data4: -85947720
     Path: event:/Sfx/Enchufe
   Event: 
   EventPlayTrigger: 11
@@ -324,9 +380,9 @@ MonoBehaviour:
   Preload: 0
   NonRigidbodyVelocity: 0
   Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 0
-  OverrideMaxDistance: 1
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &9097622031816469638
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3534173633
+  GlobalObjectIdHash: 3452034016
   InScenePlacedSourceGlobalObjectIdHash: 3452034016
   DeferredDespawnTick: 0
   Ownership: 1

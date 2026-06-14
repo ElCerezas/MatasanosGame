@@ -129,6 +129,62 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   currentItem: {fileID: 0}
+  bloodBagSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  bloodBagUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  dienteSnapSound:
+    Guid:
+      Data1: 1296476054
+      Data2: 1225579064
+      Data3: 488527000
+      Data4: 1973832627
+    Path: event:/Sfx/Colocar Diente
+  dienteUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  enchufeSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  enchufeUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  defaultSnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  defaultUnsnapSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!65 &5622523838998752503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -163,3 +219,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TeethBehaviour
   ShowTopMostFoldoutHeaderGroup: 1
+  type: 0

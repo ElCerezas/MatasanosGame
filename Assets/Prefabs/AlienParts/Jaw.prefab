@@ -71,6 +71,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   BoneParent: {fileID: 0}
   offset: {x: -0.3, y: -0.4, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &5950950193592447709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 145356025527373332, guid: df0b5ef908769834d935bbc50816c515, type: 3}
       propertyPath: OnObjectSnapped.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 145356025527373332, guid: df0b5ef908769834d935bbc50816c515, type: 3}
       propertyPath: OnObjectSnapped.m_PersistentCalls.m_Calls.Array.data[0].m_Mode

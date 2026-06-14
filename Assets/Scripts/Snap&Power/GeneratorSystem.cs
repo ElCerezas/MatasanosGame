@@ -8,7 +8,8 @@ public class GeneratorSystem : NetworkBehaviour
     public int maxPowerLoad = 10;
     public NetworkVariable<int> currentLoad = new NetworkVariable<int>(0);
     public NetworkVariable<bool> isGeneratorOn = new NetworkVariable<bool>(true);
-    [SerializeField] float maxChanceOfFailure = 20f;
+    [SerializeField] float maxChanceOfFailure = 50f;
+    [SerializeField] GameObject generatorSoundEmitter;
 
     [Header("PowerLoad System")]
     [SerializeField] PowerEmitter[] mainEmitters;
@@ -49,6 +50,7 @@ public class GeneratorSystem : NetworkBehaviour
 
             if (newVal == false)
             {
+                generatorSoundEmitter.SetActive(true);
                 foreach (var emitter in mainEmitters) { 
                     emitter.SetEmitting(false); 
                     emitter.soundEmitter.SetActive(true);
@@ -69,6 +71,7 @@ public class GeneratorSystem : NetworkBehaviour
             }
             else
             {
+                generatorSoundEmitter.SetActive(false);
                 foreach (var emitter in mainEmitters) { 
                     emitter.SetEmitting(true); 
                     emitter.soundEmitter.SetActive(false);
