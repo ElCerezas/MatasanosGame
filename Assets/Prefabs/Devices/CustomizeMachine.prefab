@@ -286,6 +286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5760816650882447039}
+  - component: {fileID: 7062283323591365993}
   - component: {fileID: 5298245099053189942}
   m_Layer: 0
   m_Name: CustomizeMachine
@@ -311,6 +312,31 @@ Transform:
   - {fileID: 655637131180103000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7062283323591365993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1831468553312621505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 139482897
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &5298245099053189942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,10 +566,10 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
-  isColor: 1
+  CCM: {fileID: 5298245099053189942}
+  isColor: 0
   isEyes: 0
-  isMouth: 0
+  isMouth: 1
   isHat: 0
   plusIndex: 0
 --- !u!1 &3232742819620795479
@@ -716,9 +742,9 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
-  isColor: 1
-  isEyes: 0
+  CCM: {fileID: 5298245099053189942}
+  isColor: 0
+  isEyes: 1
   isMouth: 0
   isHat: 0
   plusIndex: 1
@@ -892,7 +918,7 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
+  CCM: {fileID: 5298245099053189942}
   isColor: 1
   isEyes: 0
   isMouth: 0
@@ -1068,10 +1094,10 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
-  isColor: 1
+  CCM: {fileID: 5298245099053189942}
+  isColor: 0
   isEyes: 0
-  isMouth: 0
+  isMouth: 1
   isHat: 0
   plusIndex: 1
 --- !u!1 &3837010324633229540
@@ -1606,11 +1632,11 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
-  isColor: 1
+  CCM: {fileID: 5298245099053189942}
+  isColor: 0
   isEyes: 0
   isMouth: 0
-  isHat: 0
+  isHat: 1
   plusIndex: 1
 --- !u!1 &4826257217816604019
 GameObject:
@@ -1782,9 +1808,9 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
-  isColor: 1
-  isEyes: 0
+  CCM: {fileID: 5298245099053189942}
+  isColor: 0
+  isEyes: 1
   isMouth: 0
   isHat: 0
   plusIndex: 0
@@ -2076,7 +2102,7 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
+  CCM: {fileID: 5298245099053189942}
   isColor: 1
   isEyes: 0
   isMouth: 0
@@ -2676,11 +2702,11 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  CCM: {fileID: 0}
-  isColor: 1
+  CCM: {fileID: 5298245099053189942}
+  isColor: 0
   isEyes: 0
   isMouth: 0
-  isHat: 0
+  isHat: 1
   plusIndex: 0
 --- !u!1 &8434535089039483444
 GameObject:
