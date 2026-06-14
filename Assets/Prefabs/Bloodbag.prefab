@@ -102,7 +102,22 @@ MonoBehaviour:
   puddleCount: 5
   puddleSpreadRadius: 5
   explosionParticles: {fileID: 4645617527091262609}
+  explosionSound:
+    Guid:
+      Data1: -468643931
+      Data2: 1213088216
+      Data3: 1886212792
+      Data4: -850535145
+    Path: event:/Sfx/Bolsa Rota
+  groundImpactSound:
+    Guid:
+      Data1: -2060263475
+      Data2: 1263428537
+      Data3: 1349251512
+      Data4: -1182299754
+    Path: event:/Sfx/Bolsa Cae Suelo
   debugCollisions: 1
+  groundImpactVelocityThreshold: 2
 --- !u!114 &3386439851974111025
 MonoBehaviour:
   m_ObjectHideFlags: 0

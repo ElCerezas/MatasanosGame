@@ -2,6 +2,7 @@
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Impresora3D : PoweredDevice
 {
@@ -11,9 +12,10 @@ public class Impresora3D : PoweredDevice
 
     [Header("Visual")]
     NetworkVariable<int> selectedIndex = new NetworkVariable<int>(0);
-    [Range(0f, 1f)]NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
+    [Range(0f, 1f)] NetworkVariable<float> printProgress = new NetworkVariable<float>(0f);
     NetworkVariable<bool> snapZoneOccupied = new NetworkVariable<bool>(false);
     [SerializeField] TextMeshProUGUI screenText;
+    [SerializeField] RawImage screenImage;
 
     [Header("HologramRenderer")]
     [SerializeField] Renderer hologramVisualRenderer;
@@ -75,7 +77,12 @@ public class Impresora3D : PoweredDevice
     }
 
     void OnSelectedIndexChanged(int old, int next) => LoadHolo();
-    void OnPrintProgressChanged(float old, float next) { UpdatePrintShader(next); UpdateScreenText(next); }
+    void OnPrintProgressChanged(float old, float next)
+    {
+        UpdateScreenVisibility(next);
+        UpdatePrintShader(next);
+        UpdateScreenText(next);
+    }
     void OnSnapZoneOccupiedChanged(bool old, bool next) => LoadHolo();
     void OnHasPowerChanged(bool old, bool next) => LoadHolo();
 
@@ -95,8 +102,17 @@ public class Impresora3D : PoweredDevice
         meshFilter.mesh = sourcePrefab.GetComponent<MeshFilter>().sharedMesh;
         hologramVisualRenderer.enabled = hasPower.Value && !snapZoneOccupied.Value;
 
-        screenText.enabled = hasPower.Value;
-        screenText.text = printableObjects[selectedIndex.Value].displayName;
+        screenImage.texture = printableObjects[selectedIndex.Value].displayTexture;
+        
+        RectTransform rectTransform = screenImage.GetComponent<RectTransform>();
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
+
+        if (printProgress.Value == 0f)
+        {
+            UpdateScreenVisibility(0f);
+        }
+
         PushSourceTexture(sourcePrefab);
     }
 
@@ -113,6 +129,22 @@ public class Impresora3D : PoweredDevice
             mpb.SetTexture(ID_MainTexture, sourceTexture);
 
         hologramVisualRenderer.SetPropertyBlock(mpb);
+    }
+
+    void UpdateScreenVisibility(float progress)
+    {
+        bool isPrinting = progress > 0f && progress < 1f;
+
+        if (isPrinting)
+        {
+            screenImage.enabled = false;
+            screenText.enabled = true;
+        }
+        else
+        {
+            screenText.enabled = false;
+            screenImage.enabled = hasPower.Value;
+        }
     }
 
     IEnumerator PrintCoroutine()
@@ -225,7 +257,7 @@ public class Impresora3D : PoweredDevice
 [System.Serializable]
 public struct PrintingObject
 {
-    public string displayName;
+    public Texture2D displayTexture;
     public float printingTime;
     public GameObject printingObject;
 }
