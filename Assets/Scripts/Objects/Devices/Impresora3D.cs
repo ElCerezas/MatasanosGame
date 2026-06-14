@@ -16,6 +16,7 @@ public class Impresora3D : PoweredDevice
     NetworkVariable<bool> snapZoneOccupied = new NetworkVariable<bool>(false);
     [SerializeField] TextMeshProUGUI screenText;
     [SerializeField] RawImage screenImage;
+    [SerializeField] Image screenBackground;
 
     [Header("HologramRenderer")]
     [SerializeField] Renderer hologramVisualRenderer;
@@ -106,6 +107,10 @@ public class Impresora3D : PoweredDevice
         RectTransform rectTransform = screenImage.GetComponent<RectTransform>();
         rectTransform.offsetMin = Vector2.zero;
         rectTransform.offsetMax = Vector2.zero;
+
+        RectTransform rectTransform1 = screenBackground.GetComponent<RectTransform>();
+        rectTransform1.offsetMin = Vector2.zero;
+        rectTransform1.offsetMax = Vector2.zero;
 
         if (printProgress.Value == 0f)
         {
