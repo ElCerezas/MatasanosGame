@@ -156,10 +156,11 @@ public class AlienStateManager : NetworkBehaviour
             float decayPerSecond = maxCalmant / calmantDuration;
             currentCalmant.Value -= decayPerSecond * Time.deltaTime;
 
-            if (currentCalmant.Value < 50)
+            if (currentCalmant.Value < 0)
             {
                 currentCalmant.Value = 0f;
                 UpdateCalmantStatusClientRpc(false);
+                alienAnimator.SetBool("Alterated", true);
                 ChangeState(new InquietoState(stateMachine));
             }
         }
@@ -228,6 +229,7 @@ public class AlienStateManager : NetworkBehaviour
             case LiquidType.Calmante:
                 UpdateCalmantStatusClientRpc(true);
                 currentCalmant.Value = maxCalmant;
+                alienAnimator.SetBool("Alterated", false);
                 if (!(stateMachine.CurrentState is CalmState))
                     ChangeState(new CalmState(this.stateMachine));
                 break;
