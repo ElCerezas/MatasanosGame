@@ -1,6 +1,7 @@
+﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseHandler : NetworkBehaviour
@@ -10,6 +11,7 @@ public class PauseHandler : NetworkBehaviour
     [SerializeField] RawImage pauseRawImage;
     [SerializeField] List<Texture2D> pauseMenuTextures;
     [SerializeField] private FMODUnity.EventReference pauseSound;
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     private NetworkVariable<bool> isPlayerPaused = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<int> selectedTextureIndex = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -82,5 +84,13 @@ public class PauseHandler : NetworkBehaviour
     private void OnPauseStateChanged(bool previousValue, bool newValue)
     {
         if (!IsOwner && menuVisual != null) { menuVisual.SetActive(newValue); }
+    }
+    public void OnDisconnect()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }
