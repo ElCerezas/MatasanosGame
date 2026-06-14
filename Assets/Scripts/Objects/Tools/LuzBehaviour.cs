@@ -18,6 +18,7 @@ public class LuzBehaviour : PoweredItem
     [SerializeField] Light Light;
     [SerializeField] Light Light2;
     [SerializeField] GameObject Textura;
+    [SerializeField] ParticleSystem lightParticles;
 
     private float alienTimer = 0f;
     private WoundFocoBehaviour currentWoundTarget = null;
@@ -36,7 +37,11 @@ public class LuzBehaviour : PoweredItem
         bool active = hasPower.Value && isTurnedOn.Value;
         Light.enabled = active;
         Light2.enabled = active;
-        Textura.SetActive(active);
+        if (active)
+            lightParticles.Play();
+        else
+            lightParticles.Stop();
+            Textura.SetActive(active);
 
         if (!active) StopCurrentHealing();
     }
