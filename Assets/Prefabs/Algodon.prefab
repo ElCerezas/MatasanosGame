@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 4515207700426980358}
   - component: {fileID: 1286927989407326504}
   - component: {fileID: 7751826573116979850}
+  - component: {fileID: -206859942347668748}
   m_Layer: 6
   m_Name: Algodon
   m_TagString: Untagged
@@ -131,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3453153710
+  GlobalObjectIdHash: 1897172277
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -341,3 +342,20 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   algodon: {fileID: 2100000, guid: 42d87a60436405b40b779b3886b9b195, type: 2}
   algodonBetadine: {fileID: 2100000, guid: 684b22c21729e894483a25f1d073d412, type: 2}
+--- !u!114 &-206859942347668748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936633685351537286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d766342f525b63479728f65c20a8215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnappableItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  itemType: -1
+  isSnappable: 0
+  isUnsnappable: 1
+  snapCooldownDuration: 1

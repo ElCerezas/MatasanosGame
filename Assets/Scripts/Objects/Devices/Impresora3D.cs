@@ -20,7 +20,7 @@ public class Impresora3D : PoweredDevice
     [Header("HologramRenderer")]
     [SerializeField] Renderer hologramVisualRenderer;
     MeshFilter meshFilter;
-    SnapZone snapZone;
+    public SnapZone snapZone;
     [SerializeField] MaterialPropertyBlock mpb;
 
     [Header("Animación del Tubo")]
@@ -37,7 +37,6 @@ public class Impresora3D : PoweredDevice
     {
         hologramVisualRenderer = hologramRenderer.GetComponent<Renderer>();
         meshFilter = hologramRenderer?.GetComponent<MeshFilter>();
-        snapZone = hologramRenderer?.GetComponent<SnapZone>();
         mpb = new MaterialPropertyBlock();
 
         snapZone.OnObjectSnapped.AddListener(OnItemSnapped);
