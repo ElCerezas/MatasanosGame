@@ -194,4 +194,20 @@ public class PhysicalItem : NetworkBehaviour, IGrabbable
     }
 
     public ulong GetNetworkObjectID() => NetworkObjectId;
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!IsOwner) return;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (collision.gameObject.TryGetComponent(out PlayerStateManager victimState))
+            {
+                float impactSpeed = collision.relativeVelocity.magnitude;
+
+                Vector3 impactPoint = collision.GetContact(0).point;
+                Vector3 pushDirection = (collision.transform.position - transform.position).normalized;
+                Vector3 pushForce = (pushDirection + Vector3.up * 0.3f) * (impactSpeed * 1.5f);
+                victimState.TriggerKnockdownRpc(3f, pushForce, impactPoint, true, impactSpeed);
+            }
+        }
+    }
 }

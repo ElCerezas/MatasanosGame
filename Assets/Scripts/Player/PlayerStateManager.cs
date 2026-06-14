@@ -130,27 +130,37 @@ public class PlayerStateManager : NetworkBehaviour
     public void OnInsectExplosion(OnInsectExplosion data)
     {
         if (data.VictimID != NetworkObjectId) return;
-        //Debug.Log($"Player {gameObject.name} was exploted by an insect");
     }
 
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void TriggerKnockdownRpc(float ragdollTime, Vector3 pushForce, Vector3 impactPoint, bool spawnParticles, float impactSpeed)
+    {
+        if (stunDuration > 0f) return;
+        if (impactSpeed < minimumForceToRagdoll) return;
+        if (!EnterRagdoll(ragdollTime)) return;
+        rb.AddForce(pushForce, ForceMode.Impulse);
+        if (!knockdownSound.IsNull)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(knockdownSound, transform.position);
+        }
+        if (spawnParticles && hitParticles != null)
+        {
+            StartCoroutine(PlayHitParticles(impactPoint));
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (stunDuration > 0f) return;
+
+        if (collision.gameObject.TryGetComponent(out PhysicalItem _)) return;
+        if (!IsOwner) return;
+
         Vector3 relativeVelocity = collision.relativeVelocity;
+        float impactSpeed = relativeVelocity.magnitude;
 
-        if (relativeVelocity.magnitude > minimumForceToRagdoll)
-        {
-            if (!EnterRagdoll(3f)) return;
-
-            rb.AddForce(relativeVelocity / 2, ForceMode.Impulse);
-
-            if (IsOwner)
-            {
-                Vector3 impactPoint = collision.GetContact(0).point;
-                HitVFXRpc(impactPoint);
-                PlayKnockdownSoundRpc(transform.position);
-            }
-        }
+        Vector3 impactPoint = collision.GetContact(0).point;
+        Vector3 pushForce = relativeVelocity / 2;
+        TriggerKnockdownRpc(3f, pushForce, impactPoint, true, impactSpeed);
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
