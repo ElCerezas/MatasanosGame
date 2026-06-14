@@ -26,6 +26,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] EventReference landingSound;
     float landingSoundCooldownTimer = 0f;
     bool wasGroundedLastFrame = true;
+    bool hasJumped = false;
 
     Rigidbody rigidBody;
     bool isGrounded = true;
@@ -77,10 +78,11 @@ public class PlayerController : NetworkBehaviour
             animator.SetBool("Grounded", isGrounded);
         }
 
-        if (isGrounded && !wasGroundedLastFrame && landingSoundCooldownTimer <= 0f)
+        if (isGrounded && !wasGroundedLastFrame && landingSoundCooldownTimer <= 0f && hasJumped)
         {
             OnLandingServerRPC(playerFeet.position);
             landingSoundCooldownTimer = landingSoundCooldown;
+            hasJumped = false;
         }
         wasGroundedLastFrame = isGrounded;
         currentInput = playerInput.MovementInput;
@@ -179,6 +181,7 @@ public class PlayerController : NetworkBehaviour
         if (isRagdoll) return;
         if (!isGrounded) return;
 
+        hasJumped = true;
         animator.SetTrigger("Jump");
         rigidBody.AddForce(Vector3.up * jumpForce * rigidBody.mass, ForceMode.Impulse);
     }
