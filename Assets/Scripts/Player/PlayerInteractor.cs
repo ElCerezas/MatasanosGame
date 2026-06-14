@@ -22,6 +22,7 @@ public class PlayerInteractor : NetworkBehaviour
     [SerializeField] TwoBoneIKConstraint rightHandIK;
     [Header("SoundEvents")]
     [SerializeField] FMODUnity.EventReference grabSound;
+    [SerializeField] FMODUnity.EventReference dropSound;
 
     IGrabbable currentlyGrabbedItem;
     InteractableOutline currentOutlined;
@@ -67,6 +68,8 @@ public class PlayerInteractor : NetworkBehaviour
 
         if (currentlyGrabbedItem != null)
         {
+            AudioManager.instance.PlayOneShotAtPosition(dropSound, holdPoint.position);
+
             StartCoroutine(BlendIKWeight(0f));
             anim.SetBool("IsGrabbing", false);
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
@@ -79,7 +82,7 @@ public class PlayerInteractor : NetworkBehaviour
             {
                 if (hit.collider.TryGetComponent(out IGrabbable grabbable))
                 {
-                    AudioManager.instance.PlayOneShotAtPosition(grabSound, holdPoint.position );
+                    AudioManager.instance.PlayOneShotAtPosition(grabSound, holdPoint.position);
                     currentlyGrabbedItem = grabbable;
                     StartCoroutine(BlendIKWeight(1f));
                     anim.SetBool("IsGrabbing", true);
@@ -88,6 +91,7 @@ public class PlayerInteractor : NetworkBehaviour
             }
         }
     }
+    
     IEnumerator BlendIKWeight(float target)
     {
         float start = leftHandIK.weight;
@@ -101,6 +105,7 @@ public class PlayerInteractor : NetworkBehaviour
             yield return null;
         }
     }
+    
     void TryInteract()
     {
         if (isRagdoll) return;
@@ -108,16 +113,21 @@ public class PlayerInteractor : NetworkBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
         {
             if (hit.collider.TryGetComponent(out IInteractable interactable))
-
                 InteractServerRpc(interactable.GetNetworkObjectID());
         }
     }
+    
     public void Ragdoll(bool active)
     {
         isRagdoll = active;
 
         if (active && currentlyGrabbedItem != null)
         {
+            if (IsOwner) 
+            {
+                AudioManager.instance.PlayOneShotAtPosition(dropSound, holdPoint.position);
+            }
+
             ReleaseObjectServerRpc(currentlyGrabbedItem.GetNetworkObjectID());
             currentlyGrabbedItem = null;
             anim.SetBool("IsGrabbing", false);
