@@ -27,7 +27,7 @@ public class AlienStateManager : NetworkBehaviour
     [Header("Calmant Settings")]
     [SerializeField] private float calmantDuration = 5f;
     [SerializeField] private float maxCalmant = 100f;
-    [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(0f);
+    [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(100f);
 
     [Header("Debug")]
     [TextArea(6, 12)]
@@ -156,7 +156,7 @@ public class AlienStateManager : NetworkBehaviour
             float decayPerSecond = maxCalmant / calmantDuration;
             currentCalmant.Value -= decayPerSecond * Time.deltaTime;
 
-            if (currentCalmant.Value < 0)
+            if (currentCalmant.Value < 50)
             {
                 currentCalmant.Value = 0f;
                 UpdateCalmantStatusClientRpc(false);

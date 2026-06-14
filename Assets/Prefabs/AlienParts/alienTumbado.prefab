@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1193138775
+  GlobalObjectIdHash: 2737232545
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -95,15 +95,15 @@ MonoBehaviour:
   damageRate: 1
   DesangradoThreshold: 10
   estornudoComponent: {fileID: 3469632940275907254}
-  calmantDuration: 5
+  calmantDuration: 120
   maxCalmant: 100
   currentCalmant:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
+    m_InternalValue: 100
   _debugStatus: No iniciado
-  alienAnimator: {fileID: 0}
+  alienAnimator: {fileID: 5764516393186265494}
 --- !u!114 &973628734019263047
 MonoBehaviour:
   m_ObjectHideFlags: 0

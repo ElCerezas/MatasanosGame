@@ -231,7 +231,7 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   - m_Name: Sleep%
     m_Type: 1
-    m_DefaultFloat: 0
+    m_DefaultFloat: 0.5
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
@@ -302,7 +302,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: -5765600452754670220, guid: 56e7e8f88014e5a42b81a8fe00196711, type: 3}
-    m_Threshold: 0.5
+    m_Threshold: 0.02
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
