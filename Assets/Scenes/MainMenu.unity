@@ -468,6 +468,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2214308164850641156, guid: a72abe7dece309a4ea3d8e8866bb733f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3111706396257370779, guid: a72abe7dece309a4ea3d8e8866bb733f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1274.0072
@@ -5540,7 +5544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1674613515
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5617,7 +5621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1714888569
 MonoBehaviour:
   m_ObjectHideFlags: 0
