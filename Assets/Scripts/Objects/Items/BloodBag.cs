@@ -25,7 +25,10 @@ public class BloodBag : NetworkBehaviour
     [SerializeField] private int puddleCount = 5;
     [SerializeField] private float puddleSpreadRadius = 3f;
     [SerializeField] private ParticleSystem explosionParticles;
+    [SerializeField] private FMODUnity.EventReference explosionSound;
+    [SerializeField] private FMODUnity.EventReference groundImpactSound;
     [SerializeField] private bool debugCollisions = true;
+    [SerializeField] private float groundImpactVelocityThreshold = 2f;
 
     // Network Variables
     private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(-1f);
@@ -167,10 +170,17 @@ public class BloodBag : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        float impactVelocity = Mathf.Max(rb.linearVelocity.magnitude, collision.relativeVelocity.magnitude);
+
+        bool isGroundCollision = IsLayerInMask(collision.gameObject.layer, groundLayer);
+
+        if (isGroundCollision && impactVelocity >= groundImpactVelocityThreshold)
+        {
+            PlayGroundImpactSoundServerRpc(collision.contacts[0].point);
+        }
+
         if (isAttached.Value || isEmptySent || collisionCooldown > 0 || toolItem == null || toolItem.grabbers.Count == 0)
             return;
-
-        float impactVelocity = Mathf.Max(rb.linearVelocity.magnitude, collision.relativeVelocity.magnitude);
 
         float fill = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
         float currentThreshold = GetCurrentVelocityThreshold(fill);
@@ -186,7 +196,7 @@ public class BloodBag : NetworkBehaviour
             }
         }
 
-        BloodbagVFXServerRpc();
+        BloodbagVFXServerRpc(collision.contacts[0].point);
         HandleCollisionServerRpc(collision.contacts[0].point);
     }
 
@@ -226,20 +236,35 @@ public class BloodBag : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void BloodbagVFXServerRpc()
+    private void BloodbagVFXServerRpc(Vector3 impactPoint)
     {
-        BloodbagVFXClientRpc();
+        BloodbagVFXClientRpc(impactPoint);
     }
 
     [ClientRpc]
-    private void BloodbagVFXClientRpc()
+    private void BloodbagVFXClientRpc(Vector3 impactPoint)
     {
         if (explosionParticles == null) return;
 
+        AudioManager.instance.PlayOneShotAtPosition(explosionSound, impactPoint);
+        
+        explosionParticles.transform.position = impactPoint;
         explosionParticles.transform.SetParent(null);
         explosionParticles.gameObject.SetActive(true);
         explosionParticles.Play();
         Destroy(explosionParticles.gameObject, explosionParticles.main.duration + explosionParticles.main.startLifetime.constantMax);
+    }
+
+    [ServerRpc]
+    private void PlayGroundImpactSoundServerRpc(Vector3 impactPoint)
+    {
+        PlayGroundImpactSoundClientRpc(impactPoint);
+    }
+
+    [ClientRpc]
+    private void PlayGroundImpactSoundClientRpc(Vector3 impactPoint)
+    {
+        AudioManager.instance.PlayOneShotAtPosition(groundImpactSound, impactPoint);
     }
 
     private void SpawnBloodPuddles(Vector3 impactPoint)
