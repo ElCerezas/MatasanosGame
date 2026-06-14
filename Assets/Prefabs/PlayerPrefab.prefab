@@ -3299,8 +3299,8 @@ MonoBehaviour:
     serializedVersion: 0
     m_Bits: 256
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.155}
-  m_Size: {x: 0.6, y: 0.15, z: 0.31}
+  m_Offset: {x: 0, y: 0, z: 0.15}
+  m_Size: {x: 0.6, y: 0.15, z: 0.3}
   m_FadeFactor: 1
   version: 1
   m_DecalLayerMask: 1
@@ -4024,6 +4024,7 @@ GameObject:
   - component: {fileID: 3443630820277550147}
   - component: {fileID: 4993439457766293348}
   - component: {fileID: 108067363044512313}
+  - component: {fileID: 3545248101538472718}
   m_Layer: 11
   m_Name: Visual
   m_TagString: Untagged
@@ -4139,6 +4140,22 @@ MonoBehaviour:
   - m_Rig: {fileID: 6430427966887639263}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &3545248101538472718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337284830547841455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f4cac184f61af84898c873e5fe06917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
+  playerHeadMesh: {fileID: 4214518769550071540}
+  eyeDecalProjector: {fileID: 5480607859071105877}
+  mouthDecalProjector: {fileID: 5124858451048282521}
 --- !u!1 &2543311262608366053
 GameObject:
   m_ObjectHideFlags: 0
@@ -7150,7 +7167,7 @@ MonoBehaviour:
   animator: {fileID: 3443630820277550147}
   stunDuration: 0
   invulnerableTime: 3
-  minimumForceToRagdoll: 13
+  minimumForceToRagdoll: 20
   bloodSlipParticles: {fileID: 709010027740898768}
   hitParticles: {fileID: 6394990446635894362}
 --- !u!114 &7023818091626774787
@@ -12213,8 +12230,8 @@ MonoBehaviour:
     serializedVersion: 0
     m_Bits: 256
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.155}
-  m_Size: {x: 0.6, y: 0.15, z: 0.31}
+  m_Offset: {x: 0, y: 0, z: 0.15}
+  m_Size: {x: 0.6, y: 0.15, z: 0.3}
   m_FadeFactor: 1
   version: 1
   m_DecalLayerMask: 1
