@@ -58,6 +58,7 @@ public class WoundVendaBehaviour : TaraBase
                 break;
             case WoundState.Healed:
                 woundProjector.material = tiritaMaterial;
+                colliderInteracttable.detectorType = ColliderDetectorType.HeridaVendada;
                 break;
         }
     }
