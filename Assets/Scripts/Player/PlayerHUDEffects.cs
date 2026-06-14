@@ -59,6 +59,7 @@ public class PlayerHUDEffects : NetworkBehaviour
     private void Awake()
     {
         visual = GetComponent<PlayerVisual>();
+        Ragdoll(false);
     }
     public override void OnNetworkSpawn()
     {
@@ -123,7 +124,7 @@ public class PlayerHUDEffects : NetworkBehaviour
     #region Triggers
     public void Ragdoll(bool isRagdoll)
     {
-        ragdollOverlay.enabled = isRagdoll;
+        ragdollOverlay.gameObject.SetActive(isRagdoll);
     }
     public void TriggerMoco()
     {
