@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerInteractor))]
 [RequireComponent(typeof(Rigidbody))]
-
 public class PlayerStateManager : NetworkBehaviour
 {
     PlayerController controller;
     PlayerInteractor interactor;
     PlayerCamera playerCamera;
     Rigidbody rb;
+
+    [Header("Sound Events (3D)")]
+    [SerializeField] FMODUnity.EventReference slipSound;
+    [SerializeField] FMODUnity.EventReference knockdownSound;
+
     [Header("Ragdoll Settings")]
     [SerializeField] Animator animator;
     [SerializeField] float stunDuration = 0f;
@@ -58,10 +63,12 @@ public class PlayerStateManager : NetworkBehaviour
             invulnerableCountdown -= Time.deltaTime;
     }
 
-    void EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
+    bool EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
     {
         if (!overrideInvulnerability)
-            if (invulnerableCountdown > 0) return;
+        {
+            if (invulnerableCountdown > 0) return false;
+        }
 
         stunDuration = ragdollTime;
         controller.Ragdoll(true);
@@ -71,6 +78,7 @@ public class PlayerStateManager : NetworkBehaviour
         rb.freezeRotation = false;
         animator.enabled = false;
 
+        return true;
     }
     void RecoverJump()
     {
@@ -103,7 +111,6 @@ public class PlayerStateManager : NetworkBehaviour
                 EnterRagdoll(5f, true);
                 break;
             case LiquidType.Estimulante:
-
                 break;
         }
     }
@@ -130,13 +137,19 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (stunDuration > 0f) return;
         Vector3 relativeVelocity = collision.relativeVelocity;
+
         if (relativeVelocity.magnitude > minimumForceToRagdoll)
         {
-            EnterRagdoll(3f);
+            if (!EnterRagdoll(3f)) return;
+
             rb.AddForce(relativeVelocity / 2, ForceMode.Impulse);
 
-            Vector3 impactPoint = collision.GetContact(0).point;
-            HitVFXRpc(impactPoint);
+            if (IsOwner)
+            {
+                Vector3 impactPoint = collision.GetContact(0).point;
+                HitVFXRpc(impactPoint);
+                PlayKnockdownSoundRpc(transform.position);
+            }
         }
     }
 
@@ -149,12 +162,15 @@ public class PlayerStateManager : NetworkBehaviour
     public void Slip(float stunTime)
     {
         if (stunDuration > 0f) return;
-        EnterRagdoll(stunTime);
-
+        if (!EnterRagdoll(stunTime)) return;
         Vector3 feetPosition = transform.position + Vector3.down * 0.5f;
 
         rb.AddForce(Vector3.up * 120f, ForceMode.Impulse);
         rb.AddForceAtPosition(transform.forward * 250f, feetPosition, ForceMode.Impulse);
+        if (!slipSound.IsNull)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(slipSound, transform.position);
+        }
         SlipVFXClientRpc();
     }
     [ClientRpc]
@@ -174,7 +190,6 @@ public class PlayerStateManager : NetworkBehaviour
 
         bloodSlipParticles.transform.SetParent(originalParent, worldPositionStays: false);
     }
-
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
     public void HitVFXRpc(Vector3 position)
     {
@@ -197,4 +212,16 @@ public class PlayerStateManager : NetworkBehaviour
         hitParticles.transform.localPosition = originalLocalPosition;
         hitParticles.transform.localRotation = originalLocalRotation;
     }
+    #region Audio RPCs
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayKnockdownSoundRpc(Vector3 position)
+    {
+        if (!knockdownSound.IsNull)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(knockdownSound, position);
+        }
+    }
+
+    #endregion
 }

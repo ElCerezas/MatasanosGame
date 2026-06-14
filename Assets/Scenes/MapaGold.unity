@@ -141664,22 +141664,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2804748078996861355, guid: d82e81d0b283d8641bd22de32e62c6bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1360102124}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d82e81d0b283d8641bd22de32e62c6bf, type: 3}
---- !u!114 &1243727254 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1416390433482535200, guid: d82e81d0b283d8641bd22de32e62c6bf, type: 3}
-  m_PrefabInstance: {fileID: 1243727253}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360102116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8229ed9d60fce13409471a3c4037b013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1001 &1245032301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142474,6 +142460,18 @@ PrefabInstance:
       propertyPath: generator
       value: 
       objectReference: {fileID: 1570301912}
+    - target: {fileID: 6846948706157994002, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 134744570
+      objectReference: {fileID: 0}
+    - target: {fileID: 6846948706157994002, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6846948706157994002, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3452034016
+      objectReference: {fileID: 0}
     - target: {fileID: 7806706833689511981, guid: c7e0363e1b4c86c43b163ef60254d4e6, type: 3}
       propertyPath: OnObjectSnapped.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -145619,45 +145617,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1250156675}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1360102116 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2804748078996861355, guid: d82e81d0b283d8641bd22de32e62c6bf, type: 3}
-  m_PrefabInstance: {fileID: 1243727253}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1360102124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360102116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abe0b80b48d99fe45a57d62aaffea6da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColliderInteractItem
-  ShowTopMostFoldoutHeaderGroup: 1
-  itemType: 3
-  collisionEntries:
-  - detectorType: 5
-    onEnter:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1243727254}
-          m_TargetAssemblyTypeName: Sponge, Assembly-CSharp
-          m_MethodName: FullyCleanSponge
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onExit:
-      m_PersistentCalls:
-        m_Calls: []
 --- !u!1001 &1363358469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180729,6 +180688,18 @@ PrefabInstance:
       propertyPath: 'particleSystemsOnFailure.Array.data[3]'
       value: 
       objectReference: {fileID: 1701141880}
+    - target: {fileID: 6416447879845283514, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 852874815
+      objectReference: {fileID: 0}
+    - target: {fileID: 6416447879845283514, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6416447879845283514, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2997432489
+      objectReference: {fileID: 0}
     - target: {fileID: 7422755222069626860, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.15
@@ -180768,6 +180739,18 @@ PrefabInstance:
     - target: {fileID: 7422755222069626860, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 179.995
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062867096015651384, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1597285131
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062867096015651384, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062867096015651384, guid: 3b53e5648bc670249a2169a8f8193c8b, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 2997432489
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
