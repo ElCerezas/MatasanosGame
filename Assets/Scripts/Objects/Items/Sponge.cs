@@ -1,10 +1,10 @@
-﻿using Unity.Netcode;
+﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Sponge : NetworkBehaviour
 {
     [Header("Sponge Settings")]
-    // [SerializeField] Material spongeMat;
     [SerializeField] NetworkVariable<float> dirtynes = new NetworkVariable<float>(0f);
     Rigidbody rb;
 
@@ -25,32 +25,72 @@ public class Sponge : NetworkBehaviour
     float lastScrubTime = 0f;
     float scrubTimeout = 0.1f;
 
+    [Header("Audio (FMOD One-Shot)")]
+    [SerializeField] private FMODUnity.EventReference scrubSound;
+    [SerializeField] private float soundInterval = 0.35f;
+    private Coroutine scrubSoundCoroutine;
 
     public override void OnNetworkSpawn()
     {
         dirtynes.OnValueChanged += (oldVal, newVal) =>
         {
             UpdateParticleColor(newVal);
-            /*if (spongeMat != null)
-                spongeMat.color = Color.Lerp(cleanColor, dirtyColor, newVal);*/
         };
 
         isScrubbingSync.OnValueChanged += (oldVal, newVal) =>
         {
-            if (soapParticles == null) return;
-            if (newVal && !soapParticles.isPlaying)
-                soapParticles.Play();
-            else if (!newVal && soapParticles.isPlaying)
-                soapParticles.Stop();
-        };
-        UpdateParticleColor(dirtynes.Value);
+            if (soapParticles != null)
+            {
+                if (newVal && !soapParticles.isPlaying)
+                    soapParticles.Play();
+                else if (!newVal && soapParticles.isPlaying)
+                    soapParticles.Stop();
+            }
 
-        /*if (spongeMat != null)
-            spongeMat.color = Color.Lerp(cleanColor, dirtyColor, dirtynes.Value);*/
+            if (newVal)
+            {
+                if (scrubSoundCoroutine != null) StopCoroutine(scrubSoundCoroutine);
+                scrubSoundCoroutine = StartCoroutine(PlayScrubSoundRoutine());
+            }
+            else
+            {
+                if (scrubSoundCoroutine != null)
+                {
+                    StopCoroutine(scrubSoundCoroutine);
+                    scrubSoundCoroutine = null;
+                }
+            }
+        };
+
+        UpdateParticleColor(dirtynes.Value);
     }
+
+    private IEnumerator PlayScrubSoundRoutine()
+    {
+        while (isScrubbingSync.Value)
+        {
+            if (!scrubSound.IsNull)
+            {
+                FMODUnity.RuntimeManager.PlayOneShotAttached(scrubSound, gameObject);
+            }
+            
+            yield return new WaitForSeconds(soundInterval);
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (scrubSoundCoroutine != null) StopCoroutine(scrubSoundCoroutine);
+        base.OnNetworkDespawn();
+    }
+
+    private void OnDestroy()
+    {
+        if (scrubSoundCoroutine != null) StopCoroutine(scrubSoundCoroutine);
+    }
+
     void Awake()
     {
-        //spongeMat = gameObject.GetComponent<MeshRenderer>().material;
         rb = GetComponent<Rigidbody>();
     }
     void Update()

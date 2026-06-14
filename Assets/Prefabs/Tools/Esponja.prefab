@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3932549347248097257}
   - component: {fileID: 1416390433482535200}
   - component: {fileID: 5576657529238673515}
+  - component: {fileID: 5251876646520689097}
   m_Layer: 6
   m_Name: Esponja
   m_TagString: Untagged
@@ -52,13 +53,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 1190020530
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 1190020530
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -252,6 +253,14 @@ MonoBehaviour:
     m_ColorSpace: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  scrubSound:
+    Guid:
+      Data1: 538524529
+      Data2: 1162532618
+      Data3: -643993428
+      Data4: 544595413
+    Path: event:/Sfx/Esponja
+  soundInterval: 0.35
 --- !u!65 &5576657529238673515
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -273,6 +282,40 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.41018692, y: 0.19790745, z: 0.07081797}
   m_Center: {x: -0.0016905516, y: -0.00044190884, z: -0.0150875775}
+--- !u!114 &5251876646520689097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2804748078996861355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe0b80b48d99fe45a57d62aaffea6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColliderInteractItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  itemType: 3
+  collisionEntries:
+  - detectorType: 5
+    onEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1416390433482535200}
+          m_TargetAssemblyTypeName: Sponge, Assembly-CSharp
+          m_MethodName: FullyCleanSponge
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &7510763028642685827
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +382,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 586c369ab5c540d4ba1a5902e5aaa86d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
