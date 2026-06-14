@@ -9,6 +9,7 @@ public class PlayerStateManager : NetworkBehaviour
 {
     PlayerController controller;
     PlayerInteractor interactor;
+    PlayerHUDEffects HUD;
     PlayerCamera playerCamera;
     Rigidbody rb;
 
@@ -29,6 +30,7 @@ public class PlayerStateManager : NetworkBehaviour
         controller = GetComponent<PlayerController>();
         interactor = GetComponent<PlayerInteractor>();
         playerCamera = GetComponent<PlayerCamera>();
+        HUD = GetComponent<PlayerHUDEffects>();
         rb = GetComponent<Rigidbody>();
     }
     public override void OnNetworkSpawn()
@@ -74,6 +76,7 @@ public class PlayerStateManager : NetworkBehaviour
         controller.Ragdoll(true);
         interactor.Ragdoll(true);
         playerCamera.Ragdoll(true);
+        HUD.Ragdoll(true);
         rb.constraints = RigidbodyConstraints.None;
         rb.freezeRotation = false;
         animator.enabled = false;
@@ -95,6 +98,7 @@ public class PlayerStateManager : NetworkBehaviour
         controller.Ragdoll(false);
         interactor.Ragdoll(false);
         playerCamera.Ragdoll(false);
+        HUD.Ragdoll(false);
 
         animator.enabled = true;
         rb.constraints = RigidbodyConstraints.FreezeRotation;

@@ -23,6 +23,9 @@ public class PlayerHUDEffects : NetworkBehaviour
     [SerializeField] private GameObject localCanvasObject;
     PlayerVisual visual;
 
+    [Header("Ragdoll")]
+    [SerializeField] CanvasGroup ragdollOverlay;
+
     [Header("Sleep")]
     [SerializeField] CanvasGroup sleepOverlay;
     [SerializeField] float sleepFadeDuration = 1f;
@@ -118,6 +121,10 @@ public class PlayerHUDEffects : NetworkBehaviour
     }
     #endregion
     #region Triggers
+    public void Ragdoll(bool isRagdoll)
+    {
+        ragdollOverlay.enabled = isRagdoll;
+    }
     public void TriggerMoco()
     {
         CreateSplash(mocoSettings, activeMocos);
