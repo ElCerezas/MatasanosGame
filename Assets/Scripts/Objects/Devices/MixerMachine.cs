@@ -40,7 +40,10 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
     [Header("Liquid Flask")]
     [SerializeField] MixerFlask MixerFlask;
     Coroutine[] tubeLerpCoroutines;
-
+    [Header("Audio & Timings")]
+    [SerializeField] private FMODUnity.EventReference mixSound;
+    [SerializeField] private float mixProcessDuration = 2.0f;
+    private NetworkVariable<bool> isMixing = new NetworkVariable<bool>(false);
 
     void Awake()
     {
@@ -109,6 +112,7 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
             componentA.Value = 1;
             componentB.Value = 1;
             componentC.Value = 1;
+            isMixing.Value = false;
         }
 
         UpdateUI();
@@ -164,7 +168,8 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
     public void IncrementComponent(int index)
     {
-        if (!hasPower.Value) return;
+        if (!hasPower.Value || isMixing.Value) return;
+
         switch (index)
         {
             case 0: componentA.Value = componentA.Value >= max_Component ? 1 : componentA.Value + 1; break;
@@ -175,8 +180,7 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
     public void ConfirmMix()
     {
-        if (!hasPower.Value) return;
-
+        if (!hasPower.Value || isMixing.Value) return;
         Vector3Int current = new Vector3Int(componentA.Value, componentB.Value, componentC.Value);
         LiquidType liquidType = LiquidType.Sludge;
         Color liquidColor = sludgeColor;
@@ -191,10 +195,27 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
             }
         }
 
+        StartCoroutine(MixProcessCoroutine(liquidType, liquidColor));
+    }
+
+    private IEnumerator MixProcessCoroutine(LiquidType liquidType, Color liquidColor)
+    {
+        isMixing.Value = true;
+        PlayMixSoundRpc();
+        yield return new WaitForSeconds(mixProcessDuration);
         MixerFlask?.Fill(liquidType, liquidColor);
         componentA.Value = 1;
         componentB.Value = 1;
         componentC.Value = 1;
+        isMixing.Value = false;
+    }
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayMixSoundRpc()
+    {
+        if (!mixSound.IsNull)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(mixSound, transform.position);
+        }
     }
 
     void OnComponentChanged(int index, int newValue)
