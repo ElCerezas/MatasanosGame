@@ -1,27 +1,23 @@
 ﻿using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
-
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerInteractor))]
 [RequireComponent(typeof(Rigidbody))]
+
 public class PlayerStateManager : NetworkBehaviour
 {
     PlayerController controller;
     PlayerInteractor interactor;
     PlayerCamera playerCamera;
     Rigidbody rb;
-
-    [Header("Sound Events (3D)")]
-    [SerializeField] FMODUnity.EventReference slipSound;
-    [SerializeField] FMODUnity.EventReference knockdownSound;
-
     [Header("Ragdoll Settings")]
     [SerializeField] Animator animator;
     [SerializeField] float stunDuration = 0f;
     [SerializeField] float invulnerableTime = 3f;
     [SerializeField] float minimumForceToRagdoll;
     [SerializeField] private ParticleSystem bloodSlipParticles;
+    [SerializeField] private ParticleSystem hitParticles;
     float invulnerableCountdown;
     private void Awake()
     {
@@ -62,12 +58,10 @@ public class PlayerStateManager : NetworkBehaviour
             invulnerableCountdown -= Time.deltaTime;
     }
 
-    bool EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
+    void EnterRagdoll(float ragdollTime, bool overrideInvulnerability = false)
     {
         if (!overrideInvulnerability)
-        {
-            if (invulnerableCountdown > 0) return false;
-        }
+            if (invulnerableCountdown > 0) return;
 
         stunDuration = ragdollTime;
         controller.Ragdoll(true);
@@ -77,7 +71,6 @@ public class PlayerStateManager : NetworkBehaviour
         rb.freezeRotation = false;
         animator.enabled = false;
 
-        return true;
     }
     void RecoverJump()
     {
@@ -110,6 +103,7 @@ public class PlayerStateManager : NetworkBehaviour
                 EnterRagdoll(5f, true);
                 break;
             case LiquidType.Estimulante:
+
                 break;
         }
     }
@@ -136,17 +130,13 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (stunDuration > 0f) return;
         Vector3 relativeVelocity = collision.relativeVelocity;
-
         if (relativeVelocity.magnitude > minimumForceToRagdoll)
         {
-            if (!EnterRagdoll(3f)) return;
-
+            EnterRagdoll(3f);
             rb.AddForce(relativeVelocity / 2, ForceMode.Impulse);
 
-            if (IsOwner)
-            {
-                PlayKnockdownSoundRpc(transform.position);
-            }
+            Vector3 impactPoint = collision.GetContact(0).point;
+            HitVFXRpc(impactPoint);
         }
     }
 
@@ -159,19 +149,12 @@ public class PlayerStateManager : NetworkBehaviour
     public void Slip(float stunTime)
     {
         if (stunDuration > 0f) return;
-
-        if (!EnterRagdoll(stunTime)) return;
+        EnterRagdoll(stunTime);
 
         Vector3 feetPosition = transform.position + Vector3.down * 0.5f;
 
         rb.AddForce(Vector3.up * 120f, ForceMode.Impulse);
         rb.AddForceAtPosition(transform.forward * 250f, feetPosition, ForceMode.Impulse);
-
-        if (!slipSound.IsNull)
-        {
-            AudioManager.instance.PlayOneShotAtPosition(slipSound, transform.position);
-        }
-
         SlipVFXClientRpc();
     }
     [ClientRpc]
@@ -191,16 +174,27 @@ public class PlayerStateManager : NetworkBehaviour
 
         bloodSlipParticles.transform.SetParent(originalParent, worldPositionStays: false);
     }
-    #region Audio RPCs
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    private void PlayKnockdownSoundRpc(Vector3 position)
+    public void HitVFXRpc(Vector3 position)
     {
-        if (!knockdownSound.IsNull)
-        {
-            AudioManager.instance.PlayOneShotAtPosition(knockdownSound, position);
-        }
+        StartCoroutine(PlayHitParticles(position));
     }
 
-    #endregion
+    private IEnumerator PlayHitParticles(Vector3 position)
+    {
+        Transform originalParent = hitParticles.transform.parent;
+        Vector3 originalLocalPosition = hitParticles.transform.localPosition;
+        Quaternion originalLocalRotation = hitParticles.transform.localRotation;
+
+        hitParticles.transform.SetParent(null, worldPositionStays: true);
+        hitParticles.transform.position = position;
+        hitParticles.Play();
+
+        yield return new WaitForSeconds(hitParticles.main.duration + hitParticles.main.startLifetime.constantMax);
+
+        hitParticles.transform.SetParent(originalParent, worldPositionStays: false);
+        hitParticles.transform.localPosition = originalLocalPosition;
+        hitParticles.transform.localRotation = originalLocalRotation;
+    }
 }
