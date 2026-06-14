@@ -63,6 +63,7 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
         if (pauseHandler.IsPaused)
         {
+            currentInput = Vector2.zero;
             return;
         }
 
@@ -86,6 +87,15 @@ public class PlayerController : NetworkBehaviour
         }
         wasGroundedLastFrame = isGrounded;
         currentInput = playerInput.MovementInput;
+    }
+    public void OnGamePaused(bool paused)
+    {
+        if (paused)
+        {
+            rigidBody.linearVelocity = Vector3.zero;
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("Grounded", true);
+        }
     }
     void CheckFootstepsTimer()
     {
@@ -146,6 +156,7 @@ public class PlayerController : NetworkBehaviour
     void FixedUpdate()
     {
         if (!IsOwner) return;
+        if (pauseHandler.IsPaused) return;
         ApplyJumpGravity();
         Move();
     }
