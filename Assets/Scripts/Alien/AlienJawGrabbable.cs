@@ -16,6 +16,8 @@ public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
     [SerializeField] private Animator jawAnimator;
 
     [SerializeField] private NetworkVariable<float> jawOpenAmount = new NetworkVariable<float>(0f);
+    [SerializeField] private NetworkVariable<bool> isMouthOpen = new NetworkVariable<bool>(false);
+    [SerializeField] SnapZone[] snapZones;
 
     private float currentVisualAmount;
     private Transform grabberHoldPoint;
@@ -25,6 +27,8 @@ public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
     public override void OnNetworkSpawn()
     {
         currentVisualAmount = jawOpenAmount.Value;
+        isMouthOpen.OnValueChanged += (oldVal, newVal) => UpdateMouthColliders();
+        UpdateMouthColliders();
     }
 
     private void Update()
@@ -50,6 +54,7 @@ public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
 
             float speed = grabberHoldPoint != null ? smoothSpeed : resistanceSpeed;
             jawOpenAmount.Value = Mathf.MoveTowards(jawOpenAmount.Value, targetOpenAmount, speed * Time.deltaTime);
+            isMouthOpen.Value = jawOpenAmount.Value >= 0.8f;
         }
 
         if (jawAnimator != null)
@@ -84,5 +89,19 @@ public class AlienJawGrabbable : NetworkBehaviour, IGrabbable
 
         grabberHoldPoint = null;
         grabberClientId = ulong.MaxValue;
+    }
+    void UpdateMouthColliders()
+    {
+        foreach (SnapZone s in snapZones)
+        {
+            if (s.TryGetComponent(out Collider snapCollider))
+                snapCollider.enabled = isMouthOpen.Value;
+            SnappableItem i = s.currentItem;
+            if (i == null) continue;
+            if (i.TryGetComponent(out Collider itemCollider))
+            {
+                itemCollider.enabled = isMouthOpen.Value;
+            }
+        }
     }
 }
