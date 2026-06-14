@@ -52,6 +52,11 @@ public class PlayerController : NetworkBehaviour
             return;
         }
         playerInput.OnJumpPressed += Jump;
+    }    
+    public override void OnNetworkDespawn()
+    {
+        if (IsOwner && playerInput != null)
+            playerInput.OnJumpPressed -= Jump;
     }
 
     public void Ragdoll(bool active)
@@ -61,6 +66,9 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
+        // 1. COMPROBACIÓN CRÍTICA: Evita errores cuando nos desconectamos
+        if (!IsSpawned) return;
+
         animator.SetFloat("Speed", networkSpeed.Value);
         animator.SetBool("Grounded", networkGrounded.Value);
 
@@ -71,7 +79,7 @@ public class PlayerController : NetworkBehaviour
         if (pauseHandler.IsPaused)
         {
             currentInput = Vector2.zero;
-            networkSpeed.Value = 0f; 
+            networkSpeed.Value = 0f;
             return;
         }
 
@@ -84,7 +92,7 @@ public class PlayerController : NetworkBehaviour
         if (isGrounded != grounded)
         {
             isGrounded = grounded;
-            networkGrounded.Value = isGrounded; 
+            networkGrounded.Value = isGrounded;
         }
 
         if (isGrounded && !wasGroundedLastFrame && landingSoundCooldownTimer <= 0f && hasJumped)
@@ -95,6 +103,14 @@ public class PlayerController : NetworkBehaviour
         }
         wasGroundedLastFrame = isGrounded;
         currentInput = playerInput.MovementInput;
+    }
+
+    void FixedUpdate()
+    {
+        if (!IsSpawned || !IsOwner) return; // Añadido !IsSpawned
+        if (pauseHandler.IsPaused) return;
+        ApplyJumpGravity();
+        Move();
     }
 
     public void OnGamePaused(bool paused)
@@ -157,14 +173,6 @@ public class PlayerController : NetworkBehaviour
         {
             rigidBody.linearVelocity += Vector3.up * Physics.gravity.y * (risingMultiplier - 1f) * Time.fixedDeltaTime;
         }
-    }
-
-    void FixedUpdate()
-    {
-        if (!IsOwner) return;
-        if (pauseHandler.IsPaused) return;
-        ApplyJumpGravity();
-        Move();
     }
 
     void Move()

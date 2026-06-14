@@ -75,37 +75,48 @@ public class PlayerInput : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) return;
+        if (!IsSpawned || !IsOwner) return; // Añadido !IsSpawned
 
         rawInput = movementReference.action.ReadValue<Vector2>();
-        MovementInput = Vector2.MoveTowards(MovementInput, rawInput, smoothTime); //Que el taclat acceleri suaument
+        MovementInput = Vector2.MoveTowards(MovementInput, rawInput, smoothTime);
 
         LookInput = lookReference.action.ReadValue<Vector2>();
     }
+
     void OnJump(InputAction.CallbackContext ctx)
     {
-        if (!IsOwner) return;
+        if (!IsSpawned || !IsOwner) return;
         OnJumpPressed?.Invoke();
     }
     void OnPickUp(InputAction.CallbackContext ctx)
     {
-        if (!IsOwner) return;
+        if (!IsSpawned || !IsOwner) return;
         OnPickUpPressed?.Invoke();
     }
     void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (!IsOwner) return;
+        if (!IsSpawned || !IsOwner) return;
         OnInteractPressed?.Invoke();
     }
     void OnSlip(InputAction.CallbackContext ctx)
     {
-        if (!IsOwner) return;
+        if (!IsSpawned || !IsOwner) return;
         OnSlipPressed?.Invoke();
     }
     void OnPause(InputAction.CallbackContext ctx)
     {
-        if (!IsOwner) return;
-
+        if (!IsSpawned || !IsOwner) return;
         GetComponent<PauseHandler>().TogglePause();
+    }
+    // En PlayerInput.cs
+    public void DisableInputs()
+    {
+        movementReference.action.Disable();
+        jumpReference.action.Disable();
+        movementReference.action.Disable();
+        jumpReference.action.Disable();
+        pickReference.action.Disable();
+        interactReference.action.Disable();
+        pauseReference.action.Disable();
     }
 }

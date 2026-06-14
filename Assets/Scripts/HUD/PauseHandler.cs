@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseHandler : NetworkBehaviour
@@ -25,14 +24,12 @@ public class PauseHandler : NetworkBehaviour
         if (IsOwner)
         {
             if (pauseMenu != null) pauseMenu.SetActive(false);
-
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         else
         {
             if (pauseMenu != null) pauseMenu.SetActive(false);
-
             if (menuVisual != null) menuVisual.SetActive(isPlayerPaused.Value);
         }
 
@@ -40,6 +37,17 @@ public class PauseHandler : NetworkBehaviour
         {
             pauseRawImage.texture = pauseMenuTextures[selectedTextureIndex.Value];
         }
+    }
+    public override void OnNetworkDespawn()
+    {
+        isPlayerPaused.OnValueChanged -= OnPauseStateChanged;
+        selectedTextureIndex.OnValueChanged -= OnTextureChanged;
+    }
+
+    public async void OnDisconnect()
+    {
+        if (!IsOwner) return;
+        await NetworkDisconnectHandler.ReturnToMainMenu(mainMenuSceneName);
     }
     public void TogglePause()
     {
@@ -85,12 +93,5 @@ public class PauseHandler : NetworkBehaviour
     {
         if (!IsOwner && menuVisual != null) { menuVisual.SetActive(newValue); }
     }
-    public void OnDisconnect()
-    {
-        if (NetworkManager.Singleton != null)
-        {
-            NetworkManager.Singleton.Shutdown();
-        }
-        SceneManager.LoadScene(mainMenuSceneName);
-    }
+
 }
