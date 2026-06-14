@@ -324,14 +324,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 139482897
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1880048538
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -503,7 +503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 765801500
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 1614859495
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -855,7 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 1995677908
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -1031,7 +1031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 735282567
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -1569,7 +1569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 3270888007
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -1745,7 +1745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 2504720428
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -2039,7 +2039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 2169041580
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -2317,7 +2317,7 @@ Transform:
   m_GameObject: {fileID: 7854553869302023289}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1.1368681e-13, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -2.22, z: -0}
   m_LocalScale: {x: 7.0358405, y: 2.884257, z: 0.69605607}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2341,7 +2341,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 25.946892
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -2354,10 +2354,10 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.21
+  near clip plane: 0.01
   far clip plane: 50
-  field of view: 30.497606
-  orthographic: 1
+  field of view: 38.259464
+  orthographic: 0
   orthographic size: 1.52
   m_Depth: 0
   m_CullingMask:
@@ -2639,7 +2639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
   GlobalObjectIdHash: 3885082141
-  InScenePlacedSourceGlobalObjectIdHash: 89881791
+  InScenePlacedSourceGlobalObjectIdHash: 139482897
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
