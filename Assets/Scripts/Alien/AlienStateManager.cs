@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,8 +11,9 @@ public class AlienStateManager : NetworkBehaviour
     [Header("Health Settings")]
     [SerializeField] private NetworkVariable<float> currentHealth = new NetworkVariable<float>(100f);
     [SerializeField] private float maxHealth = 100f;
-    private ulong bloodBagID;
-    private bool isBloodbagFull = false;
+    
+    private NetworkVariable<ulong> bloodBagID = new NetworkVariable<ulong>(0);
+    private NetworkVariable<bool> isBloodbagFull = new NetworkVariable<bool>(false);
 
     [Header("Damage Settings")]
     [SerializeField] private float damageAmount = 0.5f;
@@ -29,32 +31,59 @@ public class AlienStateManager : NetworkBehaviour
     [SerializeField] private float maxCalmant = 100f;
     [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(100f);
 
+    [Header("Animations (Networked)")]
+    [SerializeField] private Animator alienAnimator;
+    [SerializeField] private float calmantAnimationDuration = 1f;
+    
+    private NetworkVariable<float> targetSleepPercent = new NetworkVariable<float>(0f);
+    private NetworkVariable<bool> isAlterated = new NetworkVariable<bool>(true);
+    
+    private float visualCalmantPercent = 0f;
+
     [Header("Debug")]
     [TextArea(6, 12)]
     [SerializeField] private string _debugStatus = "No iniciado";
-
-    [Header("Animations")]
-    [SerializeField] private Animator alienAnimator;
+    
+    private NetworkVariable<FixedString512Bytes> networkedDebugStatus = new NetworkVariable<FixedString512Bytes>("No iniciado");
 
     private void UpdateDebugStatus()
     {
-        _debugStatus =
+        if (!IsServer) return;
+
+        string statusText =
             $"=== ALIEN {NetworkObjectId} ===\n" +
             $"Rol:           {(IsServer ? "SERVER" : "CLIENT")}\n" +
             $"Estado:        {currentActiveState.Value}\n" +
             $"HP:            {currentHealth.Value:F1} / {maxHealth}\n" +
             $"Calmant:       {currentCalmant.Value:F1} / {maxCalmant}\n" +
-            $"BloodBag:      {(isBloodbagFull ? $"Conectada (ID {bloodBagID})" : "Sin bloodbag")}\n" +
-            $"Multiplicador: {(!isBloodbagFull ? $"{criticalDamageMultiplier}x (crítico)" : "1x (normal)")}\n" +
+            $"BloodBag:      {(isBloodbagFull.Value ? $"Conectada (ID {bloodBagID.Value})" : "Sin bloodbag")}\n" +
+            $"Multiplicador: {(!isBloodbagFull.Value ? $"{criticalDamageMultiplier}x (crítico)" : "1x (normal)")}\n" +
             $"DmgTimer:      {damageTimer:F2} / {damageRate}";
+
+        networkedDebugStatus.Value = new FixedString512Bytes(statusText);
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (IsServer) currentHealth.Value = maxHealth;
+        
+        if (IsServer) 
+        {
+            currentHealth.Value = maxHealth;
+            isAlterated.Value = true;
+        }
+        else
+        {
+            visualCalmantPercent = targetSleepPercent.Value;
+            _debugStatus = networkedDebugStatus.Value.ToString();
+        }
 
         EventBus.Subscribe<OnInject>(OnInjectionReceived);
+
+        networkedDebugStatus.OnValueChanged += (oldVal, newVal) =>
+        {
+            _debugStatus = newVal.ToString();
+        };
 
         currentHealth.OnValueChanged += (oldVal, newVal) =>
         {
@@ -128,10 +157,12 @@ public class AlienStateManager : NetworkBehaviour
         if (alienAnimator != null)
         {
             float healthPercent = maxHealth > 0 ? currentHealth.Value / maxHealth : 0f;
-            float calmantPercent = maxCalmant > 0 ? currentCalmant.Value / maxCalmant : 0f;
+            
+            visualCalmantPercent = Mathf.MoveTowards(visualCalmantPercent, targetSleepPercent.Value, Time.deltaTime / calmantAnimationDuration);
 
-            alienAnimator.SetFloat("Sleep%", calmantPercent);
+            alienAnimator.SetFloat("Sleep%", visualCalmantPercent);
             alienAnimator.SetFloat("Health", healthPercent);
+            alienAnimator.SetBool("Alterated", isAlterated.Value);
         }
 
         if (!IsServer || stateMachine == null) return;
@@ -156,11 +187,14 @@ public class AlienStateManager : NetworkBehaviour
             float decayPerSecond = maxCalmant / calmantDuration;
             currentCalmant.Value -= decayPerSecond * Time.deltaTime;
 
-            if (currentCalmant.Value < 0)
+            if (currentCalmant.Value <= 0)
             {
                 currentCalmant.Value = 0f;
                 UpdateCalmantStatusClientRpc(false);
-                alienAnimator.SetBool("Alterated", true);
+                
+                isAlterated.Value = true;
+                targetSleepPercent.Value = 0f; 
+                
                 ChangeState(new InquietoState(stateMachine));
             }
         }
@@ -194,7 +228,7 @@ public class AlienStateManager : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        float multiplier = !isBloodbagFull ? criticalDamageMultiplier : 1f;
+        float multiplier = !isBloodbagFull.Value ? criticalDamageMultiplier : 1f;
         currentHealth.Value -= damage * multiplier;
 
         if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
@@ -229,7 +263,10 @@ public class AlienStateManager : NetworkBehaviour
             case LiquidType.Calmante:
                 UpdateCalmantStatusClientRpc(true);
                 currentCalmant.Value = maxCalmant;
-                alienAnimator.SetBool("Alterated", false);
+                
+                isAlterated.Value = false;
+                targetSleepPercent.Value = 1f;
+                
                 if (!(stateMachine.CurrentState is CalmState))
                     ChangeState(new CalmState(this.stateMachine));
                 break;
@@ -241,26 +278,27 @@ public class AlienStateManager : NetworkBehaviour
 
     public void OnBloodBagConnected(OnBloodBagSnapped e)
     {
-        bloodBagID = e.BloodBagID;
-        isBloodbagFull = true;
+        if (!IsServer) return;
+        bloodBagID.Value = e.BloodBagID;
+        isBloodbagFull.Value = true;
     }
 
     private void OnBloodBagDetachedReceived(OnBloodBagDetached e)
     {
-        if (e.BloodBagID != bloodBagID) return;
         if (!IsServer) return;
-        isBloodbagFull = false;
-        bloodBagID = 0;
+        if (e.BloodBagID != bloodBagID.Value) return;
+        
+        isBloodbagFull.Value = false;
+        bloodBagID.Value = 0;
     }
 
     private void OnBloodBagEmptyReceived(OnBloodBagEmpty e)
     {
-        if (e.BloodBagID != bloodBagID) return;
-        if (IsServer)
-        {
-            isBloodbagFull = false;
-            ChangeState(new InquietoState(this.stateMachine));
-        }
+        if (!IsServer) return;
+        if (e.BloodBagID != bloodBagID.Value) return;
+        
+        isBloodbagFull.Value = false;
+        ChangeState(new InquietoState(this.stateMachine));
     }
 
     private void OnTaraHealed(TaraHealedEvent data)

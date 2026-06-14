@@ -1,7 +1,6 @@
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlaneHeartbeatVisualizer : NetworkBehaviour
 {
@@ -29,6 +28,7 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     [SerializeField] private int targetCyclesAt60BPM = 4;
     [SerializeField] private float scrollSpeed = 1f;
     [SerializeField] private float baselineNoise = 0.01f;
+    
     [Header("Colores")]
     [SerializeField] private Color calmantColor = Color.blue;
     [SerializeField] private Color desangradoColor = Color.red;
@@ -70,17 +70,25 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     private void AlienStateChanged(OnAlienStateChanged changed)
     {
         if (flatline)  return;
+        
         switch (changed.NewState)
         {
-            default:
-                SetWaveColorClientRpc(defaultColor);
-                SetBPM(60f);
+            case AlienStateEnum.Calmado:
+                SetWaveColor(calmantColor);
+                SetBPM(60f); 
                 SetScrollSpeed(1f);
                 break;
+                
             case AlienStateEnum.Desangrado:
-                SetWaveColorClientRpc(desangradoColor);
+                SetWaveColor(desangradoColor);
                 SetBPM(120f);
                 SetScrollSpeed(4f);
+                break;
+                
+            default:
+                SetWaveColor(defaultColor);
+                SetBPM(75f);
+                SetScrollSpeed(1f);
                 break;
         }
     }
@@ -89,29 +97,31 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     {
         EventBus.Unsubscribe<OnAlienCalmantUsed>(CalmantApplied);
         EventBus.Unsubscribe<OnCalmantEnded>(CalmantEnded);
+        EventBus.Unsubscribe<OnAlienStateChanged>(AlienStateChanged);
         EventBus.Unsubscribe<OnAlienDeath>(AlienDeath);
     }
-    
 
     private void CalmantApplied(OnAlienCalmantUsed used)
     {
         if (waveColor == desangradoColor) return;
-        SetWaveColorClientRpc(calmantColor);
+        SetWaveColor(calmantColor);
     }
 
     private void CalmantEnded(OnCalmantEnded ended)
     {
         if (waveColor == desangradoColor) return;
-        SetWaveColorClientRpc(defaultColor);
+        SetWaveColor(defaultColor);
     }
 
     void Update()
     {
         if (lineRenderer == null) return;
+        
         if (flatline)
         {
             SetBPM(0f);
         }
+        
         lineRenderer.startColor = waveColor;
         lineRenderer.endColor = waveColor;
         bpmText.color = waveColor;
@@ -125,8 +135,6 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     {
         if (autoCycles)
         {
-            // A 60 BPM mostrará targetCyclesAt60BPM
-            //Contra más BPM más ciclos se mostrarán
             cyclesVisible = Mathf.Max(1, Mathf.RoundToInt((bpm / 60f) * targetCyclesAt60BPM));
         }
 
@@ -144,11 +152,9 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
             }
             else
             {
-
                 float phase = (normalizedX * cyclesVisible) + (Time.time * scrollSpeed);
                 phase = Mathf.Repeat(phase, 1.0f);
 
-                // Ondas Gaussianas
                 float pWave = Mathf.Exp(-Mathf.Pow((phase - 0.25f) * 25f, 2f)) * 0.15f;
                 float qWave = -Mathf.Exp(-Mathf.Pow((phase - 0.45f) * 60f, 2f)) * 0.20f;
                 float rWave = Mathf.Exp(-Mathf.Pow((phase - 0.50f) * 40f, 2f)) * 1.00f;
@@ -169,11 +175,10 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
 
     public void SetBPM(float newBPM)
     {
-        bpm =newBPM;
+        bpm = newBPM;
     }
 
-    [ClientRpc]
-    public void SetWaveColorClientRpc(Color newColor)
+    public void SetWaveColor(Color newColor)
     {
         waveColor = newColor;
     }
