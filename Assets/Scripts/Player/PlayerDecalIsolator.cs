@@ -14,7 +14,7 @@ public class PlayerDecalIsolator : NetworkBehaviour
 
         uint uniquePlayerLayer = (uint)(1 << (8 + playerId));
 
-        playerHeadMesh.renderingLayerMask = uniquePlayerLayer;
+        playerHeadMesh.renderingLayerMask |= uniquePlayerLayer;
         eyeDecalProjector.renderingLayerMask = uniquePlayerLayer;
         mouthDecalProjector.renderingLayerMask = uniquePlayerLayer;
     }
