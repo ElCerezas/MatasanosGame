@@ -25,7 +25,7 @@ public class Sponge : NetworkBehaviour
     float lastScrubTime = 0f;
     float scrubTimeout = 0.1f;
 
-    [Header("Audio (FMOD One-Shot)")]
+    [Header("Audio")]
     [SerializeField] private FMODUnity.EventReference scrubSound;
     [SerializeField] private float soundInterval = 0.35f;
     private Coroutine scrubSoundCoroutine;
@@ -93,17 +93,18 @@ public class Sponge : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
+
     void Update()
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
 
         bool currentlyScrubbing = Time.time <= lastScrubTime + scrubTimeout;
         if (isScrubbingSync.Value != currentlyScrubbing)
-            isScrubbingSync.Value = currentlyScrubbing;
+            UpdateScrubbingRpc(currentlyScrubbing);
     }
     void OnTriggerStay(Collider other)
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
 
         bool isScrubbingMovement = (rb != null) && (rb.linearVelocity.magnitude > 0.1f);
         if (!isScrubbingMovement) return;
@@ -118,16 +119,13 @@ public class Sponge : NetworkBehaviour
                 if (dirtynes.Value >= 1f) return;
 
                 float amountToClean = cleanPercent * Time.deltaTime;
-                bP.ReduceBlood(amountToClean);
-
-                float bloodAbsorbed = amountToClean * dirtAmountPerPuddle;
-                dirtynes.Value = Mathf.Clamp01(dirtynes.Value + bloodAbsorbed);
+                CleanPuddleRpc(bP.GetNetworkObjectID(), amountToClean);
             }
         }
     }
     void OnCollisionStay(Collision collision)
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
 
         bool isScrubbingMovement = (rb != null) && (rb.linearVelocity.magnitude > 0.1f);
         if (!isScrubbingMovement) return;
@@ -142,10 +140,7 @@ public class Sponge : NetworkBehaviour
                 {
                     nextPlayerInteractTime = Time.time + playerInteractInterval;
 
-                    ScrubPlayerClientRpc(playerNetObj.NetworkObjectId, dirtynes.Value < 1f);
-
-                    if (dirtynes.Value < 1f)
-                        dirtynes.Value = Mathf.Clamp01(dirtynes.Value + spongeDirtGainFromPlayer);
+                    ScrubPlayerRpc(playerNetObj.NetworkObjectId, dirtynes.Value < 1f);
                 }
             }
         }
@@ -164,7 +159,44 @@ public class Sponge : NetworkBehaviour
         ParticleSystem.MainModule mainModule = soapParticles.main;
         mainModule.startColor = new ParticleSystem.MinMaxGradient(gradient);
     }
-    [ClientRpc]
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void CleanPuddleRpc(ulong puddleNetworkObjectId, float amountToClean)
+    {
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects
+            .TryGetValue(puddleNetworkObjectId, out NetworkObject puddleNetObj)) return;
+
+        if (puddleNetObj.TryGetComponent(out BloodPuddle bloodPuddle))
+        {
+            bloodPuddle.ReduceBlood(amountToClean);
+            
+            if (dirtynes.Value < 1f)
+            {
+                float bloodAbsorbed = amountToClean * dirtAmountPerPuddle;
+                dirtynes.Value = Mathf.Clamp01(dirtynes.Value + bloodAbsorbed);
+            }
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void ScrubPlayerRpc(ulong playerNetObjectId, bool shouldClean)
+    {
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects
+            .TryGetValue(playerNetObjectId, out NetworkObject netObj)) return;
+
+        ScrubPlayerClientRpc(playerNetObjectId, shouldClean);
+
+        if (shouldClean && dirtynes.Value < 1f)
+            dirtynes.Value = Mathf.Clamp01(dirtynes.Value + spongeDirtGainFromPlayer);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void UpdateScrubbingRpc(bool isScrubbing)
+    {
+        isScrubbingSync.Value = isScrubbing;
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
     private void ScrubPlayerClientRpc(ulong playerNetObjectId, bool shouldClean)
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects
@@ -186,8 +218,14 @@ public class Sponge : NetworkBehaviour
     }
     public void FullyCleanSponge()
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
         
+        FullyCleanSpongeRpc();
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void FullyCleanSpongeRpc()
+    {
         dirtynes.Value = 0f;
     }
 }

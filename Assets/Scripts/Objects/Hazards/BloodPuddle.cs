@@ -35,31 +35,41 @@ public class BloodPuddle : NetworkBehaviour
             }
         }
     }
+
     public void ReduceBlood(float amount)
     {
-        if (!IsServer || !isActive.Value) return;
+        ReduceBloodRpc(amount);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void ReduceBloodRpc(float amount)
+    {
+        if (!isActive.Value) return;
+        
         bloodAmount.Value = Mathf.Max(0f, bloodAmount.Value - amount);
+        
         if (bloodAmount.Value <= 0f)
-            Clean();
+            CleanRpc();
     }
 
     public void Clean()
     {
-        if (!IsServer) return;
-        if (!isActive.Value) return;
-
-        isActive.Value = false;
-        CleanPuddleClientRpc();
+        CleanRpc();
     }
 
-    [ClientRpc]
-    private void CleanPuddleClientRpc()
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void CleanRpc()
     {
+        if (!isActive.Value) return;
+        
+        isActive.Value = false;
+        
         if (NetworkObject.IsSpawned)
         {
-            NetworkObject.Despawn();
+            NetworkObject.Despawn(true);
         }
     }
 
     public bool IsActive() => isActive.Value;
+    public ulong GetNetworkObjectID() => NetworkObjectId;
 }
