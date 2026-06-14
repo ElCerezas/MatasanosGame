@@ -27,7 +27,7 @@ public class AlienStateManager : NetworkBehaviour
     [Header("Calmant Settings")]
     [SerializeField] private float calmantDuration = 5f;
     [SerializeField] private float maxCalmant = 100f;
-    [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(0f);
+    [SerializeField] private NetworkVariable<float> currentCalmant = new NetworkVariable<float>(100f);
 
     [Header("Debug")]
     [TextArea(6, 12)]
@@ -160,6 +160,7 @@ public class AlienStateManager : NetworkBehaviour
             {
                 currentCalmant.Value = 0f;
                 UpdateCalmantStatusClientRpc(false);
+                alienAnimator.SetBool("Alterated", true);
                 ChangeState(new InquietoState(stateMachine));
             }
         }
@@ -228,6 +229,7 @@ public class AlienStateManager : NetworkBehaviour
             case LiquidType.Calmante:
                 UpdateCalmantStatusClientRpc(true);
                 currentCalmant.Value = maxCalmant;
+                alienAnimator.SetBool("Alterated", false);
                 if (!(stateMachine.CurrentState is CalmState))
                     ChangeState(new CalmState(this.stateMachine));
                 break;
