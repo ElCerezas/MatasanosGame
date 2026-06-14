@@ -55,6 +55,9 @@ public class PlayerVisual : NetworkBehaviour
         eyeFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateEyeDecal();
         mouthFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateMouthDecal();
 
+        colorIndex.OnValueChanged += (oldVal, newVal) => ApplyColorFromIndex(newVal);
+        hatIndex.OnValueChanged += (oldVal, newVal) => ApplyHatFromIndex(newVal);
+
         playerRID.OnValueChanged += (oldVal, newVal) => UpdateRIDText();
 
         Vector2 s = new Vector2(1f / sheetColumns, 1f / (sheetRows * 2f));
@@ -64,6 +67,12 @@ public class PlayerVisual : NetworkBehaviour
         UpdateMaterialSplashes();
         UpdateEyeDecal();
         UpdateMouthDecal();
+
+        // Igual que con ojos/boca: aplicamos el estado ya sincronizado de
+        // color y sombrero al spawnear. Esto es lo que faltaba para que
+        // un jugador que se une tarde vea correctamente a los demás.
+        ApplyColorFromIndex(colorIndex.Value);
+        ApplyHatFromIndex(hatIndex.Value);
 
         if (IsServer)
         {
@@ -126,6 +135,28 @@ public class PlayerVisual : NetworkBehaviour
         {
             Debug.LogWarning("Falta asignar el Hat Mesh Filter o el Hat Renderer en el Inspector del PlayerVisual.");
         }
+    }
+
+    // Traduce colorIndex -> Color usando las listas configuradas en
+    // CharacterCustomitationMachine y lo aplica al material del jugador.
+    void ApplyColorFromIndex(int index)
+    {
+        var machine = CharacterCustomitationMachine.Instance;
+        if (machine == null || machine.colores == null) return;
+        if (index < 0 || index >= machine.colores.Count) return;
+
+        ChangeColor(machine.colores[index]);
+    }
+
+    // Traduce hatIndex -> Hat (mesh + material) y lo aplica al sombrero.
+    void ApplyHatFromIndex(int index)
+    {
+        var machine = CharacterCustomitationMachine.Instance;
+        if (machine == null || machine.hats == null) return;
+        if (index < 0 || index >= machine.hats.Count) return;
+
+        var hat = machine.hats[index];
+        ChangeHat(hat.mesh, hat.mat);
     }
 
     Vector2 GetSpriteSheetCoords(int index, bool isMouth)

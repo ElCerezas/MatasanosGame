@@ -12,6 +12,7 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         public Mesh mesh;
         public Material mat;
     }
+    public static CharacterCustomitationMachine Instance;
 
     [Header("Custom Settings")]
     [SerializeField] public List<Color> colores;
@@ -23,6 +24,11 @@ public class CharacterCustomitationMachine : NetworkBehaviour
     [SerializeField] TMP_Text eyeIndexText;
     [SerializeField] TMP_Text mouthIndexText;
     [SerializeField] TMP_Text hatIndexText;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public void ChangeColor(ulong player, int v)
     {
@@ -53,7 +59,6 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         else if (newId < 0) newId = colores.Count - 1;
         visual.colorIndex.Value = newId;
 
-        ApplyColorClientRpc(playerObject.NetworkObjectId, colores[newId]);
         UpdateUIClientRpc(player, newId, visual.eyeFaceIndex.Value, visual.mouthFaceIndex.Value, visual.hatIndex.Value);
     }
 
@@ -99,7 +104,6 @@ public class CharacterCustomitationMachine : NetworkBehaviour
         else if (newId < 0) newId = hats.Count - 1;
         visual.hatIndex.Value = newId;
 
-        ApplyHatClientRpc(playerObject.NetworkObjectId, newId);
         UpdateUIClientRpc(player, visual.colorIndex.Value, visual.eyeFaceIndex.Value, visual.mouthFaceIndex.Value, newId);
     }
 
@@ -118,35 +122,5 @@ public class CharacterCustomitationMachine : NetworkBehaviour
     {
         if (text == null) return;
         text.text = (value + 1).ToString("D2");
-    }
-
-    [ClientRpc]
-    void ApplyColorClientRpc(ulong playerNetworkObjectId, Color color)
-    {
-        var visual = GetVisual(playerNetworkObjectId);
-        if (visual == null) return;
-        visual.ChangeColor(color);
-    }
-
-    [ClientRpc]
-    void ApplyHatClientRpc(ulong playerNetworkObjectId, int hatIndex)
-    {
-        var visual = GetVisual(playerNetworkObjectId);
-        if (visual == null) return;
-
-        if (hatIndex >= 0 && hatIndex < hats.Count)
-        {
-            Hat selectedHat = hats[hatIndex];
-            visual.ChangeHat(selectedHat.mesh, selectedHat.mat);
-        }
-    }
-
-    PlayerVisual GetVisual(ulong networkObjectId)
-    {
-        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out var netObj))
-        {
-            return netObj.GetComponent<PlayerVisual>();
-        }
-        return null;
     }
 }

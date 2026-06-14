@@ -9,6 +9,7 @@ public class PlayerCamera : NetworkBehaviour
     [SerializeField] Transform playerCam;
     [SerializeField] Transform holdPoint;
     [SerializeField] GameObject BodyVisual;
+    [SerializeField] GameObject HatVisual;
     [SerializeField] float holdPointDistance = 1.5f;
     [SerializeField] float holdPointHeight = 1.2f;
     [SerializeField] float maxHoldPointAngleFromCamera = 10f;
@@ -45,6 +46,7 @@ public class PlayerCamera : NetworkBehaviour
         {
             int hiddenLayer = LayerMask.NameToLayer("LocalPlayerLayer");
             BodyVisual.layer = hiddenLayer;
+            HatVisual.layer = hiddenLayer;
         }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
