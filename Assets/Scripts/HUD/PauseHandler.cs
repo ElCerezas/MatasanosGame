@@ -9,6 +9,7 @@ public class PauseHandler : NetworkBehaviour
     [SerializeField] GameObject menuVisual;
     [SerializeField] RawImage pauseRawImage;
     [SerializeField] List<Texture2D> pauseMenuTextures;
+    [SerializeField] private FMODUnity.EventReference pauseSound;
 
     private NetworkVariable<bool> isPlayerPaused = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<int> selectedTextureIndex = new NetworkVariable<int>(-1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -46,26 +47,29 @@ public class PauseHandler : NetworkBehaviour
 
         if (newPauseState)
         {
+            AudioManager.instance.PlayOneShot(pauseSound);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            GetComponent<PlayerController>().OnGamePaused(true);
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            GetComponent<PlayerController>().OnGamePaused(false);
         }
 
         if (isPlayerPaused.Value && pauseMenuTextures.Count > 0)
         {
             selectedTextureIndex.Value = Random.Range(0, pauseMenuTextures.Count);
         }
-
         PauseManager.Instance?.SetPaused(isPlayerPaused.Value);
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(isPlayerPaused.Value);
         }
-
     }
     private void OnTextureChanged(int oldValue, int newValue)
     {

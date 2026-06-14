@@ -10,6 +10,7 @@ public class GeneratorSystem : NetworkBehaviour
     public NetworkVariable<bool> isGeneratorOn = new NetworkVariable<bool>(true);
     [SerializeField] float maxChanceOfFailure = 50f;
     [SerializeField] GameObject generatorSoundEmitter;
+    [SerializeField] EventReference generatorGoneSound;
 
     [Header("PowerLoad System")]
     [SerializeField] PowerEmitter[] mainEmitters;
@@ -50,6 +51,7 @@ public class GeneratorSystem : NetworkBehaviour
 
             if (newVal == false)
             {
+                AudioManager.instance.PlayOneShot(generatorGoneSound);
                 generatorSoundEmitter.SetActive(true);
                 foreach (var emitter in mainEmitters) { 
                     emitter.SetEmitting(false); 

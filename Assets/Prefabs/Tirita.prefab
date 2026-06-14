@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 7677251316934956990}
   - component: {fileID: 1525120132593913778}
   - component: {fileID: 7178443484115028522}
+  - component: {fileID: 4005562601297751271}
   m_Layer: 6
   m_Name: Tirita
   m_TagString: Untagged
@@ -296,3 +297,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.2543602, y: 0.5671034, z: 0.15991783}
   m_Center: {x: -0.0019893646, y: -0.0018575191, z: -0.01957035}
+--- !u!114 &4005562601297751271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936683440790408191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d766342f525b63479728f65c20a8215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnappableItem
+  ShowTopMostFoldoutHeaderGroup: 1
+  itemType: -1
+  isSnappable: 0
+  isUnsnappable: 1
+  snapCooldownDuration: 1
