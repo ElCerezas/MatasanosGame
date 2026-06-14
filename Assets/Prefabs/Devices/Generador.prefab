@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1222272726
+  GlobalObjectIdHash: 2997432489
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -145,6 +145,14 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 1
   maxChanceOfFailure: 20
+  generatorSoundEmitter: {fileID: 0}
+  generatorGoneSound:
+    Guid:
+      Data1: 945310224
+      Data2: 1315673409
+      Data3: 1455741343
+      Data4: -525341320
+    Path: event:/Sfx/Apagon
   mainEmitters:
   - {fileID: 0}
   particleSystemsOnFailure:
