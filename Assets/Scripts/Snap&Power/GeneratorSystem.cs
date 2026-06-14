@@ -53,14 +53,18 @@ public class GeneratorSystem : NetworkBehaviour
             {
                 AudioManager.instance.PlayOneShot(generatorGoneSound);
                 generatorSoundEmitter.SetActive(true);
-                foreach (var emitter in mainEmitters) { 
-                    emitter.SetEmitting(false); 
-                    emitter.soundEmitter.SetActive(true);
+                foreach (var emitter in mainEmitters)
+                {
+                    if (emitter != null)
+                    {
+                        emitter.SetEmitting(false);
+                        emitter.soundEmitter.SetActive(true);
+                    }
                 }
                 foreach (var pS in particleSystemsOnFailure) pS.Play();
 
                 LightmapSettings.lightmaps = darkLightmaps;
-                
+
                 RenderSettings.ambientIntensity = 0f;
                 RenderSettings.ambientLight = Color.black;
 
@@ -74,9 +78,13 @@ public class GeneratorSystem : NetworkBehaviour
             else
             {
                 generatorSoundEmitter.SetActive(false);
-                foreach (var emitter in mainEmitters) { 
-                    emitter.SetEmitting(true); 
-                    emitter.soundEmitter.SetActive(false);
+                foreach (var emitter in mainEmitters)
+                {
+                    if (emitter != null)
+                    {
+                        emitter.SetEmitting(true);
+                        emitter.soundEmitter.SetActive(false);
+                    }
                 }
                 foreach (var pS in particleSystemsOnFailure) pS.Stop();
 
@@ -96,37 +104,39 @@ public class GeneratorSystem : NetworkBehaviour
         {
             EventBus.Publish(new OnGeneratorChargeChanged { CurrentCharge = newVal, MaxCharge = maxPowerLoad });
         };
-        
+
         if (IsServer)
         {
+            foreach (var emitter in mainEmitters)
+            {
+                if (emitter != null)
+                    emitter.SetEmitting(isGeneratorOn.Value);
+            }
+
             EvaluateLoad();
             EventBus.Subscribe<AddEnergyLoad>(OnLoadUpdated);
-
         }
-
     }
+
     public override void OnNetworkDespawn()
     {
         if (IsServer)
             EventBus.Unsubscribe<AddEnergyLoad>(OnLoadUpdated);
     }
+
     void OnLoadUpdated(AddEnergyLoad s)
     {
-        if(IsServer)
+        if (IsServer)
+        {
             currentLoad.Value += s.energyLoad;
+            EvaluateLoad();
+        }
     }
+
     public void EvaluateLoad()
     {
         if (!IsServer) return;
         if (!isGeneratorOn.Value) return;
-
-        int calculatedLoad = 0;
-        foreach (var emitter in mainEmitters)
-        {
-            calculatedLoad += emitter.GetLoad();
-        }
-        
-        currentLoad.Value = calculatedLoad;
 
         if (currentLoad.Value >= maxPowerLoad)
         {
@@ -146,7 +156,7 @@ public class GeneratorSystem : NetworkBehaviour
     private void OverloadGenerator()
     {
         isGeneratorOn.Value = false;
-        currentLoad.Value = 0; 
+        currentLoad.Value = 0;
     }
 
     public void TurnOnGenerator()

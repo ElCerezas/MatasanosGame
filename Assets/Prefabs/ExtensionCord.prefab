@@ -159,8 +159,6 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   soundEmitter: {fileID: 0}
-  generator: {fileID: 0}
-  powerProvider: {fileID: 0}
 --- !u!114 &961247178668132080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,7 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2209072200
+  GlobalObjectIdHash: 2055244995
   InScenePlacedSourceGlobalObjectIdHash: 2209072200
   DeferredDespawnTick: 0
   Ownership: 1
@@ -742,8 +740,6 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   soundEmitter: {fileID: 0}
-  generator: {fileID: 0}
-  powerProvider: {fileID: 0}
 --- !u!135 &2239819066109277086
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1054,15 +1050,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerReceiver
   ShowTopMostFoldoutHeaderGroup: 1
-  hasPower:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
-  wiredEmiters:
+  targetItem: {fileID: 0}
+  sockets:
   - {fileID: 83918300467687557}
   - {fileID: 6630227419677722611}
-  toolToPower: {fileID: 0}
 --- !u!65 &5786750021112074286
 BoxCollider:
   m_ObjectHideFlags: 0
