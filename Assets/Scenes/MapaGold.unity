@@ -46546,6 +46546,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (8)
@@ -46906,7 +46910,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 39dc803d2314c7245a8d0e33229f0ac9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 755286922}
   m_SourcePrefab: {fileID: 100100000, guid: 39dc803d2314c7245a8d0e33229f0ac9, type: 3}
 --- !u!4 &327018795 stripped
 Transform:
@@ -48240,6 +48247,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (9)
@@ -48293,6 +48304,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4498807609798038030, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
   m_PrefabInstance: {fileID: 375782838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &379795619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4c4233c67f141364ba464653f1244cfb, type: 3}
+  m_PrefabInstance: {fileID: 1963645451}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &381417463
 PrefabInstance:
@@ -49814,7 +49830,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411900229}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -49835,7 +49851,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411900229}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -51211,6 +51227,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 117f1ab19b4545143a0815c4d6e70ac2, type: 3}
   m_PrefabInstance: {fileID: 435273323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &443757389 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5155610331091276563, guid: 759101035f60b3c4991ed1448d08b2d9, type: 3}
+  m_PrefabInstance: {fileID: 3150971433002925855}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &448401603
 PrefabInstance:
@@ -70189,7 +70210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 568987714742163912, guid: a49de81aa12f4474fbb7382e365b05bc, type: 3}
       propertyPath: formulaConfigs.Array.data[0].displayName
-      value: Calmante
+      value: Calmant
       objectReference: {fileID: 0}
     - target: {fileID: 568987714742163912, guid: a49de81aa12f4474fbb7382e365b05bc, type: 3}
       propertyPath: formulaConfigs.Array.data[1].displayName
@@ -77557,6 +77578,32 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755082565}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &755286919 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 39dc803d2314c7245a8d0e33229f0ac9, type: 3}
+  m_PrefabInstance: {fileID: 327018794}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &755286922
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755286919}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.7420163, y: 7.0850077, z: 2.0882754}
+  m_Center: {x: -0.03563142, y: 5.392616, z: 0.64442325}
 --- !u!1001 &756204944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78023,7 +78070,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766308562}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -78044,7 +78091,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766308562}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -121596,7 +121643,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1009274501}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -127087,6 +127134,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (10)
@@ -143813,6 +143864,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (12)
@@ -143966,7 +144021,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313528955}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -143987,7 +144042,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313528955}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -144278,6 +144333,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (13)
@@ -151401,7 +151460,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516915577}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -167405,13 +167464,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4c4233c67f141364ba464653f1244cfb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1963645455}
   m_SourcePrefab: {fileID: 100100000, guid: 4c4233c67f141364ba464653f1244cfb, type: 3}
 --- !u!4 &1963645452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4c4233c67f141364ba464653f1244cfb, type: 3}
   m_PrefabInstance: {fileID: 1963645451}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1963645455
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379795619}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2096854, y: 2.0345297, z: 0.7320776}
+  m_Center: {x: 0, y: 1.0173788, z: 0.014044389}
 --- !u!1001 &1965063415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -168431,6 +168514,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (11)
@@ -179930,6 +180017,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MesaEsquina
       objectReference: {fileID: 0}
+    - target: {fileID: 3448897206810596036, guid: 662e06efde1d12446a71870895520273, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -180041,6 +180132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 350488737894542233, guid: 97fe1cbf9740aab4db2ee73d190882e9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 1631846023889397868, guid: 97fe1cbf9740aab4db2ee73d190882e9, type: 3}
       propertyPath: m_Name
       value: Pizarra
@@ -180113,6 +180208,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 1303771059448672090, guid: 6f4b23f61c21ee543a9ea5b1416e6083, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 4305504172210848116, guid: 6f4b23f61c21ee543a9ea5b1416e6083, type: 3}
       propertyPath: m_Name
       value: CajaDatos (1)
@@ -180407,8 +180506,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6770831904010371014, guid: 759101035f60b3c4991ed1448d08b2d9, type: 3}
       propertyPath: entries.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6770831904010371014, guid: 759101035f60b3c4991ed1448d08b2d9, type: 3}
+      propertyPath: entries.Array.data[6].nombre
+      value: Sponge
+      objectReference: {fileID: 0}
+    - target: {fileID: 6770831904010371014, guid: 759101035f60b3c4991ed1448d08b2d9, type: 3}
+      propertyPath: entries.Array.data[6].target
+      value: 
+      objectReference: {fileID: 443757389}
     - target: {fileID: 7655091164372113857, guid: 759101035f60b3c4991ed1448d08b2d9, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3865861748
@@ -180522,7 +180629,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132147770634963}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -181185,6 +181292,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c4eb06e1873db4b4f95b063c5628088f, type: 2}
+    - target: {fileID: 2508198866395320876, guid: f6b24ba13d14823498ef8893cadfeb0d, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
+    - target: {fileID: 6039909864443529489, guid: f6b24ba13d14823498ef8893cadfeb0d, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 9059827009263237615, guid: f6b24ba13d14823498ef8893cadfeb0d, type: 3}
       propertyPath: m_Material
       value: 
@@ -181259,6 +181374,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 189095394}
     m_Modifications:
+    - target: {fileID: 861233017658454643, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 8dde0a3e74016d14dad011ee2385c308, type: 2}
     - target: {fileID: 3268776937785970216, guid: 5ff27c8d78231994989a904a1e705a2b, type: 3}
       propertyPath: m_Name
       value: Mesa (7)
