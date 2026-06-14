@@ -1,6 +1,7 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 using System.Collections;
+using FMODUnity;
 
 [RequireComponent(typeof(NetworkObject))]
 public class Estornudo : NetworkBehaviour
@@ -16,7 +17,8 @@ public class Estornudo : NetworkBehaviour
     [SerializeField] LayerMask targetLayer;
     [SerializeField] bool showDebugCone = true;
     [SerializeField] private ParticleSystem estornudoParticles;
-
+    [Header("Audio")]
+    [SerializeField] private EventReference sonidoEstornudo;
     private void Awake()
     {
         if (attackOrigin == null)
@@ -100,7 +102,7 @@ public class Estornudo : NetworkBehaviour
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
 
-        Vector3 backwardDirection = direction; 
+        Vector3 backwardDirection = direction;
         backwardDirection.y = 0.5f;
 
         rb.AddForce(backwardDirection.normalized * attackForce, ForceMode.Impulse);
@@ -113,11 +115,16 @@ public class Estornudo : NetworkBehaviour
     {
         // SFX y VFX aquí
         estornudoParticles.gameObject.SetActive(true);
+        if (AudioManager.instance != null && attackOrigin != null)
+        {
+            AudioManager.instance.PlayOneShotAtPosition(sonidoEstornudo, attackOrigin.position);
+        }
     }
-    [ClientRpc] 
+    [ClientRpc]
     private void EstornudoEndVFXClientRpc()
     {
         estornudoParticles.gameObject.SetActive(false);
+
     }
 
     private void OnDrawGizmos()

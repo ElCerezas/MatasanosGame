@@ -1,7 +1,6 @@
 ﻿using FMODUnity;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerInput))]
@@ -14,10 +13,12 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] Transform playerFeet;
     [SerializeField] Animator animator;
     private PauseHandler pauseHandler;
+
     [Header("Footsteps (Timer-Based)")]
     [SerializeField] private EventReference footstepSound;
     [SerializeField] float stepInterval = 0.35f;
     private float stepTimer = 0f;
+
     [Header("Jump feel")]
     [SerializeField] float jumpForce = 5f;
     [SerializeField] float fallMultiplier = 2.5f;
@@ -32,21 +33,22 @@ public class PlayerController : NetworkBehaviour
     bool isGrounded = true;
     bool isRagdoll = false;
 
+    private NetworkVariable<float> networkSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<bool> networkGrounded = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         rigidBody = GetComponent<Rigidbody>();
         pauseHandler = GetComponent<PauseHandler>();
     }
+
     public override void OnNetworkSpawn()
     {
         if (!IsOwner)
         {
             FMODUnity.StudioListener fmodListener = GetComponentInChildren<FMODUnity.StudioListener>(true);
-            if (fmodListener != null)
-            {
-                fmodListener.enabled = false;
-            }
+            if (fmodListener != null) fmodListener.enabled = false;
             return;
         }
         playerInput.OnJumpPressed += Jump;
@@ -59,11 +61,17 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
+        animator.SetFloat("Speed", networkSpeed.Value);
+        animator.SetBool("Grounded", networkGrounded.Value);
+
         CheckFootstepsTimer();
+
         if (!IsOwner) return;
+
         if (pauseHandler.IsPaused)
         {
             currentInput = Vector2.zero;
+            networkSpeed.Value = 0f; 
             return;
         }
 
@@ -76,7 +84,7 @@ public class PlayerController : NetworkBehaviour
         if (isGrounded != grounded)
         {
             isGrounded = grounded;
-            animator.SetBool("Grounded", isGrounded);
+            networkGrounded.Value = isGrounded; 
         }
 
         if (isGrounded && !wasGroundedLastFrame && landingSoundCooldownTimer <= 0f && hasJumped)
@@ -88,25 +96,25 @@ public class PlayerController : NetworkBehaviour
         wasGroundedLastFrame = isGrounded;
         currentInput = playerInput.MovementInput;
     }
+
     public void OnGamePaused(bool paused)
     {
-        if (paused)
+        if (paused && IsOwner)
         {
             rigidBody.linearVelocity = Vector3.zero;
-            animator.SetFloat("Speed", 0f);
-            animator.SetBool("Grounded", true);
+            networkSpeed.Value = 0f;
+            networkGrounded.Value = true;
         }
     }
+
     void CheckFootstepsTimer()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
         bool isWalking = stateInfo.IsName("Caminar");
 
         if (isWalking)
         {
             stepTimer -= Time.deltaTime;
-
             if (stepTimer <= 0f)
             {
                 PlayFootstepSound();
@@ -126,33 +134,31 @@ public class PlayerController : NetworkBehaviour
             AudioManager.instance.PlayOneShotAtPosition(footstepSound, playerFeet.position);
         }
     }
+
     [ClientRpc]
     void OnLandingClientRPC(Vector3 landingPosition)
     {
         AudioManager.instance.PlayOneShotAtPosition(landingSound, landingPosition);
     }
+
     [ServerRpc]
     void OnLandingServerRPC(Vector3 landingPosition)
     {
         OnLandingClientRPC(landingPosition);
     }
+
     void ApplyJumpGravity()
     {
         if (rigidBody.linearVelocity.y < 0f)
         {
-            rigidBody.linearVelocity += Vector3.up
-                * Physics.gravity.y
-                * (fallMultiplier - 1f)
-                * Time.fixedDeltaTime;
+            rigidBody.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
         }
         else if (rigidBody.linearVelocity.y > 0f)
         {
-            rigidBody.linearVelocity += Vector3.up
-                * Physics.gravity.y
-                * (risingMultiplier - 1f)
-                * Time.fixedDeltaTime;
+            rigidBody.linearVelocity += Vector3.up * Physics.gravity.y * (risingMultiplier - 1f) * Time.fixedDeltaTime;
         }
     }
+
     void FixedUpdate()
     {
         if (!IsOwner) return;
@@ -160,6 +166,7 @@ public class PlayerController : NetworkBehaviour
         ApplyJumpGravity();
         Move();
     }
+
     void Move()
     {
         if (isRagdoll) return;
@@ -171,7 +178,6 @@ public class PlayerController : NetworkBehaviour
         right.Normalize();
 
         Vector3 moveDir = (foward * currentInput.y + right * currentInput.x).normalized;
-
         Vector3 currentVelocity = rigidBody.linearVelocity;
         Vector3 targetHorizontalVelocity = moveDir * speed;
 
@@ -180,27 +186,40 @@ public class PlayerController : NetworkBehaviour
         if (currentInput == Vector2.zero)
         {
             rigidBody.linearVelocity = new Vector3(0, currentVelocity.y, 0);
-            animator.SetFloat("Speed", 0f);
+            networkSpeed.Value = 0f;
         }
         else
         {
-            animator.SetFloat("Speed", moveDir.magnitude);
+            networkSpeed.Value = moveDir.magnitude;
         }
     }
+
     void Jump()
     {
         if (isRagdoll) return;
         if (!isGrounded) return;
 
         hasJumped = true;
-        animator.SetTrigger("Jump");
+        
+        PlayJumpAnimationServerRPC();
+
         rigidBody.AddForce(Vector3.up * jumpForce * rigidBody.mass, ForceMode.Impulse);
+    }
+
+    [ServerRpc]
+    void PlayJumpAnimationServerRPC()
+    {
+        PlayJumpAnimationClientRPC();
+    }
+
+    [ClientRpc]
+    void PlayJumpAnimationClientRPC()
+    {
+        animator.SetTrigger("Jump");
     }
 
     bool IsGrounded()
     {
         return Physics.Raycast(playerFeet.position, Vector3.down, 0.2f);
     }
-
-
 }

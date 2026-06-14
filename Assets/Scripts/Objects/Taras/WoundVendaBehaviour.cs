@@ -46,11 +46,10 @@ public class WoundVendaBehaviour : TaraBase
 
     private void OnWoundStateChanged(WoundState oldState, WoundState newState)
     {
-        // Cambiar el material en todos los clientes
         switch (newState)
         {
             case WoundState.Normal:
-                woundProjector.material = null; // O el material original
+                woundProjector.material = null;
                 break;
             case WoundState.Disinfected:
                 woundProjector.material = betadineMaterial;
