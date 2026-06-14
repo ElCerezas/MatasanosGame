@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6643580203251202128}
   - component: {fileID: 4001427835164846226}
   - component: {fileID: 3188827312173664299}
-  - component: {fileID: 885384959353583086}
+  - component: {fileID: -8580244980239612655}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -108,7 +108,7 @@ MonoBehaviour:
     PacketDelayMS: 0
     PacketJitterMS: 0
     PacketDropRate: 0
---- !u!114 &885384959353583086
+--- !u!114 &-8580244980239612655
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +117,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2020154743579282066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9b8ddc26988abe418c33ee5517c7686, type: 3}
+  m_Script: {fileID: 11500000, guid: 02ad30069a795634f91e4411d79de275, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  mainMenuSceneName: MainMenu
+  m_EditorClassIdentifier: Assembly-CSharp::ClientDisconnectNotifier

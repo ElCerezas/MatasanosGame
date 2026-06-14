@@ -131,4 +131,23 @@ public class WinConditionManager : NetworkBehaviour
     {
         EventBus.Publish(new VictoryEvent());
     }
+
+    [ServerRpc]
+    public void ForceGameEndServerRpc()
+    {
+        if (!IsServer) return;
+        
+        Debug.Log("[WinConditionManager] Fin de partida forzado por el host.");
+        NotifyVictoryClientRpc();
+    }
+
+    private void Update()
+    {
+        // Debug: Presionar F10 para forzar fin de partida (solo servidor)
+        if (Input.GetKeyDown(KeyCode.F10) && IsServer)
+        {
+            Debug.Log("[WinConditionManager] F10 presionado. Forzando fin de partida...");
+            ForceGameEndServerRpc();
+        }
+    }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 public class LobbyManager : InteractableItem
 {
     private NetworkVariable<List<ulong>> playersReady = new NetworkVariable<List<ulong>>();
+    private NetworkVariable<bool> isLobbyLocked = new NetworkVariable<bool>(false);
     private int numberOfPlayers = 1;
     private int numberOfPlayersText =1;
     [SerializeField] private string m_GameSceneName = "MapaBeta";
@@ -63,6 +64,8 @@ public class LobbyManager : InteractableItem
 
         if (playersReady.Value.Count == numberOfPlayers)
         {
+            isLobbyLocked.Value = true;
+            Debug.Log("[LobbyManager] Todos listos. Lobby bloqueado.");
             NetworkManager.Singleton.SceneManager.LoadScene(m_GameSceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
     }
@@ -70,5 +73,24 @@ public class LobbyManager : InteractableItem
     private void UpdateTextClientRpc(int readyCount, int totalPlayers)
     {
         m_TextMeshProUGUI.text = $"{readyCount}/{totalPlayers} Listos";
+    }
+
+    public bool IsLobbyLocked()
+    {
+        return isLobbyLocked.Value;
+    }
+
+    public void RemovePlayerFromReady(ulong clientId)
+    {
+        if (!IsServer) return;
+
+        List<ulong> updatedList = new List<ulong>(playersReady.Value);
+        if (updatedList.Contains(clientId))
+        {
+            updatedList.Remove(clientId);
+            playersReady.Value = updatedList;
+            UpdateTextClientRpc(updatedList.Count, numberOfPlayers);
+            Debug.Log($"[LobbyManager] Cliente {clientId} removido de ready. Total: {updatedList.Count}/{numberOfPlayers}");
+        }
     }
 }

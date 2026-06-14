@@ -13,6 +13,9 @@ public class GameManager : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
+        // Registrar callback de aprobación de conexión
+        NetworkManager.ConnectionApprovalCallback += ApproveConnection;
+        
         NetworkManager.OnClientConnectedCallback += SpawnPlayerWithDefaultLogic;
         NetworkManager.SceneManager.OnLoadEventCompleted += HandleSceneLoadCompleted;
     }
@@ -35,6 +38,23 @@ public class GameManager : NetworkBehaviour
             }
             SpawnPlayer(clientId, spawnPos, spawnRot);
         }
+    }
+
+    private void ApproveConnection(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    {
+        // Obtener LobbyManager para verificar si está bloqueado
+        LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
+        
+        if (lobbyManager != null && lobbyManager.IsLobbyLocked())
+        {
+            Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} rechazado. Lobby está bloqueado.");
+            response.Approved = false;
+            response.Reason = "Lobby is locked";
+            return;
+        }
+
+        response.Approved = true;
+        Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} aprobado.");
     }
 
     private void SpawnPlayerWithDefaultLogic(ulong clientID)
@@ -64,6 +84,7 @@ public class GameManager : NetworkBehaviour
     {
         if (IsServer)
         {
+            NetworkManager.ConnectionApprovalCallback -= ApproveConnection;
             NetworkManager.OnClientConnectedCallback -= SpawnPlayerWithDefaultLogic;
             NetworkManager.SceneManager.OnLoadEventCompleted -= HandleSceneLoadCompleted;
         }

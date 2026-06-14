@@ -27,11 +27,33 @@ public class NetworkDisconnectHandler : MonoBehaviour
         Debug.Log($"[NetworkDisconnect] Evento OnClientDisconnected disparado. ClientId: {clientId}");
         if (NetworkManager.Singleton == null) return;
 
-        // Si somos el Host/Servidor y el que se desconecta es un cliente (ej. ID 1), lo ignoramos.
-        // (El Host no debe volver al menú solo porque un jugador se haya salido).
+        // Si somos el Host/Servidor y el que se desconecta es un cliente (ej. ID 1), limpiamos de lobby y continúa
         if (NetworkManager.Singleton.IsServer && clientId != NetworkManager.Singleton.LocalClientId)
         {
             Debug.Log($"[NetworkDisconnect] El Cliente {clientId} ha abandonado la partida. El Host sigue jugando.");
+            
+            // Destruir explícitamente el PlayerObject del cliente desconectado
+            if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
+            {
+                if (client.PlayerObject != null)
+                {
+                    Debug.Log($"[NetworkDisconnect] Destruyendo PlayerObject del cliente {clientId}");
+                    client.PlayerObject.Despawn();
+                    Object.Destroy(client.PlayerObject.gameObject);
+                }
+            }
+            
+            // Limpiar de LobbyManager solo si estamos en el lobby (WaitingRoom)
+            LobbyManager lobbyManager = Object.FindFirstObjectByType<LobbyManager>();
+            if (lobbyManager != null)
+            {
+                Debug.Log($"[NetworkDisconnect] Limpiando cliente {clientId} del lobby.");
+                lobbyManager.RemovePlayerFromReady(clientId);
+            }
+            else
+            {
+                Debug.Log($"[NetworkDisconnect] LobbyManager no encontrado (no estamos en WaitingRoom). Cliente {clientId} se desconectó durante el juego.");
+            }
             return;
         }
 
@@ -49,31 +71,30 @@ public class NetworkDisconnectHandler : MonoBehaviour
 
         try
         {
-            // 1. Apagar Netcode
-            if (NetworkManager.Singleton != null)
-            {
-                NetworkManager.Singleton.Shutdown();
-                // Esperar a que Netcode se apague realmente
-                await Task.Delay(100);
-
-                // 2. Destruir explícitamente el objeto del NetworkManager
-                if (NetworkManager.Singleton != null)
-                {
-                    Object.Destroy(NetworkManager.Singleton.gameObject);
-                }
-            }
-
-            // 3. Limpiar Input y Cursor
+            // Limpiar Input y Cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            var localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
-            if (localPlayer != null)
+            // Si existe player object, deshabilitar inputs
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.LocalClient.PlayerObject != null)
             {
-                var input = localPlayer.GetComponent<PlayerInput>();
-                if (input != null) input.DisableInputs();
+                var input = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
+                if (input != null) 
+                {
+                    input.DisableInputs();
+                }
             }
 
+            // Esperar un poco para que se procesen los cambios
+            await Task.Delay(50);
+
+            // Cargar escena del menú
+            // NOTA: No llamamos a Shutdown() porque Unity Services Lobbies maneja su propio ciclo de vida
+            SceneManager.LoadScene(sceneName);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[NetworkDisconnect] Error en ReturnToMainMenu: {ex}");
             SceneManager.LoadScene(sceneName);
         }
         finally
