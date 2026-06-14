@@ -164,6 +164,7 @@ public class PlayerInteractor : NetworkBehaviour
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
         {
+            anim.SetBool("IsGrabbing", false);
             if (netObj.TryGetComponent(out IGrabbable grabbable))
                 grabbable.RemoveGrabber(rpcParams.Receive.SenderClientId);
         }
