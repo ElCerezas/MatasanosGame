@@ -126930,16 +126930,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: gizmoSize
+      value: 2.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: drawDebugRays
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: minWoundDistance
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: verticalTolerance
+      value: 0.224
+      objectReference: {fileID: 0}
+    - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: maxRaycastAttempts
-      value: 20
+      value: 142
+      objectReference: {fileID: 0}
+    - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: raycastSphereRadius
+      value: 5.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: sphereCenterOffset.x
+      value: 3.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 973628734019263047, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: sphereCenterOffset.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1485745311754108689, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: m_Mesh
@@ -160324,6 +160344,10 @@ PrefabInstance:
     - target: {fileID: 5316002740822914985, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5512246226066289044, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
+      propertyPath: woundLayer.m_Bits
+      value: 65536
       objectReference: {fileID: 0}
     - target: {fileID: 5595781006817313004, guid: c849b4fc6fcb49f49aea6df45d31f10f, type: 3}
       propertyPath: GlobalObjectIdHash

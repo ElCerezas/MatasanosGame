@@ -11,18 +11,28 @@ public class AlienWoundManager : NetworkBehaviour
 
     [Header("Wound Placement")]
     [Range(0f, 1f)]
-    public float minHeightBias = 0.2f;
-    public int maxRaycastAttempts = 10;
+    public float verticalTolerance = 0.2f;
+    public float raycastSphereRadius = 10f;
+    public int maxRaycastAttempts = 20;
+    public Vector3 sphereCenterOffset = Vector3.zero;
 
     [Header("Wound Collision Prevention")]
-    [Tooltip("Distancia mínima entre heridas")]
     public float minWoundDistance = 0.65f;
 
     [Header("Debug")]
     [SerializeField] bool drawDebugRays = false;
-    private List<(Vector3 origin, Vector3 direction, bool hit)> _debugRays = new();
-    private Vector3 _debugSphereCenter;
-    private float _debugSphereRadius = 10f;
+    [Range(0.5f, 10f)] public float gizmoSize = 2f;
+
+    private struct DebugRay
+    {
+        public Vector3 origin;
+        public Vector3 hitPoint;
+        public bool hit;
+        public bool validPlacement;
+        public Vector3 normal;
+    }
+
+    private List<DebugRay> _debugRays = new();
     private List<Vector3> _spawnedWoundPositions = new();
 
     public override void OnNetworkSpawn()
@@ -30,6 +40,7 @@ public class AlienWoundManager : NetworkBehaviour
         if (IsServer)
         {
             _spawnedWoundPositions.Clear();
+            _debugRays.Clear();
             StartCoroutine(SpawnWoundsNextFrame());
         }
     }
@@ -48,51 +59,56 @@ public class AlienWoundManager : NetworkBehaviour
         }
     }
 
+    Vector3 GetSphereCenter()
+    {
+        SkinnedMeshRenderer smr = GetComponentInChildren<SkinnedMeshRenderer>();
+        if (smr != null)
+            return smr.bounds.center + sphereCenterOffset;
+        return transform.position + sphereCenterOffset;
+    }
+
     void TryGenerateRandomWound()
     {
-        _debugSphereCenter = transform.position;
+        Vector3 sphereCenter = GetSphereCenter();
         for (int attempt = 0; attempt < maxRaycastAttempts; attempt++)
         {
-            Vector3 randomDir = UnityEngine.Random.onUnitSphere * 10;
-            bool didHit = false;
+            Vector3 randomDir = Random.onUnitSphere;
+            Vector3 origin = sphereCenter + randomDir * raycastSphereRadius;
+            Vector3 direction = (sphereCenter - origin).normalized;
 
-            Vector3 origin = transform.position + randomDir;
-            Vector3 direction = (transform.position - origin).normalized;
-
-            if (Physics.Raycast(origin, direction, out RaycastHit hit, 10f, layerMask))
+            if (Physics.Raycast(origin, direction, out RaycastHit hit, raycastSphereRadius, layerMask))
             {
-                Debug.DrawRay(origin, direction);
                 if (hit.collider.transform.IsChildOf(transform) || hit.collider.transform == transform)
                 {
-                    if (Vector3.Dot(hit.normal, Vector3.down) < minHeightBias)
+                    float verticalAlignment = Mathf.Abs(Vector3.Dot(hit.normal, Vector3.up));
+                    bool isValid = verticalAlignment < verticalTolerance;
+
+                    if (isValid && !IsOverlappingWithExistingWounds(hit.point))
                     {
-                        if (!IsOverlappingWithExistingWounds(hit.point))
-                        {
-                            didHit = true;
-                            _debugRays.Add((origin, direction, true));
-                            GenerateWound(hit.point, hit.normal);
-                            return;
-                        }
+                        _debugRays.Add(new DebugRay { origin = origin, hitPoint = hit.point, hit = true, validPlacement = true, normal = hit.normal });
+                        GenerateWound(hit.point, hit.normal);
+                        return;
+                    }
+                    else
+                    {
+                        _debugRays.Add(new DebugRay { origin = origin, hitPoint = hit.point, hit = true, validPlacement = isValid, normal = hit.normal });
                     }
                 }
             }
-
-            if (!didHit)
-                _debugRays.Add((origin, direction, false));
+            else
+            {
+                Vector3 endPoint = origin + direction * raycastSphereRadius;
+                _debugRays.Add(new DebugRay { origin = origin, hitPoint = endPoint, hit = false, validPlacement = false, normal = Vector3.zero });
+            }
         }
-
-        if (drawDebugRays)
-            Debug.LogWarning($"No se pudo colocar herida en intento. Espacio insuficiente en el cuerpo.", this);
     }
+
     bool IsOverlappingWithExistingWounds(Vector3 position)
     {
         foreach (Vector3 woundPos in _spawnedWoundPositions)
         {
-            float distance = Vector3.Distance(position, woundPos);
-            if (distance < minWoundDistance)
-            {
+            if (Vector3.Distance(position, woundPos) < minWoundDistance)
                 return true;
-            }
         }
         return false;
     }
@@ -100,19 +116,12 @@ public class AlienWoundManager : NetworkBehaviour
     public void GenerateWound(Vector3 position, Vector3 normal)
     {
         if (!IsServer) return;
-
-        if (woundFocoPrefab == null || woundBandagePrefab == null)
-        {
-            Debug.LogError("WoundPrefab no asignado", this);
-            return;
-        }
+        if (woundFocoPrefab == null || woundBandagePrefab == null) return;
 
         Quaternion baseRotation = Quaternion.LookRotation(-normal);
         Quaternion correctedRotation = baseRotation * Quaternion.Euler(-90f, 0f, 0f);
 
-        GameObject woundObj;
-        int random = UnityEngine.Random.Range(0, 2);
-        woundObj = random == 0
+        GameObject woundObj = Random.Range(0, 2) == 0
             ? Instantiate(woundFocoPrefab, position, correctedRotation)
             : Instantiate(woundBandagePrefab, position, correctedRotation);
 
@@ -125,7 +134,6 @@ public class AlienWoundManager : NetworkBehaviour
 
         netObj.Spawn();
         netObj.TrySetParent(transform, worldPositionStays: true);
-
         _spawnedWoundPositions.Add(position);
 
         Transform closestBone = GetClosestBone(position);
@@ -138,8 +146,6 @@ public class AlienWoundManager : NetworkBehaviour
                 follower.boneName.Value = closestBone.name;
             }
         }
-        if (drawDebugRays)
-            Debug.Log($"Herida generada en {position}. Total heridas: {_spawnedWoundPositions.Count}", this);
     }
 
     Transform GetClosestBone(Vector3 worldPos)
@@ -167,29 +173,62 @@ public class AlienWoundManager : NetworkBehaviour
     {
         if (!drawDebugRays) return;
 
-        Gizmos.color = new Color(0f, 1f, 1f, 0.1f);
-        Gizmos.DrawSphere(_debugSphereCenter, _debugSphereRadius);
+        Vector3 center = GetSphereCenter();
 
-        Gizmos.color = new Color(0f, 1f, 1f, 0.4f);
-        Gizmos.DrawWireSphere(_debugSphereCenter, _debugSphereRadius);
+        Gizmos.color = new Color(0.5f, 0.7f, 1f, 0.15f);
+        Gizmos.DrawWireSphere(center, raycastSphereRadius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(center, 0.2f);
 
-        foreach (var (origin, direction, wasHit) in _debugRays)
+        float angleLimit = Mathf.Asin(verticalTolerance) * Mathf.Rad2Deg;
+        DrawToleranceRing(center, raycastSphereRadius, angleLimit, 40, new Color(0f, 1f, 0f, 0.8f));
+        DrawToleranceRing(center, raycastSphereRadius, -angleLimit, 40, new Color(0f, 1f, 0f, 0.8f));
+
+        foreach (DebugRay ray in _debugRays)
         {
-            Gizmos.color = wasHit ? Color.green : Color.red;
-            Gizmos.DrawSphere(origin, 0.05f);
+            if (ray.hit)
+            {
+                if (ray.validPlacement)
+                    Gizmos.color = new Color(0f, 1f, 0f, 0.7f);
+                else
+                    Gizmos.color = new Color(1f, 0f, 0f, 0.7f);
 
-            Gizmos.color = wasHit
-                ? new Color(0f, 1f, 0f, 0.8f)
-                : new Color(1f, 0f, 0f, 0.4f);
-            Gizmos.DrawRay(origin, direction * 6f);
+                Gizmos.DrawLine(ray.origin, ray.hitPoint);
+                Gizmos.DrawSphere(ray.hitPoint, gizmoSize * 0.08f);
+            }
+            else
+            {
+                Gizmos.color = new Color(0.5f, 0.5f, 0.5f, 0.3f);
+                Gizmos.DrawLine(ray.origin, ray.hitPoint);
+                Gizmos.DrawSphere(ray.origin, gizmoSize * 0.05f);
+            }
         }
+
         if (_spawnedWoundPositions.Count > 0)
         {
-            Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+            Gizmos.color = new Color(0f, 0.5f, 1f, 0.4f);
             foreach (Vector3 woundPos in _spawnedWoundPositions)
-            {
                 Gizmos.DrawSphere(woundPos, minWoundDistance);
-            }
+        }
+    }
+
+    void DrawToleranceRing(Vector3 center, float radius, float angleDegrees, int segments, Color color)
+    {
+        Gizmos.color = color;
+        float heightOffset = radius * Mathf.Sin(angleDegrees * Mathf.Deg2Rad);
+        float adjustedRadius = radius * Mathf.Cos(angleDegrees * Mathf.Deg2Rad);
+        Vector3 lastPoint = Vector3.zero;
+
+        for (int i = 0; i <= segments; i++)
+        {
+            float theta = (i / (float)segments) * Mathf.PI * 2f;
+            float x = Mathf.Sin(theta) * adjustedRadius;
+            float z = Mathf.Cos(theta) * adjustedRadius;
+            Vector3 currentPoint = center + new Vector3(x, heightOffset, z);
+
+            if (i > 0)
+                Gizmos.DrawLine(lastPoint, currentPoint);
+            lastPoint = currentPoint;
         }
     }
 }

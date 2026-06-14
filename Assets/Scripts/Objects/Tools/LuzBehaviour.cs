@@ -9,6 +9,7 @@ public class LuzBehaviour : PoweredItem
     public float rayDistance = 10f;
     public LayerMask alienLayer;
     public LayerMask playerLayer;
+    public LayerMask woundLayer;
 
     [Header("Timing Settings")]
     public float timeToCreateWound = 2f;
@@ -63,8 +64,27 @@ public class LuzBehaviour : PoweredItem
         Ray ray = new Ray(originPoint.position, originPoint.forward);
         Debug.DrawRay(originPoint.position, originPoint.forward * rayDistance, Color.cyan);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
+        LayerMask combinedMask = playerLayer | alienLayer | woundLayer;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, combinedMask))
         {
+            if (IsLayerInMask(hit.collider.gameObject.layer, woundLayer) || hit.collider.GetComponent<WoundFocoBehaviour>() != null)
+            {
+                if (hit.collider.TryGetComponent<WoundFocoBehaviour>(out var herida))
+                {
+                    ResetAlienTargets(); 
+                    currentPlayerTarget = 0;
+
+                    if (currentWoundTarget != herida)
+                    {
+                        StopCurrentHealing();
+                        currentWoundTarget = herida;
+                        StartHealingServerRpc(herida.NetworkObjectId);
+                    }
+                    return;
+                }
+            }
+
             if (IsLayerInMask(hit.collider.gameObject.layer, playerLayer))
             {
                 var playerNetObj = hit.collider.GetComponentInParent<NetworkObject>();
@@ -75,43 +95,35 @@ public class LuzBehaviour : PoweredItem
                     if (currentPlayerTarget != playerNetObj.NetworkObjectId)
                     {
                         currentPlayerTarget = playerNetObj.NetworkObjectId;
-                        BlindPlayerServerRpc(playerNetObj.NetworkObjectId, playerBlindDuration); // ← primero al server
+                        BlindPlayerServerRpc(playerNetObj.NetworkObjectId, playerBlindDuration);
                     }
                     return;
                 }
             }
 
-            if (hit.collider.TryGetComponent<WoundFocoBehaviour>(out var herida))
+            if (IsLayerInMask(hit.collider.gameObject.layer, alienLayer))
             {
-                ResetAlienTargets();
-                currentPlayerTarget = 0;
-
-                if (currentWoundTarget != herida)
+                var alien = hit.collider.GetComponentInParent<AlienWoundManager>();
+                if (alien != null)
                 {
                     StopCurrentHealing();
-                    currentWoundTarget = herida;
-                    StartHealingServerRpc(herida.NetworkObjectId);
+                    currentPlayerTarget = 0;
+                    currentAlienTarget = alien;
+                    
+                    alienTimer += Time.deltaTime;
+                    if (alienTimer >= timeToCreateWound)
+                    {
+                        alienTimer = 0f;
+                        var netObj = alien.GetComponent<NetworkObject>();
+                        if (netObj != null)
+                            RequestNewWoundServerRpc(hit.point, hit.normal, netObj.NetworkObjectId);
+                    }
+                    return;
                 }
             }
-            else if (hit.collider.GetComponentInParent<AlienWoundManager>() is AlienWoundManager alien)
-            {
-                StopCurrentHealing();
-                currentPlayerTarget = 0;
-                currentAlienTarget = alien;
-                alienTimer += Time.deltaTime;
-                if (alienTimer >= timeToCreateWound)
-                {
-                    alienTimer = 0f;
-                    var netObj = alien.GetComponent<NetworkObject>();
-                    if (netObj != null)
-                        RequestNewWoundServerRpc(hit.point, hit.normal, netObj.NetworkObjectId);
-                }
-            }
-            else
-            {
-                StopCurrentHealing();
-                ResetAllTargets();
-            }
+            
+            StopCurrentHealing();
+            ResetAllTargets();
         }
         else
         {
