@@ -100,9 +100,21 @@ public class GeneratorSystem : NetworkBehaviour
         if (IsServer)
         {
             EvaluateLoad();
-        }
-    }
+            EventBus.Subscribe<AddEnergyLoad>(OnLoadUpdated);
 
+        }
+
+    }
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+            EventBus.Unsubscribe<AddEnergyLoad>(OnLoadUpdated);
+    }
+    void OnLoadUpdated(AddEnergyLoad s)
+    {
+        if(IsServer)
+            currentLoad.Value += s.energyLoad;
+    }
     public void EvaluateLoad()
     {
         if (!IsServer) return;

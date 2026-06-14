@@ -2,6 +2,10 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+public struct AddEnergyLoad : IEvent
+{
+    public int energyLoad;
+}
 public struct VictoryEvent : IEvent
 {
 

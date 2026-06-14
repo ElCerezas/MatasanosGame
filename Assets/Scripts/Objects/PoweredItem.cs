@@ -15,6 +15,7 @@ public class PoweredItem : InteractableItem
     {
         if (!IsServer) return;
         hasPower.Value = powered;
+        EventBus.Publish<AddEnergyLoad>(new AddEnergyLoad { energyLoad = hasPower.Value ? +energyLoad : -energyLoad });
         if (!powered)
         {
             isTurnedOn.Value = false;
@@ -26,9 +27,10 @@ public class PoweredItem : InteractableItem
         if (!hasPower.Value) return;
         isTurnedOn.Value = !isTurnedOn.Value;
         ownPlug.ConectedConsumerChanged();
+        
     }
     public int GetLoad()
     {
-        return (hasPower.Value && isTurnedOn.Value) ? energyLoad : 0;
+        return 0;
     }
 }
