@@ -304,7 +304,7 @@ public class AudioManager : MonoBehaviour
     {
         if (mode == LoadSceneMode.Additive) return;
 
-        if (scene.name == "MainMenu" || scene.name == "WaitingRoom" || scene.name == "MapaBeta")
+        if (scene.name == "MainMenu" || scene.name == "WaitingRoom" || scene.name == "MapaGold")
         {
             ApplyShopLowcut(true);
         }
