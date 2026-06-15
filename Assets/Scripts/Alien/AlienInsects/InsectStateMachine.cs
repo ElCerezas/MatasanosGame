@@ -8,13 +8,60 @@ public class InsectStateMachine : NetworkBehaviour
     [SerializeField] float attackSpeed = 5f;
     [SerializeField] float detectionRadius = 5f;
     StateMachine stateMachine;
-    public NetworkVariable<InsectStatesEnum> currentActiveState = new NetworkVariable<InsectStatesEnum>(InsectStatesEnum.Wander); 
-    
+    public NetworkVariable<InsectStatesEnum> currentActiveState = new NetworkVariable<InsectStatesEnum>(InsectStatesEnum.Wander);
+
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference sonidoParasitoAtaque; // Evento loop (ej: "event:/ParasiteAttack")
+    private FMOD.Studio.EventInstance instanciaSonidoAtaque;
+
     private Rigidbody rb;
     private Vector3 direction;
     private float timer;
     private GameObject detectedPlayer;
-    
+
+    private void PlayAtaqueSound()
+    {
+        if (sonidoParasitoAtaque.IsNull) return;
+
+        // Detener cualquier instancia previa
+        StopAtaqueSound();
+
+        instanciaSonidoAtaque = FMODUnity.RuntimeManager.CreateInstance(sonidoParasitoAtaque);
+        // Si quieres que el sonido siga al insecto (3D), usa set3DAttributes
+        instanciaSonidoAtaque.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+        instanciaSonidoAtaque.start();
+    }
+
+    private void StopAtaqueSound()
+    {
+        if (instanciaSonidoAtaque.isValid())
+        {
+            instanciaSonidoAtaque.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            instanciaSonidoAtaque.release();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        StopAtaqueSound();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        currentActiveState.OnValueChanged += OnStateChanged;
+        // Si ya existe un valor inicial, llama manualmente
+        OnStateChanged(currentActiveState.Value, currentActiveState.Value);
+    }
+
+    private void OnStateChanged(InsectStatesEnum oldState, InsectStatesEnum newState)
+    {
+        if (newState == InsectStatesEnum.Attack)
+            PlayAtaqueSound();
+        else
+            StopAtaqueSound();
+    }
+
     void Awake()
     {
         stateMachine = new StateMachine();
@@ -110,4 +157,7 @@ public class InsectStateMachine : NetworkBehaviour
             Destroy(gameObject);
         }
     }
+
+
+
 }
