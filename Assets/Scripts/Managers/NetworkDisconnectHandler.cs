@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Services.Multiplayer;
 using Object = UnityEngine.Object;
 
 public class NetworkDisconnectHandler : MonoBehaviour
@@ -24,40 +25,27 @@ public class NetworkDisconnectHandler : MonoBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        Debug.Log($"[NetworkDisconnect] Evento OnClientDisconnected disparado. ClientId: {clientId}");
         if (NetworkManager.Singleton == null) return;
 
-        // Si somos el Host/Servidor y el que se desconecta es un cliente (ej. ID 1), limpiamos de lobby y continúa
         if (NetworkManager.Singleton.IsServer && clientId != NetworkManager.Singleton.LocalClientId)
         {
-            Debug.Log($"[NetworkDisconnect] El Cliente {clientId} ha abandonado la partida. El Host sigue jugando.");
-
-            // Destruir explícitamente el PlayerObject del cliente desconectado
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
             {
                 if (client.PlayerObject != null)
                 {
-                    Debug.Log($"[NetworkDisconnect] Destruyendo PlayerObject del cliente {clientId}");
                     client.PlayerObject.Despawn();
                     Object.Destroy(client.PlayerObject.gameObject);
                 }
             }
 
-            // Limpiar de LobbyManager solo si estamos en el lobby (WaitingRoom)
             LobbyManager lobbyManager = Object.FindFirstObjectByType<LobbyManager>();
             if (lobbyManager != null)
             {
-                Debug.Log($"[NetworkDisconnect] Limpiando cliente {clientId} del lobby.");
                 lobbyManager.RemovePlayerFromReady(clientId);
-            }
-            else
-            {
-                Debug.Log($"[NetworkDisconnect] LobbyManager no encontrado (no estamos en WaitingRoom). Cliente {clientId} se desconectó durante el juego.");
             }
             return;
         }
 
-        Debug.Log("[NetworkDisconnect] Desconexión válida detectada. Procediendo a volver al menú...");
         _ = ReturnToMainMenu(mainMenuSceneName);
     }
 
@@ -68,11 +56,9 @@ public class NetworkDisconnectHandler : MonoBehaviour
 
         try
         {
-            // Limpiar Input y Cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            // Si existe player object, deshabilitar inputs
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.LocalClient != null && NetworkManager.Singleton.LocalClient.PlayerObject != null)
             {
                 var input = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
@@ -82,22 +68,26 @@ public class NetworkDisconnectHandler : MonoBehaviour
                 }
             }
 
-            // Es fundamental apagar Netcode para limpiar la conexión Relay/P2P
-            // (El SDK de Lobbies de Unity es independiente y puedes manejarlo en tu escena del Menú)
-            if (NetworkManager.Singleton != null)
+            if (MultiplayerService.Instance != null && MultiplayerService.Instance.Sessions != null)
             {
-                NetworkManager.Singleton.Shutdown();
+                try
+                {
+                    var activeSessions = new System.Collections.Generic.List<ISession>(MultiplayerService.Instance.Sessions.Values);
+                    foreach (var session in activeSessions)
+                    {
+                        await session.LeaveAsync();
+                    }
+                }
+                catch
+                {
+                }
             }
 
-            // Esperar un poco para que se procesen los cambios de destrucción de red
-            await Task.Delay(100);
-
-            // Cargar escena del menú
+            await Task.Delay(150);
             SceneManager.LoadScene(sceneName);
         }
-        catch (Exception ex)
+        catch
         {
-            Debug.LogError($"[NetworkDisconnect] Error en ReturnToMainMenu: {ex}");
             SceneManager.LoadScene(sceneName);
         }
         finally
