@@ -73,7 +73,9 @@ public class AlienStateManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
+        isAlterated.OnValueChanged += OnAlteratedStateChanged;
+        ActualizarAudioEstado(isAlterated.Value);
+
         if (IsServer) 
         {
             currentHealth.Value = maxHealth;
@@ -139,9 +141,11 @@ public class AlienStateManager : NetworkBehaviour
             estornudoComponent.ExecuteEstornudo();
             if (!sonidoEstornudo.IsNull)
             {
-                FMODUnity.RuntimeManager.PlayOneShot(sonidoEstornudo.Path, transform.position);
+                FMOD.Studio.EventInstance instanciaEstornudo = FMODUnity.RuntimeManager.CreateInstance(sonidoEstornudo);
+                instanciaEstornudo.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+                instanciaEstornudo.start();
+                instanciaEstornudo.release();
             }
-
         }
     }
 
@@ -182,6 +186,11 @@ public class AlienStateManager : NetworkBehaviour
             alienAnimator.SetFloat("Sleep%", visualCalmantPercent);
             alienAnimator.SetFloat("Health", healthPercent);
             alienAnimator.SetBool("Alterated", isAlterated.Value);
+        }
+
+        if (instanciaSonidoEstado.isValid())
+        {
+            instanciaSonidoEstado.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
         }
 
         if (!IsServer || stateMachine == null) return;
