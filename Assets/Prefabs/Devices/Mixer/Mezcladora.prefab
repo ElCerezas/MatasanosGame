@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4020612390
+  GlobalObjectIdHash: 534278822
   InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
@@ -227,6 +227,7 @@ MonoBehaviour:
       Data4: -257689081
     Path: event:/Sfx/Mezcladora
   mixProcessDuration: 3.8
+  mixerParticles: {fileID: 8583731698326043242}
 --- !u!114 &180611928544073820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2711,5 +2712,10 @@ PrefabInstance:
 --- !u!4 &7644075069788293148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+  m_PrefabInstance: {fileID: 5204319358083028654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8583731698326043242 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4550604168917789892, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
   m_PrefabInstance: {fileID: 5204319358083028654}
   m_PrefabAsset: {fileID: 0}

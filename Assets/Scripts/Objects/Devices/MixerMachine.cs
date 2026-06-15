@@ -44,6 +44,8 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
     [SerializeField] private FMODUnity.EventReference mixSound;
     [SerializeField] private float mixProcessDuration = 2.0f;
     private NetworkVariable<bool> isMixing = new NetworkVariable<bool>(false);
+    [Header("Particles")]
+    [SerializeField] ParticleSystem mixerParticles;
 
     void Awake()
     {
@@ -200,10 +202,17 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
     private IEnumerator MixProcessCoroutine(LiquidType liquidType, Color liquidColor)
     {
+        mixerParticles.Play();
         isMixing.Value = true;
         PlayMixSoundRpc();
+
+        float initialFill = 0.5f;
+
+        MixerFlask?.StartFilling(liquidType, liquidColor, mixProcessDuration, initialFill);
+
         yield return new WaitForSeconds(mixProcessDuration);
-        MixerFlask?.Fill(liquidType, liquidColor);
+
+        mixerParticles.Stop();
         componentA.Value = 1;
         componentB.Value = 1;
         componentC.Value = 1;
