@@ -15,7 +15,11 @@ public class WoundVendaBehaviour : TaraBase
     private NetworkVariable<bool> isDesinfected = new NetworkVariable<bool>(false);
     private NetworkVariable<bool> isHealed = new NetworkVariable<bool>(false);
     private NetworkVariable<WoundState> woundState = new NetworkVariable<WoundState>(WoundState.Normal);
-    
+
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference sonidoDesinfectar;
+    [SerializeField] private FMODUnity.EventReference sonidoCurar;
+
     private ColliderDetector colliderInteracttable;
     public DecalProjector woundProjector;
     public Material tiritaMaterial;
@@ -104,6 +108,21 @@ public class WoundVendaBehaviour : TaraBase
     private void PlayParticlesClientRpc()
     {
         StartCoroutine(ParticlesCorroutine());
+
+        if (woundState.Value == WoundState.Disinfected && !sonidoDesinfectar.IsNull)
+        {
+            FMOD.Studio.EventInstance instDesinfectar = FMODUnity.RuntimeManager.CreateInstance(sonidoDesinfectar);
+            instDesinfectar.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+            instDesinfectar.start();
+            instDesinfectar.release();
+        }
+        else if (woundState.Value == WoundState.Healed && !sonidoCurar.IsNull)
+        {
+            FMOD.Studio.EventInstance instCurar = FMODUnity.RuntimeManager.CreateInstance(sonidoCurar);
+            instCurar.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+            instCurar.start();
+            instCurar.release();
+        }
     }
 
     IEnumerator ParticlesCorroutine()

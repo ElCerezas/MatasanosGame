@@ -8,6 +8,9 @@ public class WoundFocoBehaviour : TaraBase
     NetworkVariable<bool> isBeingHealed = new NetworkVariable<bool>(false);
     [SerializeField] ParticleSystem healingEffect;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference sonidoCuracionCompletada;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -67,5 +70,13 @@ public class WoundFocoBehaviour : TaraBase
     public void NotifyHealEndedClientRpc()
     {
         EventBus.Publish(new OnWoundFocoHealEnded { TaraID = NetworkObjectId });
+
+        if (!sonidoCuracionCompletada.IsNull)
+        {
+            FMOD.Studio.EventInstance instanciaCuracion = FMODUnity.RuntimeManager.CreateInstance(sonidoCuracionCompletada);
+            instanciaCuracion.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+            instanciaCuracion.start();
+            instanciaCuracion.release(); 
+        }
     }
 }

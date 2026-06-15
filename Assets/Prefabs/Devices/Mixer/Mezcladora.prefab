@@ -125,6 +125,8 @@ GameObject:
   - component: {fileID: 6060932214517890669}
   - component: {fileID: 3286372896196679034}
   - component: {fileID: 568987714742163912}
+  - component: {fileID: 180611928544073820}
+  - component: {fileID: 3062530434600567698}
   m_Layer: 0
   m_Name: Mezcladora
   m_TagString: Untagged
@@ -152,6 +154,7 @@ Transform:
   - {fileID: 1145803813890088541}
   - {fileID: 1806263736123240346}
   - {fileID: 7021365962647978319}
+  - {fileID: 7644075069788293148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &3286372896196679034
@@ -166,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 534278822
+  GlobalObjectIdHash: 4020612390
   InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
@@ -201,16 +204,16 @@ MonoBehaviour:
   componentBIndicator: {fileID: 7337417643140352042}
   componentCIndicator: {fileID: 3423121018537523982}
   formulaConfigs:
-  - displayName: Calmante
+  - displayName: Anesthesia
     liquidType: 1
-    color: {r: 0, g: 0.8721266, b: 1, a: 1}
+    color: {r: 0, g: 0.96275425, b: 1, a: 1}
     isRandom: 1
     fixedValue: {x: 0, y: 0, z: 0}
   - displayName: Betadine
     liquidType: 4
-    color: {r: 0.5660378, g: 0.2543501, b: 0, a: 1}
+    color: {r: 0.4528302, g: 0.19951263, b: 0, a: 1}
     isRandom: 1
-    fixedValue: {x: 0, y: 0, z: 0}
+    fixedValue: {x: 1, y: 1, z: 1}
   formulaEntryPrefab: {fileID: 7057978131168405984, guid: 1222911a3b80c554f87c0f5e5703c5f6, type: 3}
   formulaEntrySpawnRoot: {fileID: 0}
   sludgeColor: {r: 0.1509434, g: 0.074405685, b: 0.049127806, a: 1}
@@ -222,7 +225,37 @@ MonoBehaviour:
       Data3: -919924859
       Data4: -257689081
     Path: event:/Sfx/Mezcladora
-  mixProcessDuration: 3
+  mixProcessDuration: 3.8
+--- !u!114 &180611928544073820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090020571703070698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a24d18b3485a954b8782459ab005381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  componentA: {fileID: 0}
+  componentB: {fileID: 0}
+  componentC: {fileID: 0}
+--- !u!114 &3062530434600567698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090020571703070698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a24d18b3485a954b8782459ab005381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  componentA: {fileID: 0}
+  componentB: {fileID: 0}
+  componentC: {fileID: 0}
 --- !u!1 &1332668644371968782
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3052067854
+  GlobalObjectIdHash: 1610414842
   InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
@@ -921,7 +954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2075548799
+  GlobalObjectIdHash: 3291757243
   InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1135,6 +1168,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColliderDetector
   ShowTopMostFoldoutHeaderGroup: 1
+  sonidoAguaLimpieza:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   detectorType: 0
   collisionEntries:
   - itemType: 0
@@ -1310,7 +1350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2972577975
+  GlobalObjectIdHash: 1387283915
   InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2036,7 +2076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4125959320
+  GlobalObjectIdHash: 3134966270
   InScenePlacedSourceGlobalObjectIdHash: 534278822
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2587,3 +2627,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32af91c8c79cfb4e9a374ed92d6dbae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!1001 &5204319358083028654
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6060932214517890669}
+    m_Modifications:
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.196
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.893
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550604168917789892, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550604168917789892, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8615662421162462309, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+      propertyPath: m_Name
+      value: MezcladoraParticulas
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+--- !u!4 &7644075069788293148 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
+  m_PrefabInstance: {fileID: 5204319358083028654}
+  m_PrefabAsset: {fileID: 0}
