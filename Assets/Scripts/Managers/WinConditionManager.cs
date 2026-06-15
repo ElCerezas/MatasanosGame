@@ -48,9 +48,9 @@ public class WinConditionManager : NetworkBehaviour
 
         switch (e.Type)
         {
-            case WoundType.Diente:      dienteCount.Value++;      break;
-            case WoundType.HeridaFoco:  woundFocoCount.Value++;   break;
-            case WoundType.HeridaVenda: woundVendaCount.Value++;  break;
+            case WoundType.Diente: dienteCount.Value++; break;
+            case WoundType.HeridaFoco: woundFocoCount.Value++; break;
+            case WoundType.HeridaVenda: woundVendaCount.Value++; break;
             default:
                 break;
         }
@@ -87,10 +87,10 @@ public class WinConditionManager : NetworkBehaviour
 
             if (tara.type == WoundType.Diente)
                 dienteCount.Value++;
-            
+
             if (tara.type == WoundType.HeridaFoco)
                 woundFocoCount.Value++;
-            
+
             if (tara.type == WoundType.HeridaVenda)
                 woundVendaCount.Value++;
 
@@ -104,9 +104,9 @@ public class WinConditionManager : NetworkBehaviour
 
         switch (e.Type)
         {
-            case WoundType.Diente:      dienteCount.Value--;      break;
-            case WoundType.HeridaFoco:  woundFocoCount.Value--;   break;
-            case WoundType.HeridaVenda: woundVendaCount.Value--;  break;
+            case WoundType.Diente: dienteCount.Value--; break;
+            case WoundType.HeridaFoco: woundFocoCount.Value--; break;
+            case WoundType.HeridaVenda: woundVendaCount.Value--; break;
             default:
                 break;
         }
@@ -122,8 +122,16 @@ public class WinConditionManager : NetworkBehaviour
 
         if (allZero && tarasHealedCount > 0)
         {
-            NotifyVictoryClientRpc();
+            NotifyVictoryServerRpc();
         }
+    }
+    [ServerRpc]
+    private void NotifyVictoryServerRpc()
+    {
+        EventBus.Publish(new VictoryEvent());
+        NotifyVictoryClientRpc();
+
+        StartCoroutine(DisconnectHostAfterVictory());
     }
 
     [ClientRpc]
@@ -132,11 +140,17 @@ public class WinConditionManager : NetworkBehaviour
         EventBus.Publish(new VictoryEvent());
     }
 
+    private IEnumerator DisconnectHostAfterVictory()
+    {
+        yield return new WaitForSeconds(3f);
+
+        NetworkManager.Singleton.Shutdown();
+    }
     [ServerRpc]
     public void ForceGameEndServerRpc()
     {
         if (!IsServer) return;
-        
+
         Debug.Log("[WinConditionManager] Fin de partida forzado por el host.");
         NotifyVictoryClientRpc();
     }
