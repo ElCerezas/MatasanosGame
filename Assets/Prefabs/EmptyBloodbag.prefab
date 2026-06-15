@@ -76,6 +76,10 @@ PrefabInstance:
       propertyPath: bloodBagCurrentCapacity.m_InternalValue
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8737621880936660036, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+      propertyPath: holdPoint
+      value: 
+      objectReference: {fileID: 4284257820103512589}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -89,5 +93,10 @@ MeshRenderer:
 --- !u!198 &2953913801705330004 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 4645617527091262609, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+  m_PrefabInstance: {fileID: 7531958616901771717}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4284257820103512589 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6048995919576888264, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
   m_PrefabInstance: {fileID: 7531958616901771717}
   m_PrefabAsset: {fileID: 0}
