@@ -38,6 +38,7 @@ public class PauseHandler : NetworkBehaviour
             pauseRawImage.texture = pauseMenuTextures[selectedTextureIndex.Value];
         }
     }
+
     public override void OnNetworkDespawn()
     {
         isPlayerPaused.OnValueChanged -= OnPauseStateChanged;
@@ -47,8 +48,27 @@ public class PauseHandler : NetworkBehaviour
     public async void OnDisconnect()
     {
         if (!IsOwner) return;
+
+        if (IsServer)
+        {
+            // Avisar a los clientes que vuelvan al menú principal
+            KickClientsClientRpc();
+            // Dar un pequeño margen de tiempo para que el mensaje viaje por la red antes de apagar
+            await System.Threading.Tasks.Task.Delay(150);
+        }
+
         await NetworkDisconnectHandler.ReturnToMainMenu(mainMenuSceneName);
     }
+
+    [ClientRpc]
+    private void KickClientsClientRpc()
+    {
+        if (IsServer) return; // El Host ya está ejecutando su propia lógica, lo ignoramos
+        Debug.Log("[PauseHandler] El Host ha cerrado la partida. Volviendo al menú...");
+
+        _ = NetworkDisconnectHandler.ReturnToMainMenu(mainMenuSceneName);
+    }
+
     public void TogglePause()
     {
         if (!IsOwner) return;
@@ -81,6 +101,7 @@ public class PauseHandler : NetworkBehaviour
             pauseMenu.SetActive(isPlayerPaused.Value);
         }
     }
+
     private void OnTextureChanged(int oldValue, int newValue)
     {
         if (newValue >= 0 && newValue < pauseMenuTextures.Count)
@@ -93,5 +114,4 @@ public class PauseHandler : NetworkBehaviour
     {
         if (!IsOwner && menuVisual != null) { menuVisual.SetActive(newValue); }
     }
-
 }

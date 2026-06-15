@@ -31,7 +31,7 @@ public class NetworkDisconnectHandler : MonoBehaviour
         if (NetworkManager.Singleton.IsServer && clientId != NetworkManager.Singleton.LocalClientId)
         {
             Debug.Log($"[NetworkDisconnect] El Cliente {clientId} ha abandonado la partida. El Host sigue jugando.");
-            
+
             // Destruir explícitamente el PlayerObject del cliente desconectado
             if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
             {
@@ -42,7 +42,7 @@ public class NetworkDisconnectHandler : MonoBehaviour
                     Object.Destroy(client.PlayerObject.gameObject);
                 }
             }
-            
+
             // Limpiar de LobbyManager solo si estamos en el lobby (WaitingRoom)
             LobbyManager lobbyManager = Object.FindFirstObjectByType<LobbyManager>();
             if (lobbyManager != null)
@@ -57,13 +57,10 @@ public class NetworkDisconnectHandler : MonoBehaviour
             return;
         }
 
-        // Si llegamos aquí:
-        // 1. Somos el Host apagando nuestro propio servidor (clientId == 0).
-        // 2. O somos un Cliente que ha perdido la conexión / ha sido desconectado por el Servidor.
-
         Debug.Log("[NetworkDisconnect] Desconexión válida detectada. Procediendo a volver al menú...");
         _ = ReturnToMainMenu(mainMenuSceneName);
     }
+
     public static async Task ReturnToMainMenu(string sceneName)
     {
         if (isReturningToMenu) return;
@@ -76,20 +73,26 @@ public class NetworkDisconnectHandler : MonoBehaviour
             Cursor.visible = true;
 
             // Si existe player object, deshabilitar inputs
-            if (NetworkManager.Singleton != null && NetworkManager.Singleton.LocalClient.PlayerObject != null)
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.LocalClient != null && NetworkManager.Singleton.LocalClient.PlayerObject != null)
             {
                 var input = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
-                if (input != null) 
+                if (input != null)
                 {
                     input.DisableInputs();
                 }
             }
 
-            // Esperar un poco para que se procesen los cambios
-            await Task.Delay(50);
+            // Es fundamental apagar Netcode para limpiar la conexión Relay/P2P
+            // (El SDK de Lobbies de Unity es independiente y puedes manejarlo en tu escena del Menú)
+            if (NetworkManager.Singleton != null)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+
+            // Esperar un poco para que se procesen los cambios de destrucción de red
+            await Task.Delay(100);
 
             // Cargar escena del menú
-            // NOTA: No llamamos a Shutdown() porque Unity Services Lobbies maneja su propio ciclo de vida
             SceneManager.LoadScene(sceneName);
         }
         catch (Exception ex)
