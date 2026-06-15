@@ -17,8 +17,7 @@ public class Estornudo : NetworkBehaviour
     [SerializeField] LayerMask targetLayer;
     [SerializeField] bool showDebugCone = true;
     [SerializeField] private ParticleSystem estornudoParticles;
-    [Header("Audio")]
-    [SerializeField] private EventReference sonidoEstornudo;
+
     private void Awake()
     {
         if (attackOrigin == null)
@@ -115,10 +114,6 @@ public class Estornudo : NetworkBehaviour
     {
         // SFX y VFX aquí
         estornudoParticles.gameObject.SetActive(true);
-        if (AudioManager.instance != null && attackOrigin != null)
-        {
-            AudioManager.instance.PlayOneShotAtPosition(sonidoEstornudo, attackOrigin.position);
-        }
     }
     [ClientRpc]
     private void EstornudoEndVFXClientRpc()
