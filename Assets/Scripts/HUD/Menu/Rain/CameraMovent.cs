@@ -5,8 +5,8 @@ public class CameraMovent : MonoBehaviour
 {
     private readonly Vector3 camPosAway = new (-121f, 13f, 47f);
     private readonly Quaternion camRotAway = Quaternion.Euler(-3.5f, 20.327f, 0);
-    private readonly Vector3 camPosOnScreen = new (-59.3f, 41f, 203f);
-    private readonly Quaternion camRotOnScreen = Quaternion.Euler(0, -11f, 0);
+    private readonly Vector3 camPosOnScreen = new (-74.4f, 41f, 201.5f);
+    private readonly Quaternion camRotOnScreen = Quaternion.Euler(0, -0.3f, 0);
     
     Vector3 startPos;
     Vector3 endPos;
@@ -53,6 +53,11 @@ public class CameraMovent : MonoBehaviour
         endRot = camRotAway;
         startTime = Time.time;
         journeyLength = Vector3.Distance(startPos, endPos);
+    }
+
+    public void quitGame()
+    {
+        Application.Quit();
     }
     
 }
