@@ -3,8 +3,8 @@ using System.Collections;
 
 public class CameraMovent : MonoBehaviour
 {
-    private readonly Vector3 camPosAway = new (-29.96f, -6.5f, 67.73f);
-    private readonly Quaternion camRotAway = Quaternion.Euler(-3.5f, 0, 0);
+    private readonly Vector3 camPosAway = new (-121f, 13f, 47f);
+    private readonly Quaternion camRotAway = Quaternion.Euler(-3.5f, 20.327f, 0);
     private readonly Vector3 camPosOnScreen = new (-59.3f, 41f, 203f);
     private readonly Quaternion camRotOnScreen = Quaternion.Euler(0, -11f, 0);
     
