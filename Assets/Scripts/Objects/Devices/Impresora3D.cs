@@ -30,6 +30,12 @@ public class Impresora3D : PoweredDevice
     [SerializeField] Vector3 posicionTuboAbajo;
     [SerializeField] float velocidadTubo = 5f;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference sonidoImpresion;
+
+    [Header("Audio Botones")]
+    [SerializeField] private FMODUnity.EventReference sonidoClickBoton;
+
     Coroutine printCoroutine;
     static readonly int ID_PrintingPercent = Shader.PropertyToID("_PrintingPercent");
     static readonly int ID_MainTexture = Shader.PropertyToID("_MainTexture");
@@ -212,6 +218,7 @@ public class Impresora3D : PoweredDevice
     public void OnNextPrint(int i)
     {
         OnNextPrintServerRpc(i);
+        PlayButtonSFXServerRpc(transform.position);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -224,6 +231,7 @@ public class Impresora3D : PoweredDevice
     public void RequestPrint()
     {
         RequestPrintServerRpc();
+        PlayButtonSFXServerRpc(transform.position);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -235,6 +243,8 @@ public class Impresora3D : PoweredDevice
 
         printProgress.Value = 0.001f;
         printCoroutine = StartCoroutine(PrintCoroutine());
+
+        PlayPrintingSFXServerRpc(transform.position);
     }
 
     public override void Powered()
@@ -256,6 +266,33 @@ public class Impresora3D : PoweredDevice
         int filled = Mathf.RoundToInt(progress * barLength);
         screenText.text = $"[{new string('#', filled)}{new string('_', barLength - filled)}]\n{Mathf.FloorToInt(progress * 100)}%";
     }
+
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayPrintingSFXServerRpc(Vector3 posicion)
+    {
+        PlayPrintingSFXClientRpc(posicion);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayPrintingSFXClientRpc(Vector3 posicion)
+    {
+        // Tu llamada a FMOD usando la posición 3D de la impresora
+        AudioManager.instance.PlayOneShotAtPosition(sonidoImpresion, posicion);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayButtonSFXServerRpc(Vector3 posicion)
+    {
+        PlayButtonSFXClientRpc(posicion);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayButtonSFXClientRpc(Vector3 posicion)
+    {
+        AudioManager.instance.PlayOneShotAtPosition(sonidoClickBoton, posicion);
+    }
+
 }
 
 [System.Serializable]

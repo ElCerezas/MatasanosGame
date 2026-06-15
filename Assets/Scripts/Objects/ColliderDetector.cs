@@ -6,6 +6,10 @@ using UnityEngine.Events;
 
 public class ColliderDetector : NetworkBehaviour
 {
+
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference sonidoAguaLimpieza;
+
     [SerializeField] public ColliderDetectorType detectorType;
 
     [Serializable] public class CollisionEntry
@@ -51,6 +55,7 @@ public class ColliderDetector : NetworkBehaviour
             {
                 item.OnEnter(detectorType);
                 entry.onEnter?.Invoke();
+                PlayWaterSFXServerRpc(other.transform.position);
             }
             else
             {
@@ -59,5 +64,17 @@ public class ColliderDetector : NetworkBehaviour
             } 
         }
 
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayWaterSFXServerRpc(Vector3 posicion)
+    {
+        PlayWaterSFXClientRpc(posicion);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayWaterSFXClientRpc(Vector3 posicion)
+    {
+        AudioManager.instance.PlayOneShotAtPosition(sonidoAguaLimpieza, posicion);
     }
 }
