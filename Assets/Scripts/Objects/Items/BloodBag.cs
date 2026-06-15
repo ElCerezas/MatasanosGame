@@ -203,8 +203,7 @@ public class BloodBag : NetworkBehaviour
         if (isAttached.Value || isEmptySent || collisionCooldown > 0 || toolItem == null || toolItem.grabbers.Count == 0)
             return;
 
-        float fill = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
-        float currentThreshold = GetCurrentVelocityThreshold(fill);
+        float currentThreshold = GetCurrentVelocityThreshold(currentFillAmount);
 
         if (currentThreshold < 0f || impactVelocity < currentThreshold) return;
 
