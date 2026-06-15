@@ -10,6 +10,11 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     [SerializeField] private Transform planeTransform;
     [SerializeField] private TextMeshProUGUI bpmText;
 
+    [Header("Audio (Sincronizado)")]
+    [SerializeField] FMODUnity.EventReference normalHeartbeat;
+    [SerializeField] FMODUnity.EventReference fastHeartbeat;
+    [SerializeField] GameObject flatlineObject;
+
     [Header("Parámetros de la onda")]
     [SerializeField] private float bpm = 75f;
     [Range(0.1f, 3f)]
@@ -28,13 +33,14 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
     [SerializeField] private int targetCyclesAt60BPM = 4;
     [SerializeField] private float scrollSpeed = 1f;
     [SerializeField] private float baselineNoise = 0.01f;
-    
+
     [Header("Colores")]
     [SerializeField] private Color calmantColor = Color.blue;
     [SerializeField] private Color desangradoColor = Color.red;
     [SerializeField] private Color defaultColor = Color.red;
 
     private int cyclesVisible = 2;
+    private bool hasPlayedDeathSound = false;
 
     public override void OnNetworkSpawn()
     {
@@ -44,53 +50,10 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
         EventBus.Subscribe<OnAlienDeath>(AlienDeath);
 
         waveColor = defaultColor;
-        lineRenderer = GetComponent<LineRenderer>();
-        if (lineRenderer == null)
-        {
-            lineRenderer = gameObject.AddComponent<LineRenderer>();
-        }
-
+        lineRenderer = GetComponent<LineRenderer>() ?? gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = waveColor;
-        lineRenderer.endColor = waveColor;
-        lineRenderer.startWidth = lineWidth;
-        lineRenderer.endWidth = lineWidth;
-        lineRenderer.positionCount = pointsPerLine;
 
-        if (planeTransform == null)
-            planeTransform = transform;
-    }
-
-    private void AlienDeath(OnAlienDeath death)
-    {
-        flatline = true;
-        SetBPM(0f);
-    }
-
-    private void AlienStateChanged(OnAlienStateChanged changed)
-    {
-        if (flatline)  return;
-        
-        switch (changed.NewState)
-        {
-            case AlienStateEnum.Calmado:
-                SetWaveColor(calmantColor);
-                SetBPM(60f); 
-                SetScrollSpeed(1f);
-                break;
-                
-            case AlienStateEnum.Desangrado:
-                SetWaveColor(desangradoColor);
-                SetBPM(120f);
-                SetScrollSpeed(4f);
-                break;
-                
-            default:
-                SetWaveColor(defaultColor);
-                SetBPM(75f);
-                SetScrollSpeed(1f);
-                break;
-        }
+        if (planeTransform == null) planeTransform = transform;
     }
 
     public override void OnNetworkDespawn()
@@ -101,121 +64,109 @@ public class PlaneHeartbeatVisualizer : NetworkBehaviour
         EventBus.Unsubscribe<OnAlienDeath>(AlienDeath);
     }
 
-    private void CalmantApplied(OnAlienCalmantUsed used)
+    #region Red y Audio
+
+    [ServerRpc]
+    private void PlaySoundServerRpc(int soundType)
     {
-        if (waveColor == desangradoColor) return;
-        SetWaveColor(calmantColor);
+        PlaySoundClientRpc(soundType);
     }
 
-    private void CalmantEnded(OnCalmantEnded ended)
+    [ClientRpc]
+    private void PlaySoundClientRpc(int soundType)
     {
-        if (waveColor == desangradoColor) return;
-        SetWaveColor(defaultColor);
+        if (flatline)
+        {
+            if (flatlineObject.activeSelf == false) flatlineObject.SetActive(true);
+            return;
+        }
+        FMODUnity.EventReference targetEvent = soundType switch
+        {
+            1 => fastHeartbeat,
+            _ => normalHeartbeat
+        };
+
+        AudioManager.instance.PlayOneShotAtPosition(targetEvent, transform.position);
     }
+    #endregion
+
+    private void AlienStateChanged(OnAlienStateChanged changed)
+    {
+        if (flatline) return;
+
+        switch (changed.NewState)
+        {
+            case AlienStateEnum.Calmado:
+                SetWaveColor(calmantColor);
+                SetBPM(60f);
+                PlaySoundServerRpc(0);
+                break;
+            case AlienStateEnum.Desangrado:
+                SetWaveColor(desangradoColor);
+                SetBPM(120f);
+                PlaySoundServerRpc(1);
+                break;
+            default:
+                SetWaveColor(defaultColor);
+                SetBPM(75f);
+                PlaySoundServerRpc(0);
+                break;
+        }
+    }
+
+    private void AlienDeath(OnAlienDeath death)
+    {
+        flatline = true;
+        SetBPM(0f);
+        PlaySoundServerRpc(2);
+    }
+
+    private void CalmantApplied(OnAlienCalmantUsed used) { if (waveColor != desangradoColor) SetWaveColor(calmantColor); }
+    private void CalmantEnded(OnCalmantEnded ended) { if (waveColor != desangradoColor) SetWaveColor(defaultColor); }
 
     void Update()
     {
         if (lineRenderer == null) return;
-        
-        if (flatline)
-        {
-            SetBPM(0f);
-        }
-        
+
+        bpmText.text = flatline ? "0 bpm" : bpm.ToString("F0") + " bpm";
+        bpmText.color = waveColor;
         lineRenderer.startColor = waveColor;
         lineRenderer.endColor = waveColor;
-        bpmText.color = waveColor;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
-        bpmText.text = bpm.ToString() + "bpm";
+
         GenerateHeartbeatWave();
     }
 
     void GenerateHeartbeatWave()
     {
-        if (autoCycles)
-        {
-            cyclesVisible = Mathf.Max(1, Mathf.RoundToInt((bpm / 60f) * targetCyclesAt60BPM));
-        }
+        if (autoCycles) cyclesVisible = Mathf.Max(1, Mathf.RoundToInt((bpm / 60f) * targetCyclesAt60BPM));
 
         Vector3[] positions = new Vector3[pointsPerLine];
-
         for (int i = 0; i < pointsPerLine; i++)
         {
             float normalizedX = (float)i / (pointsPerLine - 1);
             float x = Mathf.Lerp(-planeWidth / 2f, planeWidth / 2f, normalizedX);
-            float z = 0f;
 
-            if (flatline)
-            {
-                z = Random.Range(-baselineNoise, baselineNoise);
-            }
-            else
-            {
-                float phase = (normalizedX * cyclesVisible) + (Time.time * scrollSpeed);
-                phase = Mathf.Repeat(phase, 1.0f);
+            float z = flatline ? 0 : CalculateHeartbeatZ(normalizedX);
 
-                float pWave = Mathf.Exp(-Mathf.Pow((phase - 0.25f) * 25f, 2f)) * 0.15f;
-                float qWave = -Mathf.Exp(-Mathf.Pow((phase - 0.45f) * 60f, 2f)) * 0.20f;
-                float rWave = Mathf.Exp(-Mathf.Pow((phase - 0.50f) * 40f, 2f)) * 1.00f;
-                float sWave = -Mathf.Exp(-Mathf.Pow((phase - 0.55f) * 60f, 2f)) * 0.30f;
-                float tWave = Mathf.Exp(-Mathf.Pow((phase - 0.75f) * 15f, 2f)) * 0.25f;
-
-                float heartbeatZ = (pWave + qWave + rWave + sWave + tWave) * amplitude;
-                z = heartbeatZ + Random.Range(-baselineNoise, baselineNoise);
-            }
-
-            Vector3 localPosition = new Vector3(x, 0, z);
-            positions[i] = planeTransform.TransformPoint(localPosition);
+            positions[i] = planeTransform.TransformPoint(new Vector3(x, 0, z));
         }
-
         lineRenderer.positionCount = pointsPerLine;
         lineRenderer.SetPositions(positions);
     }
 
-    public void SetBPM(float newBPM)
+    private float CalculateHeartbeatZ(float normalizedX)
     {
-        bpm = newBPM;
+        float phase = Mathf.Repeat((normalizedX * cyclesVisible) + (Time.time * scrollSpeed), 1.0f);
+        float p = Mathf.Exp(-Mathf.Pow((phase - 0.25f) * 25f, 2f)) * 0.15f;
+        float q = -Mathf.Exp(-Mathf.Pow((phase - 0.45f) * 60f, 2f)) * 0.20f;
+        float r = Mathf.Exp(-Mathf.Pow((phase - 0.50f) * 40f, 2f)) * 1.00f;
+        float s = -Mathf.Exp(-Mathf.Pow((phase - 0.55f) * 60f, 2f)) * 0.30f;
+        float t = Mathf.Exp(-Mathf.Pow((phase - 0.75f) * 15f, 2f)) * 0.25f;
+        return (p + q + r + s + t) * amplitude + Random.Range(-baselineNoise, baselineNoise);
     }
 
-    public void SetWaveColor(Color newColor)
-    {
-        waveColor = newColor;
-    }
-
-    public void SetAmplitude(float newAmplitude)
-    {
-        amplitude = Mathf.Clamp(newAmplitude, 0.1f, 3f);
-    }
-
-    public void SetFlatline(bool enable)
-    {
-        flatline = enable;
-    }
-
-    public void ToggleFlatline()
-    {
-        flatline = !flatline;
-    }
-
-    public void SetScrollSpeed(float newSpeed)
-    {
-        scrollSpeed = Mathf.Clamp(newSpeed, 0.1f, 3f);
-    }
-
-    public void SetAutoCycles(bool enable)
-    {
-        autoCycles = enable;
-    }
-
-    public void SetTargetCyclesAt60BPM(int newTarget)
-    {
-        targetCyclesAt60BPM = Mathf.Max(1, newTarget);
-    }
-
-    public void SetCyclesVisible(int newCycles)
-    {
-        autoCycles = false;
-        cyclesVisible = Mathf.Max(1, newCycles);
-    }
+    public void SetBPM(float newBPM) => bpm = newBPM;
+    public void SetWaveColor(Color newColor) => waveColor = newColor;
 }
