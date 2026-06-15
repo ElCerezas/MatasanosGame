@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 606195325
+  GlobalObjectIdHash: 2859449234
   InScenePlacedSourceGlobalObjectIdHash: 1190020530
   DeferredDespawnTick: 0
   Ownership: 1
@@ -190,10 +190,11 @@ MonoBehaviour:
     m_InternalValue: 0
   sponjeRenderer: {fileID: 5174322669302141506}
   cleanPercent: 0.65
-  dirtAmountPerPuddle: 0.25
-  playerInteractInterval: 0.25
-  spongeDirtGainFromPlayer: 0.05
+  dirtAmountPerPuddle: 0.15
+  playerInteractInterval: 0.2
+  spongeDirtGainFromPlayer: 0.3
   soapParticles: {fileID: 1384478470243868183}
+  cleanParticles: {fileID: 362465644503314215}
   cleanGrad:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -437,9 +438,89 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7466520701325607046}
+  - {fileID: 4688686911989366999}
   - {fileID: 5823664146276718019}
   m_Father: {fileID: 7903266017808547865}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &762837328453244641
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8617900642491633148}
+    m_Modifications:
+    - target: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775700628902140999, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_Name
+      value: CleanSpongeBob
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.003
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.057
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0174
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+--- !u!198 &362465644503314215 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+  m_PrefabInstance: {fileID: 762837328453244641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4688686911989366999 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5442507128000173622, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+  m_PrefabInstance: {fileID: 762837328453244641}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6211208479411768453
 PrefabInstance:
   m_ObjectHideFlags: 0
