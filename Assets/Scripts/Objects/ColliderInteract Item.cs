@@ -31,12 +31,25 @@ public class ColliderInteractItem : NetworkBehaviour
 
     public void OnEnter(ColliderDetectorType type)
     {
-        if (diccionario.TryGetValue(type, out OnEntry entry))
-        entry.onEnter?.Invoke();
+        /*if (diccionario.TryGetValue(type, out OnEntry entry))
+        entry.onEnter?.Invoke();*/
+        OnEnterServerRpc(type);
     }
     public void OnExit(ColliderDetectorType type)
     {
-        if (diccionario.TryGetValue(type, out OnEntry entry))
-        entry.onExit?.Invoke();
+        OnExitServerRpc(type);
     }
+    [ServerRpc]
+    void OnEnterServerRpc(ColliderDetectorType type)
+    {
+        if (diccionario.TryGetValue(type, out OnEntry entry))
+            entry.onEnter?.Invoke();
+    }
+    [ServerRpc]
+    void OnExitServerRpc(ColliderDetectorType type)
+    {
+        if (diccionario.TryGetValue(type, out OnEntry entry))
+            entry.onExit?.Invoke();
+    }
+
 }
