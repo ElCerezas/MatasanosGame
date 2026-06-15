@@ -202,7 +202,7 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
     private IEnumerator MixProcessCoroutine(LiquidType liquidType, Color liquidColor)
     {
-        mixerParticles.Play();
+        PlayParticlesRpc(true);
         isMixing.Value = true;
         PlayMixSoundRpc();
 
@@ -212,11 +212,23 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
 
         yield return new WaitForSeconds(mixProcessDuration);
 
-        mixerParticles.Stop();
+        PlayParticlesRpc(false);
         componentA.Value = 1;
         componentB.Value = 1;
         componentC.Value = 1;
         isMixing.Value = false;
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayParticlesRpc(bool play)
+    {
+        if (mixerParticles != null)
+        {
+            if (play)
+                mixerParticles.Play();
+            else
+                mixerParticles.Stop();
+        }
     }
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
     private void PlayMixSoundRpc()
