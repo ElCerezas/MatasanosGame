@@ -44,6 +44,7 @@ public class AlienStateManager : NetworkBehaviour
 
     private NetworkVariable<float> targetSleepPercent = new NetworkVariable<float>(0f);
     private NetworkVariable<bool> isAlterated = new NetworkVariable<bool>(true);
+
     
     private float visualCalmantPercent = 0f;
 
@@ -121,6 +122,13 @@ public class AlienStateManager : NetworkBehaviour
                 AlienID = NetworkObjectId,
                 NewState = newVal
             });
+
+            if (newVal == AlienStateEnum.Desangrado)
+            {
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 1);
+                FMODUnity.RuntimeManager.StudioSystem.flushCommands(); // fuerza el cambio inmediato
+            }
+
         };
 
         EventBus.Subscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
@@ -409,5 +417,16 @@ public class AlienStateManager : NetworkBehaviour
             instanciaSonidoEstado.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
             instanciaSonidoEstado.start();
         }
+
+        /*
+        if (alterado)
+        {
+            Debug.Log($"🎵 FMOD: Seteando parámetro global 'AlienCritic' a 1");
+            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic",1);
+            FMODUnity.RuntimeManager.StudioSystem.flushCommands(); // fuerza el cambio inmediato
+        }
+        */
     }
+
+    
 }
