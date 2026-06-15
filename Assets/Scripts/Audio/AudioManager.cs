@@ -346,7 +346,7 @@ public class AudioManager : MonoBehaviour
             case "MainMenu":
                 return menuMusic;
 
-            case "MapaBeta":
+            case "MapaGold":
                 return gameplayMusic;
 
             case "WaitingRoom":
