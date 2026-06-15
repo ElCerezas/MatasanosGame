@@ -158,8 +158,6 @@ public class PlayerHUDEffects : NetworkBehaviour
         parasiteNoiseImage.material = parasiteMaterial;
         parasiteActive = true;
         parasiteNoiseImage.enabled = true;
-
-        parasiteNoiseImage.enabled = true;
     }
     public void CleanParasite()
     {
@@ -298,6 +296,15 @@ public class PlayerHUDEffects : NetworkBehaviour
             yield return null;
         }
         cg.alpha = to;
+    }
+    #endregion
+
+    #region Network RPCs
+    [ClientRpc]
+    public void ParasiteHitClientRpc()
+    {
+        if (IsOwner)
+            TriggerParasite();
     }
     #endregion
 }

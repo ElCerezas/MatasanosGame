@@ -27,14 +27,12 @@ public class PlayerVisual : NetworkBehaviour
     [Header("Dirt Settings")]
     [SerializeField] float parasiteGrowthRate = 0.05f;
     [SerializeField] float maxSplashes = 5f;
-    [NonSerialized]
-    public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    [NonSerialized]
-    public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    [NonSerialized]
-    public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    [SerializeField] float currentParasiteIntensity = 0f;
 
+    [NonSerialized] public NetworkVariable<int> bloodSplashes = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [NonSerialized] public NetworkVariable<int> mocoSplashes = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [NonSerialized] public NetworkVariable<float> networkParasiteIntensity = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    [SerializeField] float currentParasiteIntensity = 0f;
 
     [NonSerialized] public NetworkVariable<int> eyeFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     [NonSerialized] public NetworkVariable<int> mouthFaceIndex = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -47,17 +45,17 @@ public class PlayerVisual : NetworkBehaviour
         playerMaterial = playerRenderer.material;
         totalFaces = sheetRows * sheetColumns;
     }
+
     public override void OnNetworkSpawn()
     {
         bloodSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();
         mocoSplashes.OnValueChanged += (oldVal, newVal) => UpdateMaterialSplashes();
+        networkParasiteIntensity.OnValueChanged += (oldVal, newVal) => SetParasiteIntensityLocal(newVal);
 
         eyeFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateEyeDecal();
         mouthFaceIndex.OnValueChanged += (oldVal, newVal) => UpdateMouthDecal();
-
         colorIndex.OnValueChanged += (oldVal, newVal) => ApplyColorFromIndex(newVal);
         hatIndex.OnValueChanged += (oldVal, newVal) => ApplyHatFromIndex(newVal);
-
         playerRID.OnValueChanged += (oldVal, newVal) => UpdateRIDText();
 
         Vector2 s = new Vector2(1f / sheetColumns, 1f / (sheetRows * 2f));
@@ -67,9 +65,9 @@ public class PlayerVisual : NetworkBehaviour
         UpdateMaterialSplashes();
         UpdateEyeDecal();
         UpdateMouthDecal();
-
         ApplyColorFromIndex(colorIndex.Value);
         ApplyHatFromIndex(hatIndex.Value);
+        SetParasiteIntensityLocal(networkParasiteIntensity.Value);
 
         if (IsServer)
         {
@@ -80,18 +78,6 @@ public class PlayerVisual : NetworkBehaviour
         }
         UpdateRIDText();
     }
-    void Update()
-    {
-        if (!IsOwner)
-        {
-            if (Mathf.Abs(currentParasiteIntensity - networkParasiteIntensity.Value) > 0.001f)
-            {
-                currentParasiteIntensity = networkParasiteIntensity.Value;
-                UpdateParasiteMaterial();
-            }
-        }
-    }
-
     #region Dirty
     public void SetParasiteIntensityLocal(float value)
     {
@@ -121,16 +107,13 @@ public class PlayerVisual : NetworkBehaviour
 
         playerMaterial.SetColor("_PlayerColor", colr);
     }
+
     public void ChangeHat(Mesh hatMesh, Material hatMaterial)
     {
         if (hatMeshFilter != null && hatRenderer != null)
         {
             hatMeshFilter.mesh = hatMesh;
             hatRenderer.material = hatMaterial;
-        }
-        else
-        {
-            Debug.LogWarning("Falta asignar el Hat Mesh Filter o el Hat Renderer en el Inspector del PlayerVisual.");
         }
     }
 
@@ -169,11 +152,13 @@ public class PlayerVisual : NetworkBehaviour
 
         return new Vector2(offsetX, offsetY);
     }
+
     void UpdateEyeDecal()
     {
         if (eyeDecalRenderer == null) return;
         eyeDecalRenderer.uvBias = GetSpriteSheetCoords(eyeFaceIndex.Value, false);
     }
+
     void UpdateMouthDecal()
     {
         if (mouthDecalRenderer == null) return;
@@ -184,6 +169,7 @@ public class PlayerVisual : NetworkBehaviour
     {
         eyeFaceIndex.Value = ((index % totalFaces) + totalFaces) % totalFaces;
     }
+
     public void SetMouthFaceIndex(int index)
     {
         mouthFaceIndex.Value = ((index % totalFaces) + totalFaces) % totalFaces;

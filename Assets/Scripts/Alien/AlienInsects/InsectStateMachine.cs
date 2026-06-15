@@ -1,4 +1,4 @@
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class InsectStateMachine : NetworkBehaviour
@@ -134,27 +134,26 @@ public class InsectStateMachine : NetworkBehaviour
         NewWanderDirection();
         timer = 0f;
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
+        if (!IsServer) return;
+
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (collision.gameObject.TryGetComponent<NetworkObject>(out var netObj))
-            {
-                EventBus.Publish<OnInsectExplosion>(new OnInsectExplosion
-                {
-                    VictimID = netObj.NetworkObjectId
-                });
-                Destroy(gameObject);
-            }
+            if (collision.gameObject.TryGetComponent<PlayerHUDEffects>(out var playerHUD))
+                playerHUD.ParasiteHitClientRpc();
+            if (NetworkObject != null && NetworkObject.IsSpawned)
+                NetworkObject.Despawn();
+
+            return;
         }
+
         Vector3 relativeVelocity = collision.relativeVelocity;
         if (relativeVelocity.magnitude > minimumForceToExplode)
         {
-            Destroy(gameObject);
+            if (NetworkObject != null && NetworkObject.IsSpawned)
+                NetworkObject.Despawn();
         }
     }
-
-
-
 }
