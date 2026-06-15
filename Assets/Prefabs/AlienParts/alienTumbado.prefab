@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2737232545
+  GlobalObjectIdHash: 76025517
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -101,8 +101,30 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  _debugStatus: No iniciado
   alienAnimator: {fileID: 5764516393186265494}
+  calmantAnimationDuration: 1
+  sonidoEstadoNormal:
+    Guid:
+      Data1: -122591915
+      Data2: 1102243429
+      Data3: -1609667952
+      Data4: 764556010
+    Path: event:/Sfx/Alien/Tranquilo
+  sonidoEstadoAlterado:
+    Guid:
+      Data1: 103425512
+      Data2: 1144780067
+      Data3: -1084647804
+      Data4: 2085030830
+    Path: event:/Sfx/Alien/Alterado
+  sonidoEstornudo:
+    Guid:
+      Data1: 1628356024
+      Data2: 1107445765
+      Data3: 2018795945
+      Data4: 451565604
+    Path: event:/Sfx/Alien/Alien Rebufa
+  _debugStatus: No iniciado
 --- !u!114 &973628734019263047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,9 +144,13 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 32768
-  minHeightBias: 0.2
+  verticalTolerance: 0.2
+  raycastSphereRadius: 10
   maxRaycastAttempts: 10
+  sphereCenterOffset: {x: 0, y: 0, z: 0}
+  minWoundDistance: 0.65
   drawDebugRays: 1
+  gizmoSize: 2
 --- !u!114 &3469632940275907254
 MonoBehaviour:
   m_ObjectHideFlags: 0

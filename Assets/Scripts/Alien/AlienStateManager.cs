@@ -2,7 +2,8 @@
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
-
+using FMODUnity;
+    
 public class AlienStateManager : NetworkBehaviour
 {
     private StateMachine stateMachine;
@@ -34,7 +35,13 @@ public class AlienStateManager : NetworkBehaviour
     [Header("Animations (Networked)")]
     [SerializeField] private Animator alienAnimator;
     [SerializeField] private float calmantAnimationDuration = 1f;
-    
+
+    [Header("Audio Estados (FMOD)")]
+    [SerializeField] private FMODUnity.EventReference sonidoEstadoNormal;
+    [SerializeField] private FMODUnity.EventReference sonidoEstadoAlterado;
+    [SerializeField] private FMODUnity.EventReference sonidoEstornudo;
+    private FMOD.Studio.EventInstance instanciaSonidoEstado;
+
     private NetworkVariable<float> targetSleepPercent = new NetworkVariable<float>(0f);
     private NetworkVariable<bool> isAlterated = new NetworkVariable<bool>(true);
     
@@ -130,11 +137,23 @@ public class AlienStateManager : NetworkBehaviour
         if (e.UnSnappedTooth.CompareTag("GoodTeeth"))
         {
             estornudoComponent.ExecuteEstornudo();
+            if (!sonidoEstornudo.IsNull)
+            {
+                FMODUnity.RuntimeManager.PlayOneShot(sonidoEstornudo.Path, transform.position);
+            }
+
         }
     }
 
     public override void OnNetworkDespawn()
     {
+        isAlterated.OnValueChanged -= OnAlteratedStateChanged;
+        if (instanciaSonidoEstado.isValid())
+        {
+            instanciaSonidoEstado.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instanciaSonidoEstado.release();
+        }
+
         EventBus.Unsubscribe<OnInject>(OnInjectionReceived);
         EventBus.Unsubscribe<OnBloodBagEmpty>(OnBloodBagEmptyReceived);
         EventBus.Unsubscribe<OnBloodBagSnapped>(OnBloodBagConnected);
@@ -356,6 +375,30 @@ public class AlienStateManager : NetworkBehaviour
         else
         {
             EventBus.Publish(new OnCalmantEnded { AlienID = NetworkObjectId });
+        }
+    }
+
+    //AUDIO
+    private void OnAlteratedStateChanged(bool oldVal, bool newVal)
+    {
+        ActualizarAudioEstado(newVal);
+    }
+
+    private void ActualizarAudioEstado(bool alterado)
+    {
+        if (instanciaSonidoEstado.isValid())
+        {
+            instanciaSonidoEstado.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT); // Fadeout suave 
+            instanciaSonidoEstado.release();
+        }
+
+        FMODUnity.EventReference eventoAEjecutar = alterado ? sonidoEstadoAlterado : sonidoEstadoNormal;
+
+        if (!eventoAEjecutar.IsNull)
+        {
+            instanciaSonidoEstado = FMODUnity.RuntimeManager.CreateInstance(eventoAEjecutar);
+            instanciaSonidoEstado.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
+            instanciaSonidoEstado.start();
         }
     }
 }

@@ -24978,11 +24978,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 15d2550a6cfb4cd45b2ed7b162452f19, type: 3}
   m_PrefabInstance: {fileID: 672469402}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &672517139 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7199825744500690731, guid: 5b9bd6e3ed4f2e04988032de61c848c4, type: 3}
-  m_PrefabInstance: {fileID: 357896679}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &676721212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27466,7 +27461,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 672517139}
+  - {fileID: 7199825744824377036}
   - {fileID: 1930512315}
   - {fileID: 103336509}
   - {fileID: 1393715793}
@@ -44229,11 +44224,11 @@ MonoBehaviour:
   currentItem: {fileID: 0}
   bloodBagSnapSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1164040612
+      Data2: 1179415315
+      Data3: 1931127729
+      Data4: 274323128
+    Path: event:/Sfx/PortaSueros
   bloodBagUnsnapSound:
     Guid:
       Data1: 0
@@ -44373,8 +44368,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.811152, y: 1, z: 3.0695925}
+  m_Center: {x: -0.16138166, y: -2.4954145e-15, z: 1.0347956}
 --- !u!23 &1234763204
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -79518,6 +79513,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef0e31b3edd37de4185f047d7c70b4f8, type: 3}
+--- !u!4 &7199825744824377036 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7199825744500690731, guid: 5b9bd6e3ed4f2e04988032de61c848c4, type: 3}
+  m_PrefabInstance: {fileID: 357896679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &7615927621539363990
 MeshFilter:
   m_ObjectHideFlags: 0
