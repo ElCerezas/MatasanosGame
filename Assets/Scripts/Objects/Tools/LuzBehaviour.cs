@@ -21,6 +21,11 @@ public class LuzBehaviour : PoweredItem
     [SerializeField] GameObject Textura;
     [SerializeField] ParticleSystem lightParticles;
 
+    [Header("Audio (FMOD)")]
+    [SerializeField] private FMODUnity.EventReference sonidoFocoLoop;
+    private FMOD.Studio.EventInstance instanciaFoco;
+    private bool estaSonando = false;
+
     private float alienTimer = 0f;
     private WoundFocoBehaviour currentWoundTarget = null;
     private AlienWoundManager currentAlienTarget = null;
@@ -30,6 +35,12 @@ public class LuzBehaviour : PoweredItem
     {
         isTurnedOn.OnValueChanged += (_, newVal) => UpdateLightState();
         UpdateLightState();
+
+        if (instanciaFoco.isValid())
+        {
+            instanciaFoco.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instanciaFoco.release();
+        }
         base.OnNetworkSpawn();
     }
 
@@ -45,6 +56,21 @@ public class LuzBehaviour : PoweredItem
             Textura.SetActive(active);
 
         if (!active) StopCurrentHealing();
+
+        if (active)
+        {
+            if (!estaSonando)
+            {
+                PlayFocoSFXServerRpc(true, originPoint.position);
+            }
+        }
+        else
+        {
+            if (estaSonando)
+            {
+                PlayFocoSFXServerRpc(false, Vector3.zero);
+            }
+        }
     }
 
     public override void Interact(ulong clientID)
@@ -57,6 +83,8 @@ public class LuzBehaviour : PoweredItem
         if (!IsOwner) return;
         if (!isTurnedOn.Value) return;
         EmitLight();
+
+       
     }
 
     void EmitLight()
@@ -201,6 +229,39 @@ public class LuzBehaviour : PoweredItem
                 alien.GenerateWound(pos, norm);
                 alien.GetComponent<AlienStateManager>()?.WoundCreated();
             }
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayFocoSFXServerRpc(bool encender, Vector3 posicion)
+    {
+        PlayFocoSFXClientRpc(encender, posicion);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayFocoSFXClientRpc(bool encender, Vector3 posicion)
+    {
+        if (encender)
+        {
+            if (instanciaFoco.isValid())
+            {
+                instanciaFoco.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instanciaFoco.release();
+            }
+
+            instanciaFoco = FMODUnity.RuntimeManager.CreateInstance(sonidoFocoLoop);
+            instanciaFoco.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(posicion));
+            instanciaFoco.start();
+            estaSonando = true;
+        }
+        else
+        {
+            if (instanciaFoco.isValid())
+            {
+                instanciaFoco.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                instanciaFoco.release();
+            }
+            estaSonando = false;
         }
     }
 }
