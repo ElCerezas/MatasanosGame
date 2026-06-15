@@ -50,10 +50,16 @@ public class LuzBehaviour : PoweredItem
         Light.enabled = active;
         Light2.enabled = active;
         if (active)
+        {
             lightParticles.Play();
+        }
         else
+        {
             lightParticles.Stop();
+            lightParticles.Clear(); 
             Textura.SetActive(active);
+        }
+            
 
         if (!active) StopCurrentHealing();
 
