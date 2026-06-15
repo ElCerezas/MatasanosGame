@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public class UIMultiplayerSessionManager : MonoBehaviour
 {
+    // MODIFICADO: Guardamos la sesión completa (ISession) para poder editarla desde el Lobby
+    public static ISession CurrentSession { get; private set; }
+
     [Header("Crear sesion")]
     [SerializeField] TMP_InputField sessionNameInput;
     [SerializeField] TMP_InputField sessionPasswordInput;
@@ -53,12 +56,8 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
     void OnDestroy()
     {
-        if (createSessionButton != null)
-            createSessionButton.onClick.RemoveListener(OnCreateSessionButtonClicked);
-
-        if (refreshButton != null)
-            refreshButton.onClick.RemoveListener(OnRefreshButtonClicked);
-
+        if (createSessionButton != null) createSessionButton.onClick.RemoveListener(OnCreateSessionButtonClicked);
+        if (refreshButton != null) refreshButton.onClick.RemoveListener(OnRefreshButtonClicked);
         if (popupConfirmJoinButton != null) popupConfirmJoinButton.onClick.RemoveListener(OnPasswordConfirmClicked);
         if (popupCancelButton != null) popupCancelButton.onClick.RemoveListener(OnPasswordCancelClicked);
     }
@@ -110,6 +109,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
                 options = new SessionOptions { Name = sessionName, MaxPlayers = maxPlayers, Password = sessionPassword }.WithRelayNetwork();
 
             activeSession = await MultiplayerService.Instance.CreateSessionAsync(options);
+            CurrentSession = activeSession; // MODIFICADO: Guardar la referencia
         }
         catch (Exception ex)
         {
@@ -124,7 +124,6 @@ public class UIMultiplayerSessionManager : MonoBehaviour
     async void OnRefreshButtonClicked()
     {
         if (isOperationInProgress) return;
-
         await RefreshSessionListAsync();
     }
 
@@ -137,18 +136,14 @@ public class UIMultiplayerSessionManager : MonoBehaviour
         try
         {
             var queryOptions = new QuerySessionsOptions();
-            int sessionsLoaded = 0;
             QuerySessionsResults results = await MultiplayerService.Instance.QuerySessionsAsync(queryOptions);
             foreach (ISessionInfo sessionInfo in results.Sessions)
             {
                 SpawnSessionListItem(sessionInfo);
-                sessionsLoaded++;
             }
-            Content.offsetMin = new Vector2(Content.offsetMin.x, sessionsLoaded * 80f);
+
             if (sessionsScrollRect != null)
-            {
                 sessionsScrollRect.verticalNormalizedPosition = 1f;
-            }
         }
         catch (Exception ex)
         {
@@ -162,17 +157,14 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
     void ClearSessionList()
     {
-        if (sessionListContent == null)
-            return;
-
+        if (sessionListContent == null) return;
         for (int i = sessionListContent.childCount - 1; i >= 0; i--)
             Destroy(sessionListContent.GetChild(i).gameObject);
     }
 
     void SpawnSessionListItem(ISessionInfo sessionInfo)
     {
-        if (sessionItemPrefab == null || sessionListContent == null)
-            return;
+        if (sessionItemPrefab == null || sessionListContent == null) return;
 
         GameObject itemInstance = Instantiate(sessionItemPrefab, sessionListContent);
 
@@ -192,7 +184,13 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
             joinButton.onClick.RemoveAllListeners();
 
-            if (sessionInfo.AvailableSlots == 0)
+            if (IsGameStarted(sessionInfo))
+            {
+                if (joinButtonText != null) joinButtonText.text = "Game started";
+                if (joinButtonImage != null) joinButtonImage.color = Color.gray;
+                joinButton.interactable = false;
+            }
+            else if (sessionInfo.AvailableSlots == 0)
             {
                 if (joinButtonText != null) joinButtonText.text = "Session Full";
                 if (joinButtonImage != null) joinButtonImage.color = Color.red;
@@ -274,6 +272,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
                 var joinOptions = new JoinSessionOptions { Password = password };
                 activeSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId, joinOptions);
             }
+            CurrentSession = activeSession; // MODIFICADO: Guardar la referencia al unirse
         }
         catch (Exception ex)
         {
@@ -297,10 +296,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
     void ShowFeedback(string message)
     {
-        if (feedbackText != null)
-        {
-            feedbackText.text = message;
-        }
+        if (feedbackText != null) feedbackText.text = message;
         Debug.LogError(message);
     }
 }
