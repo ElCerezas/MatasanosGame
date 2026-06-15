@@ -321,11 +321,11 @@ public class PlayerHUDEffectsEditor : Editor
             return;
         }
 
-        if (GUILayout.Button("🩸 Añadir Sangre", GUILayout.Height(30))) script.TriggerBlood();
-        if (GUILayout.Button("🤢 Añadir Moco", GUILayout.Height(30))) script.TriggerMoco();
-        if (GUILayout.Button("👾 Activar Parásito", GUILayout.Height(30))) script.TriggerParasite();
-        if (GUILayout.Button("😴 Sleep", GUILayout.Height(30))) script.TriggerSleep(5f);
-        if (GUILayout.Button("💡 Flash", GUILayout.Height(30))) script.TriggerFlash(2f);
+        if (GUILayout.Button("Añadir Sangre", GUILayout.Height(30))) script.TriggerBlood();
+        if (GUILayout.Button("Añadir Moco", GUILayout.Height(30))) script.TriggerMoco();
+        if (GUILayout.Button("Activar Parásito", GUILayout.Height(30))) script.TriggerParasite();
+        if (GUILayout.Button("Sleep", GUILayout.Height(30))) script.TriggerSleep(5f);
+        if (GUILayout.Button("Flash", GUILayout.Height(30))) script.TriggerFlash(2f);
 
         GUILayout.Space(10);
 
@@ -336,7 +336,7 @@ public class PlayerHUDEffectsEditor : Editor
         GUILayout.Space(10);
 
         GUI.backgroundColor = Color.red;
-        if (GUILayout.Button("❌ RESETEAR TODO", GUILayout.Height(35))) script.ResetAllEffects();
+        if (GUILayout.Button("RESETEAR TODO", GUILayout.Height(35))) script.ResetAllEffects();
     }
 }
 #endif

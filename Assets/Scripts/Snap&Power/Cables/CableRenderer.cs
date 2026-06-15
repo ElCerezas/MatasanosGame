@@ -63,7 +63,6 @@ public class CableRenderer : MonoBehaviour
 
         float segLen = Mathf.Max(Vector3.Distance(anchorA, anchorB) / segments, 0.05f);
 
-        // 1. Verlet
         for (int i = 1; i < segments; i++)
         {
             Vector3 vel = (positions[i] - prevPositions[i]) * segmentDamping;

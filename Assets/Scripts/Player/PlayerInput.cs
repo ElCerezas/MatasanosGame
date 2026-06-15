@@ -55,8 +55,6 @@ public class PlayerInput : NetworkBehaviour
     
     void OnDisable()
     {
-        // Solo desuscribirse de los eventos, NO deshabilitar los InputActions globales
-        // porque eso afecta a todos los players, no solo a este
         jumpReference.action.performed -= OnJump;
         pickReference.action.performed -= OnPickUp;
         interactReference.action.performed -= OnInteract;
@@ -66,7 +64,7 @@ public class PlayerInput : NetworkBehaviour
 
     void Update()
     {
-        if (!IsSpawned || !IsOwner) return; // Añadido !IsSpawned
+        if (!IsSpawned || !IsOwner) return;
 
         rawInput = movementReference.action.ReadValue<Vector2>();
         MovementInput = Vector2.MoveTowards(MovementInput, rawInput, smoothTime);
@@ -106,7 +104,6 @@ public class PlayerInput : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        // Solo desuscribirse de nuestros propios eventos
         if (IsOwner)
         {
             jumpReference.action.performed -= OnJump;
@@ -118,10 +115,8 @@ public class PlayerInput : NetworkBehaviour
         base.OnNetworkDespawn();
     }
 
-    // En PlayerInput.cs
     public void DisableInputs()
     {
-        // Solo desuscribirse si es nuestro player
         if (!IsOwner) return;
         
         try

@@ -22,7 +22,7 @@ public class ClientDisconnectNotifier : MonoBehaviour
     {
         if (!hasNotifiedServer && NetworkManager.Singleton != null && !NetworkManager.Singleton.IsServer)
         {
-            Debug.Log("[ClientDisconnectNotifier] Aplicación cerrando. Notificando al servidor...");
+            Debug.Log("[ClientDisconnectNotifier] ALT F4 botificacion");
             hasNotifiedServer = true;
             
             if (rpcHandler != null)
@@ -36,22 +36,18 @@ public class ClientDisconnectNotifier : MonoBehaviour
     }
 }
 
-/// <summary>
-/// Handler separado para las RPCs. Debe ser NetworkBehaviour.
-/// </summary>
 public class ClientDisconnectNotifierRpc : NetworkBehaviour
 {
     [ServerRpc]
     public void NotifyDisconnectServerRpc(ulong clientId)
     {
-        Debug.Log($"[ClientDisconnectNotifier] Servidor recibió notificación de desconexión de cliente {clientId}");
+        Debug.Log($"[ClientDisconnectNotifier] Server ha recivido que el cliente: {clientId} se ha desconectado.");
         
-        // Limpiar de LobbyManager si estamos en lobby
         LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
         if (lobbyManager != null)
         {
             lobbyManager.RemovePlayerFromReady(clientId);
-            Debug.Log($"[ClientDisconnectNotifier] Cliente {clientId} removido del lobby.");
+            Debug.Log($"[ClientDisconnectNotifier] Cliente {clientId} echado del lobby.");
         }
     }
 }

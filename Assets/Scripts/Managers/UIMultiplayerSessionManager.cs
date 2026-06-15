@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 public class UIMultiplayerSessionManager : MonoBehaviour
 {
-    // MODIFICADO: Guardamos la sesión completa (ISession) para poder editarla desde el Lobby
     public static ISession CurrentSession { get; private set; }
 
     [Header("Crear sesion")]
@@ -109,7 +108,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
                 options = new SessionOptions { Name = sessionName, MaxPlayers = maxPlayers, Password = sessionPassword }.WithRelayNetwork();
 
             activeSession = await MultiplayerService.Instance.CreateSessionAsync(options);
-            CurrentSession = activeSession; // MODIFICADO: Guardar la referencia
+            CurrentSession = activeSession;
         }
         catch (Exception ex)
         {
@@ -272,7 +271,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
                 var joinOptions = new JoinSessionOptions { Password = password };
                 activeSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId, joinOptions);
             }
-            CurrentSession = activeSession; // MODIFICADO: Guardar la referencia al unirse
+            CurrentSession = activeSession;
         }
         catch (Exception ex)
         {

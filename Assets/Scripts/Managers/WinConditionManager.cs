@@ -157,7 +157,6 @@ public class WinConditionManager : NetworkBehaviour
 
     private void Update()
     {
-        // Debug: Presionar F10 para forzar fin de partida (solo servidor)
         if (Input.GetKeyDown(KeyCode.F10) && IsServer)
         {
             Debug.Log("[WinConditionManager] F10 presionado. Forzando fin de partida...");

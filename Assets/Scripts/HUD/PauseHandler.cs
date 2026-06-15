@@ -63,8 +63,8 @@ public class PauseHandler : NetworkBehaviour
     [ClientRpc]
     private void KickClientsClientRpc()
     {
-        if (IsServer) return; // El Host ya está ejecutando su propia lógica, lo ignoramos
-        Debug.Log("[PauseHandler] El Host ha cerrado la partida. Volviendo al menú...");
+        if (IsServer) return;
+        Debug.Log("[PauseHandler] Host ha cerrado");
 
         _ = NetworkDisconnectHandler.ReturnToMainMenu(mainMenuSceneName);
     }

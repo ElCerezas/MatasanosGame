@@ -107,7 +107,6 @@ public class PlayerStateManager : NetworkBehaviour
 
     public void ApplyInyeccion(LiquidType type)
     {
-        //Debug.Log($"Applying inyeccion of type {type} to player");
         switch (type)
         {
             case LiquidType.Calmante:

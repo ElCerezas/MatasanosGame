@@ -4,14 +4,12 @@ public class InsectWander : State
 {
     private InsectStateMachine insect;
     
-    // Obstacle avoidance
     private float obstacleDetectionDistance = 1.5f;
     private float avoidanceForce = 2f;
     private int raycastLayers;
     private Vector3 avoidanceDirection = Vector3.zero;
     private float avoidanceTimer = 0f;
     
-    // Stuck detection
     private Vector3 lastPosition;
     private float stuckCheckTimer = 0f;
     private float stuckCheckInterval = 1f;
@@ -20,7 +18,7 @@ public class InsectWander : State
     public InsectWander(StateMachine _stateMachine, InsectStateMachine _insect) : base(_stateMachine)
     {
         insect = _insect;
-        raycastLayers = LayerMask.GetMask("Default"); // Ajusta según tus layers
+        raycastLayers = LayerMask.GetMask("Default");
     }
 
     public override void OnEnter()
@@ -39,7 +37,6 @@ public class InsectWander : State
     {
         avoidanceTimer -= Time.deltaTime;
         
-        // Raycast directo
         if (Physics.Raycast(insect.transform.position, insect.GetCurrentDirection(), obstacleDetectionDistance))
         {
             if (avoidanceTimer <= 0f)

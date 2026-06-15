@@ -83,7 +83,7 @@ public class LobbyManager : InteractableItem
         }
         catch (System.Exception ex)
         {
-            Debug.LogWarning($"[LobbyManager] Error al actualizar sesión en Unity Services: {ex.Message}");
+            Debug.LogWarning($"[LobbyManager] Error al actualizar: {ex.Message}");
         }
     }
 

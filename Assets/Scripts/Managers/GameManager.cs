@@ -16,7 +16,6 @@ public class GameManager : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
-        // Registrar callback de aprobación de conexión
         NetworkManager.Singleton.ConnectionApprovalCallback = ApproveConnection;
         
         NetworkManager.Singleton.OnClientConnectedCallback += SpawnPlayerWithDefaultLogic;
@@ -45,19 +44,6 @@ public class GameManager : NetworkBehaviour
 
     private void ApproveConnection(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        /* Obtener LobbyManager para verificar si está bloqueado
-        LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
-        
-        if (lobbyManager != null && lobbyManager.IsLobbyLocked())
-        {
-            Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} rechazado. Lobby está bloqueado.");
-            response.Approved = false;
-            response.Reason = "Lobby is locked";
-            return;
-        }
-
-        response.Approved = true;
-        Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} aprobado.");*/
         response.Approved = true;
         response.CreatePlayerObject = true;
 

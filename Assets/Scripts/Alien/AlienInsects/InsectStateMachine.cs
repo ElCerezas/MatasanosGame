@@ -11,7 +11,7 @@ public class InsectStateMachine : NetworkBehaviour
     public NetworkVariable<InsectStatesEnum> currentActiveState = new NetworkVariable<InsectStatesEnum>(InsectStatesEnum.Wander);
 
     [Header("Audio")]
-    [SerializeField] private FMODUnity.EventReference sonidoParasitoAtaque; // Evento loop (ej: "event:/ParasiteAttack")
+    [SerializeField] private FMODUnity.EventReference sonidoParasitoAtaque;
     private FMOD.Studio.EventInstance instanciaSonidoAtaque;
 
     private Rigidbody rb;
@@ -23,11 +23,9 @@ public class InsectStateMachine : NetworkBehaviour
     {
         if (sonidoParasitoAtaque.IsNull) return;
 
-        // Detener cualquier instancia previa
         StopAtaqueSound();
 
         instanciaSonidoAtaque = FMODUnity.RuntimeManager.CreateInstance(sonidoParasitoAtaque);
-        // Si quieres que el sonido siga al insecto (3D), usa set3DAttributes
         instanciaSonidoAtaque.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
         instanciaSonidoAtaque.start();
     }
@@ -50,7 +48,6 @@ public class InsectStateMachine : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         currentActiveState.OnValueChanged += OnStateChanged;
-        // Si ya existe un valor inicial, llama manualmente
         OnStateChanged(currentActiveState.Value, currentActiveState.Value);
     }
 

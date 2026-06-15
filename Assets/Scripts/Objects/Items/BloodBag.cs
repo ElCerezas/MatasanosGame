@@ -38,8 +38,6 @@ public class BloodBag : NetworkBehaviour
     private NetworkVariable<float> bloodBagCurrentCapacity = new NetworkVariable<float>(-1f);
     private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     private NetworkVariable<bool> isRefilling = new NetworkVariable<bool>(false);
-
-    // Visual-only, lerped fill used purely for the shader
     private float visualFillAmount = 1f;
     private float bloodLossTimer = 0f;
     private float collisionCooldown = 0f;
@@ -56,7 +54,6 @@ public class BloodBag : NetworkBehaviour
     public bool IsFull => bloodBagCurrentCapacity.Value >= 0f && bloodBagCurrentCapacity.Value >= bloodBagMaxCapacity;
     public bool IsEmpty => bloodBagCurrentCapacity.Value >= 0f && bloodBagCurrentCapacity.Value <= 0f;
 
-    // Real fill ratio (0-1), used for ALL gameplay/physics logic
     public float FillRatio => bloodBagCurrentCapacity.Value >= 0f
         ? bloodBagCurrentCapacity.Value / bloodBagMaxCapacity
         : initialFillPercentage;
@@ -210,7 +207,6 @@ public class BloodBag : NetworkBehaviour
         if (isAttached.Value || isEmptySent || collisionCooldown > 0 || toolItem == null || toolItem.grabbers.Count == 0)
             return;
 
-        // Use the real fill ratio, not the lerped visual value
         float currentThreshold = GetCurrentVelocityThreshold(FillRatio);
 
         if (currentThreshold < 0f || impactVelocity < currentThreshold) return;

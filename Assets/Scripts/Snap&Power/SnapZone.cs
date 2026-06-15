@@ -132,7 +132,7 @@ public class SnapZone : NetworkBehaviour
                 /*
                 if (currentBloodBag != null)
                     currentBloodBag.SetRefillingState(false);
-                    */
+                */
             }
             else
             {

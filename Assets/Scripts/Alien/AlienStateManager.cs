@@ -126,7 +126,7 @@ public class AlienStateManager : NetworkBehaviour
             if (newVal == AlienStateEnum.Desangrado)
             {
                 FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 1);
-                FMODUnity.RuntimeManager.StudioSystem.flushCommands(); // fuerza el cambio inmediato
+                FMODUnity.RuntimeManager.StudioSystem.flushCommands();
             }
 
         };
@@ -405,7 +405,7 @@ public class AlienStateManager : NetworkBehaviour
     {
         if (instanciaSonidoEstado.isValid())
         {
-            instanciaSonidoEstado.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT); // Fadeout suave 
+            instanciaSonidoEstado.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             instanciaSonidoEstado.release();
         }
 
@@ -417,15 +417,6 @@ public class AlienStateManager : NetworkBehaviour
             instanciaSonidoEstado.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
             instanciaSonidoEstado.start();
         }
-
-        /*
-        if (alterado)
-        {
-            Debug.Log($"🎵 FMOD: Seteando parámetro global 'AlienCritic' a 1");
-            FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic",1);
-            FMODUnity.RuntimeManager.StudioSystem.flushCommands(); // fuerza el cambio inmediato
-        }
-        */
     }
 
     

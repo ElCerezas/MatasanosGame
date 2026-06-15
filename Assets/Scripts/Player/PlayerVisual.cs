@@ -68,9 +68,6 @@ public class PlayerVisual : NetworkBehaviour
         UpdateEyeDecal();
         UpdateMouthDecal();
 
-        // Igual que con ojos/boca: aplicamos el estado ya sincronizado de
-        // color y sombrero al spawnear. Esto es lo que faltaba para que
-        // un jugador que se une tarde vea correctamente a los demás.
         ApplyColorFromIndex(colorIndex.Value);
         ApplyHatFromIndex(hatIndex.Value);
 
@@ -137,8 +134,6 @@ public class PlayerVisual : NetworkBehaviour
         }
     }
 
-    // Traduce colorIndex -> Color usando las listas configuradas en
-    // CharacterCustomitationMachine y lo aplica al material del jugador.
     void ApplyColorFromIndex(int index)
     {
         var machine = CharacterCustomitationMachine.Instance;
@@ -148,7 +143,6 @@ public class PlayerVisual : NetworkBehaviour
         ChangeColor(machine.colores[index]);
     }
 
-    // Traduce hatIndex -> Hat (mesh + material) y lo aplica al sombrero.
     void ApplyHatFromIndex(int index)
     {
         var machine = CharacterCustomitationMachine.Instance;
