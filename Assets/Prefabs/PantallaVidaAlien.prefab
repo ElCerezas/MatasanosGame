@@ -35,7 +35,8 @@ Transform:
   m_LocalPosition: {x: -3.0224, y: -0, z: 1.1100011}
   m_LocalScale: {x: 0.39557, y: 1, z: 0.7779999}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5771008826517029087}
   m_Father: {fileID: 5087690366978070766}
   m_LocalEulerAnglesHint: {x: -105, y: 0, z: 0}
 --- !u!114 &4865608264316949507
@@ -92,6 +93,21 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   planeTransform: {fileID: 1370802801821378146}
   bpmText: {fileID: 4192547161476304735}
+  normalHeartbeat:
+    Guid:
+      Data1: -1520406851
+      Data2: 1152688513
+      Data3: 140701064
+      Data4: -866779354
+    Path: event:/Sfx/ECG Normal
+  fastHeartbeat:
+    Guid:
+      Data1: -773075384
+      Data2: 1195952200
+      Data3: -86316919
+      Data4: -2029002840
+    Path: event:/Sfx/ECG Acelerado
+  flatlineObject: {fileID: 9018179714400164132}
   bpm: 60
   amplitude: 2.2
   flatline: 0
@@ -1676,3 +1692,66 @@ MonoBehaviour:
   FocoCount: {fileID: 5557046281539250400}
   DienteCount: {fileID: 5944013009756612198}
   VendaCount: {fileID: 2138902206524641747}
+--- !u!1 &9018179714400164132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5771008826517029087}
+  - component: {fileID: 154596974419758880}
+  m_Layer: 0
+  m_Name: Flatline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5771008826517029087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018179714400164132}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1370802801821378146}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &154596974419758880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018179714400164132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 431695940
+      Data2: 1145691507
+      Data3: -647983693
+      Data4: 2013324434
+    Path: event:/Sfx/ECG Muerto
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
