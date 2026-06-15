@@ -55,7 +55,7 @@ public class BloodMachine : PoweredDevice
             if (bag.IsFull) continue;
 
             float amountPerSecond = bag.BloodBagMaxCapacity / maxBloodbagFillTime;
-            bag.AddBlood(amountPerSecond * Time.deltaTime);
+            //bag.AddBlood(amountPerSecond * Time.deltaTime);
         }
     }
 

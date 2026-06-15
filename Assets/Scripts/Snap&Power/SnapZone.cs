@@ -129,8 +129,10 @@ public class SnapZone : NetworkBehaviour
         {
             if (gameObject.CompareTag("EmptyBag"))
             {
+                /*
                 if (currentBloodBag != null)
                     currentBloodBag.SetRefillingState(false);
+                    */
             }
             else
             {
