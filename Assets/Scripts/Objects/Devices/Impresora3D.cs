@@ -110,13 +110,17 @@ public class Impresora3D : PoweredDevice
 
         screenImage.texture = printableObjects[selectedIndex.Value].displayTexture;
         
-        RectTransform rectTransform = screenImage.GetComponent<RectTransform>();
-        rectTransform.offsetMin = Vector2.zero;
-        rectTransform.offsetMax = Vector2.zero;
+        RectTransform rtImage = screenImage.GetComponent<RectTransform>();
+        rtImage.anchorMin = Vector2.zero;
+        rtImage.anchorMax = Vector2.one;
+        rtImage.offsetMin = Vector2.zero;
+        rtImage.offsetMax = Vector2.zero;
 
-        RectTransform rectTransform1 = screenBackground.GetComponent<RectTransform>();
-        rectTransform1.offsetMin = Vector2.zero;
-        rectTransform1.offsetMax = Vector2.zero;
+        RectTransform rtBg = screenBackground.GetComponent<RectTransform>();
+        rtBg.anchorMin = Vector2.zero;
+        rtBg.anchorMax = Vector2.one;
+        rtBg.offsetMin = Vector2.zero;
+        rtBg.offsetMax = Vector2.zero;
 
         if (printProgress.Value == 0f)
         {
@@ -277,7 +281,6 @@ public class Impresora3D : PoweredDevice
     [Rpc(SendTo.ClientsAndHost)]
     private void PlayPrintingSFXClientRpc(Vector3 posicion)
     {
-        // Tu llamada a FMOD usando la posición 3D de la impresora
         AudioManager.instance.PlayOneShotAtPosition(sonidoImpresion, posicion);
     }
 
@@ -292,7 +295,6 @@ public class Impresora3D : PoweredDevice
     {
         AudioManager.instance.PlayOneShotAtPosition(sonidoClickBoton, posicion);
     }
-
 }
 
 [System.Serializable]

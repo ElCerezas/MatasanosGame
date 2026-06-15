@@ -226,7 +226,7 @@ MonoBehaviour:
       Data3: -919924859
       Data4: -257689081
     Path: event:/Sfx/Mezcladora
-  mixProcessDuration: 3.8
+  mixProcessDuration: 3.5
   mixerParticles: {fileID: 8583731698326043242}
 --- !u!114 &180611928544073820
 MonoBehaviour:
@@ -1186,6 +1186,16 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: {r: 1, g: 1, b: 1, a: 1}
+  detectorType:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  detectorEnabled:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   colliderDetector: {fileID: 0}
 --- !u!114 &4204044453301427640
 MonoBehaviour:
@@ -2687,7 +2697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.893
+      value: 0.854
       objectReference: {fileID: 0}
     - target: {fileID: 2462414733351640754, guid: 790d6732d1f113846816485bcc660ab5, type: 3}
       propertyPath: m_LocalPosition.z

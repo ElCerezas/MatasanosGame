@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 96622114520456759}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.719}
+  m_LocalPosition: {x: 0, y: 0, z: 0.788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5021,7 +5021,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4770889533206274187}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 0, g: 0.2526455, b: 1, a: 1}
@@ -5223,8 +5223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3579383207
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1406327245
+  InScenePlacedSourceGlobalObjectIdHash: 3507591891
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -5281,9 +5281,9 @@ MonoBehaviour:
     m_Bits: 2048
   woundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 65536
   timeToCreateWound: 2
-  playerBlindDuration: 2
+  playerBlindDuration: 4
   Light: {fileID: 6996385494618333528}
   Light2: {fileID: 8212862440402219948}
   Textura: {fileID: 2527619233672709586}
@@ -5482,14 +5482,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1879188397
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3272686755
+  InScenePlacedSourceGlobalObjectIdHash: 3507591891
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -5666,12 +5666,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2346372701705607251}
     - target: {fileID: 2608300636717570395, guid: 3985d23ed57906d4bb7e55ab47e4b57a, type: 3}
+      propertyPath: maxLength
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608300636717570395, guid: 3985d23ed57906d4bb7e55ab47e4b57a, type: 3}
       propertyPath: socketHolderRb
       value: 
       objectReference: {fileID: 4356495363844435047}
     - target: {fileID: 3860262752141645425, guid: 3985d23ed57906d4bb7e55ab47e4b57a, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1463003670
+      value: 2585951357
+      objectReference: {fileID: 0}
+    - target: {fileID: 3860262752141645425, guid: 3985d23ed57906d4bb7e55ab47e4b57a, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3507591891
       objectReference: {fileID: 0}
     - target: {fileID: 4216964799902730472, guid: 3985d23ed57906d4bb7e55ab47e4b57a, type: 3}
       propertyPath: m_Name
@@ -5785,7 +5793,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6974299358829989255, guid: ccf0eb3a510309640ab233905b2b5f3e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 140483858
+      value: 932875147
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974299358829989255, guid: ccf0eb3a510309640ab233905b2b5f3e, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3507591891
       objectReference: {fileID: 0}
     - target: {fileID: 8848530410699249172, guid: ccf0eb3a510309640ab233905b2b5f3e, type: 3}
       propertyPath: targetItem
