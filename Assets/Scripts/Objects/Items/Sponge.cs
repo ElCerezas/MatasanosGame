@@ -6,6 +6,8 @@ public class Sponge : NetworkBehaviour
 {
     [Header("Sponge Settings")]
     [SerializeField] NetworkVariable<float> dirtynes = new NetworkVariable<float>(0f);
+    [SerializeField] Renderer sponjeRenderer;
+    Material mat;
     Rigidbody rb;
 
     [Header("Puddle Settings")]
@@ -30,6 +32,10 @@ public class Sponge : NetworkBehaviour
     [SerializeField] private float soundInterval = 0.35f;
     private Coroutine scrubSoundCoroutine;
 
+    private void Start()
+    {
+        mat = sponjeRenderer.material;
+    }
     public override void OnNetworkSpawn()
     {
         dirtynes.OnValueChanged += (oldVal, newVal) =>
@@ -158,6 +164,7 @@ public class Sponge : NetworkBehaviour
 
         ParticleSystem.MainModule mainModule = soapParticles.main;
         mainModule.startColor = new ParticleSystem.MinMaxGradient(gradient);
+        mat.SetFloat("_DetailAlbedoMapScale", dirtynes.Value);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
