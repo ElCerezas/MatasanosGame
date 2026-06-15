@@ -57,9 +57,17 @@ PrefabInstance:
       value: EmptyBloodbag
       objectReference: {fileID: 0}
     - target: {fileID: 7758830782004584291, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+      propertyPath: bloodRenderer
+      value: 
+      objectReference: {fileID: 26319007664784356}
+    - target: {fileID: 7758830782004584291, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
       propertyPath: currentFillAmount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7758830782004584291, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+      propertyPath: explosionParticles
+      value: 
+      objectReference: {fileID: 2953913801705330004}
     - target: {fileID: 7758830782004584291, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
       propertyPath: initialFillPercentage
       value: 0
@@ -73,3 +81,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+--- !u!23 &26319007664784356 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7555743351260848673, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+  m_PrefabInstance: {fileID: 7531958616901771717}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2953913801705330004 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4645617527091262609, guid: ac2cc5a0550095749a7bca3089a711eb, type: 3}
+  m_PrefabInstance: {fileID: 7531958616901771717}
+  m_PrefabAsset: {fileID: 0}

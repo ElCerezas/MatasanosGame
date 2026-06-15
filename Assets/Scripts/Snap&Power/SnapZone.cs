@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System.Data.Common;
+using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +12,8 @@ public class SnapZone : NetworkBehaviour
     public UnityEvent OnObjectSnapped;
     public UnityEvent OnObjectUnsnapped;
     public SnappableItem currentItem;
+
+    [Header("Audio Settings")]
     [SerializeField] FMODUnity.EventReference bloodBagSnapSound;
     [SerializeField] FMODUnity.EventReference bloodBagUnsnapSound;
     [SerializeField] FMODUnity.EventReference dienteSnapSound;
@@ -21,6 +24,7 @@ public class SnapZone : NetworkBehaviour
     [SerializeField] FMODUnity.EventReference defaultUnsnapSound;
 
     bool firstActivation = true;
+    private BloodBag currentBloodBag;
 
     private void Awake()
     {
@@ -55,6 +59,9 @@ public class SnapZone : NetworkBehaviour
         firstActivation = true;
         currentItem.SnapTo(this);
         OnObjectSnapped?.Invoke();
+
+        if (acceptedType == SnapType.Bloodbag)
+            currentBloodBag = currentItem.GetComponentInParent<BloodBag>();
     }
 
     protected override void OnOwnershipChanged(ulong previousOwner, ulong newOwner)
@@ -79,15 +86,34 @@ public class SnapZone : NetworkBehaviour
         currentItem = snappable;
         currentItem.SnapTo(this);
         PlaySnapSoundClientRpc(true);
+
         if (acceptedType == SnapType.Bloodbag)
-            EventBus.Publish(new OnBloodBagSnapped
+        {
+            currentBloodBag = currentItem.GetComponentInParent<BloodBag>();
+
+            if (gameObject.CompareTag("EmptyBag")) 
             {
-                BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId
-            });
+                if (currentBloodBag != null)
+                    currentBloodBag.SetRefillingState(true);
+                
+                OnObjectSnapped?.Invoke();
+            }
+            else
+            {
+                EventBus.Publish(new OnBloodBagSnapped
+                {
+                    BloodBagID = currentItem.GetComponentInParent<NetworkObject>().NetworkObjectId
+                });
+            }
+        }
         else if (acceptedType == SnapType.Diente)
+        {
             EventBus.Publish(new OnDienteSnap { ID = NetworkObjectId, currentItem = currentItem });
+        }
         else
+        {
             OnObjectSnapped?.Invoke();
+        }
     }
 
     public void ReleaseItem()
@@ -98,18 +124,32 @@ public class SnapZone : NetworkBehaviour
         var item = currentItem;
         currentItem = null;
         PlaySnapSoundClientRpc(false);
+
         if (acceptedType == SnapType.Bloodbag)
-            EventBus.Publish(new OnBloodBagDetached
+        {
+            if (gameObject.CompareTag("EmptyBag"))
             {
-                BloodBagID = item.GetComponentInParent<NetworkObject>().NetworkObjectId
-            });
+                if (currentBloodBag != null)
+                    currentBloodBag.SetRefillingState(false);
+            }
+            else
+            {
+                EventBus.Publish(new OnBloodBagDetached
+                {
+                    BloodBagID = item.GetComponentInParent<NetworkObject>().NetworkObjectId
+                });
+            }
+            currentBloodBag = null;
+        }
         else if (acceptedType == SnapType.Diente)
+        {
             EventBus.Publish(new OnDienteUnSnap
             {
                 SnapZoneID = NetworkObjectId,
                 DienteID = item.GetComponentInParent<NetworkObject>().NetworkObjectId,
                 UnSnappedTooth = item.gameObject
             });
+        }
 
         item.Unsnap();
         OnObjectUnsnapped?.Invoke();
