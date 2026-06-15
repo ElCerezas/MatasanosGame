@@ -39,7 +39,8 @@ public class BloodBag : NetworkBehaviour
     private NetworkVariable<bool> isAttached = new NetworkVariable<bool>(false);
     private NetworkVariable<bool> isRefilling = new NetworkVariable<bool>(false);
 
-    float currentFillAmount = 1f;
+    // Visual-only, lerped fill used purely for the shader
+    private float visualFillAmount = 1f;
     private float bloodLossTimer = 0f;
     private float collisionCooldown = 0f;
     private bool isEmptySent = false;
@@ -54,6 +55,11 @@ public class BloodBag : NetworkBehaviour
     public float BloodBagMaxCapacity => bloodBagMaxCapacity;
     public bool IsFull => bloodBagCurrentCapacity.Value >= 0f && bloodBagCurrentCapacity.Value >= bloodBagMaxCapacity;
     public bool IsEmpty => bloodBagCurrentCapacity.Value >= 0f && bloodBagCurrentCapacity.Value <= 0f;
+
+    // Real fill ratio (0-1), used for ALL gameplay/physics logic
+    public float FillRatio => bloodBagCurrentCapacity.Value >= 0f
+        ? bloodBagCurrentCapacity.Value / bloodBagMaxCapacity
+        : initialFillPercentage;
 
     private void Awake()
     {
@@ -80,10 +86,11 @@ public class BloodBag : NetworkBehaviour
             bloodBagCurrentCapacity.Value = bloodBagMaxCapacity * initialFillPercentage;
             isEmptySent = bloodBagCurrentCapacity.Value <= 0f;
         }
-        currentFillAmount = initialFillPercentage;
+
+        visualFillAmount = initialFillPercentage;
 
         if (cachedBloodMaterial != null)
-            cachedBloodMaterial.SetFloat(fillAmountParamID, currentFillAmount);
+            cachedBloodMaterial.SetFloat(fillAmountParamID, visualFillAmount);
 
         EventBus.Subscribe<OnBloodBagSnapped>(OnAttach);
         EventBus.Subscribe<OnBloodBagDetached>(OnDetach);
@@ -114,21 +121,21 @@ public class BloodBag : NetworkBehaviour
 
         if (bloodBagCurrentCapacity.Value < 0f) return;
 
-        float target = bloodBagCurrentCapacity.Value / bloodBagMaxCapacity;
+        float target = FillRatio;
 
         if (!hasInitializedFill)
         {
-            currentFillAmount = target;
+            visualFillAmount = target;
             if (cachedBloodMaterial != null)
-                cachedBloodMaterial.SetFloat(fillAmountParamID, currentFillAmount);
+                cachedBloodMaterial.SetFloat(fillAmountParamID, visualFillAmount);
             hasInitializedFill = true;
         }
-        else if (Mathf.Abs(currentFillAmount - target) > 0.001f)
+        else if (Mathf.Abs(visualFillAmount - target) > 0.001f)
         {
-            currentFillAmount = Mathf.Lerp(currentFillAmount, target, lerpSpeed * Time.deltaTime);
+            visualFillAmount = Mathf.Lerp(visualFillAmount, target, lerpSpeed * Time.deltaTime);
             if (cachedBloodMaterial != null)
             {
-                cachedBloodMaterial.SetFloat(fillAmountParamID, currentFillAmount);
+                cachedBloodMaterial.SetFloat(fillAmountParamID, visualFillAmount);
             }
         }
 
@@ -203,7 +210,8 @@ public class BloodBag : NetworkBehaviour
         if (isAttached.Value || isEmptySent || collisionCooldown > 0 || toolItem == null || toolItem.grabbers.Count == 0)
             return;
 
-        float currentThreshold = GetCurrentVelocityThreshold(currentFillAmount);
+        // Use the real fill ratio, not the lerped visual value
+        float currentThreshold = GetCurrentVelocityThreshold(FillRatio);
 
         if (currentThreshold < 0f || impactVelocity < currentThreshold) return;
 
@@ -268,7 +276,7 @@ public class BloodBag : NetworkBehaviour
         if (explosionParticles == null) return;
 
         AudioManager.instance.PlayOneShotAtPosition(explosionSound, impactPoint);
-        
+
         explosionParticles.transform.position = impactPoint;
         explosionParticles.transform.SetParent(null);
         explosionParticles.gameObject.SetActive(true);
@@ -311,26 +319,26 @@ public class BloodBag : NetworkBehaviour
     private void UpdateDebugText()
     {
         float currentCap = bloodBagCurrentCapacity.Value;
-        float fillRatio = currentCap >= 0 ? currentCap / bloodBagMaxCapacity : 0f;
-        
-        inspectorDebugInfo = 
+        float fillRatio = FillRatio;
+
+        inspectorDebugInfo =
             $"=== NETWORK INFO ===\n" +
             $"Is Spawned: {IsSpawned}\n" +
             $"Is Server/Host: {IsServer}\n" +
             $"Parent NetObj ID: {parentNetworkObjectId}\n\n" +
-            
+
             $"=== STATE ===\n" +
             $"Is Attached: {isAttached.Value}\n" +
             $"Is Refilling: {isRefilling.Value}\n" +
             $"Is Full: {IsFull}\n" +
             $"Is Empty: {IsEmpty} (Sent: {isEmptySent})\n\n" +
-            
+
             $"=== CAPACITY ===\n" +
             $"Current Cap: {currentCap:F1} / {bloodBagMaxCapacity:F1}\n" +
             $"Actual Fill: {fillRatio * 100f:F1}%\n" +
-            $"Visual Fill: {currentFillAmount * 100f:F1}%\n" +
+            $"Visual Fill: {visualFillAmount * 100f:F1}%\n" +
             $"Blood Loss Timer: {bloodLossTimer:F2}s / {bloodLossRate}s\n\n" +
-            
+
             $"=== PHYSICS ===\n" +
             $"Velocity Magnitude: {(rb != null ? rb.linearVelocity.magnitude : 0):F2}\n" +
             $"Dyn Explosion Thresh: {GetCurrentVelocityThreshold(fillRatio):F2}\n" +
