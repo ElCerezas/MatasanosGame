@@ -26,7 +26,7 @@ public class AlteredState : State
         if (parasiteTimer >= alien.timeBetweenAttacks)
         {
             parasiteTimer = 0f;
-            
+            ParasiteAttack();
         }
     }
     public override void OnExit()
@@ -34,7 +34,7 @@ public class AlteredState : State
         
     }
     
-    private void ParasyteAttack()
+    private void ParasiteAttack()
     {
         alien.NotifyParasiteAttack(); 
     }

@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using System.Collections;
 
@@ -9,33 +10,70 @@ public class MixerFlask : NetworkBehaviour
     public NetworkVariable<LiquidType> liquid = new NetworkVariable<LiquidType>(LiquidType.Empty);
     public NetworkVariable<Color> color = new NetworkVariable<Color>(Color.white);
 
+    [Header("Referencias de Componentes")]
+    [SerializeField] private ColliderDetector colliderDetector;
+
+    private void Awake()
+    {
+        if (colliderDetector == null)
+            colliderDetector = GetComponent<ColliderDetector>();
+    }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         m = GetComponent<Renderer>().material;
-        fillAmount.OnValueChanged += (_, val) => UpdateLiquid(val);
+
+        fillAmount.OnValueChanged += (_, val) =>
+        {
+            UpdateLiquid(val);
+            UpdateDetectorState(val);
+        };
         color.OnValueChanged += (_, _) => UpdateLiquid(fillAmount.Value);
 
         UpdateLiquid(fillAmount.Value);
+        UpdateDetectorState(fillAmount.Value);
     }
 
     public void Fill(LiquidType t, Color c)
     {
         if (!IsServer) return;
+
         liquid.Value = t;
         color.Value = c;
         fillAmount.Value = 1f;
-        if (t == LiquidType.Betadine)
+
+        if (colliderDetector != null)
         {
-            ColliderDetector col = GetComponent<ColliderDetector>();
-            col.detectorType = ColliderDetectorType.Betadine;
+            if (t == LiquidType.Betadine)
+            {
+                colliderDetector.detectorType = ColliderDetectorType.Betadine;
+            }
+            colliderDetector.enabled = true;
+        }
+    }
+    public void Empty(float amount)
+    {
+        if (IsServer)
+        {
+            ExecuteEmptyOnServer(amount);
+        }
+        else
+        {
+            EmptyServerRpc(amount);
         }
     }
 
-    public void Empty(float amount = 1f)
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void EmptyServerRpc(float amount)
     {
-        if (!IsServer) return;
+        ExecuteEmptyOnServer(amount);
+    }
+
+    private void ExecuteEmptyOnServer(float amount)
+    {
         fillAmount.Value = Mathf.Clamp(fillAmount.Value - amount, 0f, 1f);
+        colliderDetector.detectorType = ColliderDetectorType.Null;
         if (fillAmount.Value <= 0f)
             liquid.Value = LiquidType.Empty;
     }
@@ -46,16 +84,20 @@ public class MixerFlask : NetworkBehaviour
         m.SetColor("_Color", color.Value);
         m.SetFloat("_FillAmount", Mathf.Min(newVal, 0.95f));
     }
+
     public void StartFilling(LiquidType t, Color c, float totalDuration, float initialFill)
     {
-        if (IsServer) StartCoroutine(FillCoroutine(t, c, totalDuration, initialFill));
+        if (IsServer)
+        {
+            StopAllCoroutines();
+            StartCoroutine(FillCoroutine(t, c, totalDuration, initialFill));
+        }
     }
 
     private IEnumerator FillCoroutine(LiquidType t, Color c, float totalDuration, float initialFill)
     {
         liquid.Value = t;
         color.Value = c;
-
         fillAmount.Value = initialFill;
 
         float elapsed = 0f;
@@ -68,10 +110,20 @@ public class MixerFlask : NetworkBehaviour
 
         fillAmount.Value = 1f;
 
-        if (t == LiquidType.Betadine)
+        if (colliderDetector != null)
         {
-            ColliderDetector col = GetComponent<ColliderDetector>();
-            if (col != null) col.detectorType = ColliderDetectorType.Betadine;
+            if (t == LiquidType.Betadine)
+            {
+                colliderDetector.detectorType = ColliderDetectorType.Betadine;
+            }
+            colliderDetector.enabled = true;
         }
+    }
+
+    private void UpdateDetectorState(float currentFill)
+    {
+        if (colliderDetector == null) return;
+
+        colliderDetector.enabled = (currentFill >= 0.99f);
     }
 }
