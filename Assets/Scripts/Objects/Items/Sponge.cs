@@ -21,6 +21,7 @@ public class Sponge : NetworkBehaviour
 
     [Header("Particles")]
     [SerializeField] ParticleSystem soapParticles;
+    [SerializeField] ParticleSystem cleanParticles;
     [SerializeField] Gradient cleanGrad;
     [SerializeField] Gradient dirtyGrad;
     NetworkVariable<bool> isScrubbingSync = new NetworkVariable<bool>(false);
@@ -117,6 +118,7 @@ public class Sponge : NetworkBehaviour
 
         if (other.CompareTag("Puddle"))
         {
+
             BloodPuddle bP = other.GetComponent<BloodPuddle>();
             if (bP != null && bP.IsActive())
             {
@@ -226,7 +228,7 @@ public class Sponge : NetworkBehaviour
     public void FullyCleanSponge()
     {
         if (!IsOwner) return;
-        
+        cleanParticles.Play();
         FullyCleanSpongeRpc();
     }
 
