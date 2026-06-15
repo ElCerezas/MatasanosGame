@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 568987714742163912}
   - component: {fileID: 180611928544073820}
   - component: {fileID: 3062530434600567698}
+  - component: {fileID: 6637298855067413544}
   m_Layer: 0
   m_Name: Mezcladora
   m_TagString: Untagged
@@ -242,6 +243,21 @@ MonoBehaviour:
   componentB: {fileID: 0}
   componentC: {fileID: 0}
 --- !u!114 &3062530434600567698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090020571703070698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a24d18b3485a954b8782459ab005381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  componentA: {fileID: 0}
+  componentB: {fileID: 0}
+  componentC: {fileID: 0}
+--- !u!114 &6637298855067413544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2160,15 +2176,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eaa810c0ec38c7c4290580a5cbc35968, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.36999872
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eaa810c0ec38c7c4290580a5cbc35968, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.125
+      value: 0.003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eaa810c0ec38c7c4290580a5cbc35968, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.9520018
+      value: 2.874
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eaa810c0ec38c7c4290580a5cbc35968, type: 3}
       propertyPath: m_LocalRotation.w
