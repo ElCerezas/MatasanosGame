@@ -23,7 +23,7 @@ public class AlienStateManager : NetworkBehaviour
     private float damageTimer = 0f;
 
     [Header("State Settings")]
-    public float timeBetweenAttacks { get; private set; } = 3f;
+    public float timeBetweenAttacks = 3f;
     [SerializeField] private float DesangradoThreshold = 10f;
     public Estornudo estornudoComponent;
 
