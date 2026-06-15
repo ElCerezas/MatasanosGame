@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1193138775
+  GlobalObjectIdHash: 2737232545
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -148,7 +148,7 @@ MonoBehaviour:
   damageAmount: 0.5
   criticalDamageMultiplier: 2
   damageRate: 1
-  timeBetweenAttacks: 15
+  timeBetweenAttacks: 7
   DesangradoThreshold: 20
   estornudoComponent: {fileID: 3469632940275907254}
   calmantDuration: 120
@@ -1899,10 +1899,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7252588922314264243, guid: 8e959c9ff25770d418f259ec9a4efb3a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9055439954848217017, guid: 8e959c9ff25770d418f259ec9a4efb3a, type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055439954848217017, guid: 8e959c9ff25770d418f259ec9a4efb3a, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
