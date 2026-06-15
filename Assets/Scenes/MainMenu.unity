@@ -2278,7 +2278,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 67
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2962,6 +2962,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 134463945092254518, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1089.86
+      objectReference: {fileID: 0}
     - target: {fileID: 1872999674533240284, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2996,7 +3000,7 @@ PrefabInstance:
       objectReference: {fileID: 386481519}
     - target: {fileID: 4400681750738934551, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 976.8409
+      value: 978.4
       objectReference: {fileID: 0}
     - target: {fileID: 4400681750738934551, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3044,6 +3048,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6174006734695254851, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174006734695254851, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6393931925049752008, guid: 24f83dd3c94746143b3aafa3ec8d91fb, type: 3}
