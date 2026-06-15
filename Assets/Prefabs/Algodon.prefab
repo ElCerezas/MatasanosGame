@@ -250,15 +250,15 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 7751826573116979850}
           m_TargetAssemblyTypeName: Algodon, Assembly-CSharp
-          m_MethodName: Desinfectar
-          m_Mode: 1
+          m_MethodName: SetBetadine
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
         - m_Target: {fileID: 1058277603839108811}
           m_TargetAssemblyTypeName: UnityEngine.MeshRenderer, UnityEngine
@@ -281,8 +281,8 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 7751826573116979850}
           m_TargetAssemblyTypeName: Algodon, Assembly-CSharp
-          m_MethodName: AlgodonInfectado
-          m_Mode: 1
+          m_MethodName: SetBetadine
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -319,8 +319,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Algodon
   ShowTopMostFoldoutHeaderGroup: 1
-  algodon: {fileID: 2100000, guid: 42d87a60436405b40b779b3886b9b195, type: 2}
-  algodonBetadine: {fileID: 2100000, guid: 684b22c21729e894483a25f1d073d412, type: 2}
+  meshRenderer: {fileID: 1058277603839108811}
+  meshFilter: {fileID: 5863897593549447243}
+  matNormal: {fileID: 2100000, guid: 42d87a60436405b40b779b3886b9b195, type: 2}
+  matBetadine: {fileID: 2100000, guid: 684b22c21729e894483a25f1d073d412, type: 2}
 --- !u!114 &-206859942347668748
 MonoBehaviour:
   m_ObjectHideFlags: 0
