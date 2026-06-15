@@ -22535,6 +22535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   ShowTopMostFoldoutHeaderGroup: 1
   playerPrefab: {fileID: 5676371275889095336, guid: bea15038d7ac5d14b85d13c1bcc16d29, type: 3}
+  m_SpawnPositions: []
 --- !u!114 &603434922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28453,6 +28454,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlienGoodTeeth
       objectReference: {fileID: 0}
+    - target: {fileID: 6917036424383793504, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5450566417021175387, guid: 8d48634d91f1da241ad2e6f27832bb13, type: 3}
+    - target: {fileID: 9043268328847706861, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fd0292696a67f104e8930d7356e40b71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -40095,6 +40104,14 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: -0.000000018027931
       objectReference: {fileID: 0}
+    - target: {fileID: 4209876320484312342, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209876320484312342, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0003
+      objectReference: {fileID: 0}
     - target: {fileID: 4415285886424491278, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: Ownership
       value: 1
@@ -40135,6 +40152,18 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.0069111134
       objectReference: {fileID: 0}
+    - target: {fileID: 5507664449115174835, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00224
+      objectReference: {fileID: 0}
+    - target: {fileID: 5507664449115174835, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5507664449115174835, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0003
+      objectReference: {fileID: 0}
     - target: {fileID: 6247565686421706804, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: m_Size.y
       value: 0.8408409
@@ -40166,6 +40195,30 @@ PrefabInstance:
     - target: {fileID: 6565110228298451441, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: m_Center.z
       value: -0.000000029888692
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579018019074994400, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00597
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579018019074994400, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00046
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579018019074994400, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.00032
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590194690989699991, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00538
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590194690989699991, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00057
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590194690989699991, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.00022
       objectReference: {fileID: 0}
     - target: {fileID: 7291596107634800603, guid: 4768190c69aea9b4a95ca3b2f6662898, type: 3}
       propertyPath: maxHealth
@@ -52167,6 +52220,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlienGoodTeeth
       objectReference: {fileID: 0}
+    - target: {fileID: 6917036424383793504, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5450566417021175387, guid: 8d48634d91f1da241ad2e6f27832bb13, type: 3}
+    - target: {fileID: 9043268328847706861, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043268328847706861, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fd0292696a67f104e8930d7356e40b71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -62460,6 +62525,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlienGoodTeeth
       objectReference: {fileID: 0}
+    - target: {fileID: 6917036424383793504, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5450566417021175387, guid: 8d48634d91f1da241ad2e6f27832bb13, type: 3}
+    - target: {fileID: 9043268328847706861, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fd0292696a67f104e8930d7356e40b71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -62627,6 +62700,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlienGoodTeeth
       objectReference: {fileID: 0}
+    - target: {fileID: 6917036424383793504, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5450566417021175387, guid: 8d48634d91f1da241ad2e6f27832bb13, type: 3}
+    - target: {fileID: 9043268328847706861, guid: 53ac0c404bd3c0d41bcb679c380c586c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fd0292696a67f104e8930d7356e40b71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
