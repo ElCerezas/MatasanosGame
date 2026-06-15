@@ -66,7 +66,6 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        // 1. COMPROBACIÓN CRÍTICA: Evita errores cuando nos desconectamos
         if (!IsSpawned) return;
 
         animator.SetFloat("Speed", networkSpeed.Value);
@@ -107,7 +106,7 @@ public class PlayerController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsSpawned || !IsOwner) return; // Añadido !IsSpawned
+        if (!IsSpawned || !IsOwner) return;
         if (pauseHandler.IsPaused) return;
         ApplyJumpGravity();
         Move();
@@ -206,6 +205,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (isRagdoll) return;
         if (!isGrounded) return;
+        if (pauseHandler.IsPaused) return;
 
         hasJumped = true;
         
