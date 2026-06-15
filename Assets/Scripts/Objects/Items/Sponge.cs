@@ -228,7 +228,6 @@ public class Sponge : NetworkBehaviour
     public void FullyCleanSponge()
     {
         if (!IsOwner) return;
-        cleanParticles.Play();
         FullyCleanSpongeRpc();
     }
 
@@ -236,5 +235,6 @@ public class Sponge : NetworkBehaviour
     private void FullyCleanSpongeRpc()
     {
         dirtynes.Value = 0f;
+        cleanParticles.Play();
     }
 }

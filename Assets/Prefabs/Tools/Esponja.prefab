@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2859449234
+  GlobalObjectIdHash: 1190020530
   InScenePlacedSourceGlobalObjectIdHash: 1190020530
   DeferredDespawnTick: 0
   Ownership: 1
@@ -192,7 +192,7 @@ MonoBehaviour:
   cleanPercent: 0.65
   dirtAmountPerPuddle: 0.15
   playerInteractInterval: 0.2
-  spongeDirtGainFromPlayer: 0.3
+  spongeDirtGainFromPlayer: 0.1
   soapParticles: {fileID: 1384478470243868183}
   cleanParticles: {fileID: 362465644503314215}
   cleanGrad:
@@ -452,6 +452,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1121845008358062534, guid: 645feaf96fa95b044bf2160301229204, type: 3}
