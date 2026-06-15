@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class GameManager : NetworkBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private List<GameObject> m_SpawnPositions = new List<GameObject>();
+    private int currentSpawnIndex = 0;
+
     bool isCursorLocked = true;
 
     public override void OnNetworkSpawn()
@@ -14,10 +17,10 @@ public class GameManager : NetworkBehaviour
         if (!IsServer) return;
 
         // Registrar callback de aprobación de conexión
-        NetworkManager.ConnectionApprovalCallback += ApproveConnection;
+        NetworkManager.Singleton.ConnectionApprovalCallback = ApproveConnection;
         
-        NetworkManager.OnClientConnectedCallback += SpawnPlayerWithDefaultLogic;
-        NetworkManager.SceneManager.OnLoadEventCompleted += HandleSceneLoadCompleted;
+        NetworkManager.Singleton.OnClientConnectedCallback += SpawnPlayerWithDefaultLogic;
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += HandleSceneLoadCompleted;
     }
     private void HandleSceneLoadCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
@@ -42,7 +45,7 @@ public class GameManager : NetworkBehaviour
 
     private void ApproveConnection(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        // Obtener LobbyManager para verificar si está bloqueado
+        /* Obtener LobbyManager para verificar si está bloqueado
         LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
         
         if (lobbyManager != null && lobbyManager.IsLobbyLocked())
@@ -54,9 +57,23 @@ public class GameManager : NetworkBehaviour
         }
 
         response.Approved = true;
-        Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} aprobado.");
-    }
+        Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} aprobado.");*/
+        response.Approved = true;
+        response.CreatePlayerObject = true;
 
+        response.Position = GetNextSpawnPoint();
+    }
+    private Vector3 GetNextSpawnPoint()
+    {
+        if (m_SpawnPositions.Count == 0)
+        {
+            return new Vector3(UnityEngine.Random.Range(-3, 3), 2, UnityEngine.Random.Range(-3, 3));
+        }
+
+        Transform spawn = m_SpawnPositions[currentSpawnIndex].transform;
+        currentSpawnIndex = (currentSpawnIndex + 1) % m_SpawnPositions.Count;
+        return spawn.position;
+    }
     private void SpawnPlayerWithDefaultLogic(ulong clientID)
     {
         Vector3 spawnPos = Vector3.zero;
