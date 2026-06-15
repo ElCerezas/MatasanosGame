@@ -21,7 +21,7 @@ public class InyeccionCollider : MonoBehaviour
             liquidGot = f.liquid.Value;
             colorGot = f.color.Value;
             inyeccionItem.Fill(liquidGot, colorGot);
-            f.Empty();
+            f.Empty(1);
         }
     }
 }
