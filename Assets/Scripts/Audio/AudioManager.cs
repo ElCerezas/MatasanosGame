@@ -283,7 +283,7 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    #region SFX
+    
 
     public void PlayOneShot(EventReference sound)
     {
@@ -296,7 +296,7 @@ public class AudioManager : MonoBehaviour
             RuntimeManager.PlayOneShot(sound, position);
     }
 
-    #endregion
+  
 
     #region Cambios de Escena
 

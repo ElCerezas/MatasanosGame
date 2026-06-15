@@ -40,20 +40,21 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _AutoWobbleForce: 0
+    - _AutoWobbleForce: 1
     - _Cull: 0
     - _DstBlend: 10
     - _DstBlendAlpha: 10
     - _FillAmount: 1
     - _FillToTop: 1
+    - _MaxFillAmount: 0.909
     - _QueueOffset: 0
     - _SrcBlend: 5
     - _Surface: 1
-    - _WobbleX: 0.2
-    - _WobbleZ: 0
+    - _WobbleX: 0.05
+    - _WobbleZ: 0.05
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.745728, g: 0.9245283, b: 0.89472824, a: 0}
+    - _Color: {r: 0.74572796, g: 0.9245283, b: 0.89472824, a: 1}
     - _SideColor: {r: 0.42352942, g: 0.71251774, b: 0.8117647, a: 1}
     - _TopColor: {r: 0.14509803, g: 0.6335676, b: 0.81960785, a: 1}
   m_BuildTextureStacks: []
