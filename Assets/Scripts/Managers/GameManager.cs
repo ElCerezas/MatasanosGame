@@ -16,16 +16,14 @@ public class GameManager : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsServer) return;
 
+        // Registrar callback de aprobación de conexión
         NetworkManager.Singleton.ConnectionApprovalCallback = ApproveConnection;
-
+        
         NetworkManager.Singleton.OnClientConnectedCallback += SpawnPlayerWithDefaultLogic;
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += HandleSceneLoadCompleted;
     }
-
     private void HandleSceneLoadCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
-        if (!IsServer) return;
-
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         int spawnIndex = 0;
 
@@ -41,39 +39,30 @@ public class GameManager : NetworkBehaviour
                 spawnRot = selectedPoint.rotation;
                 spawnIndex++;
             }
-            else
-            {
-                spawnPos = GetNextSpawnPoint();
-            }
-
-            if (NetworkManager.ConnectedClients.TryGetValue(clientId, out var client) && client.PlayerObject != null)
-            {
-                TeleportPlayer(client.PlayerObject, spawnPos, spawnRot);
-            }
-            else
-            {
-                SpawnPlayer(clientId, spawnPos, spawnRot);
-            }
+            SpawnPlayer(clientId, spawnPos, spawnRot);
         }
-    }
-    private void TeleportPlayer(NetworkObject playerObj, Vector3 newPosition, Quaternion newRotation)
-    {
-        CharacterController cc = playerObj.GetComponent<CharacterController>();
-        if (cc != null) cc.enabled = false;
-
-        playerObj.transform.position = newPosition;
-        playerObj.transform.rotation = newRotation;
-
-        if (cc != null) cc.enabled = true;
     }
 
     private void ApproveConnection(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
+        /* Obtener LobbyManager para verificar si está bloqueado
+        LobbyManager lobbyManager = FindFirstObjectByType<LobbyManager>();
+        
+        if (lobbyManager != null && lobbyManager.IsLobbyLocked())
+        {
+            Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} rechazado. Lobby está bloqueado.");
+            response.Approved = false;
+            response.Reason = "Lobby is locked";
+            return;
+        }
+
+        response.Approved = true;
+        Debug.Log($"[GameManager] Cliente {request.ClientNetworkId} aprobado.");*/
         response.Approved = true;
         response.CreatePlayerObject = true;
+
         response.Position = GetNextSpawnPoint();
     }
-
     private Vector3 GetNextSpawnPoint()
     {
         if (m_SpawnPositions.Count == 0)
@@ -85,7 +74,6 @@ public class GameManager : NetworkBehaviour
         currentSpawnIndex = (currentSpawnIndex + 1) % m_SpawnPositions.Count;
         return spawn.position;
     }
-
     private void SpawnPlayerWithDefaultLogic(ulong clientID)
     {
         Vector3 spawnPos = Vector3.zero;
@@ -101,11 +89,9 @@ public class GameManager : NetworkBehaviour
 
         SpawnPlayer(clientID, spawnPos, spawnRot);
     }
-
     private void SpawnPlayer(ulong clientID, Vector3 position, Quaternion rotation)
     {
-        if (NetworkManager.ConnectedClients.TryGetValue(clientID, out var client) && client.PlayerObject != null)
-            return;
+        if (NetworkManager.ConnectedClients[clientID].PlayerObject != null) return;
 
         GameObject player = Instantiate(playerPrefab, position, rotation);
         player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
@@ -117,10 +103,7 @@ public class GameManager : NetworkBehaviour
         {
             NetworkManager.ConnectionApprovalCallback -= ApproveConnection;
             NetworkManager.OnClientConnectedCallback -= SpawnPlayerWithDefaultLogic;
-            if (NetworkManager.Singleton != null && NetworkManager.Singleton.SceneManager != null)
-            {
-                NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= HandleSceneLoadCompleted;
-            }
+            NetworkManager.SceneManager.OnLoadEventCompleted -= HandleSceneLoadCompleted;
         }
         base.OnNetworkDespawn();
     }
@@ -138,5 +121,10 @@ public class GameManager : NetworkBehaviour
     public void StartHost()
     {
         NetworkManager.StartHost();
+    }
+
+    public void Update()
+    {
+       
     }
 }
