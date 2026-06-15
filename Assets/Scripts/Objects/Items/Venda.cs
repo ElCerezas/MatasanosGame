@@ -3,12 +3,19 @@ using UnityEngine;
 
 public class Venda : NetworkBehaviour
 {
+    NetworkObject netObj;
     public void PonerVenda()
     {
-        NetworkObject parentNetObject = GetComponent<NetworkObject>();
-        if (parentNetObject != null && parentNetObject.IsSpawned)
+        netObj = GetComponent<NetworkObject>();
+        if (netObj != null && netObj.IsSpawned)
         {
-            parentNetObject.Despawn();
+            DespawnVendaServerRpc();
         }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void DespawnVendaServerRpc()
+    {
+        netObj.Despawn();
     }
 }
