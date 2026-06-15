@@ -16,6 +16,7 @@ public class InsectSpawner : NetworkBehaviour
 
     void SpawnInsects(OnAlienParasiteAttack e)
     {
+        if(!IsServer) return;
         GameObject i = Instantiate(InsectPrefab, spawnTransform.position, spawnTransform.rotation);
         i.GetComponent<NetworkObject>().Spawn();
     }
