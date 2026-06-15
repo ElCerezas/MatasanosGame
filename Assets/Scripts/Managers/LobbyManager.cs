@@ -10,8 +10,11 @@ public class LobbyManager : InteractableItem
     private NetworkVariable<bool> isLobbyLocked = new NetworkVariable<bool>(false);
     private int numberOfPlayers = 1;
     private int numberOfPlayersText =1;
-    [SerializeField] private string m_GameSceneName = "MapaBeta";
+    [SerializeField] private string m_GameSceneName = "MapaGold";
     [SerializeField] private TextMeshProUGUI m_TextMeshProUGUI;
+
+    [Header("Audio (FMOD)")]
+    [SerializeField] private FMODUnity.EventReference sonidoPartidaIniciada;
 
     private Camera localCamera;
 
@@ -66,6 +69,7 @@ public class LobbyManager : InteractableItem
         {
             isLobbyLocked.Value = true;
             Debug.Log("[LobbyManager] Todos listos. Lobby bloqueado.");
+            PlayStartGameSoundClientRpc();
             NetworkManager.Singleton.SceneManager.LoadScene(m_GameSceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
     }
@@ -91,6 +95,17 @@ public class LobbyManager : InteractableItem
             playersReady.Value = updatedList;
             UpdateTextClientRpc(updatedList.Count, numberOfPlayers);
             Debug.Log($"[LobbyManager] Cliente {clientId} removido de ready. Total: {updatedList.Count}/{numberOfPlayers}");
+        }
+    }
+
+    [ClientRpc]
+    private void PlayStartGameSoundClientRpc()
+    {
+        if (!sonidoPartidaIniciada.IsNull)
+        {
+            FMOD.Studio.EventInstance instInicio = FMODUnity.RuntimeManager.CreateInstance(sonidoPartidaIniciada);
+            instInicio.start();
+            instInicio.release();
         }
     }
 }
