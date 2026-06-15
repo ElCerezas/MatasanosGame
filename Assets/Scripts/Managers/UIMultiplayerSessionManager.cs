@@ -6,6 +6,7 @@ using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class UIMultiplayerSessionManager : MonoBehaviour
 {
     [Header("Crear sesion")]
@@ -25,6 +26,9 @@ public class UIMultiplayerSessionManager : MonoBehaviour
     [SerializeField] TMP_InputField popupPasswordInput;
     [SerializeField] Button popupConfirmJoinButton;
     [SerializeField] Button popupCancelButton;
+
+    [Header("Feedback de Estado")]
+    [SerializeField] TMP_Text feedbackText;
 
     [Header("Configuracion")]
     [SerializeField] int maxPlayers = 4;
@@ -46,6 +50,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
         await InitializeAndAuthenticateAsync();
         await RefreshSessionListAsync();
     }
+
     void OnDestroy()
     {
         if (createSessionButton != null)
@@ -57,6 +62,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
         if (popupConfirmJoinButton != null) popupConfirmJoinButton.onClick.RemoveListener(OnPasswordConfirmClicked);
         if (popupCancelButton != null) popupCancelButton.onClick.RemoveListener(OnPasswordCancelClicked);
     }
+
     async Task InitializeAndAuthenticateAsync()
     {
         try
@@ -67,7 +73,10 @@ public class UIMultiplayerSessionManager : MonoBehaviour
             if (!AuthenticationService.Instance.IsSignedIn)
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
-        catch { }
+        catch (Exception ex)
+        {
+            ShowFeedback($"Error de autenticación: {ex.Message}");
+        }
     }
 
     async void OnCreateSessionButtonClicked()
@@ -76,10 +85,21 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
         string sessionName = sessionNameInput != null ? sessionNameInput.text.Trim() : string.Empty;
         string sessionPassword = sessionPasswordInput != null ? sessionPasswordInput.text.Trim() : string.Empty;
-        Debug.Log(sessionPassword);
-        if (string.IsNullOrEmpty(sessionName)) return;
+
+        if (string.IsNullOrEmpty(sessionName))
+        {
+            ShowFeedback("El nombre de la sesión no puede estar vacío.");
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(sessionPassword) && sessionPassword.Length < 8)
+        {
+            ShowFeedback("La contraseña debe tener al menos 8 caracteres.");
+            return;
+        }
 
         SetBusy(true);
+        if (feedbackText != null) feedbackText.text = string.Empty;
 
         try
         {
@@ -91,11 +111,16 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
             activeSession = await MultiplayerService.Instance.CreateSessionAsync(options);
         }
+        catch (Exception ex)
+        {
+            ShowFeedback($"Error al crear sesión: {ex.Message}");
+        }
         finally
         {
             SetBusy(false);
         }
     }
+
     async void OnRefreshButtonClicked()
     {
         if (isOperationInProgress) return;
@@ -107,6 +132,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
     {
         SetBusy(true);
         ClearSessionList();
+        if (feedbackText != null) feedbackText.text = string.Empty;
 
         try
         {
@@ -123,6 +149,10 @@ public class UIMultiplayerSessionManager : MonoBehaviour
             {
                 sessionsScrollRect.verticalNormalizedPosition = 1f;
             }
+        }
+        catch (Exception ex)
+        {
+            ShowFeedback($"Error al cargar lista: {ex.Message}");
         }
         finally
         {
@@ -162,13 +192,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
 
             joinButton.onClick.RemoveAllListeners();
 
-            /*if (IsGameStarted(sessionInfo))
-            {
-                if (joinButtonText != null) joinButtonText.text = "Game started";
-                if (joinButtonImage != null) joinButtonImage.color = Color.gray;
-                joinButton.interactable = false;
-            }*/
-            /*else*/ if (sessionInfo.AvailableSlots == 0)
+            if (sessionInfo.AvailableSlots == 0)
             {
                 if (joinButtonText != null) joinButtonText.text = "Session Full";
                 if (joinButtonImage != null) joinButtonImage.color = Color.red;
@@ -190,6 +214,7 @@ public class UIMultiplayerSessionManager : MonoBehaviour
             }
         }
     }
+
     bool IsGameStarted(ISessionInfo sessionInfo)
     {
         if (sessionInfo.Properties != null && sessionInfo.Properties.TryGetValue("GameStarted", out var property))
@@ -198,15 +223,23 @@ public class UIMultiplayerSessionManager : MonoBehaviour
         }
         return false;
     }
+
     void OpenPasswordPopup(string sessionId)
     {
         pendingSessionId = sessionId;
         if (popupPasswordInput != null) popupPasswordInput.text = string.Empty;
         if (passwordPopupPanel != null) passwordPopupPanel.SetActive(true);
     }
+
     void OnPasswordConfirmClicked()
     {
         string password = popupPasswordInput != null ? popupPasswordInput.text.Trim() : string.Empty;
+
+        if (string.IsNullOrEmpty(password) || password.Length < 8)
+        {
+            ShowFeedback("La contraseña debe tener al menos 8 caracteres.");
+            return;
+        }
 
         if (passwordPopupPanel != null) passwordPopupPanel.SetActive(false);
 
@@ -215,26 +248,36 @@ public class UIMultiplayerSessionManager : MonoBehaviour
             OnJoinSessionButtonClicked(pendingSessionId, password);
         }
     }
+
     void OnPasswordCancelClicked()
     {
         if (passwordPopupPanel != null) passwordPopupPanel.SetActive(false);
         pendingSessionId = null;
     }
+
     async void OnJoinSessionButtonClicked(string sessionId, string password = null)
     {
-        if (isOperationInProgress)  return;
+        if (isOperationInProgress) return;
         if (string.IsNullOrEmpty(sessionId)) return;
 
         SetBusy(true);
+        if (feedbackText != null) feedbackText.text = string.Empty;
+
         try
         {
-            if (password != null) 
+            if (string.IsNullOrEmpty(password))
+            {
                 activeSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId);
+            }
             else
             {
                 var joinOptions = new JoinSessionOptions { Password = password };
                 activeSession = await MultiplayerService.Instance.JoinSessionByIdAsync(sessionId, joinOptions);
             }
+        }
+        catch (Exception ex)
+        {
+            ShowFeedback($"Error al unirse: {ex.Message}");
         }
         finally
         {
@@ -250,5 +293,14 @@ public class UIMultiplayerSessionManager : MonoBehaviour
         if (refreshButton != null) refreshButton.interactable = !busy;
         if (sessionNameInput != null) sessionNameInput.interactable = !busy;
         if (sessionPasswordInput != null) sessionPasswordInput.interactable = !busy;
+    }
+
+    void ShowFeedback(string message)
+    {
+        if (feedbackText != null)
+        {
+            feedbackText.text = message;
+        }
+        Debug.LogError(message);
     }
 }
