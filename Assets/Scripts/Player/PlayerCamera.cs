@@ -25,6 +25,10 @@ public class PlayerCamera : NetworkBehaviour
     [Header("Cinematic Pan")]
     [SerializeField] float panDuration = 1.5f;
     [SerializeField] float panEaseSpeed = 5f;
+    [SerializeField] private float _cameraTransitionDuration;
+    [SerializeField] private float _cameraTransitionSpeed;
+    [SerializeField] private Vector3 endPos;
+    [SerializeField] private Vector3 endRot;
 
     float pitchRotation = 0f;
     float yawRotation = 0f;
@@ -99,6 +103,7 @@ public class PlayerCamera : NetworkBehaviour
 
             Vector3 directionToTarget = target.position - playerCam.position;
 
+            /*
             float targetYaw = Mathf.Atan2(directionToTarget.x, directionToTarget.z) * Mathf.Rad2Deg;
             float targetPitch = -Mathf.Asin(directionToTarget.normalized.y) * Mathf.Rad2Deg;
             targetPitch = Mathf.Clamp(targetPitch, currentMinPitch, maxPitch);
@@ -107,9 +112,13 @@ public class PlayerCamera : NetworkBehaviour
 
             float t = Mathf.SmoothStep(0f, 1f, elapsed / panDuration);
 
-            yawRotation = Mathf.LerpAngle(startYaw, startYaw + yawDelta, t);
-            pitchRotation = Mathf.Lerp(startPitch, targetPitch, t);
+            yawRotation = Mathf.LerpAngle(startYaw, startYaw + yawDelta, elapsed);
+            pitchRotation = Mathf.Lerp(startPitch, targetPitch, elapsed);
+            */
 
+            playerCam.transform.position = Vector3.Lerp(playerCam.transform.position, endPos, _cameraTransitionSpeed * Time.deltaTime);
+            playerCam.transform.rotation = Quaternion.Lerp(playerCam.transform.rotation, Quaternion.Euler(endRot), _cameraTransitionSpeed * Time.deltaTime);
+            
             yield return null;
         }
 
@@ -125,8 +134,8 @@ public class PlayerCamera : NetworkBehaviour
             StopCoroutine(panCoroutine);
             panCoroutine = null;
         }
-        isCinematic = false;
-        playerController?.SetCinematic(false);
+        //isCinematic = false;
+        //playerController?.SetCinematic(false);
     }
 
     public void Ragdoll(bool active) => isRagdoll = active;
@@ -151,6 +160,7 @@ public class PlayerCamera : NetworkBehaviour
     private void LateUpdate()
     {
         if (!IsOwner) return;
+        if (isCinematic) return;
 
         playerCam.localRotation = Quaternion.Euler(pitchRotation, 0f, 0f);
 
