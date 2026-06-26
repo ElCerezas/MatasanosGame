@@ -7046,7 +7046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3790442997
+  GlobalObjectIdHash: 89985672
   InScenePlacedSourceGlobalObjectIdHash: 2402241250
   DeferredDespawnTick: 0
   Ownership: 1
@@ -7202,6 +7202,8 @@ MonoBehaviour:
   sensitivity: 0.2
   maxPitch: 50
   minPitch: -60
+  panDuration: 2
+  panEaseSpeed: 3
 --- !u!114 &3512188801409707773
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ public class PlayerController : NetworkBehaviour
     Rigidbody rigidBody;
     bool isGrounded = true;
     bool isRagdoll = false;
+    bool isCinematic = false;
 
     private NetworkVariable<float> networkSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<bool> networkGrounded = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -52,7 +53,8 @@ public class PlayerController : NetworkBehaviour
             return;
         }
         playerInput.OnJumpPressed += Jump;
-    }    
+    }
+
     public override void OnNetworkDespawn()
     {
         if (IsOwner && playerInput != null)
@@ -62,6 +64,18 @@ public class PlayerController : NetworkBehaviour
     public void Ragdoll(bool active)
     {
         isRagdoll = active;
+    }
+
+    public void SetCinematic(bool active)
+    {
+        isCinematic = active;
+
+        if (active)
+        {
+            rigidBody.linearVelocity = new Vector3(0f, rigidBody.linearVelocity.y, 0f);
+            networkSpeed.Value = 0f;
+            currentInput = Vector2.zero;
+        }
     }
 
     void Update()
@@ -108,6 +122,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsSpawned || !IsOwner) return;
         if (pauseHandler.IsPaused) return;
+        if (isCinematic) return;
         ApplyJumpGravity();
         Move();
     }
@@ -206,11 +221,10 @@ public class PlayerController : NetworkBehaviour
         if (isRagdoll) return;
         if (!isGrounded) return;
         if (pauseHandler.IsPaused) return;
+        if (isCinematic) return;
 
         hasJumped = true;
-        
         PlayJumpAnimationServerRPC();
-
         rigidBody.AddForce(Vector3.up * jumpForce * rigidBody.mass, ForceMode.Impulse);
     }
 

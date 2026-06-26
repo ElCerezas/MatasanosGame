@@ -14,6 +14,6 @@ public class VictoryHandlerUI : MonoBehaviour
     private void OnVictory(VictoryEvent e)
     {
         Debug.Log("VictoryEvent received!");
-        victoryScreen.SetActive(true);
+        //victoryScreen.SetActive(true);
     }
 }

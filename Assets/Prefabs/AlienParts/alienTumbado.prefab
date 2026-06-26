@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2737232545
+  GlobalObjectIdHash: 76025517
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2570108177
+  GlobalObjectIdHash: 1603396724
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3270929468
+  GlobalObjectIdHash: 2179514719
   InScenePlacedSourceGlobalObjectIdHash: 2737232545
   DeferredDespawnTick: 0
   Ownership: 1
@@ -988,6 +988,13 @@ MonoBehaviour:
     TransitionIndex: 2
   - IsCrossFadeExit: 0
     Layer: 0
+    OriginatingState: -1536240244
+    DestinationState: 1513072770
+    TransitionDuration: 0.25
+    TriggerNameHash: -1827059426
+    TransitionIndex: 5
+  - IsCrossFadeExit: 0
+    Layer: 0
     OriginatingState: -651275957
     DestinationState: -437631793
     TransitionDuration: 0.25
@@ -1007,6 +1014,13 @@ MonoBehaviour:
     TransitionDuration: 0.25
     TriggerNameHash: -1244794526
     TransitionIndex: 3
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: -651275957
+    DestinationState: 1513072770
+    TransitionDuration: 0.25
+    TriggerNameHash: -1827059426
+    TransitionIndex: 5
   AnimatorParameterEntries:
     ParameterEntries:
     - name: Health
@@ -1037,6 +1051,10 @@ MonoBehaviour:
       NameHash: -375454423
       Synchronize: 1
       ParameterType: 4
+    - name: Healed
+      NameHash: -1827059426
+      Synchronize: 1
+      ParameterType: 9
   AnimatorParametersExpanded: 0
 --- !u!1 &8371056078401823959
 GameObject:
@@ -1274,7 +1292,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7012795439237862, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 678893566
+      value: 2586364493
       objectReference: {fileID: 0}
     - target: {fileID: 117486147562822176, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: OnObjectSnapped.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1314,7 +1332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 986518140921797411, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 445398968
+      value: 3973933828
       objectReference: {fileID: 0}
     - target: {fileID: 2383369733009219463, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: m_Size.y
@@ -1734,7 +1752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7073355943021184884, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 410401868
+      value: 1138200543
       objectReference: {fileID: 0}
     - target: {fileID: 7174257158557931442, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: OnObjectSnapped.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1746,11 +1764,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7823301445822672597, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2003679188
+      value: 1839203589
       objectReference: {fileID: 0}
     - target: {fileID: 7829998434929061282, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 118927073
+      value: 138542002
       objectReference: {fileID: 0}
     - target: {fileID: 7858835267158064484, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: OnObjectSnapped.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1766,7 +1784,7 @@ PrefabInstance:
       objectReference: {fileID: 5764516393186265494}
     - target: {fileID: 8913620448967272838, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3839506150
+      value: 579149425
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5950950193592447709, guid: 8d0724e1b98a13f4aa8c3845d80d167d, type: 3}

@@ -138,8 +138,14 @@ public class AlienStateManager : NetworkBehaviour
         EventBus.Subscribe<OnWoundFocoHealStarted>(WoundIsBeingHealed);
         EventBus.Subscribe<OnWoundFocoHealEnded>(WoundHealingEnded);
         EventBus.Subscribe<OnDienteUnSnap>(OnDienteUnSnapped);
+        EventBus.Subscribe<VictoryEvent>(OnVictoryEvent);
 
         UpdateDebugStatus();
+    }
+
+    private void OnVictoryEvent(VictoryEvent @event)
+    {
+        alienAnimator.SetBool("Healed", true);
     }
 
     private void OnDienteUnSnapped(OnDienteUnSnap e)

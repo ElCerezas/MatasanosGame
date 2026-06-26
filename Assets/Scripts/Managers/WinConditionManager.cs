@@ -157,10 +157,9 @@ public class WinConditionManager : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F10) && IsServer)
+        if (Input.GetKeyDown(KeyCode.H) && IsServer)
         {
-            Debug.Log("[WinConditionManager] F10 presionado. Forzando fin de partida...");
-            ForceGameEndServerRpc();
+            NotifyVictoryServerRpc();
         }
     }
 }
