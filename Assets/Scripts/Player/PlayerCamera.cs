@@ -23,9 +23,12 @@ public class PlayerCamera : NetworkBehaviour
     [SerializeField] float minPitch = -80f;
 
     [Header("Cinematic Pan")]
+    
     [SerializeField] float panDuration = 1.5f;
+    /*
     [SerializeField] float panEaseSpeed = 5f;
     [SerializeField] private float _cameraTransitionDuration;
+    */
     [SerializeField] private float _cameraTransitionSpeed;
     [SerializeField] private Vector3 endPos;
     [SerializeField] private Vector3 endRot;
@@ -134,8 +137,8 @@ public class PlayerCamera : NetworkBehaviour
             StopCoroutine(panCoroutine);
             panCoroutine = null;
         }
-        //isCinematic = false;
-        //playerController?.SetCinematic(false);
+        isCinematic = false;
+        playerController?.SetCinematic(false);
     }
 
     public void Ragdoll(bool active) => isRagdoll = active;
