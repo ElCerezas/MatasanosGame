@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using FMODUnity;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(NetworkObject))]
 public class Estornudo : NetworkBehaviour
@@ -17,6 +18,10 @@ public class Estornudo : NetworkBehaviour
     [SerializeField] LayerMask targetLayer;
     [SerializeField] bool showDebugCone = true;
     [SerializeField] private ParticleSystem estornudoParticles;
+
+
+    [Header("Audio")]
+    [SerializeField] public EventReference sneezeSound;
 
     private void Awake()
     {
@@ -67,7 +72,7 @@ public class Estornudo : NetworkBehaviour
             }
         }
 
-        EstornudoVFXClientRpc();
+        EstornudoVFXClientRpc(origin);
     }
 
     [ClientRpc]
@@ -110,10 +115,17 @@ public class Estornudo : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void EstornudoVFXClientRpc()
+    private void EstornudoVFXClientRpc(Vector3 position)
     {
+
         // SFX y VFX aquí
+        if (!sneezeSound.IsNull)
+        {
+            RuntimeManager.PlayOneShot(sneezeSound, position);
+        }
+
         estornudoParticles.gameObject.SetActive(true);
+
     }
     [ClientRpc]
     private void EstornudoEndVFXClientRpc()
@@ -154,4 +166,6 @@ public class Estornudo : NetworkBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(origin, origin + direction * coneRange);
     }
+
+
 }

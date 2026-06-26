@@ -153,13 +153,6 @@ public class AlienStateManager : NetworkBehaviour
         if (e.UnSnappedTooth.CompareTag("GoodTeeth"))
         {
             estornudoComponent.ExecuteEstornudo();
-            if (!sonidoEstornudo.IsNull)
-            {
-                FMOD.Studio.EventInstance instanciaEstornudo = FMODUnity.RuntimeManager.CreateInstance(sonidoEstornudo);
-                instanciaEstornudo.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.position));
-                instanciaEstornudo.start();
-                instanciaEstornudo.release();
-            }
         }
     }
 
