@@ -10,6 +10,12 @@ public struct VictoryEvent : IEvent
 {
 
 }
+
+public struct AlienDeath : IEvent
+{
+
+}
+
 public struct GeneratorEvent : IEvent
 {
     public bool IsGeneratorOn;

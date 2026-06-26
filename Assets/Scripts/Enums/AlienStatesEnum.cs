@@ -4,5 +4,6 @@ public enum AlienStateEnum {
     Critico,
     Inquieto,
     Estornudo,
-    Desangrado
+    Desangrado,
+    Dead
 }

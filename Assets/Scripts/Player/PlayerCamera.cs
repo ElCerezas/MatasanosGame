@@ -59,6 +59,7 @@ public class PlayerCamera : NetworkBehaviour
         sensitivity = SettingsManager.Instance.GetSetting("Mouse Sensitivity");
         SettingsManager.Instance.OnSettingChanged += OnSettingChanged;
         EventBus.Subscribe<VictoryEvent>(OnVictoryEvent);
+        EventBus.Subscribe<AlienDeath>(OnAlienDeath);
 
         if (IsLocalPlayer)
         {
@@ -76,9 +77,23 @@ public class PlayerCamera : NetworkBehaviour
     {
         if (!IsOwner) return;
         EventBus.Unsubscribe<VictoryEvent>(OnVictoryEvent);
+        EventBus.Unsubscribe<AlienDeath>(OnAlienDeath);
     }
 
     private void OnVictoryEvent(VictoryEvent evt)
+    {
+        if (isCinematic) return;
+
+        AlienStateManager target = FindFirstObjectByType<AlienStateManager>();
+        if (target == null) return;
+
+        if (panCoroutine != null)
+            StopCoroutine(panCoroutine);
+
+        panCoroutine = StartCoroutine(PanToTarget(target.transform));
+    }
+    
+    private void OnAlienDeath(AlienDeath evt)
     {
         if (isCinematic) return;
 

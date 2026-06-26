@@ -237,7 +237,7 @@ public class AlienStateManager : NetworkBehaviour
 
     private void ChangeState(State newState)
     {
-        if (currentActiveState.Value == AlienStateEnum.Desangrado) return;
+        if (currentActiveState.Value == AlienStateEnum.Dead) return;
 
         stateMachine.ChangeState(newState);
         if (newState is CalmState) currentActiveState.Value = AlienStateEnum.Calmado;
@@ -246,6 +246,7 @@ public class AlienStateManager : NetworkBehaviour
         else if (newState is InquietoState) currentActiveState.Value = AlienStateEnum.Inquieto;
         else if (newState is EstornudoState) currentActiveState.Value = AlienStateEnum.Estornudo;
         else if (newState is DesangradoState) currentActiveState.Value = AlienStateEnum.Desangrado;
+        else if (newState is DeadState) currentActiveState.Value = AlienStateEnum.Dead;
     }
 
     private void HandleDamageOverTime()
@@ -275,6 +276,7 @@ public class AlienStateManager : NetworkBehaviour
         {
             currentHealth.Value = 0;
             HandleDeathClientRpc();
+            ChangeState(new DeadState(stateMachine, this));
         }
     }
 
