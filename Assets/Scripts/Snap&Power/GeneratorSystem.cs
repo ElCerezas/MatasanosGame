@@ -76,6 +76,8 @@ public class GeneratorSystem : NetworkBehaviour
                     if (rendererEmisivo != null)
                         rendererEmisivo.SetPropertyBlock(apagadorEmision);
                 }
+
+                RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 3);
             }
             else
             {
@@ -100,7 +102,11 @@ public class GeneratorSystem : NetworkBehaviour
                     if (rendererEmisivo != null)
                         rendererEmisivo.SetPropertyBlock(null);
                 }
+                RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 0);
+
             }
+
+
         };
 
         currentLoad.OnValueChanged += (oldVal, newVal) =>
