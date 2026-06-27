@@ -125,7 +125,19 @@ public class AlienStateManager : NetworkBehaviour
 
             if (newVal == AlienStateEnum.Desangrado)
             {
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 2);
+                FMODUnity.RuntimeManager.StudioSystem.flushCommands();
+            }
+
+            if (newVal == AlienStateEnum.Inquieto)
+            {
                 FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 1);
+                FMODUnity.RuntimeManager.StudioSystem.flushCommands();
+            }
+
+            if (newVal == AlienStateEnum.Calmado)
+            {
+                FMODUnity.RuntimeManager.StudioSystem.setParameterByName("AlienCritic", 0);
                 FMODUnity.RuntimeManager.StudioSystem.flushCommands();
             }
 
