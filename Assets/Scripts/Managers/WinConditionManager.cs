@@ -177,7 +177,7 @@ public class WinConditionManager : NetworkBehaviour
         {
             NotifyVictoryServerRpc();
         }
-        if (Input.GetKeyDown(KeyCode.D) && IsServer)
+        if (Input.GetKeyDown(KeyCode.B) && IsServer)
         {
             NotifyDefeatServerRpc();
         }
