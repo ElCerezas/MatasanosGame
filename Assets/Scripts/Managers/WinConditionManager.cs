@@ -133,11 +133,27 @@ public class WinConditionManager : NetworkBehaviour
 
         StartCoroutine(DisconnectHostAfterVictory());
     }
+    
+    [ServerRpc]
+    private void NotifyDefeatServerRpc()
+    {
+        EventBus.Publish(new AlienDeath());
+        NotifyDefeatClientRpc();
+
+        StartCoroutine(DisconnectHostAfterVictory());
+    }
+
 
     [ClientRpc]
     private void NotifyVictoryClientRpc()
     {
         EventBus.Publish(new VictoryEvent());
+    }
+    
+    [ClientRpc]
+    private void NotifyDefeatClientRpc()
+    {
+        EventBus.Publish(new AlienDeath());
     }
 
     private IEnumerator DisconnectHostAfterVictory()
@@ -157,9 +173,14 @@ public class WinConditionManager : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H) && IsServer)
+        if (Input.GetKeyDown(KeyCode.V) && IsServer)
         {
             NotifyVictoryServerRpc();
         }
+        if (Input.GetKeyDown(KeyCode.D) && IsServer)
+        {
+            NotifyDefeatServerRpc();
+        }
+
     }
 }
