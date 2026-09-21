@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WinConditionManager : NetworkBehaviour
 {
@@ -159,8 +160,9 @@ public class WinConditionManager : NetworkBehaviour
     private IEnumerator DisconnectHostAfterVictory()
     {
         yield return new WaitForSeconds(3f);
-
+        
         NetworkManager.Singleton.Shutdown();
+        //SceneManager.LoadScene("MainMenu");
     }
     [ServerRpc]
     public void ForceGameEndServerRpc()
