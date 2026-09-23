@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,5 +37,10 @@ public class VictoryHandlerUI : MonoBehaviour
             Debug.Log("changing scene to main menu");
             SceneManager.LoadScene("MainMenu");
         };
+    }
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<AlienDeath>(OnAlienDeath);
+        EventBus.Unsubscribe<VictoryEvent>(OnVictory); 
     }
 }

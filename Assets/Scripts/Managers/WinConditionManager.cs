@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,6 +10,9 @@ public class WinConditionManager : NetworkBehaviour
     public NetworkVariable<int> dienteCount = new NetworkVariable<int>(0);
     public NetworkVariable<int> woundFocoCount = new NetworkVariable<int>(0);
     public NetworkVariable<int> woundVendaCount = new NetworkVariable<int>(0);
+
+    // Variable para saber si la cinemática ya terminó y se puede regresar al menú principal
+    private bool canExitToMenu = false;
 
     public override void OnNetworkSpawn()
     {
@@ -46,7 +49,6 @@ public class WinConditionManager : NetworkBehaviour
 
     private void OnTaraCreated(TaraCreated e)
     {
-
         switch (e.Type)
         {
             case WoundType.Diente: dienteCount.Value++; break;
@@ -55,7 +57,6 @@ public class WinConditionManager : NetworkBehaviour
             default:
                 break;
         }
-
     }
 
     private IEnumerator CountExistingTarasNextFrame()
@@ -85,7 +86,6 @@ public class WinConditionManager : NetworkBehaviour
                 continue;
             }
 
-
             if (tara.type == WoundType.Diente)
                 dienteCount.Value++;
 
@@ -97,12 +97,10 @@ public class WinConditionManager : NetworkBehaviour
 
             counted++;
         }
-
     }
 
     private void OnTaraHealed(TaraHealedEvent e)
     {
-
         switch (e.Type)
         {
             case WoundType.Diente: dienteCount.Value--; break;
@@ -126,44 +124,63 @@ public class WinConditionManager : NetworkBehaviour
             NotifyVictoryServerRpc();
         }
     }
+
     [ServerRpc]
     private void NotifyVictoryServerRpc()
     {
         EventBus.Publish(new VictoryEvent());
         NotifyVictoryClientRpc();
-
-        StartCoroutine(DisconnectHostAfterVictory());
+        // Se ha quitado el cierre forzado del servidor aquí para que puedan ver la pantalla.
     }
-    
+
     [ServerRpc]
     private void NotifyDefeatServerRpc()
     {
         EventBus.Publish(new AlienDeath());
         NotifyDefeatClientRpc();
-
-        StartCoroutine(DisconnectHostAfterVictory());
+        // Se ha quitado el cierre forzado del servidor aquí para que puedan ver la pantalla.
     }
-
 
     [ClientRpc]
     private void NotifyVictoryClientRpc()
     {
         EventBus.Publish(new VictoryEvent());
+        // Inicia el retraso para habilitar el clic de salir (ajusta el 3f al tiempo de tu cinemática)
+        StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
-    
+
     [ClientRpc]
     private void NotifyDefeatClientRpc()
     {
         EventBus.Publish(new AlienDeath());
+        // Inicia el retraso para habilitar el clic de salir (ajusta el 3f al tiempo de tu cinemática)
+        StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
 
-    private IEnumerator DisconnectHostAfterVictory()
+    // Nueva corrutina que se ejecuta en el cliente tras anunciarse la victoria o derrota
+    private IEnumerator EnableExitToMenuAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(3f);
-        
-        NetworkManager.Singleton.Shutdown();
-        //SceneManager.LoadScene("MainMenu");
+        yield return new WaitForSeconds(delay);
+        canExitToMenu = true;
     }
+
+    // Nuevo método para volver al menú de forma segura para cada jugador
+    private void ReturnToMainMenu()
+    {
+        canExitToMenu = false; // Desactivar para que no se ejecute múltiples veces al spamear botones
+
+        // Desbloquear y mostrar el cursor para el menú principal
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
     [ServerRpc]
     public void ForceGameEndServerRpc()
     {
@@ -184,5 +201,10 @@ public class WinConditionManager : NetworkBehaviour
             NotifyDefeatServerRpc();
         }
 
+        // Si ya terminó la cinemática y el jugador presiona cualquier tecla/clic
+        if (canExitToMenu && Input.anyKeyDown)
+        {
+            ReturnToMainMenu();
+        }
     }
 }
