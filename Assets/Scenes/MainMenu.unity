@@ -1094,7 +1094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721cdf169e6e1be4a8e9859888ad5341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LanguageLogic
-  dropdown: {fileID: 0}
+  dropdown: {fileID: 621173445}
   language: 0
 --- !u!1 &453606274
 GameObject:
@@ -1492,7 +1492,6 @@ GameObject:
   - component: {fileID: 621173446}
   - component: {fileID: 621173445}
   - component: {fileID: 621173448}
-  - component: {fileID: 621173444}
   m_Layer: 0
   m_Name: IDIOMA
   m_TagString: Untagged
@@ -1522,20 +1521,6 @@ RectTransform:
   m_AnchoredPosition: {x: 645, y: -224.1}
   m_SizeDelta: {x: 239.65802, y: 44.936005}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &621173444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621173442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7880281a3631574c8fbe4b165c6a07e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GraphicsLogic
-  dropdown: {fileID: 621173445}
-  calidad: 0
 --- !u!114 &621173445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1662,8 +1647,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721cdf169e6e1be4a8e9859888ad5341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LanguageLogic
-  dropdown: {fileID: 0}
-  language: 0
+  dropdown: {fileID: 621173445}
+  language: 1
 --- !u!1001 &662365357
 PrefabInstance:
   m_ObjectHideFlags: 0
