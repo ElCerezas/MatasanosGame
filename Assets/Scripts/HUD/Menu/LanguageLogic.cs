@@ -17,7 +17,7 @@ public class LanguageLogic : MonoBehaviour
         yield return LocalizationSettings.InitializationOperation;
         if (LocalizationSettings.InitializationOperation.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
         {
-            var locales = LocalizationSettings.AvailableLocales.Locales;
+            //var locales = LocalizationSettings.AvailableLocales.Locales;
             language = PlayerPrefs.GetInt("language", 0);
             dropdown.value = language;
             setLanguage();
@@ -31,11 +31,8 @@ public class LanguageLogic : MonoBehaviour
 
     public void setLanguage()
     {
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
         PlayerPrefs.SetInt ("language",dropdown.value);
         language = dropdown.value;
-        
-        //Debug.Log("dropdown value: " + dropdown.value);
-        //Debug.Log("language value: " + language);
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
     }
 }
