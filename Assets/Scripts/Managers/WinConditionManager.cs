@@ -123,51 +123,34 @@ public class WinConditionManager : NetworkBehaviour
             NotifyVictoryServerRpc();
         }
     }
-    [ServerRpc(RequireOwnership = false)]
-    public void NotifyVictoryServerRpc()
+
+    [ServerRpc]
+    private void NotifyVictoryServerRpc()
     {
+        EventBus.Publish(new VictoryEvent());
         NotifyVictoryClientRpc();
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void NotifyDefeatServerRpc()
+    [ServerRpc]
+    private void NotifyDefeatServerRpc()
     {
+        EventBus.Publish(new AlienDeath());
         NotifyDefeatClientRpc();
-    }
-
-    [ClientRpc]
-    private void NotifyVictoryClientRpc()
-    {
-        // 1. Iniciamos la salida ANTES del evento. Así nunca te quedarás atrapado.
-        StartCoroutine(EnableExitToMenuAfterDelay(3f));
-
-        // 2. Disparamos el evento protegidos contra crasheos.
-        try
-        {
-            EventBus.Publish(new VictoryEvent());
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError("[WinConditionManager] Error silenciado al mostrar Victoria: " + ex.Message);
-        }
     }
 
     [ClientRpc]
     private void NotifyDefeatClientRpc()
     {
-        // 1. Iniciamos la salida ANTES del evento.
+        EventBus.Publish(new AlienDeath());
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
-
-        // 2. Disparamos el evento protegidos contra crasheos.
-        try
-        {
-            EventBus.Publish(new AlienDeath());
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError("[WinConditionManager] Error silenciado al mostrar Derrota: " + ex.Message);
-        }
     }
+    [ClientRpc]
+    private void NotifyVictoryClientRpc()
+    {
+        EventBus.Publish(new VictoryEvent());
+        StartCoroutine(EnableExitToMenuAfterDelay(3f));
+    }
+
     private IEnumerator EnableExitToMenuAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
