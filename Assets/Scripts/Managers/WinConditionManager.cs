@@ -12,6 +12,7 @@ public class WinConditionManager : NetworkBehaviour
     public NetworkVariable<int> woundVendaCount = new NetworkVariable<int>(0);
 
     private bool canExitToMenu = false;
+    private bool gameEnded = false; // Solo lo usa el servidor para no disparar el final dos veces
 
     public override void OnNetworkSpawn()
     {
@@ -34,8 +35,11 @@ public class WinConditionManager : NetworkBehaviour
 
         if (!IsServer) return;
 
+        gameEnded = false;
+
         EventBus.Subscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Subscribe<TaraCreated>(OnTaraCreated);
+        EventBus.Subscribe<AlienDeath>(OnAlienDeathServer);
         StartCoroutine(CountExistingTarasNextFrame());
     }
 
@@ -44,6 +48,7 @@ public class WinConditionManager : NetworkBehaviour
         if (!IsServer) return;
         EventBus.Unsubscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Unsubscribe<TaraCreated>(OnTaraCreated);
+        EventBus.Unsubscribe<AlienDeath>(OnAlienDeathServer);
     }
 
     private void OnTaraCreated(TaraCreated e)
@@ -68,22 +73,10 @@ public class WinConditionManager : NetworkBehaviour
         woundFocoCount.Value = 0;
         woundVendaCount.Value = 0;
 
-        int skippedNotSpawned = 0;
-        int skippedHealed = 0;
-        int counted = 0;
-
         foreach (var tara in allTaras)
         {
-            if (!tara.IsSpawned)
-            {
-                skippedNotSpawned++;
-                continue;
-            }
-            if (tara.WasHealed)
-            {
-                skippedHealed++;
-                continue;
-            }
+            if (!tara.IsSpawned) continue;
+            if (tara.WasHealed) continue;
 
             if (tara.type == WoundType.Diente)
                 dienteCount.Value++;
@@ -93,8 +86,6 @@ public class WinConditionManager : NetworkBehaviour
 
             if (tara.type == WoundType.HeridaVenda)
                 woundVendaCount.Value++;
-
-            counted++;
         }
     }
 
@@ -120,34 +111,45 @@ public class WinConditionManager : NetworkBehaviour
 
         if (allZero && tarasHealedCount > 0)
         {
-            NotifyVictoryServerRpc();
+            TriggerVictory();
         }
     }
 
-    [ServerRpc]
-    private void NotifyVictoryServerRpc()
+    // ---------- FINALES (solo se ejecutan en el servidor/host) ----------
+
+    private void TriggerVictory()
     {
-        EventBus.Publish(new VictoryEvent());
-        NotifyVictoryClientRpc();
+        if (!IsServer || gameEnded) return;
+        gameEnded = true;
+
+        EventBus.Publish(new VictoryEvent()); // Pantalla en el Host
+        NotifyVictoryClientRpc();             // Pantalla en los clientes
     }
 
-    [ServerRpc]
-    private void NotifyDefeatServerRpc()
+    // El servidor escucha AlienDeath (lo publique quien lo publique) y lo retransmite a los clientes
+    private void OnAlienDeathServer(AlienDeath e)
     {
-        EventBus.Publish(new AlienDeath());
+        if (!IsServer || gameEnded) return;
+        gameEnded = true;
+
         NotifyDefeatClientRpc();
+        // El Host ya recibió el evento localmente, no hace falta volver a publicarlo
+        StartCoroutine(EnableExitToMenuAfterDelay(3f));
+    }
+
+    [ClientRpc]
+    private void NotifyVictoryClientRpc()
+    {
+        // El Host ya publicó el evento en TriggerVictory
+        if (!IsServer) EventBus.Publish(new VictoryEvent());
+        StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
 
     [ClientRpc]
     private void NotifyDefeatClientRpc()
     {
-        EventBus.Publish(new AlienDeath());
-        StartCoroutine(EnableExitToMenuAfterDelay(3f));
-    }
-    [ClientRpc]
-    private void NotifyVictoryClientRpc()
-    {
-        EventBus.Publish(new VictoryEvent());
+        // Solo los clientes puros publican; el Host ya lo tiene
+        if (!IsServer) EventBus.Publish(new AlienDeath());
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
 
@@ -179,18 +181,19 @@ public class WinConditionManager : NetworkBehaviour
         if (!IsServer) return;
 
         Debug.Log("[WinConditionManager] Fin de partida forzado por el host.");
-        NotifyVictoryClientRpc();
+        TriggerVictory();
     }
 
     private void Update()
     {
+        // Debug: V = victoria, B = derrota (solo Host)
         if (Input.GetKeyDown(KeyCode.V) && IsServer)
         {
-            NotifyVictoryServerRpc();
+            TriggerVictory();
         }
         if (Input.GetKeyDown(KeyCode.B) && IsServer)
         {
-            NotifyDefeatServerRpc();
+            EventBus.Publish(new AlienDeath()); // OnAlienDeathServer hace el resto
         }
 
         // Si ya terminó la cinemática y el jugador presiona cualquier tecla/clic
