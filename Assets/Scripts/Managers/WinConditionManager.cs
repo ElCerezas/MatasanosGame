@@ -138,15 +138,35 @@ public class WinConditionManager : NetworkBehaviour
     [ClientRpc]
     private void NotifyVictoryClientRpc()
     {
-        EventBus.Publish(new VictoryEvent());
+        // 1. Iniciamos la salida ANTES del evento. Así nunca te quedarás atrapado.
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
+
+        // 2. Disparamos el evento protegidos contra crasheos.
+        try
+        {
+            EventBus.Publish(new VictoryEvent());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("[WinConditionManager] Error silenciado al mostrar Victoria: " + ex.Message);
+        }
     }
 
     [ClientRpc]
     private void NotifyDefeatClientRpc()
     {
-        EventBus.Publish(new AlienDeath());
+        // 1. Iniciamos la salida ANTES del evento.
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
+
+        // 2. Disparamos el evento protegidos contra crasheos.
+        try
+        {
+            EventBus.Publish(new AlienDeath());
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("[WinConditionManager] Error silenciado al mostrar Derrota: " + ex.Message);
+        }
     }
     private IEnumerator EnableExitToMenuAfterDelay(float delay)
     {
