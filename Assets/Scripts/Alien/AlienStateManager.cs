@@ -3,11 +3,13 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using FMODUnity;
-    
+using Blocks.Sessions.Common;
+
 public class AlienStateManager : NetworkBehaviour
 {
     private StateMachine stateMachine;
     public NetworkVariable<AlienStateEnum> currentActiveState = new NetworkVariable<AlienStateEnum>();
+    int currentPlayers = 1;
 
     [Header("Health Settings")]
     [SerializeField] private NetworkVariable<float> currentHealth = new NetworkVariable<float>(100f);
@@ -81,6 +83,7 @@ public class AlienStateManager : NetworkBehaviour
         {
             currentHealth.Value = maxHealth;
             isAlterated.Value = true;
+            currentPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
         }
         else
         {
@@ -277,7 +280,7 @@ public class AlienStateManager : NetworkBehaviour
         if (!IsServer) return;
 
         float multiplier = !isBloodbagFull.Value ? criticalDamageMultiplier : 1f;
-        currentHealth.Value -= damage * multiplier;
+        currentHealth.Value -= (damage * multiplier)*(currentPlayers/4);
 
         if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
         {
