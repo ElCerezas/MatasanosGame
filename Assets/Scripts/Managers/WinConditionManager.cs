@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Unity.Netcode;
+using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,7 +13,8 @@ public class WinConditionManager : NetworkBehaviour
     public NetworkVariable<int> woundVendaCount = new NetworkVariable<int>(0);
 
     private bool canExitToMenu = false;
-    private bool gameEnded = false; // Solo lo usa el servidor para no disparar el final dos veces
+    private bool gameEnded = false; 
+    private bool isLeaving = false;
 
     public override void OnNetworkSpawn()
     {
@@ -33,6 +35,13 @@ public class WinConditionManager : NetworkBehaviour
         EventBus.Publish(new OnWoundFocoCountChanged { value = woundFocoCount.Value });
         EventBus.Publish(new OnWoundVendaCountChanged { value = woundVendaCount.Value });
 
+        isLeaving = false;
+
+        if (!IsServer && NetworkManager != null)
+        {
+            NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
+        }
+
         if (!IsServer) return;
 
         gameEnded = false;
@@ -45,10 +54,28 @@ public class WinConditionManager : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        if (!IsServer) return;
+        if (!IsServer)
+        {
+            if (NetworkManager != null)
+                NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
+            return;
+        }
+
         EventBus.Unsubscribe<TaraHealedEvent>(OnTaraHealed);
         EventBus.Unsubscribe<TaraCreated>(OnTaraCreated);
         EventBus.Unsubscribe<AlienDeath>(OnAlienDeathServer);
+    }
+    private void OnClientDisconnected(ulong clientId)
+    {
+        if (IsServer) return;
+
+        bool hostLeft = clientId == NetworkManager.ServerClientId;
+        bool meDisconnected = clientId == NetworkManager.LocalClientId;
+
+        if (hostLeft || meDisconnected)
+        {
+            ReturnToMainMenu();
+        }
     }
 
     private void OnTaraCreated(TaraCreated e)
@@ -115,42 +142,44 @@ public class WinConditionManager : NetworkBehaviour
         }
     }
 
-    // ---------- FINALES (solo se ejecutan en el servidor/host) ----------
 
     private void TriggerVictory()
     {
         if (!IsServer || gameEnded) return;
         gameEnded = true;
 
-        EventBus.Publish(new VictoryEvent()); // Pantalla en el Host
-        NotifyVictoryClientRpc();             // Pantalla en los clientes
+        EventBus.Publish(new VictoryEvent());
+        NotifyVictoryClientRpc();
+        StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
 
-    // El servidor escucha AlienDeath (lo publique quien lo publique) y lo retransmite a los clientes
     private void OnAlienDeathServer(AlienDeath e)
     {
         if (!IsServer || gameEnded) return;
         gameEnded = true;
 
         NotifyDefeatClientRpc();
-        // El Host ya recibió el evento localmente, no hace falta volver a publicarlo
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
 
     [ClientRpc]
     private void NotifyVictoryClientRpc()
     {
-        // El Host ya publicó el evento en TriggerVictory
-        if (!IsServer) EventBus.Publish(new VictoryEvent());
-        StartCoroutine(EnableExitToMenuAfterDelay(3f));
+        if (!IsServer)
+        {
+            EventBus.Publish(new VictoryEvent());
+            StartCoroutine(EnableExitToMenuAfterDelay(3f));
+        }
     }
 
     [ClientRpc]
     private void NotifyDefeatClientRpc()
     {
-        // Solo los clientes puros publican; el Host ya lo tiene
-        if (!IsServer) EventBus.Publish(new AlienDeath());
-        StartCoroutine(EnableExitToMenuAfterDelay(3f));
+        if (!IsServer)
+        {
+            EventBus.Publish(new AlienDeath());
+            StartCoroutine(EnableExitToMenuAfterDelay(3f));
+        }
     }
 
     private IEnumerator EnableExitToMenuAfterDelay(float delay)
@@ -158,14 +187,16 @@ public class WinConditionManager : NetworkBehaviour
         yield return new WaitForSeconds(delay);
         canExitToMenu = true;
     }
-
-    private void ReturnToMainMenu()
+    private async void ReturnToMainMenu()
     {
-        canExitToMenu = false; // Desactivar para que no se ejecute múltiples veces al spamear botones
+        if (isLeaving) return;
+        isLeaving = true;
+        canExitToMenu = false; 
 
-        // Desbloquear y mostrar el cursor para el menú principal
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        await CloseOrLeaveSessionAsync();
 
         if (NetworkManager.Singleton != null)
         {
@@ -173,6 +204,30 @@ public class WinConditionManager : NetworkBehaviour
         }
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private async System.Threading.Tasks.Task CloseOrLeaveSessionAsync()
+    {
+        var session = UIMultiplayerSessionManager.CurrentSession;
+        if (session == null) return;
+
+        try
+        {
+            if (session.IsHost)
+            {
+                await session.AsHost().DeleteAsync();
+                Debug.Log("[WinConditionManager] Sesión eliminada por el host.");
+            }
+            else
+            {
+                await session.LeaveAsync();
+                Debug.Log("[WinConditionManager] Sesión abandonada por el cliente.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[WinConditionManager] No se pudo cerrar/abandonar la sesión: {ex.Message}");
+        }
     }
 
     [ServerRpc]
@@ -186,17 +241,15 @@ public class WinConditionManager : NetworkBehaviour
 
     private void Update()
     {
-        // Debug: V = victoria, B = derrota (solo Host)
         if (Input.GetKeyDown(KeyCode.V) && IsServer)
         {
             TriggerVictory();
         }
         if (Input.GetKeyDown(KeyCode.B) && IsServer)
         {
-            EventBus.Publish(new AlienDeath()); // OnAlienDeathServer hace el resto
+            EventBus.Publish(new AlienDeath());
         }
 
-        // Si ya terminó la cinemática y el jugador presiona cualquier tecla/clic
         if (canExitToMenu && Input.anyKeyDown)
         {
             ReturnToMainMenu();

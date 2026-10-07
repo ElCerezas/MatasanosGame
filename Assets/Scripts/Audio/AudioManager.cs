@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
@@ -13,6 +13,11 @@ public class AudioManager : MonoBehaviour
     [Range(0, 1)] public float musicVolume = 1;
     [Range(0, 1)] public float ambienceVolume = 1;
     [Range(0, 1)] public float SFXVolume = 1;
+
+    [Header("Bus Paths (deben coincidir con FMOD Studio)")]
+    [SerializeField] private string musicBusPath = "bus:/Music";
+    [SerializeField] private string sfxBusPath = "bus:/SFX";
+    [SerializeField] private string ambienceBusPath = "bus:/Ambience";
 
     [Header("Music Events")]
     public EventReference menuMusic;
@@ -65,6 +70,16 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnDestroy()
+    {
+        if (instance != this) return;
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        if (SettingsManager.Instance != null)
+            SettingsManager.Instance.OnSettingChanged -= OnSettingChanged;
+    }
+
     private void Start()
     {
         RuntimeManager.LoadBank("Master");
@@ -89,30 +104,73 @@ public class AudioManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
+        // El bus master ("bus:/") siempre existe
         masterBus = RuntimeManager.GetBus("bus:/");
 
-        try { musicBus = RuntimeManager.GetBus("bus:/Music"); }
-        catch { musicBus = masterBus; }
-
-        try { sfxBus = RuntimeManager.GetBus("bus:/SFX"); }
-        catch { }
-
-        try { ambienceBus = RuntimeManager.GetBus("bus:/Ambience"); }
-        catch { ambienceBus = masterBus; }
+        // Los demás solo se piden si existen de verdad en los banks cargados.
+        // Si no existen, se quedan inválidos y Update() los ignora.
+        TryGetBus(musicBusPath, out musicBus);
+        TryGetBus(sfxBusPath, out sfxBus);
+        TryGetBus(ambienceBusPath, out ambienceBus);
 
         currentMusic = RuntimeManager.CreateInstance(menuMusic);
         currentMusic.start();
         currentMusic.setVolume(musicVolume);
     }
 
+    // Comprueba si el bus existe ANTES de pedirlo, así FMOD no escribe el error en consola
+    private bool TryGetBus(string path, out Bus bus)
+    {
+        bus = default;
+
+        if (string.IsNullOrEmpty(path)) return false;
+
+        if (!BusExists(path))
+        {
+            Debug.LogWarning($"[AudioManager] El bus '{path}' no existe en los banks cargados. " +
+                             "Revisa el nombre en FMOD Studio (Mixer) o el campo del Inspector.");
+            return false;
+        }
+
+        return RuntimeManager.StudioSystem.getBus(path, out bus) == FMOD.RESULT.OK;
+    }
+
+    private bool BusExists(string path)
+    {
+        var system = RuntimeManager.StudioSystem;
+
+        if (system.getBankList(out Bank[] banks) != FMOD.RESULT.OK || banks == null)
+            return false;
+
+        foreach (var bank in banks)
+        {
+            if (bank.getBusList(out Bus[] buses) != FMOD.RESULT.OK || buses == null)
+                continue;
+
+            foreach (var b in buses)
+            {
+                if (b.getPath(out string busPath) == FMOD.RESULT.OK &&
+                    string.Equals(busPath, path, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private void Update()
     {
         if (!masterBus.isValid()) return;
+
         masterBus.setVolume(masterVolume);
-        musicBus.setVolume(musicVolume);
-        sfxBus.setVolume(SFXVolume);
-        ambienceBus.setVolume(ambienceVolume);
+
+        if (musicBus.isValid()) musicBus.setVolume(musicVolume);
+        if (sfxBus.isValid()) sfxBus.setVolume(SFXVolume);
+        if (ambienceBus.isValid()) ambienceBus.setVolume(ambienceVolume);
     }
+
     private void OnSettingChanged(string key, float value)
     {
         switch (key)
@@ -150,10 +208,8 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Intento de reproducir m�sica con EventReference nula");
+            Debug.LogWarning("Intento de reproducir música con EventReference nula");
         }
-
-
     }
 
     public void PlayMusicImmediate(EventReference musicEvent)
@@ -283,7 +339,7 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    
+
 
     public void PlayOneShot(EventReference sound)
     {
@@ -296,7 +352,7 @@ public class AudioManager : MonoBehaviour
             RuntimeManager.PlayOneShot(sound, position);
     }
 
-  
+
 
     #region Cambios de Escena
 
@@ -444,7 +500,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
- 
+
     public void CrossfadeAmbience(EventReference newAmbience, float fadeTime = 2f)
     {
         if (newAmbience.IsNull || isAmbienceTransitioning) return;
