@@ -1493,7 +1493,6 @@ GameObject:
   - component: {fileID: 621173445}
   - component: {fileID: 621173448}
   - component: {fileID: 621173449}
-  - component: {fileID: 621173450}
   m_Layer: 0
   m_Name: IDIOMA
   m_TagString: Untagged
@@ -1660,122 +1659,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 621173442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83e103e6be80f12429bde4480d7421a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 99103f71ff076514bace8c0a3f48c902, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringListEvent
-  m_ListReference:
-    rid: 3200171617875132504
-  m_UpdateList:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 621173445}
-        m_TargetAssemblyTypeName: TMPro.TMP_Dropdown, Unity.TextMeshPro
-        m_MethodName: ClearOptions
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
-      - m_Target: {fileID: 621173445}
-        m_TargetAssemblyTypeName: TMPro.TMP_Dropdown, Unity.TextMeshPro
-        m_MethodName: AddOptions
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizeDropdown
+  dropdownOptions:
+  - m_TableReference:
+      m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
+    m_TableEntryReference:
+      m_KeyId: 72296464384
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
+    m_TableEntryReference:
+      m_KeyId: 142047739904
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
+    m_TableEntryReference:
+      m_KeyId: 330522984448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   references:
     version: 2
-    RefIds:
-    - rid: 3200171617875132504
-      type: {class: LocalizedStringList, ns: UnityEngine.Localization, asm: Unity.Localization}
-      data:
-        m_TableReference:
-          m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
-        m_TableEntryReference:
-          m_KeyId: 0
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables:
-        - name: catalan
-          variable:
-            rid: 3200171617875132506
-        - name: en
-          variable:
-            rid: 3200171617875132507
-        - name: es
-          variable:
-            rid: 3200171617875132508
-        m_Separator: ','
-    - rid: 3200171617875132506
-      type: {class: LocalizedString, ns: UnityEngine.Localization, asm: Unity.Localization}
-      data:
-        m_TableReference:
-          m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
-        m_TableEntryReference:
-          m_KeyId: 72296464384
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
-    - rid: 3200171617875132507
-      type: {class: LocalizedString, ns: UnityEngine.Localization, asm: Unity.Localization}
-      data:
-        m_TableReference:
-          m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
-        m_TableEntryReference:
-          m_KeyId: 142047739904
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
-    - rid: 3200171617875132508
-      type: {class: LocalizedString, ns: UnityEngine.Localization, asm: Unity.Localization}
-      data:
-        m_TableReference:
-          m_TableCollectionName: GUID:8d722276b8a6c2b4d9c44c88c48c337e
-        m_TableEntryReference:
-          m_KeyId: 330522984448
-          m_Key: 
-        m_FallbackState: 0
-        m_WaitForCompletion: 0
-        m_LocalVariables: []
---- !u!114 &621173450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621173442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69beb381e244f92449b8c4cf954630e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.PropertyVariants.GameObjectLocalizer
-  m_TrackedObjects:
-  - rid: 3200171617875132513
-  references:
-    version: 2
-    RefIds:
-    - rid: 3200171617875132513
-      type: {class: TrackedMonoBehaviourObject, ns: UnityEngine.Localization.PropertyVariants.TrackedObjects, asm: Unity.Localization}
-      data:
-        m_Target: {fileID: 621173449}
-        m_TrackedProperties:
-          items: []
-        m_UpdateType: 0
-        m_Changed:
-          m_PersistentCalls:
-            m_Calls: []
+    RefIds: []
 --- !u!1001 &662365357
 PrefabInstance:
   m_ObjectHideFlags: 0
