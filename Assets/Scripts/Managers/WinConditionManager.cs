@@ -11,7 +11,6 @@ public class WinConditionManager : NetworkBehaviour
     public NetworkVariable<int> woundFocoCount = new NetworkVariable<int>(0);
     public NetworkVariable<int> woundVendaCount = new NetworkVariable<int>(0);
 
-    // Variable para saber si la cinemática ya terminó y se puede regresar al menú principal
     private bool canExitToMenu = false;
 
     public override void OnNetworkSpawn()
@@ -124,28 +123,22 @@ public class WinConditionManager : NetworkBehaviour
             NotifyVictoryServerRpc();
         }
     }
-
-    [ServerRpc]
-    private void NotifyVictoryServerRpc()
+    [ServerRpc(RequireOwnership = false)]
+    public void NotifyVictoryServerRpc()
     {
-        EventBus.Publish(new VictoryEvent());
         NotifyVictoryClientRpc();
-        // Se ha quitado el cierre forzado del servidor aquí para que puedan ver la pantalla.
     }
 
-    [ServerRpc]
-    private void NotifyDefeatServerRpc()
+    [ServerRpc(RequireOwnership = false)]
+    public void NotifyDefeatServerRpc()
     {
-        EventBus.Publish(new AlienDeath());
         NotifyDefeatClientRpc();
-        // Se ha quitado el cierre forzado del servidor aquí para que puedan ver la pantalla.
     }
 
     [ClientRpc]
     private void NotifyVictoryClientRpc()
     {
         EventBus.Publish(new VictoryEvent());
-        // Inicia el retraso para habilitar el clic de salir (ajusta el 3f al tiempo de tu cinemática)
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
 
@@ -153,18 +146,14 @@ public class WinConditionManager : NetworkBehaviour
     private void NotifyDefeatClientRpc()
     {
         EventBus.Publish(new AlienDeath());
-        // Inicia el retraso para habilitar el clic de salir (ajusta el 3f al tiempo de tu cinemática)
         StartCoroutine(EnableExitToMenuAfterDelay(3f));
     }
-
-    // Nueva corrutina que se ejecuta en el cliente tras anunciarse la victoria o derrota
     private IEnumerator EnableExitToMenuAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         canExitToMenu = true;
     }
 
-    // Nuevo método para volver al menú de forma segura para cada jugador
     private void ReturnToMainMenu()
     {
         canExitToMenu = false; // Desactivar para que no se ejecute múltiples veces al spamear botones
