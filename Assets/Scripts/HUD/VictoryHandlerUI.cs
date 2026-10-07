@@ -1,17 +1,18 @@
-﻿using System;
-using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class VictoryHandlerUI : MonoBehaviour
 {
     [SerializeField] GameObject defeatScreen;
     [SerializeField] GameObject victoryScreen;
-    bool canChangeScene = false;
-    public void Awake()
+
+    private void OnEnable()
     {
         EventBus.Subscribe<VictoryEvent>(OnVictory);
         EventBus.Subscribe<AlienDeath>(OnAlienDeath);
+    }
+
+    private void Start()
+    {
         victoryScreen.SetActive(false);
         defeatScreen.SetActive(false);
     }
@@ -20,27 +21,17 @@ public class VictoryHandlerUI : MonoBehaviour
     {
         Debug.Log("VictoryEvent received!");
         victoryScreen.SetActive(true);
-        canChangeScene = true;
     }
-    
+
     private void OnAlienDeath(AlienDeath e)
     {
         Debug.Log("Defeat received!");
         defeatScreen.SetActive(true);
-        canChangeScene = true;
     }
 
-    public void Update()
-    {
-        if (canChangeScene && Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("changing scene to main menu");
-            SceneManager.LoadScene("MainMenu");
-        };
-    }
     private void OnDisable()
     {
         EventBus.Unsubscribe<AlienDeath>(OnAlienDeath);
-        EventBus.Unsubscribe<VictoryEvent>(OnVictory); 
+        EventBus.Unsubscribe<VictoryEvent>(OnVictory);
     }
 }
