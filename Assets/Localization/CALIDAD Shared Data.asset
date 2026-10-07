@@ -10,31 +10,43 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: languages Shared Data
+  m_Name: CALIDAD Shared Data
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
-  m_TableCollectionName: languages
-  m_TableCollectionNameGuidString: 8d722276b8a6c2b4d9c44c88c48c337e
+  m_TableCollectionName: CALIDAD
+  m_TableCollectionNameGuidString: 38bdae6453e9023448c4011cff4f2583
   m_Entries:
-  - m_Id: 72296464384
-    m_Key: languages.ca
+  - m_Id: 47952420864
+    m_Key: calidad.muyBaja
     m_Metadata:
       m_Items: []
-  - m_Id: 142047739904
-    m_Key: languages.en
+  - m_Id: 139493105664
+    m_Key: calidad.baja
     m_Metadata:
       m_Items: []
-  - m_Id: 330522984448
-    m_Key: languages.es
+  - m_Id: 228550762496
+    m_Key: calidad.media
+    m_Metadata:
+      m_Items: []
+  - m_Id: 284691521536
+    m_Key: calidad.alta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 325384658944
+    m_Key: calidad.muyalta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 418099748864
+    m_Key: calidad.ultra
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 3200171617875132505
+    rid: 6645102097492344832
   references:
     version: 2
     RefIds:
-    - rid: 3200171617875132505
+    - rid: 6645102097492344832
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1791303740095
+        m_CustomEpoch: 1791357263600
