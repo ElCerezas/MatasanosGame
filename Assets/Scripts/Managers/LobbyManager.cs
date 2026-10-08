@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using Unity.Services.Multiplayer;
+using UnityEngine.Localization;
 
 public class LobbyManager : InteractableItem
 {
@@ -18,7 +19,7 @@ public class LobbyManager : InteractableItem
     [SerializeField] private FMODUnity.EventReference sonidoPartidaIniciada;
 
     private Camera localCamera;
-
+    [SerializeField] LocalizedString readyButtonText;
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -90,7 +91,7 @@ public class LobbyManager : InteractableItem
     [ClientRpc]
     private void UpdateTextClientRpc(int readyCount, int totalPlayers)
     {
-        m_TextMeshProUGUI.text = $"{readyCount}/{totalPlayers} Listos";
+        m_TextMeshProUGUI.text = $"{readyCount}/{totalPlayers} " + readyButtonText.GetLocalizedString();
     }
 
     public bool IsLobbyLocked()
