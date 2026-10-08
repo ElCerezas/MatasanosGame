@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Localization;
 
 [RequireComponent(typeof(NetworkObject))]
 public class MixerMachine : PoweredDevice, IGuiaEntryProvider
@@ -10,7 +11,7 @@ public class MixerMachine : PoweredDevice, IGuiaEntryProvider
     [Serializable]
     public class FormulaConfig
     {
-        public string displayName;
+        public LocalizedString displayName;
         public LiquidType liquidType;
         public Color color;
         public bool isRandom;

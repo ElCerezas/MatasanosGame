@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class GuiaBehaviour : PoweredDevice
@@ -12,7 +13,7 @@ public class GuiaBehaviour : PoweredDevice
     [Serializable]
     public class GuiaEntry
     {
-        public string nombre;
+        public LocalizedString nombre;
         public GameObject target;
     }
 
@@ -185,7 +186,7 @@ public class GuiaBehaviour : PoweredDevice
 
             if (tmp == null) continue;
 
-            tmp.text = entry.nombre;
+            tmp.text = entry.nombre.GetLocalizedString();
             tmp.color = normalColor;
             entryTexts.Add(tmp);
             entryRects.Add(rectTransform);
@@ -263,7 +264,7 @@ public class GuiaBehaviour : PoweredDevice
             yield return null;
         }
     }
-    public void AddEntry(string nombre, GameObject target)
+    public void AddEntry(LocalizedString nombre, GameObject target)
     {
         entries.Add(new GuiaEntry { nombre = nombre, target = target });
         BuildList();
