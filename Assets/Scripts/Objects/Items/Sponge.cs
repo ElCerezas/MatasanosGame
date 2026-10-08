@@ -7,7 +7,7 @@ public class Sponge : NetworkBehaviour
     [Header("Sponge Settings")]
     [SerializeField] NetworkVariable<float> dirtynes = new NetworkVariable<float>(0f);
     [SerializeField] Renderer sponjeRenderer;
-    Material mat;
+    [SerializeField]Material mat;
     Rigidbody rb;
 
     [Header("Puddle Settings")]
