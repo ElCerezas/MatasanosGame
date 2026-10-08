@@ -280,7 +280,7 @@ public class AlienStateManager : NetworkBehaviour
         if (!IsServer) return;
 
         float multiplier = !isBloodbagFull.Value ? criticalDamageMultiplier : 1f;
-        currentHealth.Value -= (damage * multiplier)*(currentPlayers/4);
+        currentHealth.Value -= (damage * multiplier);
 
         if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
         {
