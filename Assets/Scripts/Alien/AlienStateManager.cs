@@ -13,7 +13,7 @@ public class AlienStateManager : NetworkBehaviour
 
     [Header("Health Settings")]
     [SerializeField] private NetworkVariable<float> currentHealth = new NetworkVariable<float>(100f);
-    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float maxHealth = 200f;
     
     private NetworkVariable<ulong> bloodBagID = new NetworkVariable<ulong>(0);
     private NetworkVariable<bool> isBloodbagFull = new NetworkVariable<bool>(false);
