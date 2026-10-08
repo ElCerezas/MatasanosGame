@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +51,8 @@ public class GuiaBehaviour : PoweredDevice
         BuildList();
         var providers = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IGuiaEntryProvider>();
         foreach (var provider in providers)
-            provider.RegisterEntries(this);
+            if (provider != null)
+                provider.RegisterEntries(this);
         RefreshUI();
     }
 
