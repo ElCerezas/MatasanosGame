@@ -19,6 +19,9 @@ public class LanGame : MonoBehaviour
     bool hosting;
     readonly Dictionary<string, (string name, float lastSeen)> found = new();
 
+    // NOVA VARIABLE: Controla si la interfície d'usuari es mostra o no
+    private bool showUI = true;
+
     public void CreateGame()
     {
         var utp = NetworkManager.Singleton.GetComponent<UnityTransport>();
@@ -45,8 +48,33 @@ public class LanGame : MonoBehaviour
         listener = new UdpClient(DiscoveryPort) { EnableBroadcast = true };
     }
 
+    // NOU MÈTODE: Per desconnectar-se de la partida i reiniciar la xarxa
+    public void Disconnect()
+    {
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
+        hosting = false;
+
+        broadcaster?.Close();
+        broadcaster = null;
+
+        listener?.Close();
+        listener = null;
+
+        found.Clear();
+    }
+
     void Update()
     {
+        // NOVA LÒGICA: Activar/desactivar la UI en prémer la tecla 'Y'
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            showUI = !showUI;
+        }
+
         if (hosting && broadcaster != null && Time.time >= nextBroadcast)
         {
             nextBroadcast = Time.time + 1f;
@@ -66,30 +94,54 @@ public class LanGame : MonoBehaviour
         }
     }
 
-    // UI mínima de prueba (cámbiala por tu UI)
     string manualIp = "192.168.0.10";
     void OnGUI()
     {
-        if (NetworkManager.Singleton.IsListening) return;
+        // NOVA LÒGICA: Si showUI és fals, marxem del mètode sense dibuixar el layout
+        if (!showUI) return;
 
         GUILayout.BeginArea(new Rect(20, 20, 320, 500));
-        roomName = GUILayout.TextField(roomName);
-        if (GUILayout.Button("Crear partida")) CreateGame();
-        if (GUILayout.Button("Buscar partidas")) StartSearching();
 
-        var toRemove = new List<string>();
-        foreach (var kv in found)
+        // NOVA LÒGICA: Si ja estem connectats, mostrem el botó de desconnectar
+        if (NetworkManager.Singleton.IsListening)
         {
-            if (Time.time - kv.Value.lastSeen > 4f) { toRemove.Add(kv.Key); continue; }
-            if (GUILayout.Button($"Unirse: {kv.Value.name} ({kv.Key})")) JoinGame(kv.Key);
+            GUILayout.Label("Estàs connectat a una sala.");
+            if (GUILayout.Button("Desconnectar"))
+            {
+                Disconnect();
+            }
         }
-        foreach (var k in toRemove) found.Remove(k);
+        else // Si no estem connectats, mostrem la interfície habitual per buscar/crear partida
+        {
+            roomName = GUILayout.TextField(roomName);
+            if (GUILayout.Button("Crear partida")) CreateGame();
+            if (GUILayout.Button("Buscar partidas")) StartSearching();
 
-        GUILayout.Space(10);
-        manualIp = GUILayout.TextField(manualIp);
-        if (GUILayout.Button("Unirse por IP")) JoinGame(manualIp);
+            var toRemove = new List<string>();
+            foreach (var kv in found)
+            {
+                if (Time.time - kv.Value.lastSeen > 4f) { toRemove.Add(kv.Key); continue; }
+                if (GUILayout.Button($"Unirse: {kv.Value.name} ({kv.Key})")) JoinGame(kv.Key);
+            }
+            foreach (var k in toRemove) found.Remove(k);
+
+            GUILayout.Space(10);
+            manualIp = GUILayout.TextField(manualIp);
+            if (GUILayout.Button("Unirse por IP")) JoinGame(manualIp);
+        }
+
         GUILayout.EndArea();
     }
 
-    void OnDestroy() { broadcaster?.Close(); listener?.Close(); }
+    void OnDestroy()
+    {
+        broadcaster?.Close();
+        listener?.Close();
+
+        // Assegurar el tancament de la xarxa si es destrueix l'objecte de sobte
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+    }
 }
