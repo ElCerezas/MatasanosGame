@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LanGame : MonoBehaviour
@@ -20,7 +21,7 @@ public class LanGame : MonoBehaviour
     readonly Dictionary<string, (string name, float lastSeen)> found = new();
 
     // NOVA VARIABLE: Controla si la interfície d'usuari es mostra o no
-    private bool showUI = true;
+    private bool showUI = false;
 
     public void CreateGame()
     {
@@ -103,7 +104,8 @@ public class LanGame : MonoBehaviour
         GUILayout.BeginArea(new Rect(20, 20, 320, 500));
 
         // NOVA LÒGICA: Si ja estem connectats, mostrem el botó de desconnectar
-        if (NetworkManager.Singleton.IsListening && NetworkManager.Singleton)
+        if (NetworkManager.Singleton != null) return;
+        if (NetworkManager.Singleton.IsListening)
         {
             GUILayout.Label("Estàs connectat a una sala.");
             if (GUILayout.Button("Desconnectar"))
