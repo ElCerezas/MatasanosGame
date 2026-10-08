@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4001427835164846226}
   - component: {fileID: 3188827312173664299}
   - component: {fileID: -8580244980239612655}
+  - component: {fileID: 4678573008664704367}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ad30069a795634f91e4411d79de275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClientDisconnectNotifier
+--- !u!114 &4678573008664704367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020154743579282066}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeaa407e96143948945f46e94fc404b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  roomName: SAGA_BCN

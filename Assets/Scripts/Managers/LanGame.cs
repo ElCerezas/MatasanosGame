@@ -1,0 +1,95 @@
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using UnityEngine;
+
+public class LanGame : MonoBehaviour
+{
+    const int DiscoveryPort = 47777;
+    const ushort GamePort = 7777;
+    const string Magic = "MatasanosGame";
+
+    public string roomName = "SAGA_BCN";
+
+    UdpClient broadcaster, listener;
+    float nextBroadcast;
+    bool hosting;
+    readonly Dictionary<string, (string name, float lastSeen)> found = new();
+
+    public void CreateGame()
+    {
+        var utp = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        utp.SetConnectionData("0.0.0.0", GamePort, "0.0.0.0");
+
+        if (NetworkManager.Singleton.StartHost())
+        {
+            hosting = true;
+            broadcaster = new UdpClient { EnableBroadcast = true };
+        }
+    }
+
+    public void JoinGame(string ip)
+    {
+        var utp = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        utp.SetConnectionData(ip, GamePort);
+        NetworkManager.Singleton.StartClient();
+    }
+
+    public void StartSearching()
+    {
+        found.Clear();
+        listener?.Close();
+        listener = new UdpClient(DiscoveryPort) { EnableBroadcast = true };
+    }
+
+    void Update()
+    {
+        if (hosting && broadcaster != null && Time.time >= nextBroadcast)
+        {
+            nextBroadcast = Time.time + 1f;
+            var data = Encoding.UTF8.GetBytes($"{Magic}|{roomName}");
+            broadcaster.Send(data, data.Length, new IPEndPoint(IPAddress.Broadcast, DiscoveryPort));
+        }
+
+        if (listener != null)
+        {
+            while (listener.Available > 0)
+            {
+                IPEndPoint ep = null;
+                var msg = Encoding.UTF8.GetString(listener.Receive(ref ep)).Split('|');
+                if (msg.Length == 2 && msg[0] == Magic)
+                    found[ep.Address.ToString()] = (msg[1], Time.time);
+            }
+        }
+    }
+
+    // UI mínima de prueba (cámbiala por tu UI)
+    string manualIp = "192.168.0.10";
+    void OnGUI()
+    {
+        if (NetworkManager.Singleton.IsListening) return;
+
+        GUILayout.BeginArea(new Rect(20, 20, 320, 500));
+        roomName = GUILayout.TextField(roomName);
+        if (GUILayout.Button("Crear partida")) CreateGame();
+        if (GUILayout.Button("Buscar partidas")) StartSearching();
+
+        var toRemove = new List<string>();
+        foreach (var kv in found)
+        {
+            if (Time.time - kv.Value.lastSeen > 4f) { toRemove.Add(kv.Key); continue; }
+            if (GUILayout.Button($"Unirse: {kv.Value.name} ({kv.Key})")) JoinGame(kv.Key);
+        }
+        foreach (var k in toRemove) found.Remove(k);
+
+        GUILayout.Space(10);
+        manualIp = GUILayout.TextField(manualIp);
+        if (GUILayout.Button("Unirse por IP")) JoinGame(manualIp);
+        GUILayout.EndArea();
+    }
+
+    void OnDestroy() { broadcaster?.Close(); listener?.Close(); }
+}
