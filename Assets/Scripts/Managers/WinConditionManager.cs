@@ -241,14 +241,6 @@ public class WinConditionManager : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V) && IsServer)
-        {
-            TriggerVictory();
-        }
-        if (Input.GetKeyDown(KeyCode.B) && IsServer)
-        {
-            EventBus.Publish(new AlienDeath());
-        }
 
         if (canExitToMenu && Input.anyKeyDown)
         {

@@ -21,7 +21,7 @@ public class AlienStateManager : NetworkBehaviour
     [Header("Damage Settings")]
     [SerializeField] private float damageAmount = 0.5f;
     [SerializeField] private float criticalDamageMultiplier = 2f;
-    [SerializeField] private float damageRate = 1f;
+    private float damageRate = 2f;
     private float damageTimer = 0f;
 
     [Header("State Settings")]
@@ -271,7 +271,8 @@ public class AlienStateManager : NetworkBehaviour
         if (damageTimer >= damageRate)
         {
             damageTimer -= damageRate;
-            TakeDamage(damageAmount);
+            Debug.Log(damageAmount * (currentPlayers / 4));
+            TakeDamage(damageAmount* (currentPlayers / 4));
         }
     }
 
@@ -280,7 +281,7 @@ public class AlienStateManager : NetworkBehaviour
         if (!IsServer) return;
 
         float multiplier = !isBloodbagFull.Value ? criticalDamageMultiplier : 1f;
-        currentHealth.Value -= (damage * multiplier)*(currentPlayers/4);
+        currentHealth.Value -= (damage * multiplier);
 
         if (currentHealth.Value <= DesangradoThreshold && currentActiveState.Value != AlienStateEnum.Desangrado)
         {
